@@ -1,0 +1,226 @@
+.welcomeHaddingText {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 39px;
+  color: #333333;
+}
+.textStyle18 {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 27px;
+
+  color: #737373;
+}
+
+.textStyle16 {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 25px;
+
+  color: #737373;
+}
+
+.textStyle14 {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 23px;
+
+  color: #737373;
+}
+
+.linkStyle {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 25px;
+  color: #5669ff;
+  text-decoration: underline;
+}
+
+.signInButton {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: #1476b7;
+  border-radius: 15px;
+  height: 45px;
+  width: 100%;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.allRights {
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 0.5px;
+  color: #8a8a8a;
+}
+
+.rightImageStyle {
+  width: 40%;
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-right: 10px;
+}
+.mainDiv {
+  display: flex;
+  justify-content: space-between;
+  /* min-height: 100%;
+  max-height: 100vh; */
+  height: 100vh;
+  width: 100%;
+}
+.leftDiv {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 20px;
+  padding-left: 30px;
+  padding-bottom: 20px;
+}
+.formStyle{
+  width: 70%;
+  align-self: center;
+}
+
+@media only screen and (min-width: 0px) and (max-width: 550px) {
+  .rightImageStyle {
+    display: none;
+  }
+  .mainDiv {
+    display: flex;
+    justify-content: center;
+  }
+  .leftDiv {
+    width: 100%;
+    padding-top: 20px;
+    padding-left: 10px;
+    padding-bottom: 20px;
+  }
+  .formStyle{
+    width: 80%;
+  }
+  .textStyle18{
+    font-size: 14px;
+  }
+  .textStyle16{
+    font-size: 12px;
+  }
+  .textStyle14{
+    font-size: 10px;
+  }
+  .allRights{
+    font-size: 10px;
+  }
+}
+
+
+@media only screen and (min-width: 551px) and (max-width: 900px) {
+  .rightImageStyle {
+    width: 45%;
+  }
+  .welcomeHaddingText{
+    font-size: 20px;
+  }
+  .leftDiv {
+    width: 55%;
+    padding-top: 20px;
+    padding-left: 10px;
+    padding-bottom: 20px;
+  }
+  .formStyle{
+    width: 90%;
+  }
+  .textStyle18{
+    font-size: 14px;
+  }
+  .textStyle16{
+    font-size: 12px;
+  }
+  .textStyle14{
+    font-size: 12px;
+  }
+  .linkStyle{
+    font-size: 12px;
+  }
+  .allRights{
+    font-size: 12px;
+  }
+}
+
+
+
+@media only screen and (min-width: 901px) and (max-width: 1400px) {
+  .rightImageStyle {
+    width: 45%;
+  }
+  .welcomeHaddingText{
+    font-size: 20px;
+  }
+  .leftDiv {
+    width: 55%;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-bottom: 20px;
+  }
+  .formStyle{
+    width: 80%;
+  }
+  .textStyle18{
+    font-size: 16px;
+  }
+  .textStyle16{
+    font-size: 14px;
+  }
+  .textStyle14{
+    font-size: 12px;
+  }
+  .linkStyle{
+    font-size: 14px;
+  }
+  .allRights{
+    font-size: 14px;
+  }
+}
+
+
+@media only screen and (min-width: 1401px) {
+  .rightImageStyle {
+    width: 45%;
+  }
+  .welcomeHaddingText{
+    font-size: 20px;
+  }
+  .leftDiv {
+    width: 55%;
+    padding-top: 20px;
+    padding-left: 5%;
+    padding-bottom: 20px;
+  }
+  .formStyle{
+    width: 70%;
+  }
+}
+
+
