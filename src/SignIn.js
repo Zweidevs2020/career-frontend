@@ -26,7 +26,8 @@ function SignIn() {
           <a href='#'>SignUp</a>
           </div>
         </div>
-        <div className='rightaside' class='bg-white w-[45%] h-[550px]'  ></div>
+        <div className='rightaside' class='bg-[#1476B7] w-[45%] h-[550px]'  >
+        </div>
       </div>
     );
   }
