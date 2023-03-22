@@ -1,6 +1,6 @@
 import React from 'react'
+// import { EmailIcon } from './Icon'
 import mycareer from '../assets/mycareer.png'
-// import icon from '../assets/icon.png'
 import image from '../assets/image.png'
 function ForgetPassword () {
     function handleClick (){
@@ -17,6 +17,7 @@ function ForgetPassword () {
               <p class='text-[#737373] mb-4 ' >Enter the email associated with your <br/>
                 account and we'll send an email with <br/>
                 instructions to reset your password.</p>
+                {/* <span><EmailIcon/></span> */}
                 <input type='text' name='text' placeholder='Email Address' class='h-[40px] rounded-md border-solid border-2 border-gray-400 ' />
                 <button onClick={handleClick} class='h-[40px] w-[250px] bg-[#0575E6] text-white rounded-md ' >Send Request</button>
             </div>
@@ -24,7 +25,7 @@ function ForgetPassword () {
                     <p class='text-[#8A8A8A]' >© 2023 My Career Guidance. All Rights Reserved</p>
                 </div>
         </div>
-        <div className='rightside' class=' bg-cover   rounded-md' >
+        <div className='rightside' class=' bg-cover    rounded-md' >
          <img src={image} class='h-[560px] w-[100%]' />
         </div>
         
