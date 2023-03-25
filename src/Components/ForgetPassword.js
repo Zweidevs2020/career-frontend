@@ -18,8 +18,10 @@ function ForgetPassword () {
               <p class='text-[#737373] mb-4 ' >Enter the email associated with your <br/>
                 account and we'll send an email with <br/>
                 instructions to reset your password.</p>
-                <span><img src={emailIcon} /></span>
-                <input type='text' name='text' placeholder='Email Address' class='h-[40px] rounded-md border-solid border-2 border-gray-400 ' />
+                <div className='input' class=' h-[40px] w-[250px] flex items-center justify-center rounded-md border-solid border-2 border-gray-400' >
+                <img src={emailIcon} class='h-[18px]'/>
+                <input type='text' name='text' placeholder='Email Address' class='h-[30px] w-[220px] '  />
+                </div>
                 <button onClick={handleClick} class='h-[40px] w-[250px] bg-[#0575E6] text-white rounded-md ' >Send Request</button>
             </div>
             <div class='h-[120px] w-[90%]  flex items-end' >
