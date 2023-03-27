@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import axios from "axios";
-const BASE_URL = process.env.REACT_APP_LINK_BASE_URL;
 import { getToken } from "./LocalStorage";
+const BASE_URL = process.env.REACT_APP_LINK_BASE_URL;
 const baseInstance = axios.create({
   baseURL: BASE_URL,
 });

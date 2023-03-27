@@ -175,3 +175,27 @@ export const dayArray = [
     label: "31",
   },
 ];
+
+
+export const createFormDataObject = (formInputData) => {
+  console.log(formInputData)
+  const formData = new FormData();
+  Object.entries(formInputData).map(([key, value]) => {
+    if (typeof value == "object") {
+      if ({ ...value[0] }?.width) {
+        formData.append(key, JSON.stringify(value));
+      } else {
+        value.map((data) => {
+          if (data?.originFileObj) {
+            formData.append(key, data.originFileObj);
+          } else {
+            formData.append(key, data);
+          }
+        });
+      }
+    } else {
+      formData.append(key, formInputData[key]);
+    }
+  });
+  return formData;
+};

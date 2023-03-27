@@ -23,3 +23,7 @@ code {
   width: 30px;
   height: 30px;
 }
+
+.ant-form-item{
+  margin-bottom: 20px;
+}

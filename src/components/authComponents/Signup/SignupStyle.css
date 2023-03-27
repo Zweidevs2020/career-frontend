@@ -15,11 +15,9 @@
 }
 
 .signInButtonStyle {
-  margin-top: 20px;
-  margin-bottom: 5px;
   background: white;
   border-radius: 15px;
-  height: 45px;
+  height: 50px;
   font-family: "Poppins";
   font-style: normal;
   font-weight: 500;
@@ -30,4 +28,34 @@
   border: 1px solid #d3d3d3;
   display: flex;
   align-items: center;
+  width:100vmin;
+}
+
+
+@media only screen and (min-width: 0px) and (max-width: 550px) {
+  .signInButtonStyle {
+    width:79vmin;
+  }
+}
+
+
+@media only screen and (min-width: 551px) and (max-width: 900px) {
+
+  .signInButtonStyle {
+    width:48vw;
+  }
+}
+
+
+@media only screen and (min-width: 901px) and (max-width: 1400px) {
+  .signInButtonStyle {
+    width:43vw;
+  }
+}
+
+
+@media only screen and (min-width: 1401px) {
+  .signInButtonStyle {
+    width:37vw;
+  }
 }

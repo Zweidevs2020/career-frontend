@@ -12,10 +12,11 @@ const MyCareerGuidanceInputField = (props) => {
           placeholder={props.placeholder}
           value={props.passwordValue}
           type={props.type}
+          defaultValue={props.defaultValue}
           className={props.className ? props.className : "inputFieldStyle"}
           onChange={props.onChange}
           name={props.name}
-          // style={{ width: width }}
+          autoComplete={props.autoComplete}
           required={props.required}
           iconRender={(visible) =>
             visible ? (
@@ -52,12 +53,12 @@ const MyCareerGuidanceInputField = (props) => {
           placeholder={props.placeholder}
           value={props.inputValue}
           type={props.type}
+          autoComplete={props.autoComplete}
           className={"inputFieldStyle"}
           onChange={props.onChange}
           name={props.name}
           required={props.required}
           suffix={props.suffix}
-          // style={{ width: width }}
           onKeyDown={props.onKeyDown}
           disabled={props.disabled}
           prefix={

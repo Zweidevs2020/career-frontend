@@ -1,3 +1,4 @@
 export const API_URL = {
-  SIGNIN: '',
+  SIGNIN: 'auth/jwt/create/',
+  GETUSERSCHOOL:'user/school/'
 };

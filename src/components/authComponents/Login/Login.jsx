@@ -4,31 +4,39 @@ import myCareerGuidanceIcon from "../../../asserts/myCareerGuidanceIcon.png";
 import usernameIcon from "../../../asserts/usernameIcon.svg";
 import lockIcon from "../../../asserts/lockIcon.svg";
 import { Link } from "react-router-dom";
+import { API_URL } from "../../../utils/constants";
+import { postApiWithoutAuth } from "../../../utils/api";
 import { Checkbox, Form, Image } from "antd";
 import {
   MyCareerGuidanceInputField,
   MyCareerGuidanceButton,
 } from "../../commonComponents";
 import "./LoginStyle.css";
+
 const Login = () => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState({ remember: true });
+  const [data, setData] = useState({});
 
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
 
-  const handlerSubmit = () => {
-    console.log("=============================", data);
+  const handlerSubmit = async () => {
     setLoading(true);
-    setLoading(false);
+    const response = await postApiWithoutAuth(API_URL.SIGNIN, data);
+    console.log("=============================", response, data);
+
+    if (response.success) {
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
   };
 
   const onCheckHandle = (e) => {
     const { name, checked } = e;
     console.log("==========================", name, checked);
-    setData({ ...data, [name]: checked });
   };
 
   return (
@@ -79,7 +87,7 @@ const Login = () => {
             />
           </Form.Item>
           <span
-            style={{ display: "flex", justifyContent: "space-between" }}
+            style={{ display: "flex", justifyContent: "space-between",marginBottom:10 }}
             className="textStyle14"
           >
             <Checkbox
