@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import ForgetPassword from './Components/ForgetPassword';
 import Email from './Components/EmailVerification/Email';
+import NewPasword from './Components/NewPassword/NewPasword';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route  path='/forgetpassword' element={<ForgetPassword/>}/>
         <Route path='/email' element={<Email/>}/>
+        <Route path='/newpassword' element={<NewPasword/>} />
       </Routes>
       </BrowserRouter>
 
