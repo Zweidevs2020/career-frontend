@@ -6,10 +6,14 @@ import { useState } from 'react';
 const NewPasword = () => {
     const [text , setNewText] = useState("")
     const [confirm , setNewConfirm] = useState("")
+    const [state,setstate] = useState(false)
     function updatePassword(){
         setNewText("");
         setNewConfirm("")
     }   
+    const toggleBtn =()=>{
+          setstate(prevState => !prevState)
+    }
   return (
     <div className='Email' class='h-[630px] w-[90%] flex items-center justify-center' >
     <div className='left' class='h-[560px] w-[45%] flex flex-col  items-center justify-around ' >
@@ -25,20 +29,20 @@ const NewPasword = () => {
         <div className='inputpassword' class='h-[72px] w-[100%]  flex items-center justify-around rounded-md border-solid border-2 border-gray-400' >
          <div className='inpt-feild' class='h-[60px] w-[80%]' >
             <label class='h-2 text-md  font-Poppins text-[#9D9C9D]' >Password</label>
-            <input type='text' placeholder=' ***************' value={text}  class='border-none h-[35px] w-[100%] text-[20px] outline-none' onChange={(e)=> setNewText(e.target.value)} />
+            <input type={state ? "text" : "password"} placeholder=' ***************' value={text}  class='border-none h-[35px] w-[100%] text-[20px] outline-none' onChange={(e)=> setNewText(e.target.value)} />
          </div>
          <div className='icon-field' class='h-[60px] w-[10%]  flex items-center justify-center ' >
-            <img src={eyeball} class='h-[14px]' />
+            <img src={eyeball}  class='h-[14px]' onClick={toggleBtn} />
          </div>
         </div>
         <p class='text-[#9D9C9D] text-[16px]' >Must be at least 8 characters.</p>
         <div className='inputconfirm' class='h-[72px] w-[100%] flex items-center justify-around rounded-md border-solid border-2 border-gray-400 ' >
         <div className='inpt-feild' class='h-[60px] w-[80%]' >
             <label class='h-2 text-md  font-Poppins text-[#9D9C9D]' >Confirm Password</label>
-            <input type='text' placeholder=' **************'value={confirm} class='border-none h-[35px] w-[100%] text-[20px] outline-none' onChange={(e)=>(setNewConfirm(e.target.value))}/>
+            <input type={state ? "text" : "password"} placeholder=' **************'value={confirm} class='border-none h-[35px] w-[100%] text-[20px] outline-none' onChange={(e)=>(setNewConfirm(e.target.value))}/>
          </div>
          <div className='icon-field' class='h-[60px] w-[10%]  flex items-center justify-center ' >
-            <img src={eyeball} class='h-[14px]' />
+            <img src={eyeball} class='h-[14px]' onClick={toggleBtn} />
          </div>
         </div>
         <p class='text-[#9D9C9D] text-[16px]' >Both Password Must Match.</p>
