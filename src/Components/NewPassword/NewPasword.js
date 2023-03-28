@@ -1,8 +1,15 @@
-import React from 'react'
+
 import mycareer from '../../assets/mycareer.png';
 import image from '../../assets/image.png';
 import eyeball from '../../assets/eyeball.svg'
+import { useState } from 'react';
 const NewPasword = () => {
+    const [text , setNewText] = useState("")
+    const [confirm , setNewConfirm] = useState("")
+    function updatePassword(){
+        setNewText("");
+        setNewConfirm("")
+    }   
   return (
     <div className='Email' class='h-[630px] w-[90%] flex items-center justify-center' >
     <div className='left' class='h-[560px] w-[45%] flex flex-col  items-center justify-around ' >
@@ -18,7 +25,7 @@ const NewPasword = () => {
         <div className='inputpassword' class='h-[72px] w-[100%]  flex items-center justify-around rounded-md border-solid border-2 border-gray-400' >
          <div className='inpt-feild' class='h-[60px] w-[80%]' >
             <label class='h-2 text-md  font-Poppins text-[#9D9C9D]' >Password</label>
-            <input type='text' placeholder=' ***************' class='border-none h-[35px] w-[100%] text-[20px]' />
+            <input type='text' placeholder=' ***************' value={text}  class='border-none h-[35px] w-[100%] text-[20px] outline-none' onChange={(e)=> setNewText(e.target.value)} />
          </div>
          <div className='icon-field' class='h-[60px] w-[10%]  flex items-center justify-center ' >
             <img src={eyeball} class='h-[14px]' />
@@ -28,7 +35,7 @@ const NewPasword = () => {
         <div className='inputconfirm' class='h-[72px] w-[100%] flex items-center justify-around rounded-md border-solid border-2 border-gray-400 ' >
         <div className='inpt-feild' class='h-[60px] w-[80%]' >
             <label class='h-2 text-md  font-Poppins text-[#9D9C9D]' >Confirm Password</label>
-            <input type='text' placeholder=' **************' class='border-none h-[35px] w-[100%] text-[20px]' />
+            <input type='text' placeholder=' **************'value={confirm} class='border-none h-[35px] w-[100%] text-[20px] outline-none' onChange={(e)=>(setNewConfirm(e.target.value))}/>
          </div>
          <div className='icon-field' class='h-[60px] w-[10%]  flex items-center justify-center ' >
             <img src={eyeball} class='h-[14px]' />
@@ -36,7 +43,7 @@ const NewPasword = () => {
         </div>
         <p class='text-[#9D9C9D] text-[16px]' >Both Password Must Match.</p>
         </div>
-        <button class='h-[55px] w-[85%] bg-[#0575E6] text-white rounded-md ml-9 ' >Update Password</button>
+        <button onClick={updatePassword} class='h-[55px] w-[85%] bg-[#0575E6] text-white rounded-md ml-9 ' >Update Password</button>
     </div>
     <div class='h-[100px] w-[90%]  flex items-end' >
             <p class='text-[#8A8A8A]' >© 2023 My Career Guidance. All Rights Reserved</p>
