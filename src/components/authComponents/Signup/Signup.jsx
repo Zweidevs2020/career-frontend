@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import sideAuthImage from "../../../asserts/sideAuthImage.png";
-import myCareerGuidanceIcon from "../../../asserts/myCareerGuidanceIcon.png";
-import usernameIcon from "../../../asserts/usernameIcon.svg";
-import nameIcon from "../../../asserts/nameIcon.svg";
+import sideAuthImage from "../../../assets/sideAuthImage.png";
+import myCareerGuidanceIcon from "../../../assets/myCareerGuidanceIcon.png";
+import usernameIcon from "../../../assets/usernameIcon.svg";
+import nameIcon from "../../../assets/nameIcon.svg";
 
-import lockIcon from "../../../asserts/lockIcon.svg";
-import dropdownIcon from "../../../asserts/dropdownIcon.svg";
+import lockIcon from "../../../assets/lockIcon.svg";
+import dropdownIcon from "../../../assets/dropdownIcon.svg";
 import { Link } from "react-router-dom";
 import { DatePicker, Form, Image, Select, Upload } from "antd";
 import {

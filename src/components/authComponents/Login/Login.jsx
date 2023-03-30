@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import sideAuthImage from "../../../asserts/sideAuthImage.png";
-import myCareerGuidanceIcon from "../../../asserts/myCareerGuidanceIcon.png";
-import usernameIcon from "../../../asserts/usernameIcon.svg";
-import lockIcon from "../../../asserts/lockIcon.svg";
+import sideAuthImage from "../../../assets/sideAuthImage.png";
+import myCareerGuidanceIcon from "../../../assets/myCareerGuidanceIcon.png";
+import usernameIcon from "../../../assets/usernameIcon.svg";
+import lockIcon from "../../../assets/lockIcon.svg";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../../utils/constants";
 import { postApiWithoutAuth } from "../../../utils/api";
