@@ -4,10 +4,15 @@ import {
   Route,
   useSearchParams,
 } from "react-router-dom";
-import { Login, Signup } from "./components/authComponents";
+import {
+  Login,
+  Signup,
+  EmailVerification,
+  ForgetPassword,
+  NewPasword,
+} from "./components/authComponents";
 import PublicRoute from "./routes/PublicRouting";
 import "./App.css";
-
 function App() {
   return (
     <BrowserRouter>
@@ -25,6 +30,30 @@ function App() {
           element={
             <PublicRoute restricted>
               <Signup />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/forget-password"
+          element={
+            <PublicRoute restricted>
+              <ForgetPassword />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/email-verification"
+          element={
+            <PublicRoute restricted>
+              <EmailVerification />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/new-password"
+          element={
+            <PublicRoute restricted>
+              <NewPasword />
             </PublicRoute>
           }
         />

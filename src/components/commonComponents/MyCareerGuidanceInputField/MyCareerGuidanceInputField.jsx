@@ -1,7 +1,7 @@
 import React from "react";
 import { Input, Image } from "antd";
-import hidePassword from "../../../asserts/hidePassword.svg";
-import showPassword from "../../../asserts/showPassword.svg";
+import hidePassword from "../../../assets/hidePassword.svg";
+import showPassword from "../../../assets/showPassword.svg";
 import "./MyCareerGuidanceInputFieldStyle.css";
 const MyCareerGuidanceInputField = (props) => {
   return (
