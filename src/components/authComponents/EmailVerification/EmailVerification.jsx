@@ -24,7 +24,7 @@ const EmailVerification = () => {
                 <button class='h-[40px] w-[250px] bg-[#0575E6] text-white rounded-md ml-9 ' >Continue</button>
             </div>
             <div class='h-[120px] w-[90%] sm:w-[100%] flex items-end' >
-                    <p class='text-[#8A8A8A] sm:text-[15px] sm:ml-2 md:ml-2 lg:ml-2' >© 2023 My Career Guidance. All Rights Reserved</p>
+                    <p class='text-[#8A8A8A] sm:text-[12px] sm:ml-2 md:ml-2 lg:ml-2' >© 2023 My Career Guidance. All Rights Reserved</p>
                 </div>
                 </div>
             <div className='rightside' class=' bg-cover    rounded-md sm:hidden md:hidden' >
