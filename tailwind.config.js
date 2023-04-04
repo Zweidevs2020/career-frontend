@@ -15,6 +15,13 @@ module.exports = {
         'xl': {'min':'1025px','max':'1200px'},
         // => @media (min-width: 1280px) { ... }
       },
+      backgroundSize: {
+        'auto': 'auto',
+        'cover': 'cover',
+        'contain': 'contain',
+        '50%': '50%',
+        '16': '4rem',
+      },
   },
   plugins: [],
 }

@@ -11,7 +11,7 @@ const Navbar = () => {
             <img src={navImg} class='h-[55px]' />
             <div class='h-[55px] w-[70%] flex flex-col justify-center' >
                 <p class='text-[#fff]' >Bruno Fernandes</p>
-                <p class='text-[#fff]'>Bruno@gmail.com</p>
+                <p class='text-[#fff] text-[12px] '>Bruno@gmail.com</p>
             </div>
         </div>
      </div>
