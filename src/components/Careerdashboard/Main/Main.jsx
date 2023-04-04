@@ -1,6 +1,5 @@
 import React from 'react'
 import searchicon from '../../../assets/searchicon.svg'
-import Cardimg from '../../../assets/Cardimg.svg';
 import imgcard from '../../../assets/imgcard.svg';
 import imgcard2 from '../../../assets/imgcard2.svg';
 import imgcard3 from '../../../assets/imgcard3.svg';
