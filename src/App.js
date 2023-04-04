@@ -11,6 +11,7 @@ import {
   ForgetPassword,
   NewPasword,
 } from "./components/authComponents";
+import CareerDashboard from "./components/Careerdashboard";
 import PublicRoute from "./routes/PublicRouting";
 import "./App.css";
 function App() {
@@ -54,6 +55,14 @@ function App() {
           element={
             <PublicRoute restricted>
               <NewPasword />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/dash-board"
+          element={
+            <PublicRoute restricted>
+              <CareerDashboard/>
             </PublicRoute>
           }
         />
