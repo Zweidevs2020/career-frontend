@@ -12,7 +12,7 @@ const Main = () => {
     <>
     <div class='h-[40px] w-[100%] flex items-center justify-between' >
         <div class='h-[40px] w-[53%] ml-8 ' >
-            <h1 class='text-[24px] text-[#474749] font-bold ml-1' >Career Guidance</h1>
+            <h1 class='text-[18px] text-[#474749] font-bold ml-1' >Career Guidance</h1>
         </div>
         <div class='h-[40px] w-[25%]  mr-2 flex items-center justify-around ' >
             <img src={searchicon} />
@@ -42,8 +42,8 @@ const Main = () => {
         </div>
     </div>
     <div class='h-[30px] w-[100%]  flex items-center justify-start ' >
-    <div class='h-[40px] w-[53%] ml-8 ' >
-            <h1 class='text-[24px] text-[#474749] font-bold ml-1' >My Educational Guidance</h1>
+    <div class='h-[40px] w-[53%] ml-8 flex items-center ' >
+            <h1 class='text-[18px] text-[#474749]  font-bold ml-1' >My Educational Guidance</h1>
         </div>
     </div>
     <div class='h-[237px] w-[100%] flex flex-col flex-wrap items-center justify-around gap-2' >

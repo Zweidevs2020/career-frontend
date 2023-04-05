@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from './Navbar';
 import Aside from './Aside';
 import Main from './Main';
+import Right from './Right';
 
 const CareerDashboard = () => {
   return (
@@ -15,7 +16,9 @@ const CareerDashboard = () => {
       <div className='career' class='bg-white col-span-5 ' >
         <Main/>
       </div>
-      <div className='rightaside' class='bg-white col-span-3' ></div>
+      <div className='rightaside' class='bg-white col-span-3' >
+        <Right/>
+      </div>
     </div>
   )
 }
