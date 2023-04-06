@@ -11,39 +11,39 @@ const Main = () => {
   return (
     <>
     <div class='h-[40px] w-[100%] flex items-center justify-between' >
-        <div class='h-[40px] w-[53%] ml-8 ' >
-            <h1 class='text-[18px] text-[#474749] font-bold ml-1' >Career Guidance</h1>
+        <div class='h-[40px] w-[53%] ml-8  sm:ml-2 sm:flex sm:items-center sm:justify-start ' >
+            <h1 class='text-[18px] sm:text-[15px]  text-[#474749] font-bold ml-1' >Career Guidance</h1>
         </div>
-        <div class='h-[40px] w-[25%]  mr-2 flex items-center justify-around ' >
-            <img src={searchicon} />
-            <input type='text' placeholder='Search...' class='w-[75%] border-none outline-none' />
+        <div class='h-[40px] w-[25%]  mr-2 flex items-center justify-around sm:w-[35%] sm:mr-1 ' >
+            <img src={searchicon} class='sm:h-[16px]' />
+            <input type='text' placeholder='Search...' class='w-[75%] sm:w-[70%] border-none outline-none' />
         </div>
     </div>
-    <div class='h-[250px] w-[100%]  flex flex-wrap items-center justify-around ' >
-        <div class='h-[111px] w-[45%]  rounded-xl relative' >
+    <div class='h-[250px] w-[100%]  flex flex-wrap items-center justify-around  sm:h-[160px] ' >
+        <div class='h-[111px] w-[45%]  rounded-xl relative  sm:h-[57px]' >
             <img src={imgcard} class=' bg-cover' />
-            <p class='absolute top-2 left-6 text-[18px] font-bold text-[#fff] ' >CAO Point Calculator</p>
-            <p class='absolute top-8 left-7 text-[12px] font-lighter text-[#fff] ' >Final score is displayed</p>
+            <p class='absolute top-2  left-6  text-[18px] sm:top-1 sm:left-2 sm:text-[10px] font-bold text-[#fff] ' >CAO Point Calculator</p>
+            <p class='absolute top-8  left-7  text-[12px] sm:top-5 sm:left-2 sm:text-[8px] font-lighter text-[#fff] ' >Final score is displayed</p>
         </div>
-        <div class='h-[111px] w-[45%]  rounded-xl relative' >
+        <div class='h-[111px] w-[45%]  rounded-xl relative sm:h-[57px]' >
         <img src={imgcard5} class=' bg-cover' />
-        <p class='absolute top-2 left-6 text-[18px] font-bold text-[#fff] ' >My Goals</p>
-            <p class='absolute top-8 left-7 text-[12px] font-lighter text-[#fff] ' >Number of preset questions</p>
+        <p class='absolute top-2 left-6 text-[18px]  sm:top-1 sm:left-2 sm:text-[10px] font-bold text-[#fff] ' >My Goals</p>
+            <p class='absolute top-8 left-7 text-[12px]  sm:top-5 sm:left-2 sm:text-[8px] font-lighter text-[#fff] ' >Number of preset questions</p>
         </div>
-        <div class='h-[111px] w-[45%]  rounded-xl relative' >
+        <div class='h-[111px] w-[45%]  rounded-xl relative sm:h-[57px]' >
         <img src={imgcard2} class=' bg-cover' />
-        <p class='absolute top-2 left-6 text-[18px] font-bold text-[#fff] ' >My Study</p>
-            <p class='absolute top-8 left-7 text-[12px] font-lighter text-[#fff] ' >Number of preset questions</p>
+        <p class='absolute top-2 left-6 text-[18px]  sm:top-1 sm:left-2 sm:text-[10px] font-bold text-[#fff] ' >My Study</p>
+            <p class='absolute top-8 left-7 text-[12px]  sm:top-5 sm:left-2 sm:text-[7px] font-lighter text-[#fff] ' >Number of preset questions</p>
         </div>
-        <div class='h-[111px] w-[45%]  rounded-xl relative' >
+        <div class='h-[111px] w-[45%]  rounded-xl relative sm:h-[57px]' >
         <img src={imgcard3} class=' bg-cover' />
-        <p class='absolute top-2 left-6 text-[18px] font-bold text-[#fff] ' >CV/Cover Letter</p>
-            <p class='absolute top-8 left-7 text-[12px] font-lighter text-[#fff] ' >Different text formatting</p>
+        <p class='absolute top-2 left-6 text-[18px]  sm:top-1 sm:left-2 sm:text-[10px] font-bold text-[#fff] ' >CV/Cover Letter</p>
+            <p class='absolute top-8 left-7 text-[12px]  sm:top-5 sm:left-2 sm:text-[8px] font-lighter text-[#fff] ' >Different text formatting</p>
         </div>
     </div>
     <div class='h-[30px] w-[100%]  flex items-center justify-start ' >
-    <div class='h-[40px] w-[53%] ml-8 flex items-center ' >
-            <h1 class='text-[18px] text-[#474749]  font-bold ml-1' >My Educational Guidance</h1>
+    <div class='h-[40px] w-[53%] ml-8 sm:ml-0 flex items-center sm:bg-yellow-500 sm:h-[30px] sm:w-[100%] ' >
+            <h1 class='text-[18px] sm:text-[15px] text-[#474749]  font-bold ml-1' >My Educational Guidance</h1>
         </div>
     </div>
     <div class='h-[237px] w-[100%] flex flex-col flex-wrap items-center justify-around gap-2' >
