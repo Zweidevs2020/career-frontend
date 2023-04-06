@@ -4,11 +4,11 @@ const Right = () => {
   return (
     <>
     <div class='h-[100%] w-[100%] items-center flex flex-col justify-around' >
-    <div class='h-[30px] w-[98%]  flex items-center' >
+    <div class='h-[30px] w-[98%]  flex items-center md:h-[40px] md:items-end' >
         <p class='text-[#474749] sm:text-[15px] text-[18px] ml-2 font-bold' >Self Assessment</p>
     </div>
     <div class='h-[510px] w-[98%]  flex flex-col flex-wrap items-center justify-evenly' >
-       <div class='h-[140px] w-[40%] sm:h-[130px] sm:w-[40%] bg-blue-200  rounded-xl flex flex-col items-center justify-around'>
+       <div class='h-[140px] w-[40%] sm:h-[130px] md:h-[140px] md:w-[35%] sm:w-[40%] bg-blue-200  rounded-xl flex flex-col items-center justify-around'>
         <div class='h-[50px] w-[90%] flex flex-col items-start justify-center ' >
             <p class='text-[16px] sm:text-[14px] text-slate-500 ml-2 font-lighter' >Artistic/</p>
             <p class='text-[16px] sm:text-[14px] text-slate-500 ml-2 font-lighter' >Creative</p>
@@ -22,7 +22,7 @@ const Right = () => {
             </div>
         </div>
         </div> 
-       <div class='h-[140px] w-[40%] sm:h-[130px] sm:w-[40%] bg-blue-200   rounded-xl flex flex-col items-center justify-around '>
+       <div class='h-[140px] w-[40%] sm:h-[130px] sm:w-[40%] md:h-[140px] md:w-[35%] bg-blue-200   rounded-xl flex flex-col items-center justify-around '>
        <div class='h-[50px] w-[90%] flex flex-col items-start justify-center ' >
             <p class='text-[16px] sm:text-[14px] text-slate-500 ml-2 font-lighter' >Inflluencing/</p>
             <p class='text-[16px] sm:text-[14px] text-slate-500 ml-2 font-lighter' >Persuasive</p>
@@ -36,7 +36,7 @@ const Right = () => {
             </div>
         </div>
         </div> 
-       <div class='h-[140px] w-[40%] sm:h-[130px] sm:w-[40%] bg-blue-200   rounded-xl  flex flex-col items-center justify-around'>
+       <div class='h-[140px] w-[40%] sm:h-[130px] sm:w-[40%] md:h-[140px] md:w-[35%] bg-blue-200   rounded-xl  flex flex-col items-center justify-around'>
        <div class='h-[50px] w-[90%] flex flex-col items-start justify-center ' >
             <p class='text-[16px] sm:text-[14px] text-slate-500 ml-2 font-lighter' >Socail</p>
         </div>
@@ -49,7 +49,7 @@ const Right = () => {
             </div>
         </div>
         </div> 
-       <div class='h-[140px] w-[40%] sm:h-[130px] sm:w-[40%] bg-blue-200   rounded-xl  flex flex-col items-center justify-around'>
+       <div class='h-[140px] w-[40%] sm:h-[130px] sm:w-[40%] md:h-[140px] md:w-[35%] bg-blue-200   rounded-xl  flex flex-col items-center justify-around'>
        <div class='h-[50px] w-[90%] flex flex-col items-start justify-center ' >
             <p class='text-[16px] sm:text-[14px] text-slate-500 ml-2 font-lighter' >Clierical/</p>
             <p class='text-[16px] sm:text-[14px] text-slate-500 ml-2 font-lighter' >Organisational</p>
@@ -63,7 +63,7 @@ const Right = () => {
             </div>
         </div>
         </div> 
-       <div class='h-[140px] w-[40%] sm:h-[130px] sm:w-[40%] bg-blue-200   rounded-xl  flex flex-col items-center justify-around'>
+       <div class='h-[140px] w-[40%] sm:h-[130px] sm:w-[40%] md:h-[140px] md:w-[35%] bg-blue-200   rounded-xl  flex flex-col items-center justify-around'>
        <div class='h-[50px] w-[90%] flex flex-col items-start justify-center ' >
             <p class='text-[16px] sm:text-[14px] text-slate-500 ml-2 font-lighter' >Manual/</p>
             <p class='text-[16px] sm:text-[14px] text-slate-500 ml-2 font-lighter' >Practical</p>
@@ -77,7 +77,7 @@ const Right = () => {
             </div>
         </div>
         </div> 
-       <div class='h-[140px] w-[40%] sm:h-[130px] sm:w-[40%] bg-blue-200   rounded-xl  flex flex-col items-center justify-around'>
+       <div class='h-[140px] w-[40%] sm:h-[130px] sm:w-[40%] md:h-[140px] md:w-[35%] bg-blue-200   rounded-xl  flex flex-col items-center justify-around'>
        <div class='h-[50px] w-[90%] flex flex-col items-start justify-center ' >
             <p class='text-[16px] sm:text-[14px] text-slate-500 ml-2 font-lighter' >Understanding/</p>
             <p class='text-[16px] sm:text-[14px] text-slate-500 ml-2 font-lighter' >Investigative</p>
