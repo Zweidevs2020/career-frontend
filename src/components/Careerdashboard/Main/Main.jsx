@@ -42,81 +42,81 @@ const Main = () => {
         </div>
     </div>
     <div class='h-[30px] w-[100%]  flex items-center justify-start ' >
-    <div class='h-[40px] w-[53%] ml-8 sm:ml-0 flex items-center sm:bg-yellow-500 sm:h-[30px] sm:w-[100%] ' >
+    <div class='h-[40px] w-[53%] ml-8 sm:ml-2 flex items-center sm:h-[30px] sm:w-[90%] ' >
             <h1 class='text-[18px] sm:text-[15px] text-[#474749]  font-bold ml-1' >My Educational Guidance</h1>
         </div>
     </div>
-    <div class='h-[237px] w-[100%] flex flex-col flex-wrap items-center justify-around gap-2' >
-        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around ' >
-            <div class='h-[45px] w-[15%] bg-blue-300 rounded-lg flex items-center justify-center' >
-                <img src={bokimg} class='h-[20px]'/>
+    <div class='h-[237px] w-[100%] flex flex-col flex-wrap items-center justify-around gap-2  sm:h-[220px]' >
+        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around sm:h-[50px] sm:w-[47%] ' >
+            <div class='h-[45px] w-[15%] sm:h-[30px] sm:w-[18%] bg-blue-300 rounded-lg flex items-center justify-center' >
+                <img src={bokimg} class='h-[20px] sm:h-[13px]'/>
             </div>
-            <div class='h-[45px] w-[50%]  flex flex-col items-start ' >
-                <p class='text-[#303030] font-bold' >Quiz 01</p>
-                <p class='text-[#BDBDBD] text-[15px]' >8:00 AM - 10:00 AM</p>
+            <div class='h-[45px] w-[50%]  flex flex-col items-start sm:h-[30px]' >
+                <p class='text-[#303030] sm:text-[13px] font-bold' >Quiz 01</p>
+                <p class='text-[#BDBDBD] text-[15px] sm:text-[8px]' >8:00 AM - 10:00 AM</p>
             </div>
-            <div class='h-[45px] w-[25%]  flex items-center justify-center' >
-                <button class='h-[31px] w-[90%] rounded-lg bg-[#1476B7] text-[#fff] text-[11px] ' >Take Test</button>
-            </div>
-        </div>
-        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg  flex items-center justify-around ' >
-        <div class='h-[45px] w-[15%] bg-blue-300 rounded-lg  flex items-center justify-center' >
-                <img src={bokimg} class='h-[20px]'/>
-            </div>
-            <div class='h-[45px] w-[50%]  flex flex-col items-start ' >
-                <p class='text-[#303030] font-bold' >Quiz 02</p>
-                <p class='text-[#BDBDBD] text-[15px]' >8:00 AM - 10:00 AM</p>
-            </div>
-            <div class='h-[45px] w-[25%]  flex items-center justify-center' >
-                <button class='h-[31px] w-[90%] rounded-lg bg-[#1476B7] text-[#fff] text-[11px] ' >Take Test</button>
+            <div class='h-[45px] w-[25%]  flex items-center justify-center sm:h-[30px] sm:w-[28%]' >
+                <button class='h-[31px] w-[90%] sm:h-[25px] sm:w-[98%] rounded-lg bg-[#1476B7] text-[#fff] text-[11px] sm:text-[7px] ' >Take Test</button>
             </div>
         </div>
-        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around ' >
-        <div class='h-[45px] w-[15%] bg-blue-300 rounded-lg  flex items-center justify-center' >
-                <img src={bokimg} class='h-[20px]'/>
+        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg  flex items-center justify-around sm:h-[50px] sm:w-[47%] ' >
+        <div class='h-[45px] w-[15%] sm:h-[30px] sm:w-[18%] bg-blue-300 rounded-lg  flex items-center justify-center' >
+                <img src={bokimg} class='h-[20px] sm:h-[13px]'/>
             </div>
-            <div class='h-[45px] w-[50%]  flex flex-col items-start ' >
-                <p class='text-[#303030] font-bold' >Quiz 03</p>
-                <p class='text-[#BDBDBD] text-[15px]' >8:00 AM - 10:00 AM</p>
+            <div class='h-[45px] w-[50%]  flex flex-col items-start sm:h-[30px] ' >
+                <p class='text-[#303030] sm:text-[13px] font-bold' >Quiz 02</p>
+                <p class='text-[#BDBDBD] text-[15px] sm:text-[8px]' >8:00 AM - 10:00 AM</p>
             </div>
-            <div class='h-[45px] w-[25%]  flex items-center justify-center' >
-                <button class='h-[31px] w-[90%] rounded-lg bg-[#1476B7] text-[#fff] text-[11px] ' >Take Test</button>
-            </div>
-        </div>
-        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around ' >
-        <div class='h-[45px] w-[15%] bg-pink-200 rounded-lg flex items-center justify-center' >
-                <img src={editimg} class='h-[25px]'/>
-            </div>
-            <div class='h-[45px] w-[50%]  flex flex-col items-start ' >
-                <p class='text-[#303030] font-bold' >Quiz 04</p>
-                <p class='text-[#BDBDBD] text-[15px]' >01:00 PM - 02:00 PM</p>
-            </div>
-            <div class='h-[45px] w-[25%]  flex items-center justify-center' >
-                <button class='h-[31px] w-[90%] rounded-lg bg-[#1476B7] text-[#fff] text-[11px] ' >View Result</button>
+            <div class='h-[45px] w-[25%]  flex items-center justify-center sm:h-[30px] sm:w-[28%]' >
+                <button class='h-[31px] w-[90%] sm:h-[25px] sm:w-[98%] rounded-lg bg-[#1476B7] text-[#fff] text-[11px]  sm:text-[7px]  ' >Take Test</button>
             </div>
         </div>
-        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around  ' >
-        <div class='h-[45px] w-[15%] bg-pink-200 rounded-lg  flex items-center justify-center' >
-                <img src={editimg} class='h-[25px]'/>
+        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around sm:h-[50px] sm:w-[47%]' >
+        <div class='h-[45px] w-[15%] sm:h-[30px] sm:w-[18%] bg-blue-300 rounded-lg  flex items-center justify-center' >
+                <img src={bokimg} class='h-[20px] sm:h-[13px]'/>
             </div>
-            <div class='h-[45px] w-[50%]  flex flex-col items-start ' >
-                <p class='text-[#303030] font-bold' >Quiz 05</p>
-                <p class='text-[#BDBDBD] text-[15px]' >01:00 PM - 02:00 PM</p>
+            <div class='h-[45px] w-[50%]  flex flex-col items-start sm:h-[30px]' >
+                <p class='text-[#303030] sm:text-[13px] font-bold' >Quiz 03</p>
+                <p class='text-[#BDBDBD] text-[15px] sm:text-[8px]' >8:00 AM - 10:00 AM</p>
             </div>
-            <div class='h-[45px] w-[25%]  flex items-center justify-center' >
-                <button class='h-[31px] w-[90%] rounded-lg bg-[#1476B7] text-[#fff] text-[11px] ' >View Result</button>
+            <div class='h-[45px] w-[25%]  flex items-center justify-center sm:h-[30px] sm:w-[28%]' >
+                <button class='h-[31px] w-[90%] sm:h-[25px] sm:w-[98%] rounded-lg bg-[#1476B7] text-[#fff] text-[11px]  sm:text-[7px]  ' >Take Test</button>
             </div>
         </div>
-        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around ' >
-        <div class='h-[45px] w-[15%] bg-pink-200 rounded-lg  flex items-center justify-center' >
-                <img src={editimg} class='h-[25px]'/>
+        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around sm:h-[50px] sm:w-[47%]' >
+        <div class='h-[45px] w-[15%] sm:h-[30px] sm:w-[18%] bg-pink-200 rounded-lg flex items-center justify-center' >
+                <img src={editimg} class='h-[25px] sm:h-[16px]'/>
             </div>
-            <div class='h-[45px] w-[50%]  flex flex-col items-start ' >
-                <p class='text-[#303030] font-bold' >Quiz 06</p>
-                <p class='text-[#BDBDBD] text-[15px]' >01:00 PM - 02:00 PM</p>
+            <div class='h-[45px] w-[50%]  flex flex-col items-start sm:h-[30px]' >
+                <p class='text-[#303030] sm:text-[13px] font-bold' >Quiz 04</p>
+                <p class='text-[#BDBDBD] text-[15px] sm:text-[8px]' >01:00 PM - 02:00 PM</p>
             </div>
-            <div class='h-[45px] w-[25%]  flex items-center justify-center' >
-                <button class='h-[31px] w-[90%] rounded-lg bg-[#1476B7] text-[#fff] text-[11px] ' >View Result</button>
+            <div class='h-[45px] w-[25%]  flex items-center justify-center sm:h-[30px] sm:w-[28%]' >
+                <button class='h-[31px] w-[90%] sm:h-[25px] sm:w-[98%] rounded-lg bg-[#1476B7] text-[#fff] text-[11px]  sm:text-[7px]  ' >View Result</button>
+            </div>
+        </div>
+        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around sm:h-[50px] sm:w-[47%] ' >
+        <div class='h-[45px] w-[15%] sm:h-[30px] sm:w-[18%] bg-pink-200 rounded-lg  flex items-center justify-center' >
+                <img src={editimg} class='h-[25px] sm:h-[16px]'/>
+            </div>
+            <div class='h-[45px] w-[50%]  flex flex-col items-start sm:h-[30px] ' >
+                <p class='text-[#303030] sm:text-[13px] font-bold' >Quiz 05</p>
+                <p class='text-[#BDBDBD] text-[15px] sm:text-[8px]' >01:00 PM - 02:00 PM</p>
+            </div>
+            <div class='h-[45px] w-[25%]  flex items-center justify-center sm:h-[30px] sm:w-[28%]' >
+                <button class='h-[31px] w-[90%] sm:h-[25px] sm:w-[98%] rounded-lg bg-[#1476B7] text-[#fff] text-[11px]  sm:text-[7px]  ' >View Result</button>
+            </div>
+        </div>
+        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around sm:h-[50px] sm:w-[47%]' >
+        <div class='h-[45px] w-[15%] sm:h-[30px] sm:w-[18%] bg-pink-200 rounded-lg  flex items-center justify-center' >
+                <img src={editimg} class='h-[25px] sm:h-[16px]'/>
+            </div>
+            <div class='h-[45px] w-[50%]  flex flex-col items-start sm:h-[30px] ' >
+                <p class='text-[#303030] sm:text-[13px] font-bold' >Quiz 06</p>
+                <p class='text-[#BDBDBD] text-[15px] sm:text-[8px]' >01:00 PM - 02:00 PM</p>
+            </div>
+            <div class='h-[45px] w-[25%]  flex items-center justify-center sm:h-[30px] sm:w-[28%]' >
+                <button class='h-[31px] w-[90%] sm:h-[25px] sm:w-[98%] rounded-lg bg-[#1476B7] text-[#fff] text-[11px]  sm:text-[7px]  ' >View Result</button>
             </div>
         </div>
     </div>
