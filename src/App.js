@@ -14,6 +14,7 @@ import {
 import CareerDashboard from "./components/Careerdashboard";
 import PublicRoute from "./routes/PublicRouting";
 import "./App.css";
+import Selfassesment from "./components/Selfassesment";
 function App() {
   return (
     <BrowserRouter>
@@ -63,6 +64,14 @@ function App() {
           element={
             <PublicRoute restricted>
               <CareerDashboard/>
+            </PublicRoute>
+          }
+        />
+         <Route
+          path="/self-assesment"
+          element={
+            <PublicRoute restricted>
+              <Selfassesment/>
             </PublicRoute>
           }
         />
