@@ -11,7 +11,7 @@ const Main = () => {
   return (
     <>
     <div class='h-[40px] w-[100%] flex items-center justify-between' >
-        <div class='h-[40px] w-[53%] ml-8  sm:ml-2 md:ml-2 lg:ml-2 sm:flex sm:items-center sm:justify-start md:flex md:items-center md:justify-start md:h-[40px] md:w-[60%] lg:flex lg:items-center lg:justify-start  lg:h-[40px] lg:w-[60%]' >
+        <div class='h-[40px] w-[53%] flex items-center ml-8  sm:ml-2 md:ml-2 lg:ml-2 sm:flex sm:items-center sm:justify-start md:flex md:items-center md:justify-start md:h-[40px] md:w-[60%] lg:flex lg:items-center lg:justify-start  lg:h-[40px] lg:w-[60%]' >
             <h1 class='text-[18px] sm:text-[15px]  text-[#474749] font-bold ml-1' >Career Guidance</h1>
         </div>
         <div class='h-[40px] w-[25%]  mr-2 flex items-center justify-around sm:w-[35%] sm:mr-1 md:mr-1 md:h-[40px] md:w-[30%] lg:h-[40px] lg:w-[35%] ' >

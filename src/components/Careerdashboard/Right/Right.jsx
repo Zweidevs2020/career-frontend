@@ -5,7 +5,7 @@ const Right = () => {
     <>
     <div class='h-[100%] w-[100%] items-center flex flex-col justify-around' >
     <div class='h-[30px] w-[98%]  flex items-center md:h-[40px] md:items-end' >
-        <p class='text-[#474749] sm:text-[15px] text-[18px] ml-2 font-bold' >Self Assessment</p>
+        <p class='text-[#474749] sm:text-[15px] ml-6 text-[18px] font-bold' >Self Assessment</p>
     </div>
     <div class='h-[510px] w-[98%]  flex flex-col flex-wrap items-center justify-evenly' >
        <div class='h-[140px] w-[40%] sm:h-[130px] md:h-[140px] md:w-[35%] lg:w-[40%] lg:h-[130px] sm:w-[40%] bg-blue-200  rounded-xl flex flex-col items-center justify-around'>

@@ -1,0 +1,82 @@
+.logoStyle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 48px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+  }
+  .backgroundColorSidebar {
+    background-color: #F8FAFC !important;
+    min-width: 240px !important;
+  }
+  .sideBarStyle {
+ 
+    font-style: normal;
+    color: #c2ceed;
+    font-size: 16px;
+    border: none;
+    background-color: #F8FAFC ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 240px !important;
+  }
+  .textStyling{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 21px;
+   padding-left: 14px;
+   height: 58px !important;
+
+  }
+
+  .Navbar{
+    background-color:#fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .navtext{
+    width: 48%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content:start;
+  }
+  .nav-text{
+    font-size: 20px;
+  }
+
+  .img{
+    width: 48%;
+    height: 60px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+  }
+  .imgcard{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: blue;
+    border-radius: 8px;
+    margin-right: 10px;
+    width: 60% ;
+    height: 58px;
+  }
+
+  .cardprofile{
+    height: 53px;
+  }
+
+  .cardtext{
+    display: flex;
+    flex-direction: column;
+    width: 68%;
+    height: 80px;
+  }

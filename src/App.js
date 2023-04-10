@@ -14,6 +14,7 @@ import {
 import CareerDashboard from "./components/Careerdashboard";
 import PublicRoute from "./routes/PublicRouting";
 import "./App.css";
+import Sidebar from "./components/commonComponents/Layoutcomponents/Sidebar/Sidebar";
 import Selfassesment from "./components/Selfassesment";
 function App() {
   return (
@@ -60,18 +61,22 @@ function App() {
           }
         />
         <Route
-          path="/dash-board"
+          path="/dashboard"
           element={
             <PublicRoute restricted>
-              <CareerDashboard/>
+              <Sidebar>
+                <CareerDashboard />
+              </Sidebar>
             </PublicRoute>
           }
         />
-         <Route
+        <Route
           path="/self-assesment"
           element={
             <PublicRoute restricted>
-              <Selfassesment/>
+              <Sidebar>
+                <Selfassesment />
+              </Sidebar>
             </PublicRoute>
           }
         />
