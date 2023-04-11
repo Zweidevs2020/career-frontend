@@ -104,8 +104,8 @@ const Sidebar = ({ children, flags }) => {
             <div className="imgcard">
               <img src={pf} className="cardprofile" />
               <div className="cardtext">
-                <p style={{height:20}}>Bruno Fernandes</p>
-                <p style={{height:20}}>Bruno Fernandes</p>
+                <p style={{height:20 , color: "white",}}>Bruno Fernandes</p>
+                <p className="email" >Bruno@gmail.com</p>
 
               </div>
             </div>

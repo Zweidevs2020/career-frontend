@@ -80,3 +80,12 @@
     width: 68%;
     height: 80px;
   }
+  .email{
+    font-weight: lighter;
+    color: #fff;
+  }
+  .name{
+
+    font-weight: bold;
+    color: #fff;
+  }
