@@ -28,8 +28,8 @@ const Sidebar = ({ children, flags }) => {
       navigate("/dashboard");
     } else if (key === "MyGoals") {
       navigate("/mygoals");
-    } else if (key === "Assignments") {
-      navigate("/self-assesment");
+    } else if (key === "CAOCalculator") {
+      navigate("/calculator");
     } else if (key === "LessonPlans") {
       navigate("/self-assesment");
     } else if (key === "Reporting") {

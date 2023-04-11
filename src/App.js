@@ -17,6 +17,7 @@ import "./App.css";
 import Sidebar from "./components/commonComponents/Layoutcomponents/Sidebar/Sidebar";
 import Selfassesment from "./components/Selfassesment";
 import MyGoal from "./components/MyGoal";
+import CaoCalculator from "./components/CaoCalculator";
 function App() {
   return (
     <BrowserRouter>
@@ -88,6 +89,17 @@ function App() {
             <PublicRoute restricted>
               <Sidebar>
                 <MyGoal/>
+              </Sidebar>
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path="/calculator"
+          element={
+            <PublicRoute restricted>
+              <Sidebar>
+                <CaoCalculator/>
               </Sidebar>
             </PublicRoute>
           }

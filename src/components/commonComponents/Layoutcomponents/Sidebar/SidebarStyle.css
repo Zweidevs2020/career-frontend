@@ -50,6 +50,7 @@
   }
   .nav-text{
     font-size: 20px;
+    color: #1476B7;
   }
 
   .img{
@@ -63,7 +64,7 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    background-color: blue;
+    background-color: #1476B7;
     border-radius: 8px;
     margin-right: 10px;
     width: 60% ;
