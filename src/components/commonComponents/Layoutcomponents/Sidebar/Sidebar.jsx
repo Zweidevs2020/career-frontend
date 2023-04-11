@@ -26,8 +26,8 @@ const Sidebar = ({ children, flags }) => {
     setSelectedMenuItem(key);
     if (key === "Overview") {
       navigate("/dashboard");
-    } else if (key === "Students") {
-      navigate("/self-assesment");
+    } else if (key === "MyGoals") {
+      navigate("/mygoals");
     } else if (key === "Assignments") {
       navigate("/self-assesment");
     } else if (key === "LessonPlans") {

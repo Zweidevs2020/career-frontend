@@ -16,6 +16,7 @@ import PublicRoute from "./routes/PublicRouting";
 import "./App.css";
 import Sidebar from "./components/commonComponents/Layoutcomponents/Sidebar/Sidebar";
 import Selfassesment from "./components/Selfassesment";
+import MyGoal from "./components/MyGoal";
 function App() {
   return (
     <BrowserRouter>
@@ -80,6 +81,19 @@ function App() {
             </PublicRoute>
           }
         />
+
+        <Route
+          path="/mygoals"
+          element={
+            <PublicRoute restricted>
+              <Sidebar>
+                <MyGoal/>
+              </Sidebar>
+            </PublicRoute>
+          }
+        />
+
+
       </Routes>
     </BrowserRouter>
   );
