@@ -1,0 +1,71 @@
+.emailVerificationStyleLeft {
+  display: flex;
+  justify-content: center;
+  width: 90%;
+}
+
+.emailVerificationStyleLeftInner {
+  width: 100%;
+}
+
+.boxesPadding {
+  /* margin-left: 10px; */
+}
+
+@media only screen and (min-width: 0px) and (max-width: 650px) {
+  .emailVerificationStyleLeft {
+    display: flex;
+    justify-content: center;
+    width: 90%;
+  }
+
+  .emailVerificationStyleLeftInner {
+    width: 95%;
+  }
+
+  .boxesPadding {
+    padding-right: 5vw;
+  }
+}
+
+@media only screen and (min-width: 651px) and (max-width: 900px) {
+  .emailVerificationStyleLeft {
+    width: 90%;
+  }
+
+  .emailVerificationStyleLeftInner {
+    width: 95%;
+  }
+
+  .boxesPadding {
+    padding-right: 2vw;
+  }
+}
+
+@media only screen and (min-width: 901px) and (max-width: 1400px) {
+  .emailVerificationStyleLeft {
+    width: 100%;
+  }
+
+  .emailVerificationStyleLeftInner {
+    width: 400px;
+  }
+
+  .boxesPadding {
+    padding-right: 30px;
+  }
+}
+
+@media only screen and (min-width: 1401px) {
+  .emailVerificationStyleLeft {
+    width: 100%;
+  }
+
+  .emailVerificationStyleLeftInner {
+    width: 500px;
+  }
+
+  .boxesPadding {
+    padding-right:30px;
+  }
+}

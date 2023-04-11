@@ -79,7 +79,7 @@ export const postApiWithAuth = async (url, body) => {
 export const postApiWithoutAuth = async (url, body) => {
   try {
     const res = await baseInstance.post(url, body);
-    return res.data;
+    return res;
   } catch (err) {
     return err.response;
   }

@@ -32,14 +32,13 @@ const Signup = () => {
     setData({ ...data, [name]: value });
   };
   const handlerSubmit = async () => {
-    console.log("========================== e", fileDate);
     const file = createFormDataObject(data);
     console.log(file);
     for (const key of file.entries()) {
       console.log(key[0], key[1]);
     }
     setLoading(true);
-    const response = await postApiWithoutAuth(API_URL.SIGNIN, {
+    const response = await postApiWithoutAuth(API_URL.SIGNUP, {
       ...data,
       dob: `${dobSave.year}-${dobSave.month}-${dobSave.day}`,
     });
@@ -48,23 +47,20 @@ const Signup = () => {
       setLoading(false);
     } else {
       setLoading(false);
+      alert('error');
     }
   };
 
   const onChangeUpload = (e) => {
-    console.log("========================== e", e.fileList);
     setData({ ...data, profile: e.fileList });
   };
   const handleSelect = (schoolValue) => {
-    console.log("==========================", schoolValue);
-    setData({ ...data, school_name: schoolValue });
+    setData({ ...data, school: schoolValue });
   };
   const handleSelectMonth = (m) => {
-    console.log("==========================", m);
     setDobSave({ ...dobSave, month: m });
   };
   const handleSelectDay = (d) => {
-    console.log("==========================", d);
     setDobSave({ ...dobSave, day: d });
   };
   const onChangeYear = (date) => {
@@ -78,45 +74,27 @@ const Signup = () => {
 
   const getSchools = async () => {
     const response = await getApiWithoutAuth(API_URL.GETUSERSCHOOL);
-    console.log("========================== get school", response);
 
-    if (response.success) {
-      const school = response.data?.map((item) => {
+    if (response.data.success) {
+      const school = response.data.data?.map((item) => {
         return {
-          value: item.id,
-          label: item.school_name,
+          value: item.school,
+          label: item.school,
         };
       });
       setSchools(school);
       setLoading(false);
     } else {
       setLoading(false);
-      setSchools([
-        {
-          value: 1,
-          label: "St. Leo's College",
-        },
-        {
-          value: 2,
-          label: "St Mary's Academy CBS",
-        },
-        {
-          value: 3,
-          label: "Borris Vocational School",
-        },
-      ]);
     }
   };
-  useEffect(() => {
-    console.log("==========================  school", schools);
-  }, [schools]);
   return (
     <div className="mainDiv">
       <div className="leftDiv">
         <Image preview={false} src={myCareerGuidanceIcon} width={207} />
         <Form onFinish={handlerSubmit} className="formStyle">
           <div className="welcomeHaddingText">Hello</div>
-          <div className="textStyle18" style={{ marginBottom: 10 }}>
+          <div className="textStyle18" style={{ marginBottom: 15 }}>
             Signup to Get Started
           </div>
           <Form.Item
@@ -127,7 +105,7 @@ const Signup = () => {
               placeholder="Full Name"
               prefix={nameIcon}
               type="input"
-              name="fullname"
+              name="full_name"
               onChange={onChangeHandle}
               inputValue={data.name}
             />
@@ -171,13 +149,13 @@ const Signup = () => {
             />
           </Form.Item>
           <Form.Item
-            name="school_name"
+            name="school"
             rules={[{ required: true, message: "Please Select School!" }]}
           >
             <Select
               placeholder={"School"}
               options={schools}
-              name="school_name"
+              name="school"
               className="inputSelectFieldStyle"
               onChange={handleSelect}
               bordered={false}

@@ -13,6 +13,7 @@ import {
 } from "./components/authComponents";
 import CareerDashboard from "./components/Careerdashboard";
 import PublicRoute from "./routes/PublicRouting";
+import PrivateRoute from './routes/PrivateRouting'
 import "./App.css";
 function App() {
   return (
@@ -59,9 +60,9 @@ function App() {
           }
         />
         <Route
-          path="/dash-board"
+          path="/dashboard"
           element={
-            <PublicRoute restricted>
+            <PublicRoute >
               <CareerDashboard/>
             </PublicRoute>
           }

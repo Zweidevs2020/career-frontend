@@ -3,7 +3,7 @@
   font-style: normal;
   font-weight: 700;
   font-size: 26px;
-  line-height: 39px;
+  line-height: 30px;
   color: #333333;
 }
 .textStyle18 {
@@ -47,6 +47,7 @@
 }
 
 .signInButton {
+  margin-top: 10px;
   margin-bottom: 10px;
   background: #1476b7;
   border-radius: 15px;
@@ -103,7 +104,7 @@
   align-self: center;
 }
 
-@media only screen and (min-width: 0px) and (max-width: 550px) {
+@media only screen and (min-width: 0px) and (max-width: 650px) {
   .rightImageStyle {
     display: none;
   }
@@ -114,11 +115,8 @@
   .leftDiv {
     width: 100%;
     padding-top: 20px;
-    padding-left: 10px;
+    /* padding-left: 10px; */
     padding-bottom: 20px;
-  }
-  .formStyle{
-    width: 80%;
   }
   .textStyle18{
     font-size: 14px;
@@ -135,7 +133,7 @@
 }
 
 
-@media only screen and (min-width: 551px) and (max-width: 900px) {
+@media only screen and (min-width: 651px) and (max-width: 900px) {
   .rightImageStyle {
     width: 45%;
   }
@@ -145,11 +143,10 @@
   .leftDiv {
     width: 55%;
     padding-top: 20px;
-    padding-left: 10px;
     padding-bottom: 20px;
   }
   .formStyle{
-    width: 90%;
+    width: 80%;
   }
   .textStyle18{
     font-size: 14px;
@@ -180,11 +177,10 @@
   .leftDiv {
     width: 55%;
     padding-top: 20px;
-    padding-left: 20px;
     padding-bottom: 20px;
   }
   .formStyle{
-    width: 80%;
+    width: 70%;
   }
   .textStyle18{
     font-size: 16px;
@@ -214,11 +210,10 @@
   .leftDiv {
     width: 55%;
     padding-top: 20px;
-    padding-left: 5%;
     padding-bottom: 20px;
   }
   .formStyle{
-    width: 70%;
+    width: 60%;
   }
 }
 

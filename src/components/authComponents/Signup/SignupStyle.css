@@ -32,30 +32,30 @@
 }
 
 
-@media only screen and (min-width: 0px) and (max-width: 550px) {
+@media only screen and (min-width: 0px) and (max-width: 650px) {
   .signInButtonStyle {
-    width:79vmin;
+    width:66vmin;
   }
 }
 
 
-@media only screen and (min-width: 551px) and (max-width: 900px) {
+@media only screen and (min-width: 651px) and (max-width: 900px) {
 
   .signInButtonStyle {
-    width:48vw;
+    width:41vw;
   }
 }
 
 
 @media only screen and (min-width: 901px) and (max-width: 1400px) {
   .signInButtonStyle {
-    width:43vw;
+    width:36vw;
   }
 }
 
 
 @media only screen and (min-width: 1401px) {
   .signInButtonStyle {
-    width:37vw;
+    width:32vw;
   }
 }

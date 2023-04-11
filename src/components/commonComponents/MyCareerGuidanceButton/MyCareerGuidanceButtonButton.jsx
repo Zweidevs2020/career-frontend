@@ -4,13 +4,14 @@ const MyCareerGuidanceButton = (props) => {
   return (
     <>
       <Button
-        type={props.props}
+        type={props.type}
         icon={props.icon}
         loading={props.loading}
         onClick={props.onClick}
         disabled={props.disabled}
         className={props.className}
         htmlType={props.htmlType}
+        style={{color:props.color, backgroundColor:props.backgroundColor}}
       >
         {props.label}
       </Button>
