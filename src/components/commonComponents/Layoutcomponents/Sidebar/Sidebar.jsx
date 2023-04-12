@@ -94,7 +94,7 @@ const Sidebar = ({ children, flags }) => {
         </div>
       </Sider>
       <Layout className="site-layout">
-        <Header className="Navbar">
+        <Header style={{padding:0}} className="Navbar">
           <div className="navtext">
             <p className="nav-text">
               Hello <strong> Bruno Fernandes</strong>, welcome back!
@@ -104,7 +104,7 @@ const Sidebar = ({ children, flags }) => {
             <div className="imgcard">
               <img src={pf} className="cardprofile" />
               <div className="cardtext">
-                <p style={{height:20 , color: "white",}}>Bruno Fernandes</p>
+                <p className="name" style={{height:20 , color: "white",}}>Bruno Fernandes</p>
                 <p className="email" >Bruno@gmail.com</p>
 
               </div>
