@@ -8,6 +8,7 @@ import bokimg from '../../../assets/bokimg.svg';
 import editimg from '../../../assets/editimg.svg';
 
 const Main = () => {
+
   return (
     <>
     <div class='h-[40px] w-[100%] flex items-center justify-between' >
@@ -19,101 +20,101 @@ const Main = () => {
             <input type='text' placeholder='Search...' class='w-[75%] sm:w-[70%] border-none outline-none' />
         </div>
     </div>
-    <div class='h-[250px] w-[100%]  flex flex-wrap items-center justify-around  sm:h-[160px] md:h-[250px] lg:h-[250px] ' >
-        <div class='h-[111px] w-[45%]  rounded-xl relative  sm:h-[57px] md:h-[80px] lg:h-[68px]' >
+    <div class='h-[250px] w-[100%]  flex flex-wrap items-center justify-around  sm:h-[160px] md:h-[250px] lg:h-[220px] ' >
+        <div class='h-[111px] w-[45%]  rounded-xl relative  sm:h-[57px] md:h-[80px] lg:h-[58px]' >
             <img src={imgcard} class=' bg-cover' />
             <p class='absolute top-2  left-6  text-[18px] sm:top-1 sm:left-2 sm:text-[10px] md:top-1 md:left-4 md:text-[14px] lg:top-1 lg:left-4 lg:text-[12px] font-bold text-[#fff] ' >CAO Point Calculator</p>
             <p class='absolute top-8  left-7  text-[12px] sm:top-5 sm:left-2 sm:text-[8px] md:top-7 md:left-4 md:text-[10px] lg:top-5 lg:left-4 lg:text-[9px] font-lighter text-[#fff] ' >Final score is displayed</p>
         </div>
-        <div class='h-[111px] w-[45%]  rounded-xl relative sm:h-[57px] md:h-[80px] lg:h-[68px]' >
+        <div class='h-[111px] w-[45%]  rounded-xl relative sm:h-[57px] md:h-[80px] lg:h-[58px]' >
         <img src={imgcard5} class=' bg-cover' />
         <p class='absolute top-2 left-6 text-[18px]  sm:top-1 sm:left-2 sm:text-[10px]  md:top-1 md:left-4 md:text-[14px] lg:top-1 lg:left-4 lg:text-[12px] font-bold text-[#fff] ' >My Goals</p>
             <p class='absolute top-8 left-7 text-[12px]  sm:top-5 sm:left-2 sm:text-[8px] md:top-7 md:left-4 md:text-[10px] lg:top-5 lg:left-4 lg:text-[9px]   font-lighter text-[#fff] ' >Number of preset questions</p>
         </div>
-        <div class='h-[111px] w-[45%]  rounded-xl relative sm:h-[57px] md:h-[80px] lg:h-[68px]' >
+        <div class='h-[111px] w-[45%]  rounded-xl relative sm:h-[57px] md:h-[80px] lg:h-[58px]' >
         <img src={imgcard2} class=' bg-cover' />
         <p class='absolute top-2 left-6 text-[18px]  sm:top-1 sm:left-2 sm:text-[10px] md:top-1 md:left-4 md:text-[14px] lg:top-1 lg:left-4 lg:text-[12px] font-bold text-[#fff] ' >My Study</p>
             <p class='absolute top-8 left-7 text-[12px]  sm:top-5 sm:left-2 sm:text-[7px] md:top-7 md:left-4 md:text-[10px] lg:top-5 lg:left-4 lg:text-[9px]  font-lighter text-[#fff] ' >Number of preset questions</p>
         </div>
-        <div class='h-[111px] w-[45%]  rounded-xl relative sm:h-[57px] md:h-[80px] lg:h-[68px]' >
+        <div class='h-[111px] w-[45%]  rounded-xl relative sm:h-[57px] md:h-[80px] lg:h-[58px]' >
         <img src={imgcard3} class=' bg-cover' />
         <p class='absolute top-2 left-6 text-[18px]  sm:top-1 sm:left-2 sm:text-[10px] md:top-1 md:left-4 md:text-[14px] lg:top-1 lg:left-4 lg:text-[12px] font-bold text-[#fff] ' >CV/Cover Letter</p>
             <p class='absolute top-8 left-7 text-[12px]  sm:top-5 sm:left-2 sm:text-[8px] md:top-7 md:left-4 md:text-[10px] lg:top-5 lg:left-4 lg:text-[9px]   font-lighter text-[#fff] ' >Different text formatting</p>
         </div>
     </div>
-    <div class='h-[30px] w-[100%]  flex items-center justify-start ' >
+    <div class='h-[30px] w-[100%] flex items-center justify-start ' >
     <div class='h-[40px] w-[53%] ml-8 sm:ml-2 md:ml-2 lg:ml-2 flex items-center sm:h-[30px] sm:w-[90%] md:w-[90%] lg:w-[90%] ' >
             <h1 class='text-[18px] sm:text-[15px] text-[#474749]  font-bold ml-1' >My Educational Guidance</h1>
         </div>
     </div>
-    <div class='h-[237px] w-[100%] flex flex-col flex-wrap items-center justify-around gap-2  sm:h-[220px] ' >
-        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around sm:h-[50px] sm:w-[47%] lg:w-[48%]  ' >
-            <div class='h-[45px] w-[15%] sm:h-[30px] sm:w-[18%] md:h-[35px] md:w-[16%] lg:h-[35px] lg:w-[18%] bg-blue-300 rounded-lg flex items-center justify-center' >
-                <img src={bokimg} class='h-[20px] sm:h-[13px] md:h-[15px] lg:h-[16px]'/>
+    <div class='h-[237px] w-[100%] lg:bg-slate-950 lg:h-[257px] flex flex-col flex-wrap items-center justify-around gap-2  sm:h-[220px] ' >
+        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around sm:h-[50px] sm:w-[47%] lg:w-[48%] lg:h-[60px] ' >
+            <div class='h-[45px] w-[15%] sm:h-[25px] sm:w-[16%] md:h-[35px] md:w-[16%] lg:h-[35px] lg:w-[18%] bg-blue-300 rounded-lg flex items-center justify-center' >
+                <img src={bokimg} class='h-[20px] sm:h-[12px] md:h-[15px] lg:h-[16px]'/>
             </div>
             <div class='h-[45px] w-[50%]  flex flex-col items-start sm:h-[30px]  md:h-[35px] lg:h-[35px]' >
-                <p class='text-[#303030] sm:text-[13px] md:text-[15px]  lg:text-[15px] font-bold' >Quiz 01</p>
-                <p class='text-[#BDBDBD] text-[15px] sm:text-[8px] md:text-[11px] lg:text-[10px]' >8:00 AM - 10:00 AM</p>
+                <p class='text-[#303030] sm:text-[12px] md:text-[15px]  lg:text-[13px] font-bold' >Quiz 01</p>
+                <p class='text-[#BDBDBD] text-[15px] sm:text-[7px] md:text-[11px] lg:text-[8px]' >8:00 AM - 10:00 AM</p>
             </div>
             <div class='h-[45px] w-[25%]  flex items-center justify-center sm:h-[30px] sm:w-[28%] lg:h-[35px] lg:w-[28%]' >
                 <button class='h-[31px] w-[90%] sm:h-[25px] sm:w-[98%] lg:h-[28px] lg:w-[98%] rounded-lg bg-[#1476B7] text-[#fff] text-[11px] sm:text-[7px] md:text-[8px] lg:text-[8px]' >Take Test</button>
             </div>
         </div>
-        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg  flex items-center justify-around sm:h-[50px] sm:w-[47%] lg:w-[48%] ' >
-        <div class='h-[45px] w-[15%] sm:h-[30px] sm:w-[18%] md:h-[35px] md:w-[16%] lg:h-[35px] lg:w-[18%] bg-blue-300 rounded-lg  flex items-center justify-center' >
-                <img src={bokimg} class='h-[20px] sm:h-[13px] md:h-[15px] lg:h-[16px]'/>
+        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg  flex items-center justify-around sm:h-[50px] sm:w-[47%] lg:w-[48%] lg:h-[60px] ' >
+        <div class='h-[45px] w-[15%] sm:h-[25px] sm:w-[16%] md:h-[35px] md:w-[16%] lg:h-[35px] lg:w-[18%] bg-blue-300 rounded-lg  flex items-center justify-center' >
+                <img src={bokimg} class='h-[20px] sm:h-[12px] md:h-[15px] lg:h-[16px]'/>
             </div>
-            <div class='h-[45px] w-[50%]  flex flex-col items-start sm:h-[30px] md:h-[35px] ' >
-                <p class='text-[#303030] sm:text-[13px]  md:text-[15px] lg:text-[15px] font-bold' >Quiz 02</p>
-                <p class='text-[#BDBDBD] text-[15px] sm:text-[8px] md:text-[11px] lg:text-[10px]' >8:00 AM - 10:00 AM</p>
+            <div class='h-[45px] w-[50%]  flex flex-col items-start sm:h-[30px] md:h-[35px] lg:h-[35px] ' >
+                <p class='text-[#303030] sm:text-[12px]  md:text-[15px] lg:text-[13px] font-bold' >Quiz 02</p>
+                <p class='text-[#BDBDBD] text-[15px] sm:text-[7px] md:text-[11px] lg:text-[8px]' >8:00 AM - 10:00 AM</p>
             </div>
             <div class='h-[45px] w-[25%]  flex items-center justify-center sm:h-[30px] sm:w-[28%] lg:h-[35px] lg:w-[28%]' >
                 <button class='h-[31px] w-[90%] sm:h-[25px] sm:w-[98%] lg:h-[28px] lg:w-[98%] rounded-lg bg-[#1476B7] text-[#fff] text-[11px]  sm:text-[7px] md:text-[8px]  lg:text-[8px]  ' >Take Test</button>
             </div>
         </div>
-        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around sm:h-[50px] sm:w-[47%] lg:w-[48%]' >
-        <div class='h-[45px] w-[15%] sm:h-[30px] sm:w-[18%] md:h-[35px] md:w-[16%] lg:h-[35px] lg:w-[18%] bg-blue-300 rounded-lg  flex items-center justify-center' >
-                <img src={bokimg} class='h-[20px] sm:h-[13px] md:h-[15px] lg:h-[16px]'/>
+        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around sm:h-[50px] sm:w-[47%] lg:w-[48%] lg:h-[60px]' >
+        <div class='h-[45px] w-[15%] sm:h-[25px] sm:w-[16%] md:h-[35px] md:w-[16%] lg:h-[35px] lg:w-[18%] bg-blue-300 rounded-lg  flex items-center justify-center' >
+                <img src={bokimg} class='h-[20px] sm:h-[12px] md:h-[15px] lg:h-[16px]'/>
             </div>
-            <div class='h-[45px] w-[50%]  flex flex-col items-start sm:h-[30px]  md:h-[35px]' >
-                <p class='text-[#303030] sm:text-[13px]  md:text-[15px] lg:text-[15px] font-bold' >Quiz 03</p>
-                <p class='text-[#BDBDBD] text-[15px] sm:text-[8px] md:text-[11px] lg:text-[10px]' >8:00 AM - 10:00 AM</p>
+            <div class='h-[45px] w-[50%]  flex flex-col items-start sm:h-[30px]  md:h-[35px] lg:h-[35px]' >
+                <p class='text-[#303030] sm:text-[12px]  md:text-[15px] lg:text-[13px] font-bold' >Quiz 03</p>
+                <p class='text-[#BDBDBD] text-[15px] sm:text-[7px] md:text-[11px] lg:text-[8px]' >8:00 AM - 10:00 AM</p>
             </div>
             <div class='h-[45px] w-[25%]  flex items-center justify-center sm:h-[30px] sm:w-[28%] lg:h-[35px] lg:w-[28%]' >
                 <button class='h-[31px] w-[90%] sm:h-[25px] sm:w-[98%] lg:h-[28px] lg:w-[98%] rounded-lg bg-[#1476B7] text-[#fff] text-[11px]  sm:text-[7px] md:text-[8px] lg:text-[8px]  ' >Take Test</button>
             </div>
         </div>
-        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around sm:h-[50px] sm:w-[47%] lg:w-[48%]' >
-        <div class='h-[45px] w-[15%] sm:h-[30px] sm:w-[18%] md:h-[35px] md:w-[16%] lg:h-[35px] lg:w-[18%] bg-pink-200 rounded-lg flex items-center justify-center' >
-                <img src={editimg} class='h-[25px] sm:h-[16px] md:h-[17px] lg:h-[17px]'/>
+        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around sm:h-[50px] sm:w-[47%] lg:w-[48%] lg:h-[60px]' >
+        <div class='h-[45px] w-[15%] sm:h-[25px] sm:w-[16%] md:h-[35px] md:w-[16%] lg:h-[35px] lg:w-[18%] bg-pink-200 rounded-lg flex items-center justify-center' >
+                <img src={editimg} class='h-[25px] sm:h-[14px] md:h-[17px] lg:h-[17px]'/>
             </div>
-            <div class='h-[45px] w-[50%]  flex flex-col items-start sm:h-[30p] md:h-[35px]' >
-                <p class='text-[#303030] sm:text-[13px]  md:text-[15px] lg:text-[15px] font-bold' >Quiz 04</p>
-                <p class='text-[#BDBDBD] text-[15px] sm:text-[8px] md:text-[11px] lg:text-[10px]' >01:00 PM - 02:00 PM</p>
+            <div class='h-[45px] w-[50%]  sm:h-[30px]   flex flex-col items-start  md:h-[35px] lg:h-[35px] ' >
+                <p class='text-[#303030] sm:text-[12px]  md:text-[15px] lg:text-[13px] font-bold' >Quiz 04</p>
+                <p class='text-[#BDBDBD] text-[15px] sm:text-[7px] md:text-[11px] lg:text-[8px]' >01:00 PM - 02:00 PM</p>
             </div>
             <div class='h-[45px] w-[25%]  flex items-center justify-center sm:h-[30px] sm:w-[28%] lg:h-[35px] lg:w-[28%]' >
                 <button class='h-[31px] w-[90%] sm:h-[25px] sm:w-[98%] lg:h-[28px] lg:w-[98%] rounded-lg bg-[#1476B7] text-[#fff] text-[11px]  sm:text-[7px] md:text-[8px] lg:text-[8px]    ' >View Result</button>
             </div>
         </div>
-        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around sm:h-[50px] sm:w-[47%] lg:w-[48%] ' >
-        <div class='h-[45px] w-[15%] sm:h-[30px] sm:w-[18%] md:h-[35px] md:w-[16%] lg:h-[35px] lg:w-[18%] bg-pink-200 rounded-lg  flex items-center justify-center' >
-                <img src={editimg} class='h-[25px] sm:h-[16px] md:h-[17px] lg:h-[17px]'/>
+        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around sm:h-[50px] sm:w-[47%] lg:w-[48%] lg:h-[60px] ' >
+        <div class='h-[45px] w-[15%] sm:h-[25px] sm:w-[16%] md:h-[35px] md:w-[16%] lg:h-[35px] lg:w-[18%] bg-pink-200 rounded-lg  flex items-center justify-center' >
+                <img src={editimg} class='h-[25px] sm:h-[14px] md:h-[17px] lg:h-[17px]'/>
             </div>
-            <div class='h-[45px] w-[50%]  flex flex-col items-start sm:h-[30px]  md:h-[35px] ' >
-                <p class='text-[#303030] sm:text-[13px]  md:text-[15px] lg:text-[15px] font-bold' >Quiz 05</p>
-                <p class='text-[#BDBDBD] text-[15px] sm:text-[8px] md:text-[11px] lg:text-[10px]' >01:00 PM - 02:00 PM</p>
+            <div class='h-[45px] w-[50%]  flex flex-col items-start sm:h-[30px]  md:h-[35px] lg:h-[35px] ' >
+                <p class='text-[#303030] sm:text-[12px]  md:text-[15px] lg:text-[13px] font-bold' >Quiz 05</p>
+                <p class='text-[#BDBDBD] text-[15px] sm:text-[7px] md:text-[11px] lg:text-[8px]' >01:00 PM - 02:00 PM</p>
             </div>
             <div class='h-[45px] w-[25%]  flex items-center justify-center sm:h-[30px] sm:w-[28%] lg:h-[35px] lg:w-[28%]' >
                 <button class='h-[31px] w-[90%] sm:h-[25px] sm:w-[98%] lg:h-[28px] lg:w-[98%] rounded-lg bg-[#1476B7] text-[#fff] text-[11px]  sm:text-[7px] md:text-[8px] lg:text-[8px]   ' >View Result</button>
             </div>
         </div>
-        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around sm:h-[50px] sm:w-[47%] lg:w-[48%]' >
-        <div class='h-[45px] w-[15%] sm:h-[30px] sm:w-[18%] md:h-[35px] md:w-[16%] lg:h-[35px] lg:w-[18%] bg-pink-200 rounded-lg  flex items-center justify-center' >
-                <img src={editimg} class='h-[25px] sm:h-[16px] md:h-[17px] lg:h-[17px]'/>
+        <div class='h-[60px] w-[45%] bg-[#F7F7F7] rounded-lg flex items-center justify-around sm:h-[50px] sm:w-[47%] lg:w-[48%] lg:h-[60px]' >
+        <div class='h-[45px] w-[15%] sm:h-[25px] sm:w-[16%] md:h-[35px] md:w-[16%] lg:h-[35px] lg:w-[18%] bg-pink-200 rounded-lg  flex items-center justify-center' >
+                <img src={editimg} class='h-[25px] sm:h-[14px] md:h-[17px] lg:h-[17px]'/>
             </div>
-            <div class='h-[45px] w-[50%]  flex flex-col items-start sm:h-[30px]  md:h-[35px] ' >
-                <p class='text-[#303030] sm:text-[13px]  md:text-[15px] lg:text-[15px] font-bold' >Quiz 06</p>
-                <p class='text-[#BDBDBD] text-[15px] sm:text-[8px] md:text-[11px] lg:text-[10px]' >01:00 PM - 02:00 PM</p>
+            <div class='h-[45px] w-[50%]  flex flex-col items-start sm:h-[30px]   md:h-[35px] lg:h-[35px]  ' >
+                <p class='text-[#303030] sm:text-[12px]  md:text-[15px] lg:text-[13px] font-bold' >Quiz 06</p>
+                <p class='text-[#BDBDBD] text-[15px] sm:text-[7px] md:text-[11px] lg:text-[8px]' >01:00 PM - 02:00 PM</p>
             </div>
             <div class='h-[45px] w-[25%]  flex items-center justify-center sm:h-[30px] sm:w-[28%] lg:h-[35px] lg:w-[28%]' >
                 <button class='h-[31px] w-[90%] sm:h-[25px] sm:w-[98%] lg:h-[28px] lg:w-[98%] rounded-lg bg-[#1476B7] text-[#fff] text-[11px]  sm:text-[7px]  md:text-[8px] lg:text-[8px]  ' >View Result</button>

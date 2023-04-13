@@ -14,6 +14,7 @@ module.exports = {
 
         'xl': {'min':'1025px','max':'1200px'},
         // => @media (min-width: 1280px) { ... }
+        'xxl': {'min':'1200px','max':'1500px'},
       },
       backgroundSize: {
         'auto': 'auto',
