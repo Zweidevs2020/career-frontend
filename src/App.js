@@ -13,6 +13,7 @@ import {
 } from "./components/authComponents";
 import CareerDashboard from "./components/Careerdashboard";
 import PublicRoute from "./routes/PublicRouting";
+import PrivateRoute from "./routes/PrivateRouting";
 import "./App.css";
 import Sidebar from "./components/commonComponents/Layoutcomponents/Sidebar/Sidebar";
 import Selfassesment from "./components/Selfassesment";
@@ -65,11 +66,11 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <PublicRoute restricted>
+            < PrivateRoute>
               <Sidebar>
                 <CareerDashboard />
               </Sidebar>
-            </PublicRoute>
+            </PrivateRoute>
           }
         />
         <Route

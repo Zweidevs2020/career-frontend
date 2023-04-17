@@ -11,11 +11,15 @@ import {
   MyCareerGuidanceInputField,
   MyCareerGuidanceButton,
 } from "../../commonComponents";
+import { setToken } from "../../../utils/LocalStorage";
 import "./LoginStyle.css";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
+
+  const navigate = useNavigate();
 
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
@@ -25,10 +29,12 @@ const Login = () => {
   const handlerSubmit = async () => {
     setLoading(true);
     const response = await postApiWithoutAuth(API_URL.SIGNIN, data);
-    console.log("=============================", response, data);
+    
 
     if (response.success) {
       setLoading(false);
+      setToken(response.access)
+      navigate('/dashboard');
     } else {
       setLoading(false);
     }
@@ -36,7 +42,7 @@ const Login = () => {
 
   const onCheckHandle = (e) => {
     const { name, checked } = e;
-    console.log("==========================", name, checked);
+    
   };
 
   return (
