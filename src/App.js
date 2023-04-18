@@ -13,8 +13,12 @@ import {
 } from "./components/authComponents";
 import CareerDashboard from "./components/Careerdashboard";
 import PublicRoute from "./routes/PublicRouting";
-import PrivateRoute from './routes/PrivateRouting'
+import PrivateRoute from "./routes/PrivateRouting";
 import "./App.css";
+import Sidebar from "./components/commonComponents/Layoutcomponents/Sidebar/Sidebar";
+import Selfassesment from "./components/Selfassesment";
+import MyGoal from "./components/MyGoal";
+import CaoCalculator from "./components/CaoCalculator";
 function App() {
   return (
     <BrowserRouter>
@@ -62,11 +66,47 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <PublicRoute >
-              <CareerDashboard/>
+            < PrivateRoute>
+              <Sidebar>
+                <CareerDashboard />
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/self-assesment"
+          element={
+            <PublicRoute restricted>
+              <Sidebar>
+                <Selfassesment />
+              </Sidebar>
             </PublicRoute>
           }
         />
+
+        <Route
+          path="/mygoals"
+          element={
+            <PublicRoute restricted>
+              <Sidebar>
+                <MyGoal/>
+              </Sidebar>
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path="/calculator"
+          element={
+            <PublicRoute restricted>
+              <Sidebar>
+                <CaoCalculator/>
+              </Sidebar>
+            </PublicRoute>
+          }
+        />
+
+
       </Routes>
     </BrowserRouter>
   );

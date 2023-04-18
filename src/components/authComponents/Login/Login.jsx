@@ -13,7 +13,6 @@ import {
   MyCareerGuidanceButton,
 } from "../../commonComponents";
 import { useNavigate } from "react-router-dom";
-
 import "./LoginStyle.css";
 
 const Login = () => {
@@ -21,7 +20,6 @@ const Login = () => {
 
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
-
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });

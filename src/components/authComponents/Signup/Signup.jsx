@@ -19,40 +19,36 @@ import {
   dayArray,
   monthArray,
   createFormDataObject,
+  convertBase64,
 } from "../../../utils/helper";
+import { useNavigate } from "react-router-dom";
+
 const Signup = () => {
-  const { Option } = Select;
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
   const [schools, setSchools] = useState([]);
-  const [fileDate, setFileDate] = useState([]);
   const [dobSave, setDobSave] = useState({});
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
-  const handlerSubmit = async () => {
-    const file = createFormDataObject(data);
-    console.log(file);
-    for (const key of file.entries()) {
-      console.log(key[0], key[1]);
-    }
-    setLoading(true);
-    const response = await postApiWithoutAuth(API_URL.SIGNUP, {
+  const handlerSaveSubmit = async () => {
+    const response = await postApiWithoutAuth(API_URL.SINGUPUSER, {
       ...data,
       dob: `${dobSave.year}-${dobSave.month}-${dobSave.day}`,
     });
-    console.log("=============================", response, data);
+
     if (response.success) {
-      setLoading(false);
+      navigate("/");
     } else {
       setLoading(false);
-      alert('error');
     }
   };
 
-  const onChangeUpload = (e) => {
-    setData({ ...data, profile: e.fileList });
+  const onChangeUpload = async (e) => {
+    const base64 = await convertBase64(e.file);
+    setData({ ...data, profile_image: base64 });
   };
   const handleSelect = (schoolValue) => {
     setData({ ...data, school: schoolValue });
@@ -78,7 +74,7 @@ const Signup = () => {
     if (response.data.success) {
       const school = response.data.data?.map((item) => {
         return {
-          value: item.school,
+          value: item.pk,
           label: item.school,
         };
       });
@@ -92,13 +88,13 @@ const Signup = () => {
     <div className="mainDiv">
       <div className="leftDiv">
         <Image preview={false} src={myCareerGuidanceIcon} width={207} />
-        <Form onFinish={handlerSubmit} className="formStyle">
+        <Form onFinish={handlerSaveSubmit} className="formStyle">
           <div className="welcomeHaddingText">Hello</div>
           <div className="textStyle18" style={{ marginBottom: 15 }}>
             Signup to Get Started
           </div>
           <Form.Item
-            name="fullname"
+            name="full_name"
             rules={[{ required: true, message: "Please input your Name!" }]}
           >
             <MyCareerGuidanceInputField
@@ -247,13 +243,13 @@ const Signup = () => {
             </div>
           </div>
           <Form.Item
-            name="picture"
+            name="profile_image"
             rules={[{ required: true, message: "Please Add Picture!" }]}
           >
             <Upload
               beforeUpload={() => false}
               listType="picture"
-              name={"ali"}
+              name={"profile_image"}
               maxCount={1}
               onChange={onChangeUpload}
               showUploadList={true}
