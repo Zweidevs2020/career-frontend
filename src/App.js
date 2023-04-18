@@ -11,8 +11,14 @@ import {
   ForgetPassword,
   NewPasword,
 } from "./components/authComponents";
+import CareerDashboard from "./components/Careerdashboard";
 import PublicRoute from "./routes/PublicRouting";
+import PrivateRoute from "./routes/PrivateRouting";
 import "./App.css";
+import Sidebar from "./components/commonComponents/Layoutcomponents/Sidebar/Sidebar";
+import Selfassesment from "./components/Selfassesment";
+import MyGoal from "./components/MyGoal";
+import CaoCalculator from "./components/CaoCalculator";
 function App() {
   return (
     <BrowserRouter>
@@ -57,6 +63,50 @@ function App() {
             </PublicRoute>
           }
         />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Sidebar>
+                <CareerDashboard />
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/self-assesment"
+          element={
+            <PrivateRoute >
+              <Sidebar>
+                <Selfassesment />
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/my-goals"
+          element={
+            <PrivateRoute >
+              <Sidebar>
+                <MyGoal/>
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/cao-calculator"
+          element={
+            <PrivateRoute >
+              <Sidebar>
+                <CaoCalculator/>
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+
+
       </Routes>
     </BrowserRouter>
   );

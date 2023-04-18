@@ -6,17 +6,20 @@ import lockIcon from "../../../assets/lockIcon.svg";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../../utils/constants";
 import { postApiWithoutAuth } from "../../../utils/api";
+import { setToken } from "../../../utils/LocalStorage";
 import { Checkbox, Form, Image } from "antd";
 import {
   MyCareerGuidanceInputField,
   MyCareerGuidanceButton,
 } from "../../commonComponents";
+import { useNavigate } from "react-router-dom";
 import "./LoginStyle.css";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
-
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
@@ -25,18 +28,19 @@ const Login = () => {
   const handlerSubmit = async () => {
     setLoading(true);
     const response = await postApiWithoutAuth(API_URL.SIGNIN, data);
-    console.log("=============================", response, data);
 
-    if (response.success) {
+    if (response.status === 200) {
       setLoading(false);
+      setToken(response.data.access);
+      navigate("/dashboard");
     } else {
       setLoading(false);
+      alert(response.data.detail);
     }
   };
 
   const onCheckHandle = (e) => {
     const { name, checked } = e;
-    console.log("==========================", name, checked);
   };
 
   return (
@@ -87,7 +91,11 @@ const Login = () => {
             />
           </Form.Item>
           <span
-            style={{ display: "flex", justifyContent: "space-between",marginBottom:10 }}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: 10,
+            }}
             className="textStyle14"
           >
             <Checkbox
@@ -98,7 +106,9 @@ const Login = () => {
             >
               Remember me
             </Checkbox>
-            <span>Forgot Password?</span>
+            <Link to="/forget-password" className="textStyle14">
+              Forgot Password?
+            </Link>
           </span>
           <MyCareerGuidanceButton
             label="Sign In"

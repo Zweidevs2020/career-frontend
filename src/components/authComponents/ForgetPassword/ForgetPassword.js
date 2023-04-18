@@ -1,39 +1,85 @@
-// import { EmailIcon } from './Icon'
-import mycareer from '../../../assets/mycareer.png';
-import image from '../../../assets/image.png';
-import emailIcon from '../../../assets/emailIcon.svg';
+import React, { useState } from "react";
+import sideAuthImage from "../../../assets/sideAuthImage.png";
+import myCareerGuidanceIcon from "../../../assets/myCareerGuidanceIcon.png";
+import usernameIcon from "../../../assets/usernameIcon.svg";
+import { API_URL } from "../../../utils/constants";
+import { postApiWithoutAuth } from "../../../utils/api";
+import { Form, Image } from "antd";
+import {
+  MyCareerGuidanceInputField,
+  MyCareerGuidanceButton,
+} from "../../commonComponents";
+import { useNavigate } from "react-router-dom";
 
-function ForgetPassword () {
-    function handleClick (){
-       alert('you clicked me')
+const ForgetPassword = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState({});
+
+  const onChangeHandle = (e) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+
+  const handlerSubmit = async () => {
+    setLoading(true);
+    const response = await postApiWithoutAuth(API_URL.FORGETPASSWORD, data);
+    if (response.status === 200) {
+      setLoading(false);
+      navigate("/email-verification", { state: { data } });
+    } else {
+      alert(response.data[0]);
+      setLoading(false);
     }
-    return (
-      <div className='container' class='h-[600px] w-[90%] flex items-center justify-center' >
-        <div className='leftside' class='h-[560px] w-[45%]  flex flex-col  items-center justify-around' >
-            <div className='mycareer' class='h-[100px] w-[90%] flex items-center justify-start' >
-                <img src={mycareer} class='h-auto w-[150px]' />
-            </div>
-            <div className='forget' class='h-[250px] w-[90%] flex flex-col items-center justify-around' >
-              <h2 class='font-bold text-2xl' >Forget your Password?</h2>
-              <p class='text-[#737373] mb-4 ' >Enter the email associated with your <br/>
-                account and we'll send an email with <br/>
-                instructions to reset your password.</p>
-                <div className='input' class=' h-[40px] w-[250px] flex items-center justify-center rounded-md border-solid border-2 border-gray-400' >
-                <img src={emailIcon} class='h-[18px]'/>
-                <input type='text' name='text' placeholder='Email Address' class='h-[30px] w-[220px] '  />
-                </div>
-                <button onClick={handleClick} class='h-[40px] w-[250px] bg-[#0575E6] text-white rounded-md ' >Send Request</button>
-            </div>
-            <div class='h-[120px] w-[90%]  flex items-end' >
-                    <p class='text-[#8A8A8A]' >© 2023 My Career Guidance. All Rights Reserved</p>
-                </div>
-        </div>
-        <div className='rightside' class=' bg-cover    rounded-md' >
-         <img src={image} class='h-[560px] w-[100%]' />
-        </div>
-        
-      </div>
-    )
-  }
+  };
 
-export default ForgetPassword
+  return (
+    <div className="mainDiv">
+      <div className="leftDiv">
+        <Image preview={false} src={myCareerGuidanceIcon} width={207} />
+        <Form onFinish={handlerSubmit} className="formStyle">
+          <div className="welcomeHaddingText">Forget your Password?</div>
+          <div className="textStyle18" style={{ marginBottom: 10 }}>
+            Enter the email associated with your account and we’ll send an email
+            with instructions to reset your password.
+          </div>
+          <Form.Item
+            name="email"
+            rules={[
+              { required: true, message: "Please input your Email Address!" },
+            ]}
+          >
+            <MyCareerGuidanceInputField
+              placeholder="Email Address"
+              prefix={usernameIcon}
+              type="input"
+              name="email"
+              onChange={onChangeHandle}
+              inputValue={data.email}
+            />
+          </Form.Item>
+          <MyCareerGuidanceButton
+            label="Send request"
+            className="signInButton"
+            type="primary"
+            htmlType="submit"
+            loading={loading}
+            backgroundColor="#0575E6"
+          />
+        </Form>
+        <span className="allRights">
+          © 2023 My Career Guidance. All Rights Reserved
+        </span>
+      </div>
+      <div className="rightImageStyle">
+        <Image
+          preview={false}
+          src={sideAuthImage}
+          width={"100%"}
+          height="100%"
+        />
+      </div>
+    </div>
+  );
+};
+export default ForgetPassword;

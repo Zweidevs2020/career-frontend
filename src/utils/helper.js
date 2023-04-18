@@ -178,7 +178,6 @@ export const dayArray = [
 
 
 export const createFormDataObject = (formInputData) => {
-  console.log(formInputData)
   const formData = new FormData();
   Object.entries(formInputData).map(([key, value]) => {
     if (typeof value == "object") {
@@ -198,4 +197,18 @@ export const createFormDataObject = (formInputData) => {
     }
   });
   return formData;
+};
+
+
+ export const convertBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
 };
