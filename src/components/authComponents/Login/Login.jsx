@@ -28,13 +28,14 @@ const Login = () => {
   const handlerSubmit = async () => {
     setLoading(true);
     const response = await postApiWithoutAuth(API_URL.SIGNIN, data);
+
     if (response.status === 200) {
       setLoading(false);
       setToken(response.data.access);
       navigate("/dashboard");
     } else {
       setLoading(false);
-      alert('error');
+      alert(response.data.detail);
     }
   };
 

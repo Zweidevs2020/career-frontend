@@ -66,7 +66,7 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            < PrivateRoute>
+            <PrivateRoute>
               <Sidebar>
                 <CareerDashboard />
               </Sidebar>
@@ -76,33 +76,33 @@ function App() {
         <Route
           path="/self-assesment"
           element={
-            <PublicRoute restricted>
+            <PrivateRoute >
               <Sidebar>
                 <Selfassesment />
               </Sidebar>
-            </PublicRoute>
+            </PrivateRoute>
           }
         />
 
         <Route
-          path="/mygoals"
+          path="/my-goals"
           element={
-            <PublicRoute restricted>
+            <PrivateRoute >
               <Sidebar>
                 <MyGoal/>
               </Sidebar>
-            </PublicRoute>
+            </PrivateRoute>
           }
         />
 
         <Route
-          path="/calculator"
+          path="/cao-calculator"
           element={
-            <PublicRoute restricted>
+            <PrivateRoute >
               <Sidebar>
                 <CaoCalculator/>
               </Sidebar>
-            </PublicRoute>
+            </PrivateRoute>
           }
         />
 

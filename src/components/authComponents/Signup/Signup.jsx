@@ -38,11 +38,12 @@ const Signup = () => {
       ...data,
       dob: `${dobSave.year}-${dobSave.month}-${dobSave.day}`,
     });
-
-    if (response.success) {
+    if (response.status === 200) {
       navigate("/");
     } else {
       setLoading(false);
+      alert(response.data.message);
+
     }
   };
 
@@ -60,7 +61,6 @@ const Signup = () => {
     setDobSave({ ...dobSave, day: d });
   };
   const onChangeYear = (date) => {
-    console.log(date?.$y);
     setDobSave({ ...dobSave, year: date?.$y });
   };
 

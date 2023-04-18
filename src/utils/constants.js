@@ -2,6 +2,7 @@ export const API_URL = {
   SIGNIN: 'auth/jwt/create/',
   GETUSERSCHOOL:'user/schools',
   SINGUPUSER:'user/signup/',
-  FORGETPASSWORD:'/auth/users/reset_password/',
-  EMAILVERIFICATION:'/auth/users/reset_password/'
+  FORGETPASSWORD:'user/forget-password/otp',
+  OTPCONFIRM:'user/otp/confirm',
+  NEWPASSWORD:'user/reset-password'
 };

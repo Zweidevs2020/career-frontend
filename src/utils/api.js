@@ -40,6 +40,16 @@ export const patchApiWithAuth = async (url, body) => {
     return err.response;
   }
 };
+export const patchApiWithOutAuth = async (url, body) => {
+  try {
+    const res = await baseInstance.patch(url, body);
+    return {
+      data: res.data,
+    };
+  } catch (err) {
+    return err.response;
+  }
+};
 
 export const putApiWithAuth = async (url, body) => {
   await setApiHeader();

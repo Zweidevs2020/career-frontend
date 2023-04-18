@@ -178,7 +178,6 @@ export const dayArray = [
 
 
 export const createFormDataObject = (formInputData) => {
-  console.log(formInputData)
   const formData = new FormData();
   Object.entries(formInputData).map(([key, value]) => {
     if (typeof value == "object") {

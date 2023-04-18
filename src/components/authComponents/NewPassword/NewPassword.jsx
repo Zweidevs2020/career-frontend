@@ -1,64 +1,135 @@
+import React, { useState } from "react";
+import sideAuthImage from "../../../assets/sideAuthImage.png";
+import myCareerGuidanceIcon from "../../../assets/myCareerGuidanceIcon.png";
+import usernameIcon from "../../../assets/usernameIcon.svg";
+import lockIcon from "../../../assets/lockIcon.svg";
+import { Link } from "react-router-dom";
+import { API_URL } from "../../../utils/constants";
+import { patchApiWithOutAuth } from "../../../utils/api";
+import { setToken } from "../../../utils/LocalStorage";
+import { Checkbox, Form, Image } from "antd";
+import {
+  MyCareerGuidanceInputField,
+  MyCareerGuidanceButton,
+} from "../../commonComponents";
+import { useNavigate, useLocation } from "react-router-dom";
 
-import mycareer from '../../../assets/mycareer.png';
-import image from '../../../assets/image.png';
-import eyeball from '../../../assets/eyeball.svg'
-import { useState } from 'react';
 const NewPasword = () => {
-    const [text , setNewText] = useState("")
-    const [confirm , setNewConfirm] = useState("")
-    const [state,setstate] = useState(false)
-    function updatePassword(){
-        setNewText("");
-        setNewConfirm("")
-    }   
-    const toggleBtn =()=>{
-          setstate(prevState => !prevState)
+  const navigate = useNavigate();
+  const location = useLocation();
+  const email = location.state || {};
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState({});
+  const onChangeHandle = (e) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+
+  const handlerSubmit = async () => {
+    setLoading(true);
+    const response = await patchApiWithOutAuth(API_URL.NEWPASSWORD, {
+      ...data,
+      email: email.data.email,
+    });
+
+    if (response.data.success) {
+      setLoading(false);
+      navigate("/");
+    } else {
+      setLoading(false);
+      alert(response.data.message[0]);
     }
+  };
+
+  const onCheckHandle = (e) => {
+    const { name, checked } = e;
+  };
+
   return (
-    <div className='Email' class='h-[630px] w-[90%] flex items-center justify-center sm:w-[100%] sm:h-[560px] md:w-[100%] md:h-[560px] lg:w-[100%] lg:h-[560px] xl:w-[100%] xl:h-[560px]' >
-    <div className='left' class='h-[560px] w-[45%] flex flex-col  items-center justify-around sm:w-[100%] md:w-[100%] lg:w-[65%] ' >
-    <div className='mycareer' class='h-[100px] w-[90%] flex items-center justify-start  sm:w-[100%]' >
-        <img src={mycareer} class='h-auto w-[150px] sm:ml-2' />
+    <div className="mainDiv">
+      <div className="leftDiv">
+        <Image preview={false} src={myCareerGuidanceIcon} width={207} />
+        <Form onFinish={handlerSubmit} className="formStyle">
+          <div className="welcomeHaddingText">Create New password</div>
+          <div className="textStyle18" style={{ marginBottom: 10 }}>
+            Your new password must be different from previous used password.
+          </div>
+          <Form.Item
+            name="password"
+            rules={[
+              { required: true, message: "Please input your Password!" },
+              {
+                required: true,
+                pattern: new RegExp(
+                  /^(?=.*\d)(?=.*?[@$!%*#?&^_.,-])(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+                ),
+                message:
+                  "Must contain Number , Special Character , upper case letter, lower case letter, min length 8",
+              },
+            ]}
+          >
+            <MyCareerGuidanceInputField
+              type="password"
+              placeholder="Password"
+              prefix={lockIcon}
+              name="password"
+              passwordValue={data.password}
+              onChange={onChangeHandle}
+            />
+          </Form.Item>
+          <Form.Item
+            name="confirm_password"
+            dependencies={["password"]}
+            rules={[
+              {
+                required: true,
+                message: "Please input confirm password!",
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error(
+                      "The two passwords that you entered do not match!"
+                    )
+                  );
+                },
+              }),
+            ]}
+          >
+            <MyCareerGuidanceInputField
+              type="password"
+              placeholder="Confirm Password"
+              prefix={lockIcon}
+              name="confirm_password"
+              passwordValue={data.confirm_password}
+              dependencies={data.password}
+              onChange={onChangeHandle}
+            />
+          </Form.Item>
+          <MyCareerGuidanceButton
+            label="Update password"
+            className="signInButton"
+            type="primary"
+            htmlType="submit"
+            loading={loading}
+          />
+        </Form>
+        <span className="allRights">
+          © 2023 My Career Guidance. All Rights Reserved
+        </span>
+      </div>
+      <div className="rightImageStyle">
+        <Image
+          preview={false}
+          src={sideAuthImage}
+          width={"100%"}
+          height="100%"
+        />
+      </div>
     </div>
-    <div className='forget' class='h-[389px] w-[90%]  flex flex-col items-center justify-around sm:w-[100%] sm:justify-around' >
-        <div class='h-[90px] w-[85%]  flex flex-col ml-9 sm:ml-0 justify-start gap-1' >
-        <h2 class='font-bold text-2xl sm:text-xl sm:ml-3' >Create New Password</h2>
-      <p class='text-[#737373] mb-4 sm:text-[14px] sm:ml-3' >Your new password must be different  from previous used password.</p>
-        </div>
-        <div class='h-[200px] w-[85%] ml-9 sm:ml-2 flex flex-col justify-around sm:h-[230px]' >
-        <div className='inputpassword' class='h-[72px] w-[100%]  flex items-center justify-around rounded-md border-solid border-2 border-gray-400 sm:h-[62px]' >
-         <div className='inpt-feild' class='h-[60px] w-[80%]' >
-            <label class='h-2 text-md  font-Poppins text-[#9D9C9D]' >Password</label>
-            <input type={state ? "text" : "password"} placeholder=' ***************' value={text}  class='border-none h-[35px] sm:h-[30px] w-[100%] text-[20px] outline-none' onChange={(e)=> setNewText(e.target.value)} />
-         </div>
-         <div className='icon-field' class='h-[60px] w-[10%]  flex items-center justify-center ' >
-            <img src={eyeball}  class='h-[14px] sm:h-[12px]' onClick={toggleBtn} />
-         </div>
-        </div>
-        <p class='text-[#9D9C9D] text-[16px]' >Must be at least 8 characters.</p>
-        <div className='inputconfirm' class='h-[72px] w-[100%] flex items-center justify-around rounded-md border-solid border-2 border-gray-400 sm:h-[62px]' >
-        <div className='inpt-feild' class='h-[60px] w-[80%]' >
-            <label class='h-2 text-md  font-Poppins text-[#9D9C9D]' >Confirm Password</label>
-            <input type={state ? "text" : "password"} placeholder=' **************'value={confirm} class='border-none h-[35px] sm:h-[30px] w-[100%] text-[20px] outline-none' onChange={(e)=>(setNewConfirm(e.target.value))}/>
-         </div>
-         <div className='icon-field' class='h-[60px] w-[10%]  flex items-center justify-center ' >
-            <img src={eyeball} class='h-[14px] sm:h-[12px]' onClick={toggleBtn} />
-         </div>
-        </div>
-        <p class='text-[#9D9C9D] text-[16px]' >Both Password Must Match.</p>
-        </div>
-        <button onClick={updatePassword} class='h-[55px] w-[85%] bg-[#0575E6] text-white rounded-md ml-9 sm:ml-2 sm:h-[52px] ' >Update Password</button>
-    </div>
-    <div class='h-[100px] w-[90%]  flex items-end sm:w-[100%] sm:h-[70px] ' >
-            <p class='text-[#8A8A8A] sm:text-[12px] sm:ml-2 ' >© 2023 My Career Guidance. All Rights Reserved</p>
-        </div>
-
-    </div>
-    <div className='rightside' class=' bg-cover    rounded-md sm:hidden md:hidden' >
- <img src={image} class='h-[560px] w-[100%] lg:w-[100%]' />
-</div>
-</div>
-  )
-}
-
-export default NewPasword
+  );
+};
+export default NewPasword;

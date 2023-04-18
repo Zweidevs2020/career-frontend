@@ -24,9 +24,9 @@ const ForgetPassword = () => {
   const handlerSubmit = async () => {
     setLoading(true);
     const response = await postApiWithoutAuth(API_URL.FORGETPASSWORD, data);
-    if (response.status === 204) {
+    if (response.status === 200) {
       setLoading(false);
-      navigate("/email-verification");
+      navigate("/email-verification", { state: { data } });
     } else {
       alert(response.data[0]);
       setLoading(false);
