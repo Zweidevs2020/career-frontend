@@ -2,10 +2,19 @@
 import mycareer from '../../../assets/mycareer.png';
 import image from '../../../assets/image.png';
 import emailIcon from '../../../assets/emailIcon.svg';
+import { useState } from 'react';
 
 function ForgetPassword () {
+  const [data, setData] = useState({});
+
+  const onChangeHandle = (e) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name] : value });
+  };
+
     function handleClick (){
-       alert('you clicked me')
+       setData("")
+       console.log(data)
     }
     return (
       <div className='container' class='h-[655px] w-[100%]  flex items-center justify-center  sm:w-[100%] sm:h-[560px] md:w-[100%] md:h-[560px] lg:w-[100%] lg:h-[560px] xl:w-[100%] xl:h-[560px] ' >
@@ -20,7 +29,7 @@ function ForgetPassword () {
                 instructions to reset your password.</p>
                 <div className='input' class=' h-[40px] w-[250px] flex items-center justify-around rounded-md border-solid border-2 border-gray-400 ' >
                 <img src={emailIcon} class='h-[16px]'/>
-                <input type='text' name='text' placeholder='Email Address' class='h-[30px] w-[200px] '  />
+                <input type='text' name='email' inputValue={data.email} placeholder='Email Address' class='h-[30px] w-[200px] outline-none ' onChange={onChangeHandle} />
                 </div>
                 <button onClick={handleClick} class='h-[40px] w-[250px] bg-[#0575E6] text-white rounded-md ' >Send Request</button>
             </div>
