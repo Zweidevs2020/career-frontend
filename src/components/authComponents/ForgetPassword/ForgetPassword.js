@@ -4,7 +4,7 @@ import myCareerGuidanceIcon from "../../../assets/myCareerGuidanceIcon.png";
 import usernameIcon from "../../../assets/usernameIcon.svg";
 import { API_URL } from "../../../utils/constants";
 import { postApiWithoutAuth } from "../../../utils/api";
-import { Form, Image } from "antd";
+import { Form, Image, message } from "antd";
 import {
   MyCareerGuidanceInputField,
   MyCareerGuidanceButton,
@@ -26,9 +26,11 @@ const ForgetPassword = () => {
     const response = await postApiWithoutAuth(API_URL.FORGETPASSWORD, data);
     if (response.status === 200) {
       setLoading(false);
+      message.success("Code send Successfully");
+
       navigate("/email-verification", { state: { data } });
     } else {
-      alert(response.data[0]);
+      message.error(response.data[0]);
       setLoading(false);
     }
   };

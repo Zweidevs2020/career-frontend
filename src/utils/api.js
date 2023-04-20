@@ -22,7 +22,7 @@ export const getApiWithAuth = async (url) => {
   try {
     const res = await baseInstance.get(url);
     return {
-      data: res.data,
+      data: res,
     };
   } catch (err) {
     return err.response;

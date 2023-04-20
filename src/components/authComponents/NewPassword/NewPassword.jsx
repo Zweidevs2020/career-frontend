@@ -6,8 +6,7 @@ import lockIcon from "../../../assets/lockIcon.svg";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../../utils/constants";
 import { patchApiWithOutAuth } from "../../../utils/api";
-import { setToken } from "../../../utils/LocalStorage";
-import { Checkbox, Form, Image } from "antd";
+import { message, Form, Image } from "antd";
 import {
   MyCareerGuidanceInputField,
   MyCareerGuidanceButton,
@@ -34,10 +33,11 @@ const NewPasword = () => {
 
     if (response.data.success) {
       setLoading(false);
+      message.success("Password Changed Successfull");
       navigate("/");
     } else {
       setLoading(false);
-      alert(response.data.message[0]);
+      message.error(response.data.message[0]);
     }
   };
 

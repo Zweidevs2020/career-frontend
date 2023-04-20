@@ -68,3 +68,8 @@ code {
   stroke: #1476B7;
   fill:#1476B7
 }
+.ant-table table { border-spacing: 0 10px }
+.ant-table-tbody > tr > td{
+  padding: 10px !important;
+}
+

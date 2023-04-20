@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { API_URL } from "../../../utils/constants";
 import { postApiWithoutAuth } from "../../../utils/api";
 import { setToken } from "../../../utils/LocalStorage";
-import { Checkbox, Form, Image } from "antd";
+import { Checkbox, Form, Image, message } from "antd";
 import {
   MyCareerGuidanceInputField,
   MyCareerGuidanceButton,
@@ -30,12 +30,13 @@ const Login = () => {
     const response = await postApiWithoutAuth(API_URL.SIGNIN, data);
 
     if (response.status === 200) {
+      message.success("Login Successfully");
       setLoading(false);
       setToken(response.data.access);
       navigate("/dashboard");
     } else {
       setLoading(false);
-      alert(response.data.detail);
+      message.success(response.data.detail);
     }
   };
 

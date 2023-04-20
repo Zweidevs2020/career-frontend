@@ -7,7 +7,7 @@ import nameIcon from "../../../assets/nameIcon.svg";
 import lockIcon from "../../../assets/lockIcon.svg";
 import dropdownIcon from "../../../assets/dropdownIcon.svg";
 import { Link } from "react-router-dom";
-import { DatePicker, Form, Image, Select, Upload } from "antd";
+import { DatePicker, Form, Image, Select, Upload, message } from "antd";
 import {
   MyCareerGuidanceInputField,
   MyCareerGuidanceButton,
@@ -39,17 +39,19 @@ const Signup = () => {
       dob: `${dobSave.year}-${dobSave.month}-${dobSave.day}`,
     });
     if (response.status === 200) {
+      message.success("User Create Successfully");
       navigate("/");
     } else {
       setLoading(false);
-      alert(response.data.message);
-
+      message.error(response.data.message);
     }
   };
 
   const onChangeUpload = async (e) => {
-    const base64 = await convertBase64(e.file);
-    setData({ ...data, profile_image: base64 });
+    if (e.fileList.length > 0) {
+      const base64 = await convertBase64(e.file);
+      setData({ ...data, profile_image: base64 });
+    }
   };
   const handleSelect = (schoolValue) => {
     setData({ ...data, school: schoolValue });
