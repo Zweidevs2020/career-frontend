@@ -4,7 +4,7 @@ import myCareerGuidanceIcon from "../../../assets/myCareerGuidanceIcon.png";
 import usernameIcon from "../../../assets/usernameIcon.svg";
 import { API_URL } from "../../../utils/constants";
 import { postApiWithoutAuth } from "../../../utils/api";
-import { Form, Image } from "antd";
+import { message, Image } from "antd";
 import { MyCareerGuidanceButton } from "../../commonComponents";
 import { useNavigate, useLocation } from "react-router-dom";
 import OtpInput from "react-otp-input";
@@ -23,13 +23,13 @@ const EmailVerification = () => {
       email: data.email,
       otp: otp,
     });
-    if (response.status===200) {
+    if (response.status === 200) {
       setLoading(false);
+      message.success("Code Verify Successfull");
       navigate("/new-password", { state: { data } });
     } else {
       setLoading(false);
-      alert(response.data.message[0]);
-
+      message.success(response.data.message[0]);
     }
   };
 

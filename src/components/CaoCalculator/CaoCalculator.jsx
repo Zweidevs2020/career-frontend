@@ -1,251 +1,330 @@
 import add from "../../assets/add.svg";
-import dropdownicon from "../../assets/dropdownIcon.svg";
-import gage from "../../assets/gage.svg";
-import React, { useState } from "react";
-import sideAuthImage from "../../assets/sideAuthImage.png";
-import myCareerGuidanceIcon from "../../assets/myCareerGuidanceIcon.png";
-import usernameIcon from "../../assets/usernameIcon.svg";
-import lockIcon from "../../assets/lockIcon.svg";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../utils/constants";
-import { postApiWithoutAuth } from "../../utils/api";
-import { setToken } from "../../utils/LocalStorage";
-import { Checkbox, Form, Image } from "antd";
+import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
+import { MyCareerGuidanceButton } from "../../components/commonComponents";
+import { Table, Select } from "antd";
 import {
-  MyCareerGuidanceInputField,
-  MyCareerGuidanceButton,
-} from "../../components/commonComponents";
+  buildStyles,
+  CircularProgressbarWithChildren,
+} from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+
+import "./CaoCalculator.css";
+
 const CaoCalculator = () => {
+  const [data, setData] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [subjects, setSubjects] = useState([]);
+  const [subjectsData, setSubjectData] = useState([]);
+  const [subjectsLevelsAll, setSubjectLevelsAll] = useState([]);
+  const [grades, setGrades] = useState([]);
+  const [subjectsLevelsAll2, setSubjectLevelsAll2] = useState([]);
+
+  const subjectHandleSelect = (id, record) => {
+    const filter = subjects.filter((item) => item.id === id);
+
+    const level = filter[0].level.map((item) => {
+      return {
+        value: item.level__subjectlevel,
+        label: item.level__subjectlevel,
+      };
+    });
+
+    let temp = subjectsLevelsAll.filter((item) => item.row !== record.No);
+
+    temp.push({ subjectId: id, row: record.No, level: level });
+    let sortArray = temp.sort((a, b) => a.row - b.row);
+    setSubjectLevelsAll(sortArray);
+  };
+
+  const levelHandleSelect = async (levelName, record) => {
+    let singleData = subjectsLevelsAll.filter((item) => item.row === record.No);
+
+    const response = await getApiWithAuth(
+      `calculator/check-level-grade/?level=${levelName}&subject=${singleData[0].subjectId}`
+    );
+    if (response.data.status === 200) {
+      const level = response.data.data.map((item) => {
+        return {
+          value: item.pk,
+          label: item.grade,
+        };
+      });
+
+      let newArray = singleData.map((item) => {
+        return { ...item, GradeData: level };
+      });
+      let temp = grades.filter((item) => item.row !== record.No);
+      temp.push(newArray[0]);
+      let sortArray = temp.sort((a, b) => a.row - b.row);
+
+      setGrades(sortArray);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+  const handleSelect = async (gradeId, record) => {
+    let temp = subjectsLevelsAll2.filter((item) => item.row !== record.No);
+    temp.push({ row: record.No, grade: gradeId });
+    let sortArray = temp.sort((a, b) => a.row - b.row);
+    setSubjectLevelsAll2(sortArray);
+  };
+  const defaultColumns = [
+    {
+      title: "#",
+      dataIndex: "No",
+      align: "center",
+    },
+    {
+      title: "Subject",
+      dataIndex: "name",
+      align: "center",
+      render: (_, record) => (
+        <>
+          <Select
+            placeholder={"Pick Subject"}
+            options={subjectsData}
+            name="name"
+            className="selectFieldStyle"
+            onChange={(e) => subjectHandleSelect(e, record)}
+            bordered={false}
+          />
+        </>
+      ),
+    },
+    {
+      title: "Level",
+      dataIndex: "level",
+      align: "center",
+      render: (_, record) => (
+        <>
+          <Select
+            placeholder={"Higher"}
+            options={subjectsLevelsAll[record.No]?.level}
+            name="school"
+            className="selectFieldStyle"
+            onChange={(e) => levelHandleSelect(e, record)}
+            bordered={false}
+          />
+        </>
+      ),
+    },
+    {
+      title: "Expected Grades",
+      align: "center",
+      dataIndex: "grades",
+      render: (_, record) => (
+        <Select
+          placeholder={"A1"}
+          options={grades[record.No]?.GradeData}
+          name="school"
+          className="selectFieldStyle"
+          onChange={(e) => handleSelect(e, record)}
+          bordered={false}
+        />
+      ),
+    },
+  ];
+  const [dataSource, setDataSource] = useState([
+    {
+      No: 0,
+      name: "",
+      level: "",
+      grades: "",
+    },
+    {
+      No: 1,
+      name: "",
+      level: "",
+      grades: "",
+    },
+    {
+      No: 2,
+      name: "",
+      level: "",
+      grades: "",
+    },
+  ]);
+
+  useEffect(() => {
+    if (subjects.length > 0) {
+      const subject = subjects.map((item) => {
+        return {
+          value: item.id,
+          label: item.name,
+        };
+      });
+      setSubjectData(subject);
+    }
+  }, [subjects]);
+
+  const handleAdd = () => {
+    const newData = {
+      No: dataSource.length,
+      name: "",
+      level: "",
+      grades: "",
+    };
+
+    setDataSource([...dataSource, newData]);
+  };
+
+  useEffect(() => {
+    getSubject();
+  }, []);
+
+  const getSubject = async () => {
+    const response = await getApiWithAuth(API_URL.SUBJECTLIST);
+    if (response.data.status === 200) {
+      setSubjects(response.data.data);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+  const calCulateData = async () => {
+    setLoading(true);
+    const response = await postApiWithAuth(
+      API_URL.CALCULATEDATA,
+      subjectsLevelsAll2
+    );
+    if (response.data.data.success) {
+      setData(response.data.data.total_points);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+  const clearAllData = async () => {
+    setSubjectLevelsAll([]);
+    setGrades([]);
+    setSubjectLevelsAll2([]);
+    window.location.reload();
+  };
+
   return (
-    // <div
-    //   style={{
-    //     height: "100vh",
-    //     width: "100%",
-    //     background: "white",
-    //     padding: 30,
-    //   }}
-    // >
-    //   <div style={{ background: "white" }}>
-    //     <div className="welcomeHaddingText">
-    //       Let’s Calculate Your Grade Points Average{" "}
-    //     </div>
-    //     <div
-    //       className="textStyle18"
-    //       style={{ marginTop: 10, paddingBottom: 10 }}
-    //     >
-    //       Enter your email and password
-    //     </div>
-    //     <div
-    //       style={{
-    //         background: "#F8FAFC",
-    //         height: "100%",
-    //         padding: 20,
-    //         height: "80vh",
-    //       }}
-    //     >
-    //       <div className="welcomeHaddingText">My CAO Points: </div>
-    //       <div className="textStyle18">
-    //         Lorem ipsum is a placeholder text commonly used to demonstrate
-    //       </div>
-    //       <div
-    //         style={{
-    //           width: "100%",
-    //           height: "50vh",
-    //           backgroundColor: "white",
-    //           display: "flex",
-    //           justifyContent: "space-between",
-    //           padding: 10,
-    //         }}
-    //       >
-    //         <div style={{ width: "62%" }}>
-    //           <div
-    //             style={{
-    //               display: "flex",
-    //               justifyContent: "space-between",
-    //               alignItems: "center",
-    //             }}
-    //           >
-    //             <div className="textStyle18">Subjects</div>
-    //             <div>
-    //               <img src={add} alt="" />
-    //             </div>
-    //           </div>
-    //           <div style={{display:"flex",justifyContent:'space-around'}}>
-    //             <div>#</div>
-    //             <div>Subject</div>
-    //             <div>Level</div>
-    //             <div>Expected Grades</div>
-    //           </div>
-    //         </div>
-
-    //         <div style={{ width: "35%" }}>
-    //           <div className="textStyle18">Expected Points for Semester 01</div>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
-    <div className='calculator' class='grid grid-cols-10 grid-rows-[90px,500px] gap-[2px] sm:grid sm:grid-cols-10 sm:grid-row-[90px,500px] sm:gap-[2px] ' >
-        <div class=' bg-[#f4f6f8]   w-[100%] h-[700px] sm:w-[100%] col-span-10 flex flex-col items-center justify-around'>
-            <div class='h-[70px]  w-[98%]  sm:w-[98%] sm:hidden  flex flex-col justify-around' >
-            <p class='font-bold text-[24px] text-[#474749] sm:text-[16px] md:text-[18px] lg:text-[18px] ' >My CAO Points:</p>
-             <p class='font-light text-[#737373] text-[16px] sm:text-[10px] md:text-[14px] lg:text-[14px] ' >Lorem ipsum is a placeholder text commonly used to demonstrate</p>
-            </div>
-            <div class='bg-[#f4f6f8] h-[600px] w-[98%]  sm:h-[100%] sm:flex sm:flex-col sm:w-[98%] rounded-md flex gap-[3px]'  >
-                <div className='subject' class='bg-white md:w-[65%] rounded-tl-md ml-1 h-[530px] sm:h-[430px] mt-3 w-[70%] sm:w-[98%] flex items-center flex-col' >
-                    <div class='h-[50px] w-[98%] px-5 bg-white flex justify-between items-center ' >
-                        <p class='text-[22px] font-bold sm:text-[14px] md:text-[15px] lg:text-[16px]' > Subjects</p>
-                        <div class='h-[30px] w-[30px] flex items-center justify-center bg-[#F8FAFC] rounded-full' >
-                        <img src={add} alt="" />
-                        </div>
-                    </div>
-                    <hr class='w-[100%] h-[2px] relative mt-[2px] bg-slate-100'  ></hr>
-                    <div class='relative mt-1 bg-white h-[467px] sm:h-[360px] w-[98%] flex flex-col items-center gap-2 ' >
-                        <div class='h-[50px] w-[95%] mt-2 bg-[#F4F6F8] flex items-center justify-around' >
-                            <div class='h-[40px] w-[23%]  flex items-center justify-center' >
-                                <p class='text-[22px] sm:text-[16px] md:text-[12px]  lg:text-[12px] text-[#737373] font-bold' >#</p>
-                            </div>
-                            <div class='h-[40px] w-[23%]  flex items-center justify-center' >
-                                <p class='text-[16px] sm:text-[12px] md:text-[12px] lg:text-[12px] text-[#737373]  font-bold' >Subject</p>
-                            </div>
-                            <div class='h-[40px] w-[23%] flex items-center justify-center' >
-                                <p class='text-[16px] md:text-[12px] sm:text-[12px] lg:text-[12px] text-[#737373]  font-bold' >Level</p>
-                            </div>
-                            <div class='h-[40px] w-[23%] text-[#737373]  flex items-center justify-center' >
-                                <p class='text-[16px] md:text-[12px] sm:text-[12px] lg:text-[12px] font-bold' >Ecpected Grades</p>
-                            </div>
-                        </div>
-                        <div class='h-[50px] w-[95%] bg-[#F4F6F8] flex items-center justify-around' >
-                            <div class='h-[40px] w-[23%] rounded-md bg-white flex items-center justify-center' >
-                                <p class='text-[14px] text-[#858585] sm:text-[10px] md:text-[9px] lg:text-[10px]  font-light' >01</p>
-                            </div>
-                            <div class='h-[40px] w-[23%] rounded-md px-2 bg-white flex items-center justify-between' >
-                                <p class='text-[#858585] sm:text-[8px] md:text-[9px] lg:text-[10px] ' >Pick Subjects</p>
-                                <img src={dropdownicon} alt="" class='text-[#858585] h-[6px] sm:h-[4px] md:h-[4px] lg:h-[4px]' />
-                            </div>
-                            <div class='h-[40px] w-[23%] rounded-md px-2 bg-white flex items-center justify-between' >
-                                <p class='text-[#858585] sm:text-[8px] md:text-[9px] lg:text-[10px] ' >Higher</p>
-                                <img src={dropdownicon} alt="" class='text-[#858585] h-[6px] sm:h-[4px] md:h-[4px] lg:h-[4px]' />
-                            </div>
-                            <div class='h-[40px] w-[23%] rounded-md px-2 bg-white flex items-center justify-between' >
-                                <p class='text-[#858585] sm:text-[8px] md:text-[9px] lg:text-[10px] ' >A1</p>
-                                <img src={dropdownicon} alt="" class='text-[#858585] h-[6px] sm:h-[4px] md:h-[4px] lg:h-[4px]' />
-                            </div>
-                        </div>
-                        <div class='h-[50px] w-[95%] bg-[#F4F6F8] flex items-center justify-around' >
-                            <div class='h-[40px] w-[23%] rounded-md bg-white flex items-center justify-center' >
-                                <p class='text-[14px] text-[#858585] sm:text-[10px] md:text-[9px] lg:text-[10px]  font-light' >01</p>
-                            </div>
-                            <div class='h-[40px] w-[23%] rounded-md px-2 bg-white flex items-center justify-between' >
-                                <p class='text-[#858585] sm:text-[8px] md:text-[9px] lg:text-[10px] ' >Pick Subjects</p>
-                                <img src={dropdownicon} alt="" class='text-[#858585] h-[6px] sm:h-[4px] md:h-[4px] lg:h-[4px]' />
-                            </div>
-                            <div class='h-[40px] w-[23%] rounded-md px-2 bg-white flex items-center justify-between' >
-                                <p class='text-[#858585] sm:text-[8px] md:text-[9px] lg:text-[10px] ' >Higher</p>
-                                <img src={dropdownicon} alt="" class='text-[#858585] h-[6px] sm:h-[4px] md:h-[4px] lg:h-[4px]' />
-                            </div>
-                            <div class='h-[40px] w-[23%] rounded-md px-2 bg-white flex items-center justify-between' >
-                                <p class='text-[#858585] sm:text-[8px] md:text-[9px] lg:text-[10px] ' >A1</p>
-                                <img src={dropdownicon} alt="" class='text-[#858585] h-[6px] sm:h-[4px] md:h-[4px] lg:h-[4px]' />
-                            </div>
-                        </div>
-                        <div class='h-[50px] w-[95%] bg-[#F4F6F8] flex items-center justify-around' >
-                            <div class='h-[40px] w-[23%] rounded-md bg-white flex items-center justify-center' >
-                                <p class='text-[14px] text-[#858585] sm:text-[10px] md:text-[9px] lg:text-[10px]  font-light' >01</p>
-                            </div>
-                            <div class='h-[40px] w-[23%] rounded-md px-2 bg-white flex items-center justify-between' >
-                                <p class='text-[#858585] sm:text-[8px] md:text-[9px] lg:text-[10px]  ' >Pick Subjects</p>
-                                <img src={dropdownicon} alt="" class='text-[#858585] h-[6px] sm:h-[4px] md:h-[4px] lg:h-[4px]' />
-                            </div>
-                            <div class='h-[40px] w-[23%] rounded-md px-2 bg-white flex items-center justify-between' >
-                                <p class='text-[#858585] sm:text-[8px] md:text-[9px] lg:text-[10px] ' >Higher</p>
-                                <img src={dropdownicon} alt="" class='text-[#858585] h-[6px] sm:h-[4px] md:h-[4px] lg:h-[4px]' />
-                            </div>
-                            <div class='h-[40px] w-[23%] rounded-md px-2 bg-white flex items-center justify-between' >
-                                <p class='text-[#858585] sm:text-[8px] md:text-[9px] lg:text-[10px] ' >A1</p>
-                                <img src={dropdownicon} alt="" class='text-[#858585] h-[6px] sm:h-[4px] md:h-[4px] lg:h-[4px]' />
-                            </div>
-                        </div>
-                        <div class='h-[50px] w-[95%] bg-[#F4F6F8] flex items-center justify-around' >
-                            <div class='h-[40px] w-[23%] rounded-md bg-white flex items-center justify-center' >
-                                <p class='text-[14px] text-[#858585] sm:text-[10px] md:text-[9px] lg:text-[10px]  font-light' >01</p>
-                            </div>
-                            <div class='h-[40px] w-[23%] rounded-md px-2 bg-white flex items-center justify-between' >
-                                <p class='text-[#858585] sm:text-[8px] md:text-[9px] lg:text-[10px] ' >Pick Subjects</p>
-                                <img src={dropdownicon} alt="" class='text-[#858585] h-[6px] sm:h-[4px] md:h-[4px] lg:h-[4px]' />
-                            </div>
-                            <div class='h-[40px] w-[23%] rounded-md px-2 bg-white flex items-center justify-between' >
-                                <p class='text-[#858585] sm:text-[8px] md:text-[9px] lg:text-[10px] ' >Higher</p>
-                                <img src={dropdownicon} alt="" class='text-[#858585] h-[6px] sm:h-[4px] md:h-[4px] lg:h-[4px]' />
-                            </div>
-                            <div class='h-[40px] w-[23%] rounded-md px-2 bg-white flex items-center justify-between' >
-                                <p class='text-[#858585] sm:text-[8px] md:text-[9px] lg:text-[10px] ' >A1</p>
-                                <img src={dropdownicon} alt="" class='text-[#858585] h-[6px] sm:h-[4px] md:h-[4px] lg:h-[4px]' />
-                            </div>
-                        </div>
-
-                        <div class='h-[50px] w-[95%] bg-[#F4F6F8] flex items-center justify-around' >
-                            <div class='h-[40px] w-[23%] rounded-md bg-white flex items-center justify-center' >
-                                <p class='text-[14px] text-[#858585] sm:text-[10px] md:text-[9px] lg:text-[10px]  font-light' >01</p>
-                            </div>
-                            <div class='h-[40px] w-[23%] rounded-md px-2 bg-white flex items-center justify-between' >
-                                <p class='text-[#858585] sm:text-[8px] md:text-[9px] lg:text-[10px] ' >Pick Subjects</p>
-                                <img src={dropdownicon} alt="" class='text-[#858585] h-[6px] sm:h-[4px] md:h-[4px] lg:h-[4px]' />
-                            </div>
-                            <div class='h-[40px] w-[23%] rounded-md px-2 bg-white flex items-center justify-between' >
-                                <p class='text-[#858585] sm:text-[8px] md:text-[9px] lg:text-[10px] ' >Higher</p>
-                                <img src={dropdownicon} alt="" class='text-[#858585] h-[6px] sm:h-[4px] md:h-[4px] lg:h-[4px]' />
-                            </div>
-                            <div class='h-[40px] w-[23%] rounded-md px-2 bg-white flex items-center justify-between' >
-                                <p class='text-[#858585] sm:text-[8px] md:text-[9px]  lg:text-[10px]   ' >A1</p>
-                                <img src={dropdownicon} alt="" class='text-[#858585] h-[6px] sm:h-[4px] md:h-[4px] lg:h-[4px]' />
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div className='points'  class='bg-white md:w-[33%]  sm:w-[98%] sm:h-[100%] sm:ml-1 rounded-tr-md h-[530px] mt-3 w-[29%] flex flex-col items-center  ' >
-                <div class='h-[50px] w-[98%] sm:h-[50px] sm:mb-2 px-5 ml-[2px] bg-white flex justify-between items-center ' >
-                        <p class='text-[14px] font-bold  md:text-[12px] lg:text-[12px] ' >Expected Points for Semester 01</p>
-                </div>
-                <hr class='w-[100%] h-[2px] relative mt-[2px] bg-slate-100'  ></hr>
-                <div class='h-[50px] w-[90%]  relative mt-3 flex items-center justify-start ' >
-                    <p class='font-light text-[16px] text-[#474749]  md:text-[14px] lg:text-[14px] ' >CAO Points</p>
-                </div>
-                <div class='h-[30px] w-[90%]  relative mt-2 flex items-center justify-between px-4 ' >
-                    <p class='font-bold text-[14px] text-[#474749]  md:text-[10px] lg:text-[10px] ' >Points</p>
-                    <p class='font-light text-[14px] text-[#474749] md:text-[10px] lg:text-[10px] ' >150</p>
-                </div>
-                <hr class='w-[100%] h-[1px] relative mt-[4px] bg-slate-100'  ></hr>
-
-                <div class='h-[30px] w-[90%]  relative mt-2 flex items-center justify-between px-4 ' >
-                    <p class='font-bold text-[14px] text-[#474749]  md:text-[10px] lg:text-[10px]  ' >Bonus Points</p>
-                    <p class='font-light text-[14px] text-[#474749]  md:text-[10px] lg:text-[10px] ' >150</p>
-                </div>
-                <hr class='w-[100%] h-[1px] relative mt-[4px] bg-slate-100'  ></hr>
-
-                <div class='h-[30px] w-[90%] relative mt-2 flex items-center justify-between px-4 ' >
-                    <p class='font-bold text-[14px] text-[#474749]  md:text-[10px] lg:text-[10px]  ' >Final Points</p>
-                    <p class='font-light text-[14px] text-[#474749] md:text-[10px] lg:text-[10px]  ' >295</p>
-                </div>
-                <hr class='w-[100%] h-[1px] relative mt-[4px] bg-slate-100'  ></hr>
-
-                <div class='h-[267px]  w-[98%] relative mt-3 flex items-center justify-center' >
-                    <img src={gage} alt=""  class='md:h-[120px] lg:h-[140px]'  />
-                </div>
-
-                </div>
-
-                <div class='absolute mt-[544px] md:w-[95%] lg:w-[65%] ml-2 h-[50px] w-[78%] flex items-center justify-end px-2 sm:hidden' >
-                    <div class='  h-[45px] md:w-[50%] lg:w-[50%]  w-[30%] flex items-center justify-evenly ' >
-                        <button class='h-[40px] w-[35%] rounded-md bg-white text-[#A8A8A8] '>Clear All</button>
-                        <button class='h-[40px] w-[35%] rounded-md bg-white text-[#1476B7] border-2 border-[#1476B7] ' >Calculate</button>
-                    </div>
-                </div>
-
-            </div>
+    <div className="caoMainDiv">
+      <div style={{ background: "white" }}>
+        <div className="welcomeHaddingText">
+          Let’s Calculate Your Grade Points Average{" "}
         </div>
-
+        <div className="cao2ndText py-3">
+          Lorem ipsum is a placeholder text commonly used to demonstrate
+        </div>
+        <div className="coaInnerf8fafcDiv">
+          <div className="welcomeHaddingText">My CAO Points: </div>
+          <div className="cao2ndText pb-4">
+            Lorem ipsum is a placeholder text commonly used to demonstrate
+          </div>
+          <div className="coaSubjectDiv p-3">
+            <div className="coaSubjectWidth">
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div className="textStyle18">Subjects</div>
+                <div onClick={handleAdd}>
+                  <img src={add} alt="" />
+                </div>
+              </div>
+              <Table
+                rowClassName={() => "backgroundF4F6F8"}
+                dataSource={dataSource}
+                columns={defaultColumns}
+                pagination={false}
+                // bordered
+              />
+            </div>
+            <div className="coaPointsWidth">
+              <div
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(25, 132, 255, 0.1) 100%)",
+                }}
+              >
+                <div style={{ padding: 10 }}>
+                  <div className="textStyle18">
+                    Expected Points for Semester 01
+                  </div>
+                  <div>
+                    <div className="textStyle18">CAO Points</div>
+                    <div className="coaPointTextMain">
+                      <div className="coaPointTextStyle">CAO Points</div>
+                      <div>150</div>
+                    </div>
+                    <hr />
+                    <div className="coaPointTextMain">
+                      <div className="coaPointTextStyle">Bonus Points</div>
+                      <div>150</div>
+                    </div>
+                    <hr />
+                    <div className="coaPointTextMain">
+                      <div className="coaPointTextStyle">Final Points</div>
+                      <div>150</div>
+                    </div>
+                    <hr />
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        marginTop: 20,
+                      }}
+                    >
+                      <div className="circularBarMainDiv">
+                        <div style={{ width: 130 }}>
+                          <CircularProgressbarWithChildren
+                            value={data}
+                            minValue={0}
+                            maxValue={1000}
+                            styles={buildStyles({
+                              rotation: 0.72,
+                              strokeLinecap: "dashboard",
+                              textSize: "19px",
+                              pathTransitionDuration: 0.5,
+                              pathColor: "#1476B7",
+                              textColor: "#263238",
+                              trailColor: "#d6d6d6",
+                            })}
+                          >
+                            <div className="welcomeHaddingText">{data}</div>
+                            <div className="cao2ndText">
+                              <strong>Points</strong>
+                            </div>
+                          </CircularProgressbarWithChildren>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+                <MyCareerGuidanceButton
+                  label="Clear All"
+                  className="clearAllButton"
+                  type="primary"
+                  htmlType="button"
+                  // loading={loading}
+                  onClick={clearAllData}
+                />
+                <MyCareerGuidanceButton
+                  label="Calculate"
+                  className="calculateButton"
+                  type="primary"
+                  htmlType="button"
+                  disabled={subjectsLevelsAll2.length < 1}
+                  onClick={calCulateData}
+                  loading={loading}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
