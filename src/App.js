@@ -20,6 +20,8 @@ import Selfassesment from "./components/Selfassesment";
 import MyGoal from "./components/MyGoal";
 import CaoCalculator from "./components/CaoCalculator";
 import CvCoverLetter from "./components/CvCoverLetter/CvCoverLetter";
+import EducationalGuidance from "./components/EducationalGuidance";
+import TakeTest from "./components/TakeTest";
 function App() {
   return (
     <BrowserRouter>
@@ -77,7 +79,7 @@ function App() {
         <Route
           path="/self-assesment"
           element={
-            <PrivateRoute >
+            <PrivateRoute>
               <Sidebar>
                 <Selfassesment />
               </Sidebar>
@@ -88,9 +90,9 @@ function App() {
         <Route
           path="/my-goals"
           element={
-            <PrivateRoute >
+            <PrivateRoute>
               <Sidebar>
-                <MyGoal/>
+                <MyGoal />
               </Sidebar>
             </PrivateRoute>
           }
@@ -99,22 +101,42 @@ function App() {
         <Route
           path="/cao-calculator"
           element={
-            <PrivateRoute >
+            <PrivateRoute>
               <Sidebar>
-                <CaoCalculator/>
+                <CaoCalculator />
               </Sidebar>
             </PrivateRoute>
           }
         />
 
         <Route
-          path="/coverletter"
+          path="/cover-letter"
           element={
-            <PublicRoute>
+            <PrivateRoute>
               <Sidebar>
-                <CvCoverLetter/>
+                <CvCoverLetter />
               </Sidebar>
-            </PublicRoute>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/educational-guidance"
+          element={
+            <PrivateRoute>
+              <Sidebar>
+                <EducationalGuidance />
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/educational-guidance-test"
+          element={
+            <PrivateRoute>
+              <Sidebar>
+                <TakeTest />
+              </Sidebar>
+            </PrivateRoute>
           }
         />
       </Routes>
@@ -123,4 +145,3 @@ function App() {
 }
 
 export default App;
-  
