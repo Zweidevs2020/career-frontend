@@ -66,8 +66,12 @@ const CvCoverLetter = () => {
   }));
   return (
     <>
-      <Steps current={current} items={items} labelPlacement='horizontal' />
-      <div style={{height:'480px', backgroundColor:'#F8FAFC',marginTop:'20px'}} >{steps[current].content}</div>
+      <div class='h-[80px] w-[100%] flex flex-col justify-center' >
+      <h1 class='font-bold text-[24px] ml-3 ' >CV/Cover Letter</h1>
+      <p class='ml-3 text-[#737373]' >Lorem ipsum is a placeholder text commonly used to demonstrate.</p>
+      </div>
+      <Steps current={current} items={items} labelPlacement='horizontal' style={{marginTop:'5px'}} />
+      <div style={{height:'580px', backgroundColor:'#F8FAFC',marginTop:'20px'}} >{steps[current].content}</div>
       <div
         style={{
           marginTop: 24,
