@@ -33,36 +33,3 @@ code {
 .ant-form-item{
   margin-bottom: 20px;
 }
-
-/* .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-  border-radius: 5px !important;
-  height: 58px !important;
-  color: #1476B7;
-  width: 240px !important;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 21px;
-}
-
-.ant-menu-inline .ant-menu-item {
-  height: 58px !important;
-  transition: none !important;
-  width: 240px !important;
-}
-
-.ant-menu-light .ant-menu-item:hover {
-  color:#1476B7;
-}
-
-.ant-menu-item:hover svg {
-  color: #1476B7;
-  stroke: #1476B7;
-
-}
-.ant-menu-item svg {
-  color: #1476B7;
-  stroke: #1476B7;
-  fill:#1476B7
-} */

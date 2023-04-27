@@ -117,11 +117,10 @@ function App() {
             </PublicRoute>
           }
         />
-
-
       </Routes>
     </BrowserRouter>
   );
 }
 
 export default App;
+  

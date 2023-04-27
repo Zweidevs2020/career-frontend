@@ -1,0 +1,128 @@
+.educationalGuidanceMainDiv {
+  background-color: white;
+  width: 100%;
+  min-height: 90vh;
+  padding: 20px;
+}
+
+.educationalGuidanceSecondDiv {
+  background: #f8fafc;
+  width: 100%;
+  min-height: 80vh;
+  padding: 20px;
+}
+
+.quizStyle {
+  background: white;
+  box-shadow: 0px 5px 11px rgba(0, 0, 0, 0.02);
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.width90 {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quizHeadingStyle {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  color: #303030;
+}
+.quizDetailsStyle {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #807a7a;
+}
+.takebutton {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: #1476b7;
+  border-radius: 10px;
+  height: 40px;
+  width: 130px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.viewResultButton {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: white;
+  border: 1px solid #1476b7;
+  border-radius: 10px;
+  height: 40px;
+  width: 130px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #1476b7;
+  margin-left: 15px;
+}
+.modalStyleClass {
+  border-radius: 15px;
+  width: 528px;
+  height: 400px;
+}
+.totalScoreHadding {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 36px;
+  color: #474749;
+}
+.modalInnerStyle {
+  margin-top: 50px;
+  width: 90%;
+}
+.resultDataButton {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: #1476b7;
+  border-radius: 10px;
+  height: 40px;
+  width: 210px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #ffffff;
+  letter-spacing: 2px;
+}
+
+@media only screen and (min-width: 0px) and (max-width: 650px) {
+  .viewResultButton{
+      margin-left: 0px;
+  }
+}
+
+@media only screen and (min-width: 651px) and (max-width: 1200px) {
+    .viewResultButton{
+        margin-left: 0px;
+    }
+  
+  }
