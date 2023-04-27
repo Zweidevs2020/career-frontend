@@ -131,7 +131,7 @@ const MyGoal = () => {
             <div className="calenderGoal">
               <Space direction="vertical" size={12}>
                 <DatePicker
-                  style={{ width: "450px" }}
+                className="dateLibr"
                   defaultValue={dayjs("01/01/2015", dateFormatList[0])}
                   format={dateFormatList}
                 />

@@ -34,8 +34,7 @@ code {
   margin-bottom: 20px;
 }
 
-.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-  /* background-color: #3a2ea6 !important; */
+/* .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
   border-radius: 5px !important;
   height: 58px !important;
   color: #1476B7;
@@ -51,7 +50,6 @@ code {
   height: 58px !important;
   transition: none !important;
   width: 240px !important;
-  /* background-color: #1e163f !important; */
 }
 
 .ant-menu-light .ant-menu-item:hover {
@@ -67,4 +65,4 @@ code {
   color: #1476B7;
   stroke: #1476B7;
   fill:#1476B7
-}
+} */
