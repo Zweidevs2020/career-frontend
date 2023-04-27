@@ -34,7 +34,6 @@ const ForgetPassword = () => {
       setLoading(false);
     }
   };
-
   return (
     <div className="mainDiv">
       <div className="leftDiv">
@@ -84,4 +83,5 @@ const ForgetPassword = () => {
     </div>
   );
 };
+
 export default ForgetPassword;

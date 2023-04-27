@@ -1,183 +1,237 @@
 .logoStyle {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 48px;
-    margin-top: 20px;
-    margin-bottom: 50px;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+.backgroundColorSidebar {
+  background-color: #f8fafc !important;
+  min-width: 240px !important;
+}
+.sideBarStyle {
+  font-style: normal;
+  color: #c2ceed;
+  font-size: 16px;
+  border: none;
+  background-color: #f8fafc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 240px !important;
+}
+.textStyling {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 21px;
+  padding-left: 14px;
+  height: 58px !important;
+}
+
+.Navbar {
+  background-color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navtext {
+  width: 48%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+.nav-text {
+  font-size: 20px;
+  color: #1476b7;
+}
+
+.img {
+  width: 48%;
+  height: 60px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+.imgcard {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #1476b7;
+  border-radius: 8px;
+  margin-right: 10px;
+  width: 60%;
+  height: 58px;
+}
+
+.cardprofile {
+  height: 53px;
+}
+
+.cardtext {
+  display: flex;
+  flex-direction: column;
+  width: 68%;
+  height: 80px;
+}
+.email {
+  font-weight: lighter;
+  color: #fff;
+}
+.name {
+  font-weight: bold;
+  color: #fff;
+}
+
+@media only screen and (max-width: 480px) and (min-width: 320px) {
   .backgroundColorSidebar {
-    background-color: #F8FAFC !important;
-    min-width: 240px !important;
+    display: none;
   }
-  .sideBarStyle {
- 
-    font-style: normal;
-    color: #c2ceed;
-    font-size: 16px;
-    border: none;
-    background-color: #F8FAFC ;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 240px !important;
-  }
-  .textStyling{
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 21px;
-   padding-left: 14px;
-   height: 58px !important;
-
+  .navtext {
+    width: 80%;
+    margin-left: 5px;
   }
 
-  .Navbar{
-    background-color:#F8FAFC;
+  .nav-text {
+    font-size: 8px;
+  }
+  .img {
+    width: 70%;
+  }
+  .imgcard {
+    width: 100%;
+    height: 45px;
+  }
+
+  .cardprofile {
+    height: 34px;
+  }
+  .email {
+    font-size: 8px;
+  }
+  .name {
+    font-size: 8px;
+  }
+}
+
+@media only screen and (max-width: 768px) and (min-width: 481px) {
+  .backgroundColorSidebar {
+    display: none;
+  }
+  .Navbar {
     display: flex;
-    align-items: center;
     justify-content: space-between;
   }
 
-  .navtext{
-    width: 48%;
-    height: 60px;
+  .navtext {
+    width: 100%;
+    margin-left: 5px;
+  }
+
+  .nav-text {
+    font-size: 14px;
+  }
+  .img {
+    width: 70%;
+  }
+  .imgcard {
+    width: 100%;
+    height: 50px;
+  }
+
+  .cardprofile {
+    height: 44px;
+  }
+}
+
+@media only screen and (max-width: 1024px) and (min-width: 769px) {
+  .Navbar {
     display: flex;
-    align-items: center;
-    justify-content:start;
-  }
-  .nav-text{
-    font-size: 20px;
-    color: #1476B7;
+    justify-content: space-between;
   }
 
-  .img{
-    width: 48%;
-    height: 60px;
-    display: flex;
-    justify-content: end;
-    align-items: center;
-  }
-  .imgcard{
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    background-color: #1476B7;
-    border-radius: 8px;
-    margin-right: 10px;
-    width: 60% ;
-    height: 58px;
+  .navtext {
+    width: 100%;
+    margin-left: 5px;
   }
 
-  .cardprofile{
-    height: 53px;
+  .nav-text {
+    font-size: 14px;
+  }
+  .img {
+    width: 70%;
+  }
+  .imgcard {
+    width: 100%;
+    height: 50px;
   }
 
-  .cardtext{
-    display: flex;
-    flex-direction: column;
-    width: 68%;
-    height: 80px;
+  .cardprofile {
+    height: 44px;
   }
-  .email{
-    font-weight: lighter;
-    color: #fff;
-  }
-  .name{
+}
+.firstOption {
+  display: flex;
+  justify-content: center !important;
+  padding-top: 30px;
+}
+.firstOption1 {
+  display: flex;
+  justify-content: center !important;
+  padding-right: 20px;
+  padding-top: 10px;
+}
+.firstHead {
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #737373;
+}
+.sidebarHomeImage {
+  padding-right: 20px;
+}
+.mainContainerSideBar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.overviewHead {
+  width: 150px;
+  cursor: pointer;
 
-    font-weight: bold;
-    color: #fff;
-  }
+}
+.overviewHead2 {
+  width: 170px;
+  cursor: pointer;
+}
+.cvHead {
+  width: 170px;
+  cursor: pointer;
+}
+.selfHead {
+  width: 170px;
+  cursor: pointer;
+}
+.studyHead {
+  width: 170px;
+  cursor: pointer;
+}
 
-  @media only screen and (max-width: 480px) and (min-width: 320px)  {
-    .backgroundColorSidebar{
-      display: none;
-    }
-    .navtext{
-      width: 80%;
-      margin-left: 5px;
-    }
-
-    .nav-text{
-      font-size: 8px;
-    }
-    .img{
-      width: 70%;
-    }
-    .imgcard{
-      width: 100%;
-      height: 45px;
-    }
-
-    .cardprofile{
-      height: 34px;
-    }
-    .email{
-      font-size: 8px;
-    }
-    .name{
-      font-size: 8px;
-    }
-  }
-
-  @media only screen and (max-width: 768px) and (min-width: 481px)  {
-    .backgroundColorSidebar{
-      display: none;
-    }
-    .Navbar{
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .navtext{
-      width: 100%;
-      margin-left: 5px;
-    }
-
-    .nav-text{
-      font-size: 14px;
-    }
-    .img{
-      width: 70%;
-    }
-    .imgcard{
-      width: 100%;
-      height: 50px;
-    }
-
-    .cardprofile{
-      height: 44px;
-    }
-
-  }
-
-  @media only screen and (max-width: 1024px) and (min-width: 769px)  {
-    
-    .Navbar{
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .navtext{
-      width: 100%;
-      margin-left: 5px;
-    }
-
-    .nav-text{
-      font-size: 14px;
-    }
-    .img{
-      width: 70%;
-    }
-    .imgcard{
-      width: 100%;
-      height: 50px;
-    }
-
-    .cardprofile{
-      height: 44px;
-    }
-
-  }
+.study {
+  width: 170px;
+  cursor: pointer;
+}
+.dotStyle {
+  height: 5px;
+  width: 5px;
+  border-radius: 5px;
+  background-color: white;
+}
