@@ -1,5 +1,6 @@
 import React from 'react';
 import { Input } from 'antd';
+const { TextArea } = Input;
 
 const PersonalProfile = () => {
   return (
@@ -29,8 +30,8 @@ const PersonalProfile = () => {
     <div class='w-[98%] h-[110px]  mt-2 flex items-center ' >
      <div class='h-[100px] w-[98%]  flex items-center justify-around '  >
       <div class='h-[80px] w-[40%]  flex flex-col justify-center ' >
-      <p class='font-lighter text-[16px] ml-3' >Town*</p>
-        <Input placeholder='e.g Cebu City, Cebu' allowClear style={{height:'45px',width:'95%',marginLeft:'12px'}} />
+      <p class='font-lighter text-[16px] ml-2' >Town*</p>
+        <Input placeholder='e.g Cebu City, Cebu' allowClear style={{height:'45px',width:'95%',marginLeft:'8px'}} />
       </div>
       <div class='h-[80px] w-[28%] flex flex-col justify-center  ' >
       <p class='font-lighter text-[16px] ml-2' >City*</p>
@@ -43,8 +44,9 @@ const PersonalProfile = () => {
      </div>
     </div>
     <div  class='w-[98%] h-[120px] mt-2 flex flex-col  ' >
-    <p class='font-lighter text-[16px] ml-3' >Objective*</p>
-        <Input placeholder='Write your Objective' allowClear style={{height:'90px',width:'95%',marginLeft:'12px'}} />
+    <p class='font-lighter text-[16px] ml-4' >Objective*</p>
+        {/* <Input placeholder='Write your Objective' allowClear style={{height:'90px',width:'95%',marginLeft:'12px'}} /> */}
+        <TextArea rows={4}  placeholder="Write your Objective" style={{width:'95%',marginLeft:'14px'}} />
     </div>
     </>
   )

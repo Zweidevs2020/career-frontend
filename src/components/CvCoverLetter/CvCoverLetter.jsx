@@ -28,7 +28,7 @@ import PersonalProfile from './PersonalProfile/PersonalProfile';
 import Skill from './Skill/Skill';
 const steps = [
   {
-    title: 'Personal Profile',
+    title: 'Personal',
     content: <PersonalProfile/>,
   },
   {
@@ -36,7 +36,7 @@ const steps = [
     content: 'Second-content',
   },
   {
-    title: 'Work Experience',
+    title: 'Work',
     content: 'third-content',
   },
   {
@@ -67,12 +67,13 @@ const CvCoverLetter = () => {
   }));
   return (
     <>
-      <div class='h-[80px] w-[100%] flex flex-col justify-center' >
+      <div class='h-[80px] w-[100%] bg-white flex flex-col justify-center' >
       <h1 class='font-bold text-[24px] ml-3 ' >CV/Cover Letter</h1>
       <p class='ml-3 text-[#737373]' >Lorem ipsum is a placeholder text commonly used to demonstrate.</p>
       </div>
-      <Steps current={current} items={items} labelPlacement='horizontal' style={{marginTop:'5px'}} />
-      <div style={{height:'580px', backgroundColor:'#F8FAFC',marginTop:'20px'}} >{steps[current].content}</div>
+      <div class='w-[100%] h-[100%] bg-white py-5 ' >
+      <Steps current={current} items={items} labelPlacement='horizontal' style={{marginTop:'8px',width:'98%',marginLeft:'10px',backgroundColor:'#F8FAFC',height:'80px',display:'flex',alignItems:'center'}} />
+      <div style={{height:'580px',width:'98%', backgroundColor:'#F8FAFC',marginTop:'0px',marginLeft:'10px'}} >{steps[current].content}</div>
       <div
         style={{
           marginTop: 24,
@@ -98,6 +99,7 @@ const CvCoverLetter = () => {
             Previous
           </Button>
         )}
+      </div>
       </div>
     </>
   );
