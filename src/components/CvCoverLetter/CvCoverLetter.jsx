@@ -25,6 +25,7 @@
 import { Button, message, Steps, theme } from 'antd';
 import { useState } from 'react';
 import PersonalProfile from './PersonalProfile/PersonalProfile';
+import Skill from './Skill/Skill';
 const steps = [
   {
     title: 'Personal Profile',
@@ -40,7 +41,7 @@ const steps = [
   },
   {
     title: 'Skills',
-    content: 'Fourth-content',
+    content: <Skill/>,
   },
   {
     title: 'Interest',
