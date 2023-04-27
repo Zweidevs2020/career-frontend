@@ -54,11 +54,8 @@ const TakeTest = () => {
   return (
     <>
       <div className="educationalGuidanceMainDiv">
+        <div className="welcomeHaddingText pb-4">{quizData.name}</div>
         <div className="educationalGuidanceSecondDiv">
-          <div className="welcomeHaddingText">
-            {data.complete ? "Retake Test " : "Take Test "}
-            {quizData.name}
-          </div>
           {loading ? (
             <Spin />
           ) : quizData.questions?.length === 0 ? (
