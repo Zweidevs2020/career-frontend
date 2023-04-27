@@ -19,6 +19,8 @@ import Sidebar from "./components/commonComponents/Layoutcomponents/Sidebar/Side
 import Selfassesment from "./components/Selfassesment";
 import MyGoal from "./components/MyGoal";
 import CaoCalculator from "./components/CaoCalculator";
+import EducationalGuidance from "./components/EducationalGuidance";
+import TakeTest from "./components/TakeTest"
 function App() {
   return (
     <BrowserRouter>
@@ -105,8 +107,26 @@ function App() {
             </PrivateRoute>
           }
         />
-
-
+         <Route
+          path="/educational-guidance"
+          element={
+            <PrivateRoute >
+              <Sidebar>
+                <EducationalGuidance/>
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/educational-guidance-test"
+          element={
+            <PrivateRoute >
+              <Sidebar>
+                <TakeTest/>
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
