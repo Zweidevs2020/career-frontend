@@ -14,7 +14,12 @@ import "react-circular-progressbar/dist/styles.css";
 import "./CaoCalculator.css";
 
 const CaoCalculator = () => {
-  const [data, setData] = useState(0);
+  const [data, setData] = useState({
+    points: 0,
+    bonus_points: 0,
+    final_points: 0,
+    total_points: 0,
+  });
   const [loading, setLoading] = useState(false);
   const [subjects, setSubjects] = useState([]);
   const [subjectsData, setSubjectData] = useState([]);
@@ -191,8 +196,9 @@ const CaoCalculator = () => {
       API_URL.CALCULATEDATA,
       subjectsLevelsAll2
     );
+    console.log('===================',response)
     if (response.data.data.success) {
-      setData(response.data.data.total_points);
+      setData(response.data.data);
       setLoading(false);
     } else {
       setLoading(false);
@@ -254,18 +260,18 @@ const CaoCalculator = () => {
                   <div>
                     <div className="textStyle18">CAO Points</div>
                     <div className="coaPointTextMain">
-                      <div className="coaPointTextStyle">CAO Points</div>
-                      <div>150</div>
+                      <div className="coaPointTextStyle">Points</div>
+                      <div>{data.points?data.points:0}</div>
                     </div>
                     <hr />
                     <div className="coaPointTextMain">
                       <div className="coaPointTextStyle">Bonus Points</div>
-                      <div>150</div>
+                      <div>{data.bonus_points?data.bonus_points:0}</div>
                     </div>
                     <hr />
                     <div className="coaPointTextMain">
                       <div className="coaPointTextStyle">Final Points</div>
-                      <div>150</div>
+                      <div>{data.final_points?data.final_points:0}</div>
                     </div>
                     <hr />
                     <div
@@ -291,7 +297,7 @@ const CaoCalculator = () => {
                               trailColor: "#d6d6d6",
                             })}
                           >
-                            <div className="welcomeHaddingText">{data}</div>
+                            <div className="welcomeHaddingText">{data.total_points?data.total_points:0}</div>
                             <div className="cao2ndText">
                               <strong>Points</strong>
                             </div>

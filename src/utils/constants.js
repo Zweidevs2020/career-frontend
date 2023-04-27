@@ -6,5 +6,6 @@ export const API_URL = {
   OTPCONFIRM:'user/otp/confirm',
   NEWPASSWORD:'user/reset-password',
   SUBJECTLIST:'calculator/subject-list/',
-  CALCULATEDATA:'calculator/calculate-coa-point/'
+  CALCULATEDATA:'calculator/calculate-coa-point/',
+  GETGOALS:'education/quizzes/'
 };

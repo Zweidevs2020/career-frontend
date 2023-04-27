@@ -21,6 +21,8 @@ const { Option } = Select;
 
 const Sidebar = ({ children, flags }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [selectedMenuItem, setSelectedMenuItem] = useState("Overview");
   const componentsSwtich = (key) => {
     setSelectedMenuItem(key);
@@ -34,10 +36,32 @@ const Sidebar = ({ children, flags }) => {
       navigate("/cover-later");
     } else if (key === "SelfAssessment") {
       navigate("/self-assesment");
+    } else if (key === "EducationalGuidance") {
+      navigate("/educational-guidance");
     } else {
-      navigate("/my-study");
+      navigate("MyStudy");
     }
   };
+  useEffect(() => {
+    if (location.pathname === "/dashboard") {
+      setSelectedMenuItem("Overview");
+    } else if (location.pathname === "/cao-calculator") {
+      setSelectedMenuItem("CAOCalculator");
+    } else if (location.pathname === "/my-goals") {
+      setSelectedMenuItem("MyGoals");
+    } else if (location.pathname === "/cover-later") {
+      setSelectedMenuItem("CoverLater");
+    } else if (location.pathname === "/self-assesment") {
+      setSelectedMenuItem("SelfAssessment");
+    } else if (
+      location.pathname === "/educational-guidance" ||
+      location.pathname === "/educational-guidance-test"
+    ) {
+      setSelectedMenuItem("EducationalGuidance");
+    } else {
+      setSelectedMenuItem("/my-study");
+    }
+  }, [location]);
   return (
     <Layout
       style={{
@@ -75,6 +99,9 @@ const Sidebar = ({ children, flags }) => {
             </Menu.Item>
             <Menu.Item key="MyStudy" icon={<StudySvg />}>
               <span className="textStyling">My Study</span>
+            </Menu.Item>
+            <Menu.Item key="EducationalGuidance" icon={<StudySvg />}>
+              <span className="textStyling">Educational Guidance</span>
             </Menu.Item>
             {/* <Menu.Item
               key="EducationalGuidance"
