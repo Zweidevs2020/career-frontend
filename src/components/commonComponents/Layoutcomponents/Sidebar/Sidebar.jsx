@@ -17,9 +17,7 @@ const { Content, Sider, Header } = Layout;
 
 const Sidebar = ({ children, flags }) => {
   const navigate=useNavigate();
-  const [isClicked, setIsClicked] = useState(false);
 
- 
   return (
     <Layout
       style={{
@@ -37,10 +35,9 @@ const Sidebar = ({ children, flags }) => {
           <div className="firstOption1" >
             <img className="sidebarHomeImage" src={Home} />
             <div className="overviewHead"   onClick={() => {
-                      setIsClicked(!isClicked);
                       navigate("/dashboard");
                     }} >
-              <h className="firstHead"style={{ color: isClicked ? "r" : "black" }}  > OverView</h>
+              <h className="firstHead"> OverView</h>
             </div>
           </div>
           <div className="firstOption">
