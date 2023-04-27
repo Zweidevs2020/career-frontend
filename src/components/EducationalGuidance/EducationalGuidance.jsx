@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Spin } from "antd";
+import {  Modal, Spin } from "antd";
 import { API_URL } from "../../utils/constants";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import { MyCareerGuidanceButton } from "../../components/commonComponents";
@@ -23,7 +23,6 @@ const EducationalGuidance = () => {
   const getQuiz = async () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETGOALS);
-    console.log("=====================", response);
     if (response.data.status === 200) {
       setQuizz(response.data.data);
       setLoading(false);
@@ -81,6 +80,11 @@ const EducationalGuidance = () => {
                           className="takebutton"
                           type="button"
                           htmlType="button"
+                          onClick={() =>
+                            navigate("/educational-guidance-test", {
+                              state: { data: item },
+                            })
+                          }
                         />
                         <MyCareerGuidanceButton
                           label="View Results"

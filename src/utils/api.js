@@ -80,7 +80,7 @@ export const postApiWithAuth = async (url, body) => {
   try {
     const res = await baseInstance.post(url, body);
     return {
-      data: res.data,
+      data: res,
     };
   } catch (err) {
     return err.response;
