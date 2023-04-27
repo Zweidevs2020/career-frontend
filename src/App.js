@@ -19,6 +19,7 @@ import Sidebar from "./components/commonComponents/Layoutcomponents/Sidebar/Side
 import Selfassesment from "./components/Selfassesment";
 import MyGoal from "./components/MyGoal";
 import CaoCalculator from "./components/CaoCalculator";
+import CvCoverLetter from "./components/CvCoverLetter/CvCoverLetter";
 function App() {
   return (
     <BrowserRouter>
@@ -103,6 +104,17 @@ function App() {
                 <CaoCalculator/>
               </Sidebar>
             </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/coverletter"
+          element={
+            <PublicRoute>
+              <Sidebar>
+                <CvCoverLetter/>
+              </Sidebar>
+            </PublicRoute>
           }
         />
 

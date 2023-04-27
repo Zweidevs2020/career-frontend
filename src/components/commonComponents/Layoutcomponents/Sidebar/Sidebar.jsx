@@ -12,11 +12,11 @@ import study from "../../../../assets/study.svg"
 import { useNavigate } from "react-router-dom";
 
 import "./SidebarStyle.css";
-
 const { Content, Sider, Header } = Layout;
 
 const Sidebar = ({ children, flags }) => {
-  const navigate=useNavigate();
+
+const navigate=useNavigate()
 
   return (
     <Layout
@@ -58,9 +58,10 @@ const Sidebar = ({ children, flags }) => {
           </div>{" "}
           <div className="firstOption">
             <img className="sidebarHomeImage" src={profile1} />
-            <div className="cvHead" onClick={() => {
-                      navigate("/cover-later");
-                    }} >
+            <div className="cvHead" onClick={()=>
+            {
+              navigate("/coverletter")
+            }}>
               <h className="firstHead">CV/Cover Later</h>
             </div>
           </div>
