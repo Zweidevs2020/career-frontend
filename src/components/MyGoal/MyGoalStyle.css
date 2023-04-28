@@ -135,12 +135,15 @@ padding-left: 20px;
   height: 52px;
   padding-top: 15px;
   padding-left: 20px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 .buttonGoalPage
 {
   border-radius: 5%;
   height:100%;
-  width:100%;
+  width:25%;
   background-color:  #1476B7;
   color: white;
 }

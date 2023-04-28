@@ -9,5 +9,6 @@ export const API_URL = {
   SUBJECTLIST:'calculator/subject-list/',
   CALCULATEDATA:'calculator/calculate-coa-point/',
   GETGOALS:'education/quizzes/',
-  GETPSYCHOMETRICTEST:'/psychometric/test/'
+  GETPSYCHOMETRICTEST:'/psychometric/test/',
+  GETUSERGOAL: 'goals/'
 };

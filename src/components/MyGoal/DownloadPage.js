@@ -1,150 +1,207 @@
-import React, { useRef, useEffect, useState } from "react";
+import React from "react";
 import { DatePicker, Space } from "antd";
 import dayjs from "dayjs";
-import jsPDF from 'jspdf';
 import { MyCareerGuidanceInputField } from "../commonComponents";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import DownloadPage from './DownloadPage';
-import { API_URL } from "../../utils/constants";
 import "./MyGoalStyle.css";
-import { getApiWithAuth } from "../../utils/api";
-import moment from 'moment';
 
-const MyGoal = () => {
-  const reportTemplateRef = useRef(null);
 
-  const [proffession, setProffession] = useState('');
-  const [actions, seActions] = useState('');
-  const [goal, setGoal] = useState('');
-  const [realistic, setRealistic] = useState(false);
-  const [countdown, setCountdown] = useState('');
-  const [countdown2, setCountdown2] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-  
-  useEffect(() => {
-    getUserGoals()
-  }, []);
+const DownloadPage = ({goal, proffession, countdown2, actions, realistic, setRealistic}) => {
 
-  useEffect(() => {
-    // Calculate time remaining
-    const intervalId = setInterval(() => {
-      if (countdown) {
-        const now = new Date().getTime();
-        const distance = countdown.toDate().getTime() - now;
-        if (distance > 0) {
-          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-          setCountdown2({ days, hours, minutes, seconds });
-        } else {
-          clearInterval(intervalId);
-          setCountdown2({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        }
-      }
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, [countdown]);
-
-  const getUserGoals = async () => {
-    const res= await getApiWithAuth(API_URL.GETUSERGOAL)
-    if (res.data.data) {
-      setGoal(res.data.data.goal);
-      seActions(res.data.data.actions);
-      setProffession(res.data.data.proffession);
-      setRealistic(res.data.data.realistic);
-      
-      // const formattedDate = moment(res.data.data.countdown).format("M {$L: 'en', $u: undefined, $d: ddd MMM DD YYYY HH:mm:ss 'GMT'ZZ ($z), $x: {…}, $y: YYYY, …}");
-      // setCountdown(formattedDate);
-    }
+  const styles = {
+    goalHeading:{
+      'font-family': 'Poppins',
+      'font-size': '24px',
+      'font-weight': '600',
+      'line-height': '36px',
+      'letter-spacing': '0em',
+      'text-align': 'left',
+      'color':'#474749',
+      },
+      subHeading:{
+      'font-family': 'Poppins',
+      'font-size': '12px',
+      'font-weight': '400',
+      'line-height': '18px',
+      'letter-spacing': '0em',
+      'text-align': 'left',
+      'color': '#737373',
+      },
+      // subHead:{
+      // 'padding-bottom':'30px',
+      // },
+      mainPage:{
+      'height': '100%',
+      'width': '100%',
+      'background-color': 'white',
+      },
+      topContainer:{
+      'padding-top': '30px',
+      'padding-left':'40px ',
+      },
+      lowerContainer:{
+      'background-color':'#F8FAFC',
+      'width': '94%',
+      'height': '100vh',
+      },
+      lowerContainer2:{
+      'display': 'flex',
+      'justify-content': 'space-around ',
+      },
+      employersContact:{
+      'padding-left': '20px',
+      'font-family': 'Poppins',
+      'font-size': '16px',
+      'font-weight': '600',
+      'line-height': '24px',
+      'letter-spacing': '0em',
+      'text-align': 'left',
+      'color': '#474749',
+      },
+      employeGoal:{
+      'padding-top': '20px',
+      },
+      secondContainer:{
+      'padding-left': '20px',
+      'font-family': 'Poppins',
+      'font-size': '12px',
+      'font-weight': '400',
+      'line-height': '18px',
+      'letter-spacing': '0em',
+      'text-align': 'left',
+      'color': '#737373',
+      },
+      inputContainer:{
+      'padding-left': '20px',
+      'font-family': 'Inter',
+      'font-size': '14px',
+      'font-weight': '600',
+      'line-height': '21px',
+      'letter-spacing': '0em',
+      'text-align': 'left',
+      'color':'#111928',
+      'padding-top': '25px',
+      },
+      inputGoal:{
+      'padding-left': '20px',
+      'padding-top': '5px',
+      },
+      inputCarrer:{
+      'width':'97%'
+      },
+      dateLibr:{
+      'width': '450px',
+      },
+      h:{
+      'padding-left': '20px',
+      },
+      container :{
+      'display': 'block',
+      'position': 'relative',
+      'padding-left': '35px',
+      'margin-bottom': '12px',
+      'cursor': 'pointer',
+      'font-size': '22px',
+      '-webkit-user-select': 'none',
+      '-moz-user-select': 'none',
+      '-ms-user-select': 'none',
+      'user-select': 'none',
+      },
+      calenderGoal:{
+      'padding-top': '15px',
+      'padding-left': '20px',
+      },
+      timer:{
+      'padding-top': '20px',
+      'padding-left': '20px',
+      },
+      buttonGoal:{
+      'border-radius': '20%',
+      'width':'230px',
+      'height': '52px',
+      'padding-top': '15px',
+      'padding-left': '20px',
+      },
+      buttonGoalPage:{
+      'border-radius': '5%',
+      'height':'100%',
+      'width':'100%',
+      'background-color': ' #1476B7',
+      'color': 'white',
+      },
+      page: {
+        width: '7in',
+        height: '9in',
+        margin: '0',
+        position: 'relative',
+        display: 'flex',
+        justifyContent: 'space-between',
+        flexDirection: 'column'
+    },   
   }
 
-  console.log(countdown)
 
   dayjs.extend(customParseFormat);
   const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY", "DD-MM-YYYY", "DD-MM-YY"];
 
-  function handleDateChange(date) {
-    setCountdown(date);
-  }
-
-  const DownloadBtn = () => {
-    const doc = new jsPDF({
-        format: 'a4',
-        unit: 'px'
-    });
-
-    doc.html(reportTemplateRef.current, {
-        async callback(doc) {
-            await doc.save('Download');
-        },
-        html2canvas: { scale: 0.67 }
-    });
-  };
-
-  const SaveInput = () => {
-    console.log('print')
-  };
-
   return (
     <>
-      <div className="mainPage">
-        <div className="topContainer">
+    <div style={styles.page}>
+      <div style={styles.mainPage}>
+        <div style={styles.topContainer}>
           <div>
-            <h5 className="goalHeading">My Goal</h5>
+            <h5 style={styles.goalHeading}>My Goal</h5>
           </div>
-          <div className="subHead">
-            <h className="subHeading">
+          <div style={styles.subHead}>
+            <h style={styles.subHeading}>
               Lorem ipsum is a placeholder text commonly used to demonstrate
             </h>
           </div>
         </div>
-        <div className="lowerContainer2">
-          <div className="lowerContainer">
-            <div className="employeGoal">
-              <h className="employersContact">
+        <div style={styles.lowerContainer2}>
+          <div style={styles.lowerContainer}>
+            <div style={styles.employeGoal}>
+              <h style={styles.employersContact}>
                 What’s the best way for employers to contact you?
               </h>
             </div>
-            <div className="secondContainer">
+            <div style={styles.secondContainer}>
               <h>What’s the best way for employers to contact you?</h>
             </div>
-            <div className="inputContainer">
-              <h style={{ color: "#111928" }}>What I want to Become:</h>
+            <div style={styles.inputContainer}>
+              <h style={{color: "#111928" }}>What I want to Become:</h>
             </div>
-            <div className="inputGoal">
+            <div style={styles.inputGoal}>
               <input
-                className="inputCarrer"
+                style={styles.inputCarrer}
                 type="text"
-                value={proffession}
-                onChange={(e) => setProffession(e.target.value)}
                 name="input"
+                value={proffession}
                 placeholder="eg Accountant"
                 class=" sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
               />
             </div>
          
-            <div className="inputContainer">
-              <h style={{ color: "#111928" }}>Specific Goal for the Year:</h>
+            <div style={styles.inputContainer}>
+              <h style={{color: "#111928" }}>Specific Goal for the Year:</h>
             </div>
-            <div className="inputGoal">
+            <div style={styles.inputGoal}>
               <input
-                className="inputCarrer"
+                style={styles.inputCarrer}
                 type="text"
                 value={goal}
-                onChange={(e) => setGoal(e.target.value)}
                 name="input"
                 placeholder="eg Accountant"
                 class="  sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
               />
             </div>
-            <div className="inputContainer">
-              <h style={{ color: "#111928" }}>
+            <div style={styles.inputContainer}>
+              <h style={{color: "#111928" }}>
                 5 Actions to Achieve the Above:
               </h>
             </div>
             <div
-              className="h"
+              style={styles.h}
               class="w-[100%] h-[70px] w-[97%]  sm:h-[100px] sm:flex-wrap sm:flex flex items-center justify-around pl-4 "
             >
               <input
@@ -184,8 +241,8 @@ const MyGoal = () => {
                 class=" md:hidden lg:hidden xl:hidden xxl:hidden px-2 sm:text-[8px] h-[50px] w-[19%] sm:h-[35px] sm:w-[30%]  rounded-md border-solid border-2 border-gray-400 outline-none "
               />
             </div>
-            <div className="inputContainer">
-              <h style={{ color: "#111928" }}>Is this Realistic ?</h>
+            <div style={styles.inputContainer}>
+              <h style={{color: "#111928" }}>Is this Realistic ?</h>
             </div>
             <div class="h-[50px] w-[20%]  sm:w-[50%] md:w-[40%] lg:w-[40%] flex items-center pl-2">
               <div class="h-[40px] w-[50%] flex items-center justify-around ">
@@ -211,70 +268,61 @@ const MyGoal = () => {
                 </p>
               </div>
             </div>
-            <div className="inputContainer">
-              <h style={{ color: "#111928" }}>How Long Do I have ?</h>
+            <div style={styles.inputContainer}>
+              <h style={{color: "#111928" }}>How Long Do I have ?</h>
             </div>
-            <div className="calenderGoal">
+            <div style={styles.calenderGoal}>
               <Space direction="vertical" size={12}>
                 <DatePicker
-                  className="dateLibr"
-                  onChange={handleDateChange}
+                style={styles.dateLibr}
                   defaultValue={dayjs("01/01/2015", dateFormatList[0])}
                   format={dateFormatList}
                 />
               </Space>
             </div>
-            <div className="timer">
-              <div class="contact h-[110px] w-[97%] flex items-center justify-center gap-5 bg-white rounded-md border-solid border-2 border-gray-400  ">
+            <div style={styles.timer}>
+              <div class="contact h-[110px] w-[97%] flex items-center justify-center gap-5 bg-white rounded-md border-solid border-2 border-gray-400">
                 <div class="h-[80px] w-[10%]  flex flex-col items-center justify-center">
-                  <p class="text-[#DB614D] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px] ">
+                  <p class="text-[#DB614D] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px]">
                     {countdown2.days} :
                   </p>
-                  <p class="text-[#DB614D] text-[28px] font-bold sm:text-[14px] md:text-[16px] lg:text-[16px] ">
+                  <p class="text-[#DB614D] text-[28px] font-bold sm:text-[14px] md:text-[16px] lg:text-[16px]">
                     Days
                   </p>
                 </div>
                 <div class="h-[80px] w-[10%]  flex flex-col items-center justify-center">
-                  <p class="text-[#474749] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px] ">
+                  <p class="text-[#474749] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px]">
                     {countdown2.hours} :
                   </p>
-                  <p class="text-[#474749] text-[28px] font-bold  sm:text-[14px] md:text-[16px] lg:text-[16px] ">
+                  <p class="text-[#474749] text-[28px] font-bold  sm:text-[14px] md:text-[16px] lg:text-[16px]">
                     Hours
                   </p>
                 </div>
                 <div class="h-[80px] w-[10%]  flex flex-col items-center justify-center">
-                  <p class="text-[#474749] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px] ">
+                  <p class="text-[#474749] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px]">
                     {countdown2.minutes} :
                   </p>
-                  <p class="text-[#474749] text-[28px] font-bold sm:text-[14px] md:text-[16px] lg:text-[16px] ">
+                  <p class="text-[#474749] text-[28px] font-bold sm:text-[14px] md:text-[16px] lg:text-[16px]">
                     Mins
                   </p>
                 </div>
                 <div class="h-[80px] w-[10%]  flex flex-col items-center justify-center">
-                  <p class="text-[#474749] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px] ">
+                  <p class="text-[#474749] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px]">
                     {countdown2.seconds} :
                   </p>
-                  <p class="text-[#474749] text-[28px] font-bold sm:text-[14px] md:text-[16px] lg:text-[16px] ">
+                  <p class="text-[#474749] text-[28px] font-bold sm:text-[14px] md:text-[16px] lg:text-[16px">
                     Secs
                   </p>
                 </div>
               </div>
             </div>
-            <div style={{ display: 'none' }}>
-                <div ref={reportTemplateRef} style={{ display: 'contents' }}>
-                    <DownloadPage realistic={realistic} setRealistic={setRealistic} goal={goal} proffession={proffession} actions={actions} countdown2={countdown2}  />
-                </div>
-            </div>
-            <div className="buttonGoal">
-              <button onClick={() => DownloadBtn()} className="buttonGoalPage">Download PDF</button>
-              <button onClick={() => SaveInput()} className="buttonGoalPage">Save Data</button>
-            </div>
             <br />
           </div>
         </div>
+      </div>
       </div>
     </>
   );
 };
 
-export default MyGoal;
+export default DownloadPage;
