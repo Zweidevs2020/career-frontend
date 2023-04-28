@@ -44,7 +44,7 @@ const EducationalGuidance = () => {
       <div className="welcomeHaddingText pb-3">My Educational Guidance</div>
         <div className="educationalGuidanceSecondDiv">
           {loading ? (
-            <Spin />
+            <Spin className="spinStyle" />
           ) : quizz.length === 0 ? (
             <div className="quizDetailsStyle">No Data Found</div>
           ) : (

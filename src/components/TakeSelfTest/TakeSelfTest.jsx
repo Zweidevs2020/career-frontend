@@ -56,7 +56,7 @@ const TakeSelfTest = () => {
         <div className="welcomeHaddingText pb-4">{quizData.name}</div>
         <div className="educationalGuidanceSecondDiv">
           {loading ? (
-            <Spin />
+            <Spin className="spinStyle" />
           ) : quizData.questions?.length === 0 ? (
             <div className="quizDetailsStyle">No Data Found</div>
           ) : (

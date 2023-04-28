@@ -48,7 +48,7 @@ const Selfassesment = () => {
 
         <div className="educationalGuidanceSecondDiv">
           {loading ? (
-            <Spin />
+            <Spin className="spinStyle" />
           ) : psychometricTest.length === 0 ? (
             <div className="quizDetailsStyle">No Data Found</div>
           ) : (
