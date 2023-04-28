@@ -8,7 +8,7 @@
 }
 .backgroundColorSidebar {
   background-color: #f8fafc !important;
-  min-width: 240px !important;
+  min-width: 244px !important;
 }
 .sideBarStyle {
   font-style: normal;
@@ -20,12 +20,11 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 240px !important;
+  width: 244px !important;
 }
 .textStyling {
-  font-family: "Poppins";
+  font-family: Poppins;
   font-style: normal;
-  font-weight: 600;
   font-size: 14px;
   line-height: 21px;
   padding-left: 14px;
@@ -86,6 +85,16 @@
 .name {
   font-weight: bold;
   color: #fff;
+}
+
+.logoutButton {
+  background: #1476b7;
+  border-radius: 10px;
+  width: 144px;
+  height: 52px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @media only screen and (max-width: 480px) and (min-width: 320px) {
@@ -206,7 +215,6 @@
 .overviewHead {
   width: 150px;
   cursor: pointer;
-
 }
 .overviewHead2 {
   width: 170px;

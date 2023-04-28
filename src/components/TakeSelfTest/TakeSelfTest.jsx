@@ -3,9 +3,8 @@ import { Spin, message, Radio, Space } from "antd";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import { MyCareerGuidanceButton } from "../commonComponents";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./TakeTest.css";
 
-const TakeTest = () => {
+const TakeSelfTest = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
@@ -27,7 +26,7 @@ const TakeTest = () => {
 
   const getQuizData = async () => {
     setLoading(true);
-    const response = await getApiWithAuth(`education/quiz/${data.id}/`);
+    const response = await getApiWithAuth(`/psychometric/psychometric/${data.id}/`);
     if (response.data.status === 200) {
       setQuizData(response.data.data);
       setLoading(false);
@@ -38,13 +37,13 @@ const TakeTest = () => {
 
   const saveQuizData = async () => {
     setSpinnerLoading(true);
-    const response = await postApiWithAuth(`/education/quiz-result/`, {
-      quiz: data.id,
+    const response = await postApiWithAuth(`/psychometric/take-test/`, {
+      test: data.id,
       answers: quizResult,
     });
     if (response.data.status === 200) {
       message.success("Quiz taken successfully");
-      navigate("/educational-guidance");
+      navigate("/self-assesment");
       setSpinnerLoading(false);
     } else {
       setSpinnerLoading(false);
@@ -105,6 +104,13 @@ const TakeTest = () => {
                   onClick={saveQuizData}
                   loading={spinnerLoading}
                 />
+                <MyCareerGuidanceButton
+                  label="Cancel"
+                  className="viewResultButton"
+                  type="button"
+                  htmlType="button"
+                  onClick={() =>  navigate("/self-assesment")}
+                />
               </div>
             </>
           )}
@@ -114,4 +120,4 @@ const TakeTest = () => {
   );
 };
 
-export default TakeTest;
+export default TakeSelfTest;

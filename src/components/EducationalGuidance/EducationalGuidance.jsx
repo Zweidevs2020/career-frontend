@@ -41,10 +41,10 @@ const EducationalGuidance = () => {
   return (
     <>
       <div className="educationalGuidanceMainDiv">
+      <div className="welcomeHaddingText pb-3">My Educational Guidance</div>
         <div className="educationalGuidanceSecondDiv">
-          <div className="welcomeHaddingText">My Educational Guidance</div>
           {loading ? (
-            <Spin />
+            <Spin className="spinStyle" />
           ) : quizz.length === 0 ? (
             <div className="quizDetailsStyle">No Data Found</div>
           ) : (

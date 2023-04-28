@@ -22,6 +22,7 @@ import CaoCalculator from "./components/CaoCalculator";
 import CvCoverLetter from "./components/CvCoverLetter/CvCoverLetter";
 import EducationalGuidance from "./components/EducationalGuidance";
 import TakeTest from "./components/TakeTest";
+import TakeSelfTest from "./components/TakeSelfTest";
 function App() {
   return (
     <BrowserRouter>
@@ -82,6 +83,16 @@ function App() {
             <PrivateRoute>
               <Sidebar>
                 <Selfassesment />
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+         <Route
+          path="/self-assesment-test"
+          element={
+            <PrivateRoute>
+              <Sidebar>
+                <TakeSelfTest />
               </Sidebar>
             </PrivateRoute>
           }

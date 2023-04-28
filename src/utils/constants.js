@@ -1,4 +1,5 @@
 export const API_URL = {
+  GETUSER:'user/me',
   SIGNIN: 'auth/jwt/create/',
   GETUSERSCHOOL:'user/schools',
   SINGUPUSER:'user/signup/',
@@ -7,5 +8,6 @@ export const API_URL = {
   NEWPASSWORD:'user/reset-password',
   SUBJECTLIST:'calculator/subject-list/',
   CALCULATEDATA:'calculator/calculate-coa-point/',
-  GETGOALS:'education/quizzes/'
+  GETGOALS:'education/quizzes/',
+  GETPSYCHOMETRICTEST:'/psychometric/test/'
 };
