@@ -41,8 +41,8 @@ const EducationalGuidance = () => {
   return (
     <>
       <div className="educationalGuidanceMainDiv">
+      <div className="welcomeHaddingText pb-3">My Educational Guidance</div>
         <div className="educationalGuidanceSecondDiv">
-          <div className="welcomeHaddingText">My Educational Guidance</div>
           {loading ? (
             <Spin />
           ) : quizz.length === 0 ? (

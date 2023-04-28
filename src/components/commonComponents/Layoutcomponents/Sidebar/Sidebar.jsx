@@ -51,7 +51,10 @@ const Sidebar = ({ children, flags }) => {
       setSelectedMenuItem("MyGoals");
     } else if (location.pathname === "/cover-letter") {
       setSelectedMenuItem("CoverLater");
-    } else if (location.pathname === "/self-assesment") {
+    } else if (
+      location.pathname === "/self-assesment" ||
+      location.pathname === "/self-assesment-test"
+    ) {
       setSelectedMenuItem("SelfAssessment");
     } else if (
       location.pathname === "/educational-guidance" ||
@@ -135,9 +138,6 @@ const Sidebar = ({ children, flags }) => {
 
 export default Sidebar;
 
-
-
-
 // import React, { useState, useEffect } from "react";
 // import { Layout, Menu, Select, message, Form } from "antd";
 // import mycareer from "../../../../assets/mycareer.png";
@@ -209,7 +209,7 @@ export default Sidebar;
 //             <img className="sidebarHomeImage" src={assesment} />
 //             <div className="selfHead"  onClick={() => {
 //                       navigate("/self-assesment");
-//                     }}> 
+//                     }}>
 //               <h className="firstHead">Self Assessment</h>
 //             </div>
 //           </div>{" "}
@@ -257,4 +257,3 @@ export default Sidebar;
 // };
 
 // export default Sidebar;
-
