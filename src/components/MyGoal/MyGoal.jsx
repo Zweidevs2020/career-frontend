@@ -29,7 +29,7 @@ const MyGoal = () => {
     const intervalId = setInterval(() => {
       if (countdown) {
         const now = new Date().getTime();
-        const distance = countdown.toDate().getTime() - now;
+        const distance = countdown - now;
         if (distance > 0) {
           const days = Math.floor(distance / (1000 * 60 * 60 * 24));
           const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -53,9 +53,7 @@ const MyGoal = () => {
       seActions(res.data.data.actions);
       setProffession(res.data.data.proffession);
       setRealistic(res.data.data.realistic);
-      
-      // const formattedDate = moment(res.data.data.countdown).format("M {$L: 'en', $u: undefined, $d: ddd MMM DD YYYY HH:mm:ss 'GMT'ZZ ($z), $x: {…}, $y: YYYY, …}");
-      // setCountdown(formattedDate);
+      setCountdown(new Date(res.data.data.countdown))
     }
   }
 
@@ -65,7 +63,7 @@ const MyGoal = () => {
   const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY", "DD-MM-YYYY", "DD-MM-YY"];
 
   function handleDateChange(date) {
-    setCountdown(date);
+    setCountdown(date.$d);
   }
 
   const DownloadBtn = () => {
