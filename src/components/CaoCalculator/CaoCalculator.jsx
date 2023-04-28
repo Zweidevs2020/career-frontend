@@ -193,9 +193,8 @@ const CaoCalculator = () => {
       API_URL.CALCULATEDATA,
       subjectsLevelsAll2
     );
-    console.log("===================", response);
     if (response.data.data.success) {
-      setData(response.data.data);
+      setData(response.data.data.data);
       setLoading(false);
     } else {
       setLoading(false);
