@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { DatePicker, Space } from "antd";
+import { DatePicker, Space, Spin, message } from "antd";
 import dayjs from "dayjs";
 import jsPDF from 'jspdf';
 import { MyCareerGuidanceInputField } from "../commonComponents";
@@ -7,13 +7,14 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import DownloadPage from './DownloadPage';
 import { API_URL } from "../../utils/constants";
 import "./MyGoalStyle.css";
-import { getApiWithAuth } from "../../utils/api";
+import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import moment from 'moment';
 
 const MyGoal = () => {
   const reportTemplateRef = useRef(null);
 
   const [proffession, setProffession] = useState('');
+  const [loading, setLoading] = useState(false);
   const [actions, seActions] = useState('');
   const [goal, setGoal] = useState('');
   const [realistic, setRealistic] = useState(false);
@@ -48,6 +49,7 @@ const MyGoal = () => {
   }, [countdown]);
 
   const getUserGoals = async () => {
+    setLoading(true)
     const res= await getApiWithAuth(API_URL.GETUSERGOAL)
     if (res.data.data) {
       setGoal(res.data.data.goal);
@@ -56,6 +58,7 @@ const MyGoal = () => {
       setRealistic(res.data.data.realistic);
       setCountdown(new Date(res.data.data.countdown))
       setCountdown3(dayjs(res.data.data.countdown).format("DD/MM/YYYY"));
+      setLoading(false)
     }
   }
 
@@ -83,12 +86,31 @@ const MyGoal = () => {
     });
   };
 
-  const SaveInput = () => {
-    console.log('print')
+  const SaveInput = async () => {
+    setLoading(true);
+    const data = {
+      'proffession': proffession,
+      'goal': goal,
+      'actions': actions,
+      'realistic': realistic,
+      'date': countdown
+    }
+    const response = await postApiWithAuth(API_URL.POSTUSERGOAL, data);
+
+    if (response.true === true) {
+      message.success("Goals set successfully");
+      setLoading(false);
+    } else {
+      setLoading(false);
+      message.success(response.data.detail);
+    }
   };
 
   return (
     <>
+    {loading ? 
+      <Spin className="spinStyle" />
+      :
       <div className="mainPage">
         <div className="topContainer">
           <div>
@@ -219,7 +241,7 @@ const MyGoal = () => {
               <Space direction="vertical" size={12}>
                 <DatePicker
                   className="dateLibr"
-                  value={dayjs(countdown3, dateFormatList[0])}
+                  // value={dayjs(countdown3, dateFormatList[0])}
                   onChange={handleDateChange}
                   format="YYYY-MM-DD"
                   defaultValue={dayjs("01/01/2015", dateFormatList[0])}
@@ -276,6 +298,7 @@ const MyGoal = () => {
           </div>
         </div>
       </div>
+    }
     </>
   );
 };
