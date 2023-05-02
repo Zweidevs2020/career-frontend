@@ -23,8 +23,12 @@ const CaoCalculator = () => {
   const [subjectsLevelsAll, setSubjectLevelsAll] = useState([]);
   const [grades, setGrades] = useState([]);
   const [subjectsLevelsAll2, setSubjectLevelsAll2] = useState([]);
+  const [loadingFirst, setLoadingFirst] = useState(false);
+  const [loadingSecond, setLoadingSecond] = useState(-1);
+  const [loadingThird, setLoadingThird] = useState(-1);
 
   const subjectHandleSelect = (id, record) => {
+    setLoadingSecond(record.No);
     const filter = subjects.filter((item) => item.id === id);
 
     const level = filter[0].level.map((item) => {
@@ -33,15 +37,14 @@ const CaoCalculator = () => {
         label: item.level__subjectlevel,
       };
     });
-
     let temp = subjectsLevelsAll.filter((item) => item.row !== record.No);
-
     temp.push({ subjectId: id, row: record.No, level: level });
     let sortArray = temp.sort((a, b) => a.row - b.row);
     setSubjectLevelsAll(sortArray);
+    setLoadingSecond(-1);
   };
-
   const levelHandleSelect = async (levelName, record) => {
+    setLoadingThird(record.No);
     let singleData = subjectsLevelsAll.filter((item) => item.row === record.No);
 
     const response = await getApiWithAuth(
@@ -56,16 +59,16 @@ const CaoCalculator = () => {
       });
 
       let newArray = singleData.map((item) => {
-        return { ...item, GradeData: level };
+        return { ...item, GradeData: level, levelId: levelName };
       });
       let temp = grades.filter((item) => item.row !== record.No);
       temp.push(newArray[0]);
       let sortArray = temp.sort((a, b) => a.row - b.row);
 
       setGrades(sortArray);
-      setLoading(false);
+      setLoadingThird(-1);
     } else {
-      setLoading(false);
+      setLoadingThird(-1);
     }
   };
   const handleSelect = async (gradeId, record) => {
@@ -93,6 +96,8 @@ const CaoCalculator = () => {
             className="selectFieldStyle"
             onChange={(e) => subjectHandleSelect(e, record)}
             bordered={false}
+            loading={loadingFirst}
+            value={subjectsLevelsAll[record.No]?.subjectId}
           />
         </>
       ),
@@ -110,6 +115,8 @@ const CaoCalculator = () => {
             className="selectFieldStyle"
             onChange={(e) => levelHandleSelect(e, record)}
             bordered={false}
+            loading={record.No === loadingSecond}
+            value={grades[record.No]?.levelId}
           />
         </>
       ),
@@ -126,6 +133,8 @@ const CaoCalculator = () => {
           className="selectFieldStyle"
           onChange={(e) => handleSelect(e, record)}
           bordered={false}
+          loading={record.No === loadingThird}
+          value={subjectsLevelsAll2[record.No]?.grade}
         />
       ),
     },
@@ -179,12 +188,13 @@ const CaoCalculator = () => {
   }, []);
 
   const getSubject = async () => {
+    setLoadingFirst(true);
     const response = await getApiWithAuth(API_URL.SUBJECTLIST);
     if (response.data.status === 200) {
       setSubjects(response.data.data);
-      setLoading(false);
+      setLoadingFirst(false);
     } else {
-      setLoading(false);
+      setLoadingFirst(false);
     }
   };
   const calCulateData = async () => {
@@ -204,7 +214,6 @@ const CaoCalculator = () => {
     setSubjectLevelsAll([]);
     setGrades([]);
     setSubjectLevelsAll2([]);
-    window.location.reload();
   };
 
   return (
