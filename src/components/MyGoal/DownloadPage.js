@@ -6,7 +6,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import "./MyGoalStyle.css";
 
 
-const DownloadPage = ({goal, proffession, countdown2, actions, realistic, setRealistic}) => {
+const DownloadPage = ({goal, proffession, countdown2, actions, countdown3, realistic, setRealistic}) => {
 
   const styles = {
     goalHeading:{
@@ -87,7 +87,10 @@ const DownloadPage = ({goal, proffession, countdown2, actions, realistic, setRea
       'padding-top': '5px',
       },
       inputCarrer:{
-      'width':'97%'
+      'width':'97%',
+      'height': '40px',
+      'font-size': '14px',
+      'font-weight': '700'
       },
       dateLibr:{
       'width': '450px',
@@ -208,64 +211,53 @@ const DownloadPage = ({goal, proffession, countdown2, actions, realistic, setRea
                 type="text"
                 name="input"
                 placeholder="Write down your goal"
-                class=" sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[19%] rounded-md border-solid border-2 border-gray-400 outline-none "
+                class=" sm:text-[6px] text-[14px] md:text-[6px] xl:text-[11px] px-2 h-[40px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[19%] rounded-md border-solid border-2 border-gray-400 outline-none "
               />
               <input
                 type="text"
                 name="input"
                 placeholder="Set a deadline"
-                class=" px-2 sm:text-[8px] md:text-[8px] h-[50px] xl:text-[11px] w-[19%] sm:w-[30%] sm:h-[35px] md:h-[38px] rounded-md border-solid border-2 border-gray-400 outline-none "
+                class=" px-2 sm:text-[6px] text-[14px] md:text-[6px] h-[40px] xl:text-[11px] w-[19%] sm:w-[30%] sm:h-[35px] md:h-[38px] rounded-md border-solid border-2 border-gray-400 outline-none "
               />
               <input
                 type="text"
                 name="input"
                 placeholder="Work on your mindset"
-                class=" sm:text-[8px] md:text-[8px] px-2 xl:text-[11px] h-[50px] sm:h-[35px] w-[19%] md:h-[38px] sm:w-[30%] rounded-md border-solid border-2 border-gray-400 outline-none "
+                class=" sm:text-[6px] text-[14px] md:text-[6px] px-2 xl:text-[11px] h-[40px] sm:h-[35px] w-[19%] md:h-[38px] sm:w-[30%] rounded-md border-solid border-2 border-gray-400 outline-none "
               />
               <input
                 type="text"
                 name="input"
                 placeholder="Develop your skillset"
-                class=" sm:text-[8px] md:text-[8px] px-2 xl:text-[11px] h-[50px] sm:h-[35px] w-[19%] md:h-[38px] sm:w-[30%] rounded-md border-solid border-2 border-gray-400 outline-none "
+                class=" sm:text-[6px] text-[14px] md:text-[6px] px-2 xl:text-[11px] h-[40px] sm:h-[35px] w-[19%] md:h-[38px] sm:w-[30%] rounded-md border-solid border-2 border-gray-400 outline-none "
               />
               <input
                 type="text"
                 name="input"
                 placeholder="Reward yourself"
-                class=" px-2 sm:text-[8px] md:text-[8px] h-[50px] xl:text-[11px] w-[19%] sm:h-[35px] sm:w-[30%] md:h-[38px]  rounded-md border-solid border-2 border-gray-400 outline-none "
+                class=" px-2 sm:text-[6px] text-[14px] md:text-[6px] h-[40px] xl:text-[11px] w-[19%] sm:h-[35px] sm:w-[30%] md:h-[38px]  rounded-md border-solid border-2 border-gray-400 outline-none "
               />
               <input
                 type="text"
                 name="input"
                 placeholder="Reward yourself"
-                class=" md:hidden lg:hidden xl:hidden xxl:hidden px-2 sm:text-[8px] h-[50px] w-[19%] sm:h-[35px] sm:w-[30%]  rounded-md border-solid border-2 border-gray-400 outline-none "
+                class=" md:hidden lg:hidden xl:hidden xxl:hidden px-2 sm:text-[6px] text-[14px] h-[40px] w-[19%] sm:h-[35px] sm:w-[30%]  rounded-md border-solid border-2 border-gray-400 outline-none "
               />
             </div>
             <div style={styles.inputContainer}>
               <h style={{color: "#111928" }}>Is this Realistic ?</h>
             </div>
             <div class="h-[50px] w-[20%]  sm:w-[50%] md:w-[40%] lg:w-[40%] flex items-center pl-2">
-              <div class="h-[40px] w-[50%] flex items-center justify-around ">
-                <input
-                  type="checkbox"
-                  checked={realistic ? true : false}
-                  onChange={() => setRealistic(true)}
-                  class="h-[24px] w-[24px] border-none text-[#fff] bg-[#1476B7] "
-                />
-                <p class="text-[#737373] sm:text-[14px] md:text-[16px] text-[18px]  ">
-                  Yes
-                </p>
-              </div>
-              <div class="h-[40px] w-[50%]  flex items-center justify-around ">
-                <input
-                  type="checkbox"
-                  checked={!realistic ? true : false}
-                  onChange={() => setRealistic(false)}
-                  class="h-[24px] w-[24px] border-none text-[#F4F6F8] bg[#F4F6F8] "
-                />
-                <p class="text-[#737373] sm:text-[14px] md:text-[16px] text-[18px] ">
-                  No
-                </p>
+
+              <div style={styles.calenderGoal}>
+                <Space direction="vertical" size={12}>
+                  <input
+                    // style={styles.dateLibr}
+                    value={realistic === true ? 'Yes' : 'No'}
+                    // format={dateFormatList}
+                    style={styles.inputCarrer}
+                  />
+                </Space>
               </div>
             </div>
             <div style={styles.inputContainer}>
@@ -273,44 +265,45 @@ const DownloadPage = ({goal, proffession, countdown2, actions, realistic, setRea
             </div>
             <div style={styles.calenderGoal}>
               <Space direction="vertical" size={12}>
-                <DatePicker
-                style={styles.dateLibr}
-                  defaultValue={dayjs("01/01/2015", dateFormatList[0])}
-                  format={dateFormatList}
+                <input
+                  // style={styles.dateLibr}
+                  value={dayjs(countdown3).format("YYYY-M-D")}
+                  // format={dateFormatList}
+                  style={styles.inputCarrer}
                 />
               </Space>
             </div>
             <div style={styles.timer}>
               <div class="contact h-[110px] w-[97%] flex items-center justify-center gap-5 bg-white rounded-md border-solid border-2 border-gray-400">
                 <div class="h-[80px] w-[10%]  flex flex-col items-center justify-center">
-                  <p class="text-[#DB614D] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px]">
+                  <p class="text-[#DB614D] text-[20px] font-bold sm:text-[14x] md:text-[14px] lg:text-[14px]">
                     {countdown2.days} :
                   </p>
-                  <p class="text-[#DB614D] text-[28px] font-bold sm:text-[14px] md:text-[16px] lg:text-[16px]">
+                  <p class="text-[#DB614D] text-[20px] font-bold sm:text-[14x] md:text-[14px] lg:text-[14px]">
                     Days
                   </p>
                 </div>
                 <div class="h-[80px] w-[10%]  flex flex-col items-center justify-center">
-                  <p class="text-[#474749] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px]">
+                  <p class="text-[#474749] text-[20px] font-bold sm:text-[14px] md:text-[14px] lg:text-[14px]">
                     {countdown2.hours} :
                   </p>
-                  <p class="text-[#474749] text-[28px] font-bold  sm:text-[14px] md:text-[16px] lg:text-[16px]">
+                  <p class="text-[#474749] text-[20px] font-bold  sm:text-[14px] md:text-[14px] lg:text-[14px]">
                     Hours
                   </p>
                 </div>
                 <div class="h-[80px] w-[10%]  flex flex-col items-center justify-center">
-                  <p class="text-[#474749] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px]">
+                  <p class="text-[#474749] text-[20px] font-bold sm:text-[14px] md:text-[14px] lg:text-[14px]">
                     {countdown2.minutes} :
                   </p>
-                  <p class="text-[#474749] text-[28px] font-bold sm:text-[14px] md:text-[16px] lg:text-[16px]">
+                  <p class="text-[#474749] text-[20px] font-bold sm:text-[14px] md:text-[14px] lg:text-[14px]">
                     Mins
                   </p>
                 </div>
                 <div class="h-[80px] w-[10%]  flex flex-col items-center justify-center">
-                  <p class="text-[#474749] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px]">
+                  <p class="text-[#474749] text-[20px] font-bold sm:text-[14px] md:text-[14px] lg:text-[14px]">
                     {countdown2.seconds} :
                   </p>
-                  <p class="text-[#474749] text-[28px] font-bold sm:text-[14px] md:text-[16px] lg:text-[16px">
+                  <p class="text-[#474749] text-[20px] font-bold sm:text-[14px] md:text-[14px] lg:text-[14px]">
                     Secs
                   </p>
                 </div>

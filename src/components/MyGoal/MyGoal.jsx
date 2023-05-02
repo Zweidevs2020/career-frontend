@@ -18,6 +18,7 @@ const MyGoal = () => {
   const [goal, setGoal] = useState('');
   const [realistic, setRealistic] = useState(false);
   const [countdown, setCountdown] = useState('');
+  const [countdown3, setCountdown3] = useState('');
   const [countdown2, setCountdown2] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   
   useEffect(() => {
@@ -54,16 +55,18 @@ const MyGoal = () => {
       setProffession(res.data.data.proffession);
       setRealistic(res.data.data.realistic);
       setCountdown(new Date(res.data.data.countdown))
+      setCountdown3(dayjs(res.data.data.countdown).format("DD/MM/YYYY"));
     }
   }
-
-  console.log(countdown)
 
   dayjs.extend(customParseFormat);
   const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY", "DD-MM-YYYY", "DD-MM-YY"];
 
   function handleDateChange(date) {
-    setCountdown(date.$d);
+    if (date) {
+      setCountdown(date.$d);
+      setCountdown3(date);
+    }
   }
 
   const DownloadBtn = () => {
@@ -216,9 +219,11 @@ const MyGoal = () => {
               <Space direction="vertical" size={12}>
                 <DatePicker
                   className="dateLibr"
+                  value={dayjs(countdown3, dateFormatList[0])}
                   onChange={handleDateChange}
+                  format="YYYY-MM-DD"
                   defaultValue={dayjs("01/01/2015", dateFormatList[0])}
-                  format={dateFormatList}
+                  // format={dateFormatList}
                 />
               </Space>
             </div>
@@ -260,7 +265,7 @@ const MyGoal = () => {
             </div>
             <div style={{ display: 'none' }}>
                 <div ref={reportTemplateRef} style={{ display: 'contents' }}>
-                    <DownloadPage realistic={realistic} setRealistic={setRealistic} goal={goal} proffession={proffession} actions={actions} countdown2={countdown2}  />
+                    <DownloadPage realistic={realistic} countdown3={countdown} setRealistic={setRealistic} goal={goal} proffession={proffession} actions={actions} countdown2={countdown2}  />
                 </div>
             </div>
             <div className="buttonGoal">
