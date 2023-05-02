@@ -245,7 +245,6 @@ const MyGoal = () => {
                   onChange={handleDateChange}
                   format="YYYY-MM-DD"
                   defaultValue={dayjs("01/01/2015", dateFormatList[0])}
-                  // format={dateFormatList}
                 />
               </Space>
             </div>
