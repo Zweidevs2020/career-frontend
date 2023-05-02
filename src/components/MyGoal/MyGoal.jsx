@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { DatePicker, Space } from "antd";
+import { DatePicker, Space, Spin, message } from "antd";
 import dayjs from "dayjs";
 import jsPDF from 'jspdf';
 import { MyCareerGuidanceInputField } from "../commonComponents";
@@ -7,17 +7,19 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import DownloadPage from './DownloadPage';
 import { API_URL } from "../../utils/constants";
 import "./MyGoalStyle.css";
-import { getApiWithAuth } from "../../utils/api";
+import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import moment from 'moment';
 
 const MyGoal = () => {
   const reportTemplateRef = useRef(null);
 
   const [proffession, setProffession] = useState('');
+  const [loading, setLoading] = useState(false);
   const [actions, seActions] = useState('');
   const [goal, setGoal] = useState('');
   const [realistic, setRealistic] = useState(false);
   const [countdown, setCountdown] = useState('');
+  const [countdown3, setCountdown3] = useState('');
   const [countdown2, setCountdown2] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   
   useEffect(() => {
@@ -29,7 +31,7 @@ const MyGoal = () => {
     const intervalId = setInterval(() => {
       if (countdown) {
         const now = new Date().getTime();
-        const distance = countdown.toDate().getTime() - now;
+        const distance = countdown - now;
         if (distance > 0) {
           const days = Math.floor(distance / (1000 * 60 * 60 * 24));
           const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -47,25 +49,27 @@ const MyGoal = () => {
   }, [countdown]);
 
   const getUserGoals = async () => {
+    setLoading(true)
     const res= await getApiWithAuth(API_URL.GETUSERGOAL)
     if (res.data.data) {
       setGoal(res.data.data.goal);
       seActions(res.data.data.actions);
       setProffession(res.data.data.proffession);
       setRealistic(res.data.data.realistic);
-      
-      // const formattedDate = moment(res.data.data.countdown).format("M {$L: 'en', $u: undefined, $d: ddd MMM DD YYYY HH:mm:ss 'GMT'ZZ ($z), $x: {…}, $y: YYYY, …}");
-      // setCountdown(formattedDate);
+      setCountdown(new Date(res.data.data.countdown))
+      setCountdown3(dayjs(res.data.data.countdown).format("DD/MM/YYYY"));
+      setLoading(false)
     }
   }
-
-  console.log(countdown)
 
   dayjs.extend(customParseFormat);
   const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY", "DD-MM-YYYY", "DD-MM-YY"];
 
   function handleDateChange(date) {
-    setCountdown(date);
+    if (date) {
+      setCountdown(date.$d);
+      setCountdown3(date);
+    }
   }
 
   const DownloadBtn = () => {
@@ -82,12 +86,31 @@ const MyGoal = () => {
     });
   };
 
-  const SaveInput = () => {
-    console.log('print')
+  const SaveInput = async () => {
+    setLoading(true);
+    const data = {
+      'proffession': proffession,
+      'goal': goal,
+      'actions': actions,
+      'realistic': realistic,
+      'date': countdown
+    }
+    const response = await postApiWithAuth(API_URL.POSTUSERGOAL, data);
+
+    if (response.true === true) {
+      message.success("Goals set successfully");
+      setLoading(false);
+    } else {
+      setLoading(false);
+      message.success(response.data.detail);
+    }
   };
 
   return (
     <>
+    {loading ? 
+      <Spin className="spinStyle" />
+      :
       <div className="mainPage">
         <div className="topContainer">
           <div>
@@ -218,9 +241,10 @@ const MyGoal = () => {
               <Space direction="vertical" size={12}>
                 <DatePicker
                   className="dateLibr"
+                  // value={dayjs(countdown3, dateFormatList[0])}
                   onChange={handleDateChange}
+                  format="YYYY-MM-DD"
                   defaultValue={dayjs("01/01/2015", dateFormatList[0])}
-                  format={dateFormatList}
                 />
               </Space>
             </div>
@@ -262,7 +286,7 @@ const MyGoal = () => {
             </div>
             <div style={{ display: 'none' }}>
                 <div ref={reportTemplateRef} style={{ display: 'contents' }}>
-                    <DownloadPage realistic={realistic} setRealistic={setRealistic} goal={goal} proffession={proffession} actions={actions} countdown2={countdown2}  />
+                    <DownloadPage realistic={realistic} countdown3={countdown} setRealistic={setRealistic} goal={goal} proffession={proffession} actions={actions} countdown2={countdown2}  />
                 </div>
             </div>
             <div className="buttonGoal">
@@ -273,6 +297,7 @@ const MyGoal = () => {
           </div>
         </div>
       </div>
+    }
     </>
   );
 };
