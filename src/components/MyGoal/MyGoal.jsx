@@ -241,7 +241,7 @@ const MyGoal = () => {
               <Space direction="vertical" size={12}>
                 <DatePicker
                   className="dateLibr"
-                  // value={dayjs(countdown3, dateFormatList[0])}
+                  value={dayjs(countdown3, dateFormatList[0])}
                   onChange={handleDateChange}
                   format="YYYY-MM-DD"
                   defaultValue={dayjs("01/01/2015", dateFormatList[0])}
