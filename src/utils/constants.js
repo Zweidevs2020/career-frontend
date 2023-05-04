@@ -1,5 +1,6 @@
 export const API_URL = {
   GETUSER:'user/me',
+  GETUSER2:'user/me/',
   SIGNIN: 'auth/jwt/create/',
   GETUSERSCHOOL:'user/schools',
   SINGUPUSER:'user/signup/',
