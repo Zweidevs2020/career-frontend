@@ -23,6 +23,7 @@ import CvCoverLetter from "./components/CvCoverLetter/CvCoverLetter";
 import EducationalGuidance from "./components/EducationalGuidance";
 import TakeTest from "./components/TakeTest";
 import TakeSelfTest from "./components/TakeSelfTest";
+import MyStudy from "./components/MyStudy";
 function App() {
   return (
     <BrowserRouter>
@@ -146,6 +147,16 @@ function App() {
             <PrivateRoute>
               <Sidebar>
                 <TakeTest />
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+                <Route
+          path="/my-study"
+          element={
+            <PrivateRoute>
+              <Sidebar>
+                <MyStudy />
               </Sidebar>
             </PrivateRoute>
           }

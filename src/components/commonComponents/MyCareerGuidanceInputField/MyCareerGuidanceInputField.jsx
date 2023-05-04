@@ -37,15 +37,17 @@ const MyCareerGuidanceInputField = (props) => {
           }
           disabled={props.disabled}
           prefix={
-            <div style={{ color: "#D3D3D3" }}>
-              <Image
-                preview={false}
-                src={props.prefix}
-                width={20}
-                style={{ paddingRight: 5 }}
-              />
-              |
-            </div>
+            props.prefix ? (
+              <div style={{ color: "#D3D3D3" }}>
+                <Image
+                  preview={false}
+                  src={props.prefix}
+                  width={20}
+                  style={{ paddingRight: 5 }}
+                />
+                |
+              </div>
+            ) : null
           }
         />
       ) : (
@@ -62,15 +64,17 @@ const MyCareerGuidanceInputField = (props) => {
           onKeyDown={props.onKeyDown}
           disabled={props.disabled}
           prefix={
-            <div style={{ color: "#D3D3D3" }}>
-              <Image
-                preview={false}
-                src={props.prefix}
-                width={20}
-                style={{ paddingRight: 5 }}
-              />
-              |
-            </div>
+            props.prefix ? (
+              <div style={{ color: "#D3D3D3" }}>
+                <Image
+                  preview={false}
+                  src={props.prefix}
+                  width={20}
+                  style={{ paddingRight: 5 }}
+                />
+                |
+              </div>
+            ) : null
           }
         />
       )}

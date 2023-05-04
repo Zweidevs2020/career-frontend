@@ -1,0 +1,20 @@
+.showDateData{
+    color: white;
+    background-color: #1476B7;
+    border-radius: 5px;
+    min-height:20px;
+}
+.showDateData2{
+    display:flex;
+    justify-content:center;
+    align-items:center
+}
+
+.garage-title {
+    clear: both;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    white-space: nowrap;
+    width: 85%
+}

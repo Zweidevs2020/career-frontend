@@ -158,11 +158,11 @@ const Sidebar = ({ children, flags }) => {
     } else if (key === "CoverLater") {
       // navigate("/cover-letter");
     } else if (key === "SelfAssessment") {
-      // navigate("/self-assesment");
+      navigate("/self-assesment");
     } else if (key === "EducationalGuidance") {
       navigate("/educational-guidance");
     } else {
-      // navigate("MyStudy");
+      navigate("/my-study");
     }
   };
   useEffect(() => {
@@ -185,7 +185,7 @@ const Sidebar = ({ children, flags }) => {
     ) {
       setSelectedMenuItem("EducationalGuidance");
     } else {
-      setSelectedMenuItem("/my-study");
+      setSelectedMenuItem("MyStudy");
     }
   }, [location]);
 
