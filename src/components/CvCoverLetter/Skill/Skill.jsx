@@ -1,25 +1,91 @@
-import React from 'react';
-import { Select } from 'antd';
+import React, { useState } from "react";
+import "./Skill.css";
+import { Form, Select, Button } from "antd";
 
-const Skill = () => {
-    const skill = ['MS word' , 'Digital Marketing' , 'FreeLancer']
+const Skill = ({ setCurrent, current }) => {
+  const [selectOption, setSelectOption] = useState([]);
+  const { Option } = Select;
+
+  const optionArray = [
+    { label: "React.js", value: "React.js" },
+    { label: "Next.js", value: "Next.js" },
+    { label: "Antd", value: "Antd" },
+    { label: "Bootstrap", value: "Bootstrap" },
+    { label: "R Studio", value: "rStudio" },
+    { label: "Java", value: "java" },
+    { label: "Machine Learning", value: "Machine Learning" },
+    { label: "Data Science", value: "Data Science" },
+    { label: "Matlab", value: "Matlab" },
+  ];
+
+  const onsubmit = () => {
+    setCurrent(current + 1);
+  };
+
+  const prev = () => {
+    if (current != 1) setCurrent(current - 1);
+  };
+
+  const handleChange = (value) => {
+    setSelectOption(value);
+  };
   return (
     <>
-     <div class='w-[98%] h-[100px]  flex flex-col justify-center' >
-      <h1 class='font-bold text-[24px] ml-3 ' >Skills</h1>
-      <p class='ml-3 text-[#737373]' >Include All skills that you have</p>
-    </div>
+      <div className="flex flex-col justify-center">
+        <div>
+          <h1 className="skillsHead">Skills</h1>
+          <p className="skillsSubHeading">Include All skills that you have</p>
+        </div>
+        <div className="skillsForm">
+          <Form layout="vertical" onFinish={onsubmit}>
+            <div>
+              <Form.Item
+                label="Skill"
+                name="skills"
+                className="skillItemLable"
+                rules={[
+                  { required: true, message: "Please Select atleast 1 Option" },
+                ]}
+              >
+                <Select
+                  mode="multiple"
+                  placeholder="Select Option"
+                  onChange={handleChange}
+                  optionLabelProp="label"
+                >
+                  {optionArray.map((item) => {
+                    return (
+                      <Option value={item.value} label={item.label}>
+                        {item.label}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            </div>
 
-    <div class='w-[98%] h-[200px]  mt-5  flex flex-col justify-center' >
-      <h1 class='font-bold text-[18px] ml-3 ' >Skill*</h1>
-      <Select placeholder='Select One' mode='multiple' allowClear style={{width:'90%',height:'34px',marginLeft:'10px'}} >
-        {skill.map((skl,Index)=>{
-            return <Select.Option key={Index} value={skl} >{skl}</Select.Option>
-        })}
-      </Select>
-    </div>
+            <div className="skillsItemButton">
+              <Form.Item>
+                <Button className="skillsButton" type="primary" onClick={prev}>
+                  Perv
+                </Button>
+              </Form.Item>
+
+              <Form.Item>
+                <Button
+                  className="skillsButton"
+                  type="primary"
+                  htmlType="submit"
+                >
+                  Next
+                </Button>
+              </Form.Item>
+            </div>
+          </Form>
+        </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default Skill
+export default Skill;

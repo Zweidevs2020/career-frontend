@@ -34,7 +34,6 @@ const Sidebar = ({ children, flags }) => {
   const getUserData = async () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETUSER);
-    console.log("===========================te", response);
     if (response.data.status === 200) {
       setUserData(response.data.data);
       setLoading(false);

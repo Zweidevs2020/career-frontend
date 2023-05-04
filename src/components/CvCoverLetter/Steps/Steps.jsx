@@ -2,7 +2,6 @@ import React from "react";
 import "./Steps.css";
 
 const Steps = ({ current }) => {
-  console.log(current);
   return (
     <>
       <div className="steps">
