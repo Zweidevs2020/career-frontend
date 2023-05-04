@@ -1,0 +1,11 @@
+.showDateData{
+    color: white;
+    background-color: #1476B7;
+    border-radius: 5px;
+    min-height:20px;
+}
+.showDateData2{
+    display:flex;
+    justify-content:center;
+    align-items:center
+}

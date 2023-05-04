@@ -11,5 +11,6 @@ export const API_URL = {
   GETGOALS:'education/quizzes/',
   GETPSYCHOMETRICTEST:'/psychometric/test/',
   GETUSERGOAL: 'goals/',
-  POSTUSERGOAL: 'goals/'
+  POSTUSERGOAL: 'goals/',
+  ADDSLOTTABLE:'timetable/add-timeslot/'
 };

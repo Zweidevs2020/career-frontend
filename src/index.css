@@ -60,3 +60,6 @@ code {
 .ant-menu-light.ant-menu-root.ant-menu-inline {
   border-inline-end: none;
 }
+/* .fc-timegrid-event-harness > .fc-timegrid-event {
+  bottom: 100;
+} */
