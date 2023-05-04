@@ -52,7 +52,7 @@ const Sidebar = ({ children, flags }) => {
     } else if (key === "MyGoals") {
       navigate("/my-goals");
     } else if (key === "CoverLater") {
-      // navigate("/cover-letter");
+      navigate("/cover-letter");
     } else if (key === "SelfAssessment") {
       // navigate("/self-assesment");
     } else if (key === "EducationalGuidance") {
