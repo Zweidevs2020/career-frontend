@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Menu, Image } from "antd";
+import { Modal, Layout, Menu, Form, Image, Select, Typography, Popover, Input, Row, Col, message } from "antd";
 import mycareer from "../../../../assets/mycareer.png";
 import logout from "../../../../assets/logout.svg";
-
+import edit from "../../../../assets/edit.svg";
+import editwhite from "../../../../assets/editwhite.svg";
+import adthe from "../../../../assets/adthe.svg";
+import pass from "../../../../assets/pass.svg";
+import profileInput from "../../../../assets/profileInput.svg";
+import dropdownIcon from "../../../../assets/dropdownIcon.svg";
+import { convertBase64 } from "../../../../utils/helper";
 import { useLocation, useNavigate } from "react-router-dom";
 import { removeToken } from "../../../../utils/LocalStorage";
 import {
@@ -16,16 +22,38 @@ import {
 } from "../../../../utils/svg";
 import { API_URL } from "../../../../utils/constants";
 import "./SidebarStyle.css";
-import { getApiWithAuth } from "../../../../utils/api";
+import { getApiWithAuth, getApiWithoutAuth, patchApiWithAuth } from "../../../../utils/api";
 import MyCareerGuidanceButton from "../../MyCareerGuidanceButton";
 const { Content, Sider, Header } = Layout;
 const Sidebar = ({ children, flags }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState("Overview");
   const [userData, setUserData] = useState({});
+  const [updateData, setUpdateData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [schools, setSchools] = useState([]);
+
+  const handleEditClick = () => {
+    setEditMode(!editMode);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUpdateData({ ...updateData, [name]: value });
+  };
+
+  const handleSelect = (schoolValue) => {
+    setUpdateData({ ...updateData, school: schoolValue });
+  };
+
+  console.log("----",userData)
+
+  const { Title } = Typography;
 
   useEffect(() => {
     getUserData();
@@ -34,12 +62,88 @@ const Sidebar = ({ children, flags }) => {
   const getUserData = async () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETUSER);
-    console.log("===========================te", response);
     if (response.data.status === 200) {
       setUserData(response.data.data);
       setLoading(false);
     } else {
       setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getSchools();
+  }, []);
+
+  const getSchools = async () => {
+    const response = await getApiWithoutAuth(API_URL.GETUSERSCHOOL);
+    if (response.data.success) {
+      const school = response.data.data?.map((item) => {
+        return {
+          value: item.pk,
+          label: item.school,
+        };
+      });
+      setSchools(school);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleUpdate = async () => {
+    const response = await patchApiWithAuth(API_URL.GETUSER2, updateData);
+    setLoading(true);
+    if (response.data.success) {
+      const school = response.data.data?.map((item) => {
+        return {
+          value: item.pk,
+          label: item.school,
+        };
+      });
+      setSchools(school);
+      console.log(response.data)
+      setIsModalOpen(false);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    console.log(event)
+    // Check if the uploaded file is an image
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+
+      // if (event.fileList.length > 0) {
+      //   const base64 = await convertBase64(event.file);
+      //   setUpdateData({ ...userData, profile_image: base64 });
+      // }
+  
+      reader.onload = (event) => {
+        console.log(event)
+        const base64 = convertBase64(file);
+        setUpdateData({ ...updateData, profile_image: base64 });
+        // setData({ ...data, profile_image: base64 });
+        setImagePreview(event.target.result);
+        
+        // You can also upload the image to your server here
+      };
+  
+      // Read the file
+      reader.readAsDataURL(file);
+
+    } else {
+      // If the uploaded file is not an image, display an error message
+      message.warning("Please upload an image file");
     }
   };
 
@@ -84,6 +188,7 @@ const Sidebar = ({ children, flags }) => {
       setSelectedMenuItem("/my-study");
     }
   }, [location]);
+
   const logoutUser = async () => {
     removeToken();
     navigate("/");
@@ -254,7 +359,7 @@ const Sidebar = ({ children, flags }) => {
               Hello <strong>{userData.full_name}</strong>, welcome back!
             </p>
           </div>
-          <div className="img">
+          <div className="img" onClick={() => showModal()}>
             <div className="imgcard">
               <img src={userData.profile_image} className="cardprofile" />
               <div className="cardtext">
@@ -269,6 +374,113 @@ const Sidebar = ({ children, flags }) => {
         <Content className="marginContent">
           <div className="site-layout-background">{children}</div>
         </Content>
+        <Modal
+          className="modalStyleClass2"
+          width={800}
+          bodyStyle={{
+            background: "none",
+            display: "flex",
+            justifyContent: "center",
+          }}
+          open={isModalOpen}
+          // onCancel={handleCancel}
+          footer={[]}
+          // closeIcon={<img onClick={() => alert('asd')} src={edit} alt="" />}
+          title={
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Title level={3} style={{ marginLeft: '10px', marginBottom: '0px', textAlign: 'center', width: '100%', color: '#1476b7' }}>My Profile</Title>
+              <img onClick={handleEditClick} style={{ cursor: 'pointer' }} src={edit} alt="" />
+            </div>
+          }
+          visible={true}
+          onCancel={handleCancel}
+          closable={false}
+        >
+          <div className="modalInnerStyle">
+            <div style={{ alignSelf: "center", textAlign: "center" }}>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div style={{ position: 'relative' }}>
+                  <label htmlFor="fileUpload">
+                    <Popover content="Edit" placement="bottomRight" trigger="hover" overlayInnerStyle={{ display: 'flex', justifyContent: 'center' }}>
+                      <div style={{ position: 'absolute', top: '80%', left: '80%', transform: 'translate(-50%, -50%)', zIndex: 1, cursor: 'pointer' }}>
+                        <img src={editwhite} alt="Edit" style={{ width: '24px', height: '24px' }} />
+                      </div>
+                    </Popover>
+                  </label>
+                  {editMode && 
+                    <input type="file" id="fileUpload" style={{ display: "none" }} onChange={handleImageChange} />
+                  }
+                    {imagePreview ? (
+                    <img src={imagePreview} alt="Profile" className="cardprofile" style={{ borderRadius: '50%', width: '100px', height: '100px' }} />
+                  ) : (
+                    <img src={userData.profile_image} alt="Profile" className="cardprofile" style={{ borderRadius: '50%', width: '100px', height: '100px' }} />
+                  )}
+                  <div style={{ position: 'absolute', top: '0', left: '0', backgroundColor: 'rgba(0, 0, 255, 0.3)', width: '100%', height: '100%', borderRadius: '50%' }}></div>
+                </div>
+              </div>
+              <div className="mt-4">
+                Lorem ipsum is a placeholder text commonly used to demonstrate the
+                visual form of a document.
+              </div>
+              <Row gutter={[16, 16]} justify="center" className="mt-4">
+                <Col xs={24} md={12}>
+                  <Input value={updateData.full_name ? updateData.full_name : userData.full_name} name="full_name" onChange={(e) => handleChange(e)} prefix={<img src={profileInput} style={{ marginRight: '15px' }} alt="" />} disabled={!editMode} style={{ padding: '15px 10px' }} placeholder="Full Name" />
+                </Col>
+                <Col xs={24} md={12}>
+                  <Input value={updateData.email ? updateData.email : userData.email} name="email" onChange={(e) => handleChange(e)} prefix={<img src={adthe} style={{ marginRight: '15px' }} alt="" />} disabled={!editMode} style={{ padding: '15px 10px' }} placeholder="Email" />
+                </Col>
+                <Col xs={24} md={12}>
+                  <Input name="password" type="password" prefix={<img src={pass} style={{ marginRight: '15px' }} alt="" />} disabled={!editMode} style={{ padding: '15px 10px' }} placeholder="***************" />
+                </Col>
+                <Col xs={24} md={12}>
+                  {/* <Input name="school" onChange={(e) => handleChange(e)} prefix={<div style={{ marginRight: '35px' }} />} disabled={!editMode} style={{ padding: '15px 10px' }} placeholder="School" /> */}
+                  <Form.Item
+                    name="school"
+                    rules={[{ required: true, message: "Please Select School!" }]}
+                  >
+                    <Select
+                      placeholder={"School"}
+                      options={schools}
+                      name="school"
+                      className="inputSelectFieldStyle"
+                      onChange={handleSelect}
+                      bordered={false}
+                      value={userData?.school}
+                      
+                      // defaultValue={userData?.school}
+                      suffixIcon={
+                        <Image
+                          preview={false}
+                          src={dropdownIcon}
+                          width={15}
+                          style={{ marginRight: 10 }}
+                        />
+                      }
+                    />
+                  </Form.Item>
+          
+                </Col>
+              </Row>
+
+              <div className="mt-5" style={{display: 'flex'}}>
+                <MyCareerGuidanceButton
+                  label="Update"
+                  className="takebutton"
+                  type="button"
+                  htmlType="button"
+                  onClick={handleUpdate}
+                />
+                <MyCareerGuidanceButton
+                  label="Cancel"
+                  className="viewResultButton"
+                  type="button"
+                  htmlType="button"
+                  onClick={handleCancel}
+                />
+              </div>
+            </div>
+          </div>
+        </Modal>
       </Layout>
     </Layout>
   );
