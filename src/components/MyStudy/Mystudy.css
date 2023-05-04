@@ -9,3 +9,12 @@
     justify-content:center;
     align-items:center
 }
+
+.garage-title {
+    clear: both;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    white-space: nowrap;
+    width: 85%
+}
