@@ -13,5 +13,6 @@ export const API_URL = {
   GETPSYCHOMETRICTEST:'/psychometric/test/',
   GETUSERGOAL: 'goals/',
   POSTUSERGOAL: 'goals/',
-  ADDSLOTTABLE:'timetable/add-timeslot/'
+  ADDSLOTTABLE:'timetable/add-timeslot/',
+  DASHBOARDTESTTYPES:'psychometric/testType/'
 };

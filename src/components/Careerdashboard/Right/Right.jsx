@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { MyCareerGuidanceButton } from "../../../components/commonComponents";
 import { useLocation, useNavigate } from "react-router-dom";
 import { API_URL } from "../../../utils/constants";
 import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
@@ -9,8 +8,6 @@ const Right = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [educationGuidance, setEducationGuidance] = useState([]);
-  const [singlequizData, setSinglequizData] = useState({});
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     getducationGuidance();
@@ -18,11 +15,7 @@ const Right = () => {
 
   const getducationGuidance = async () => {
     setLoading(true);
-    const response = await getApiWithAuth(API_URL.GETGOALS);
-    console.log(
-      "==================================================res",
-      response
-    );
+    const response = await getApiWithAuth(API_URL.DASHBOARDTESTTYPES);
     if (response.data.status === 200) {
       setEducationGuidance(response.data.data);
       setLoading(false);
@@ -39,120 +32,70 @@ const Right = () => {
             Self Assessment
           </p>
         </div>
-        <div className="grid grid grid-cols-12 gap-2 mt-3">
-          {educationGuidance.map((item) => {
-            return (
-              <div
-                key={item.id}
-                class="md:col-span-12 md:ms-3 lg:col-span-9 col-span-6 h-[140px] w-[160px] bg-blue-200 rounded-xl flex flex-col items-center justify-around"
-              >
-                <div class="h-[50px] w-[90%] flex flex-col items-start justify-center ">
-                  <p class="text-[16px] sm:text-[14px] lg:text-[10px] text-slate-500 ml-2 font-lighter">
-                    Inflluencing/
-                  </p>
-                  <p class="text-[16px] sm:text-[14px] lg:text-[10px] text-slate-500 ml-2 font-lighter">
-                    Persuasive
-                  </p>
-                </div>
-                <div class="h-[50px] w-[90%] flex items-center justify-around">
-                  <div class="h-[40px] w-[40%]  flex items-center justify-start ">
-                    <div class="h-6 w-1 bg-[#006Ed3] ml-2 "></div>
+        <div className="flex flex-wrap justify-center ">
+          {loading ? (
+            <Spin className="spinStyle" />
+          ) : educationGuidance.length === 0 ? (
+            <div className="quizDetailsStyle">No Data Found</div>
+          ) : (
+            educationGuidance.map((item) => {
+              return (
+                <div key={item.id}>
+                  <div
+                    style={{
+                      background: "#EBF5FF",
+                      borderRadius: "20px",
+                      width: 180,
+                      height: 180,
+                      display: "flex",
+                      justifyContent: "center",
+                      margin: 10,
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "80%",
+                        height: 160,
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-around",
+                      }}
+                    >
+                      <div
+                        style={{
+                          color: "#89AEC4",
+                          fontSize: "16px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        {item.type}
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div class="h-7 w-1 bg-[#006Ed3] ml-2 "></div>
+                        <div
+                          style={{
+                            color: "#006ED3",
+                            fontSize: "40px",
+                            fontWeight: "700",
+                          }}
+                        >
+                          {" "}
+                          {item.score?.total ? item.score.total : 0}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="h-[40px] w-[40%] flex items-center justify-center">
-                    <p class="text-lg text-[32px] font-bold text-[#006ED3]">
-                      02
-                    </p>
-                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          )}
         </div>
-        {/* <div class='h-[510px] w-[98%]' >
-       <div class='h-[140px] w-[40%] sm:h-[130px] md:h-[140px] md:w-[35%] lg:w-[40%] lg:h-[130px] sm:w-[40%] bg-blue-200  rounded-xl flex flex-col items-center justify-around'>
-        <div class='h-[50px] w-[90%] flex flex-col items-start justify-center ' >
-            <p class='text-[16px] sm:text-[14px] lg:text-[10px] text-slate-500 ml-2 font-lighter' >Artistic/</p>
-            <p class='text-[16px] sm:text-[14px] lg:text-[10px] text-slate-500 ml-2 font-lighter' >Creative</p>
-        </div>
-        <div class='h-[50px] w-[90%] flex items-center justify-around' >
-            <div class='h-[40px] w-[40%] flex items-center justify-start ' >
-            <div class='h-6 w-1 bg-[#006Ed3] ml-2 '></div>
-            </div>
-            <div class='h-[40px] w-[40%] flex items-center justify-center' >
-                <p class='text-lg text-[32px] font-bold text-[#006ED3]' >45</p>
-            </div>
-        </div>
-        </div> 
-       <div class='h-[140px] w-[40%] sm:h-[130px] sm:w-[40%] md:h-[140px] md:w-[35%] lg:w-[40%] lg:h-[130px] bg-blue-200   rounded-xl flex flex-col items-center justify-around '>
-       <div class='h-[50px] w-[90%] flex flex-col items-start justify-center ' >
-            <p class='text-[16px] sm:text-[14px] lg:text-[10px] text-slate-500 ml-2 font-lighter' >Inflluencing/</p>
-            <p class='text-[16px] sm:text-[14px] lg:text-[10px] text-slate-500 ml-2 font-lighter' >Persuasive</p>
-        </div>
-        <div class='h-[50px] w-[90%] flex items-center justify-around' >
-        <div class='h-[40px] w-[40%]  flex items-center justify-start ' >
-            <div class='h-6 w-1 bg-[#006Ed3] ml-2 '></div>
-            </div>
-            <div class='h-[40px] w-[40%] flex items-center justify-center' >
-                <p class='text-lg text-[32px] font-bold text-[#006ED3]' >02</p>
-            </div>
-        </div>
-        </div> 
-       <div class='h-[140px] w-[40%] sm:h-[130px] sm:w-[40%] md:h-[140px] md:w-[35%] lg:w-[40%] lg:h-[130px] bg-blue-200   rounded-xl  flex flex-col items-center justify-around'>
-       <div class='h-[50px] w-[90%] flex flex-col items-start justify-center ' >
-            <p class='text-[16px] sm:text-[14px] lg:text-[10px] text-slate-500 ml-2 font-lighter' >Socail</p>
-        </div>
-        <div class='h-[50px] w-[90%] flex items-center justify-around' >
-        <div class='h-[40px] w-[40%]  flex items-center justify-start ' >
-            <div class='h-6 w-1 bg-[#006Ed3] ml-2 '></div>
-            </div>
-            <div class='h-[40px] w-[40%] flex items-center justify-center' >
-                <p class='text-lg text-[32px] font-bold text-[#006ED3]' >124</p>
-            </div>
-        </div>
-        </div> 
-       <div class='h-[140px] w-[40%] sm:h-[130px] sm:w-[40%] md:h-[140px] md:w-[35%] lg:w-[40%] lg:h-[130px] bg-blue-200   rounded-xl  flex flex-col items-center justify-around'>
-       <div class='h-[50px] w-[90%] flex flex-col items-start justify-center ' >
-            <p class='text-[16px] sm:text-[14px] lg:text-[10px] text-slate-500 ml-2 font-lighter' >Clierical/</p>
-            <p class='text-[16px] sm:text-[14px] lg:text-[10px] text-slate-500 ml-2 font-lighter' >Organisational</p>
-        </div>
-        <div class='h-[50px] w-[90%] flex items-center justify-around' >
-        <div class='h-[40px] w-[40%] flex items-center justify-start ' >
-            <div class='h-6 w-1 bg-[#006Ed3] ml-2 '></div>
-            </div>
-            <div class='h-[40px] w-[40%] flex items-center justify-center' >
-                <p class='text-lg text-[32px] font-bold text-[#006ED3]' >34</p>
-            </div>
-        </div>
-        </div> 
-       <div class='h-[140px] w-[40%] sm:h-[130px] sm:w-[40%] md:h-[140px] md:w-[35%] lg:w-[40%] lg:h-[130px] bg-blue-200   rounded-xl  flex flex-col items-center justify-around'>
-       <div class='h-[50px] w-[90%] flex flex-col items-start justify-center ' >
-            <p class='text-[16px] sm:text-[14px] lg:text-[10px] text-slate-500 ml-2 font-lighter' >Manual/</p>
-            <p class='text-[16px] sm:text-[14px] lg:text-[10px] text-slate-500 ml-2 font-lighter' >Practical</p>
-        </div>
-        <div class='h-[50px] w-[90%] flex items-center justify-around' >
-        <div class='h-[40px] w-[40%]  flex items-center justify-start ' >
-            <div class='h-6 w-1 bg-[#006Ed3] ml-2 '></div>
-            </div>
-            <div class='h-[40px] w-[40%] flex items-center justify-center' >
-                <p class='text-lg text-[32px] font-bold text-[#006ED3]' >231</p>
-            </div>
-        </div>
-        </div> 
-       <div class='h-[140px] w-[40%] sm:h-[130px] sm:w-[40%] md:h-[140px] md:w-[35%] lg:w-[40%] lg:h-[130px] bg-blue-200   rounded-xl  flex flex-col items-center justify-around'>
-       <div class='h-[50px] w-[90%] flex flex-col items-start justify-center ' >
-            <p class='text-[16px] sm:text-[14px] lg:text-[10px] text-slate-500 ml-2 font-lighter' >Understanding/</p>
-            <p class='text-[16px] sm:text-[14px] lg:text-[10px] text-slate-500 ml-2 font-lighter' >Investigative</p>
-        </div>
-        <div class='h-[50px] w-[90%] flex items-center justify-around' >
-        <div class='h-[40px] w-[40%]  flex items-center justify-start ' >
-            <div class='h-6 w-1 bg-[#006Ed3] ml-2 '></div>
-            </div>
-            <div class='h-[40px] w-[40%] flex items-center justify-center' >
-                <p class='text-lg text-[32px] font-bold text-[#006ED3]' >54</p>
-            </div>
-        </div>
-        </div> 
-    </div> */}
       </div>
     </>
   );
