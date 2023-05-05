@@ -53,6 +53,8 @@ const Sidebar = ({ children, flags }) => {
   const [loading, setLoading] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [schools, setSchools] = useState([]);
+  const [loading2, setLoading2] = useState(false);
+
   const { Title } = Typography;
 
   const handleEditClick = () => {
@@ -114,14 +116,15 @@ const Sidebar = ({ children, flags }) => {
   };
 
   const handleUpdate = async () => {
-    setLoading(true);
+    setLoading2(true);
     const response = await patchApiWithAuth(API_URL.GETUSER2, updateData);
     if (response.data.success) {
       setIsModalOpen(false);
       getUserData();
-      setLoading(false);
+      setLoading2(false);
+      message.success('Data Upadte')
     } else {
-      setLoading(false);
+      setLoading2(false);
     }
   };
 
@@ -544,6 +547,7 @@ const Sidebar = ({ children, flags }) => {
                   className="takebutton"
                   type="button"
                   htmlType="button"
+                  loading={loading2}
                   onClick={handleUpdate}
                 />
                 <MyCareerGuidanceButton
