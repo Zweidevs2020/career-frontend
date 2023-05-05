@@ -1,5 +1,5 @@
 
-.skillsHead{
+.interestHead{
     font-family: 'Poppins';
     font-style: normal;
     font-weight: 600;
@@ -10,7 +10,7 @@
     margin-top: 2%;
 }
 
-.skillsSubHeading{
+.interestSubHeading{
     font-family: 'Poppins';
     font-style: normal;
     font-weight: 400;
@@ -21,18 +21,18 @@
     margin-top: 0.5%;
 }
 
-.skillsForm{
+.interestForm{
     padding: 0px 20px 0px 20px;
     margin-top: 3%;
 }
 
-.skillsItemButton{
+.interestItemButton{
     margin-top: 3%;
     display: flex;
     justify-content: space-between;
 }
 
-.skillsButton{
+.interestButton{
     border: 1px solid grey;
     width: 144px;
     height: 52px;
@@ -41,16 +41,7 @@
     border-radius: 12px;
 }
 
-.skillsButtonBack{
-    border: 1px solid #1476B7;
-    width: 144px;
-    height: 52px;
-    font-size: 14px;
-    border-radius: 12px;
-    color: #1476B7; 
-}
-
-.skillItemLable .ant-form-item-label{
+.interestItemLable .ant-form-item-label{
     text-align: start !important;
     font-weight: 600 !important;
     font-size: 14px !important;
@@ -58,4 +49,12 @@
     font-style: normal !important;
 }
 
+.interestButtonBack{
+    border: 1px solid #1476B7;
+    width: 144px;
+    height: 52px;
+    font-size: 14px;
+    border-radius: 12px;
+    color: #1476B7; 
+}
 

@@ -66,8 +66,12 @@ const Skill = ({ setCurrent, current }) => {
 
             <div className="skillsItemButton">
               <Form.Item>
-                <Button className="skillsButton" type="primary" onClick={prev}>
-                  Perv
+                <Button
+                  className="skillsButtonBack"
+                  type="primary"
+                  onClick={prev}
+                >
+                  BACK
                 </Button>
               </Form.Item>
 
@@ -77,7 +81,7 @@ const Skill = ({ setCurrent, current }) => {
                   type="primary"
                   htmlType="submit"
                 >
-                  Next
+                  NEXT
                 </Button>
               </Form.Item>
             </div>

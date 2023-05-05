@@ -4,17 +4,10 @@ import PersonalProfile from "./PersonalProfile/PersonalProfile";
 import Skill from "./Skill/Skill";
 import "./CvCoverLetter.css";
 import Steps from "./Steps/Steps";
+import Interest from "./Interests/Interest";
 
 const CvCoverLetter = () => {
   const [current, setCurrent] = useState(1);
-
-  // const next = () => {
-  //   if (current != 6) setCurrent(current + 1);
-  // };
-
-  // const prev = () => {
-  //   if (current != 1) setCurrent(current - 1);
-  // };
 
   return (
     <>
@@ -40,17 +33,11 @@ const CvCoverLetter = () => {
             <PersonalProfile setCurrent={setCurrent} current={current} />
           ) : current == 2 ? (
             <Skill setCurrent={setCurrent} current={current} />
+          ) : current == 3 ? (
+            <Interest setCurrent={setCurrent} current={current} />
           ) : (
             ""
           )}
-
-          {/* <Button
-            style={{ border: "1px solid grey", color: "black" }}
-            type="primary"
-            onClick={() => prev()}
-          >
-            Prev
-          </Button> */}
         </div>
       </div>
     </>
