@@ -31,6 +31,7 @@ const MyStudy = () => {
   useEffect(() => {
     getCalanderData();
   }, []);
+
   const getCurrentWeek = () => {
     var currentDate = moment();
     var weekStart = currentDate.clone().startOf("week");
@@ -99,7 +100,6 @@ const MyStudy = () => {
   };
   const createNewEvent = async () => {
     setLoadingBooking(true);
-    console.log(selectedTime.$d, dayjs(selectedTime.$d).format("HH:mm:ss"));
     let startTime = dayjs(selectedTime.$d).format("HH:mm:ss");
     let endTime = dayjs(selectedEndTime.$d).format("HH:mm:ss");
     const response = await postApiWithAuth(API_URL.ADDSLOTTABLE, {
@@ -110,9 +110,15 @@ const MyStudy = () => {
     });
     if (response.data.status === 201) {
       message.success("Booking Added");
-      getCalanderData();
+      setSelectedTime("");
+      setSelectedEndTime("");
+      setWeekDay("");
+      setTitle("");
       setOpenBooking(false);
       setLoadingBooking(false);
+      setData([]);
+      setDatatime([]);
+      getCalanderData();
     } else {
       setLoadingBooking(false);
       message.error(response.data.message[0]);
@@ -175,7 +181,7 @@ const MyStudy = () => {
               value={selectedTime}
               use12Hours={true}
               minuteStep={15}
-              format="HH:mm"
+              format="h:mm a"
               style={{ width: 200 }}
               className="inputFieldStyle"
             />
@@ -184,7 +190,7 @@ const MyStudy = () => {
               value={selectedEndTime}
               use12Hours={true}
               minuteStep={15}
-              format="HH:mm"
+              format="h:mm a"
               className="inputFieldStyle"
               style={{ width: 200 }}
             />

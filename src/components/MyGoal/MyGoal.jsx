@@ -105,12 +105,12 @@ const MyGoal = () => {
     };
     const response = await postApiWithAuth(API_URL.POSTUSERGOAL, data);
 
-    if (response.true === true) {
+    if (response.data.status === 200) {
       message.success("Goals set successfully");
       setLoading(false);
     } else {
       setLoading(false);
-      message.success(response.data.detail);
+      message.error(response.data.detail);
     }
   };
 
