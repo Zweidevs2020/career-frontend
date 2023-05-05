@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Input, Button } from "antd";
 import "./PersonalProfile.css";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
+import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
+import { API_URL } from "../../../utils/constants";
 
 const { TextArea } = Input;
 
@@ -22,8 +24,23 @@ const PersonalProfile = ({ setCurrent, current }) => {
   };
 
   const onSubmit = () => {
+    handleUpdateApi();
     setCurrent(current + 1);
   };
+
+  const handleUpdateApi = async () => {
+    const respose = await postApiWithAuth(API_URL.POSTPROFILE, profileObject);
+    console.log(respose);
+  };
+
+  const handleGetApi = async () => {
+    const response = await getApiWithAuth(API_URL.GETPROFILE);
+    console.log(response);
+  };
+
+  useEffect(() => {
+    handleGetApi();
+  }, []);
 
   return (
     <>

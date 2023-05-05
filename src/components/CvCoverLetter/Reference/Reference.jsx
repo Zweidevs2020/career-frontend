@@ -5,7 +5,9 @@ import "./Reference.css";
 
 const Reference = ({ setCurrent, current }) => {
   const [selectOption, setSelectOption] = useState([]);
-
+  const [referenceData, setReferenceData] = useState({});
+  const [referArray, setReferArray] = useState([]);
+  const [index, setIndex] = useState(0);
   const { Option } = Select;
 
   const onsubmit = () => {
@@ -25,85 +27,100 @@ const Reference = ({ setCurrent, current }) => {
     setSelectOption(arr);
   };
 
-  const onChangeHandleInput = (e) => {
+  const onChangeHandleInput = (e, arrayIndex) => {
     const { name, value } = e.target;
+    setIndex(arrayIndex);
+    setReferenceData({ ...referenceData, [name]: value });
   };
 
-  const referenceItems = () => {
+  useEffect(() => {
+    if (Object.keys(referenceData).length > 0) {
+      let filterData = referArray.filter((item) => item.index !== index);
+      filterData.push({
+        index: index,
+        dataValue: referenceData,
+      });
+      setReferArray(filterData);
+    }
+  }, [referenceData]);
+
+  const referenceItems = (item) => {
     return (
       <>
-        <div className="refFormEmail">
-          <div className="refFormEmailItem">
-            <Form.Item
-              label="Name"
-              name="name"
-              className="refItemLable"
-              rules={[{ required: true, message: "Please input name!" }]}
-            >
-              <MyCareerGuidanceInputField
-                placeholder="Danial Brot"
-                type="input"
+        <div style={{ marginTop: "30px" }}>
+          <div className="refFormEmail">
+            <div className="refFormEmailItem">
+              <Form.Item
+                label="Name"
                 name="name"
-                onChange={onChangeHandleInput}
-                inputValue={""}
-                isPrefix={false}
-              />
-            </Form.Item>
-          </div>
-          <div className="refFormEmailItem">
-            <Form.Item
-              label="Position"
-              name="position"
-              className="refItemLable"
-              rules={[{ required: true, message: "Please input position!" }]}
-              style={{ marginBottom: "20px" }}
-            >
-              <MyCareerGuidanceInputField
-                placeholder="e.g H&M"
-                type="input"
+                className="refItemLable"
+                rules={[{ required: true, message: "Please input name!" }]}
+              >
+                <MyCareerGuidanceInputField
+                  placeholder="Danial Brot"
+                  type="input"
+                  name="name"
+                  onChange={(e) => onChangeHandleInput(e, item)}
+                  inputValue={referArray[item]?.name}
+                  isPrefix={false}
+                />
+              </Form.Item>
+            </div>
+            <div className="refFormEmailItem">
+              <Form.Item
+                label="Position"
                 name="position"
-                onChange={onChangeHandleInput}
-                inputValue={""}
-                isPrefix={false}
-              />
-            </Form.Item>
+                className="refItemLable"
+                rules={[{ required: true, message: "Please input position!" }]}
+                style={{ marginBottom: "20px" }}
+              >
+                <MyCareerGuidanceInputField
+                  placeholder="e.g H&M"
+                  type="input"
+                  name="position"
+                  onChange={(e) => onChangeHandleInput(e, item)}
+                  inputValue={referArray[item]?.position}
+                  isPrefix={false}
+                />
+              </Form.Item>
+            </div>
           </div>
-        </div>
-        <div className="refFormEmail">
-          <div className="refFormEmailItem">
-            <Form.Item
-              label="Contact Phone"
-              name="contact"
-              className="refItemLable"
-              rules={[{ required: true, message: "Please input name!" }]}
-            >
-              <MyCareerGuidanceInputField
-                placeholder="+xx-xxx-xxx-xxxx"
-                type="input"
-                name="phone"
-                onChange={onChangeHandleInput}
-                inputValue={""}
-                isPrefix={false}
-              />
-            </Form.Item>
-          </div>
-          <div className="refFormEmailItem">
-            <Form.Item
-              label="Contact Email"
-              name="email"
-              className="refItemLable"
-              rules={[{ required: true, message: "Please input position!" }]}
-              style={{ marginBottom: "20px" }}
-            >
-              <MyCareerGuidanceInputField
-                placeholder="xyz@gmail.com"
-                type="input"
+          <div className="refFormEmail">
+            <div className="refFormEmailItem">
+              <Form.Item
+                label="Contact Phone"
+                name="contact"
+                className="refItemLable"
+                rules={[{ required: true, message: "Please input name!" }]}
+              >
+                <MyCareerGuidanceInputField
+                  placeholder="+xx-xxx-xxx-xxxx"
+                  type="input"
+                  name="phone"
+                  onChange={(e) => onChangeHandleInput(e, item)}
+                  inputValue={referArray[item]?.phone}
+                  isPrefix={false}
+                />
+              </Form.Item>
+            </div>
+            <div className="refFormEmailItem">
+              <Form.Item
+                label="Contact Email"
                 name="email"
-                onChange={onChangeHandleInput}
-                inputValue={""}
-                isPrefix={false}
-              />
-            </Form.Item>
+                className="refItemLable"
+                rules={[{ required: true, message: "Please input position!" }]}
+                style={{ marginBottom: "20px" }}
+              >
+                <MyCareerGuidanceInputField
+                  placeholder="xyz@gmail.com"
+                  type="input"
+                  name="email"
+                  onChange={(e) => onChangeHandleInput(e, item)}
+                  inputValue={referArray[item]?.email}
+                  isPrefix={false}
+                />
+              </Form.Item>
+            </div>
           </div>
         </div>
       </>
@@ -148,7 +165,7 @@ const Reference = ({ setCurrent, current }) => {
             <div>
               {selectOption.map((item) => {
                 {
-                  return referenceItems();
+                  return referenceItems(item);
                 }
               })}
             </div>
