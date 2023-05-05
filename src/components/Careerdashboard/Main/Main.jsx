@@ -4,14 +4,13 @@ import imgcard from "../../../assets/imgcard.svg";
 import imgcard2 from "../../../assets/imgcard2.svg";
 import imgcard3 from "../../../assets/imgcard3.svg";
 import imgcard4 from "../../../assets/imgcard4.svg";
-import bokimg from "../../../assets/bokimg.svg";
-import editimg from "../../../assets/editimg.svg";
 import winningCup from "../../../assets/winningCup.svg";
 import { MyCareerGuidanceButton } from "../../../components/commonComponents";
 import { useLocation, useNavigate } from "react-router-dom";
 import { API_URL } from "../../../utils/constants";
-import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
+import { getApiWithAuth } from "../../../utils/api";
 import { Spin, Modal } from "antd";
+import bookImage from "../../../assets/bookImage.png";
 
 const Main = () => {
   const navigate = useNavigate();
@@ -27,10 +26,6 @@ const Main = () => {
   const getducationGuidance = async () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETGOALS);
-    console.log(
-      "==================================================res",
-      response
-    );
     if (response.data.status === 200) {
       setEducationGuidance(response.data.data);
       setLoading(false);
@@ -116,19 +111,10 @@ const Main = () => {
                 key={item.id}
                 className="h-[60px] w-[90%] mt-3 bg-[#F7F7F7] sm:ms-4 rounded-lg flex items-center justify-around sm:h-[50px] lg:h-[60px] px-2 "
               >
-                <div className="h-[45px] w-[15%] sm:h-[25px] sm:w-[16%] md:h-[35px] md:w-[16%] lg:h-[35px] lg:w-[18%] bg-blue-300 rounded-lg flex items-center justify-center">
-                  {!item.complete ? (
-                    <img
-                      src={bokimg}
-                      className="h-[20px] sm:h-[12px] md:h-[15px] lg:h-[16px]"
-                    />
-                  ) : (
-                    <img
-                      src={editimg}
-                      className="h-[25px] sm:h-[14px] md:h-[17px] lg:h-[17px]"
-                    />
-                  )}
-                </div>
+                  <img
+                    src={bookImage}
+                    className="h-[70%] "
+                  />
                 <div className="h-[45px] w-[50%]  flex flex-col items-start sm:h-[30px]  md:h-[35px] lg:h-[35px]">
                   <p className="text-[#303030] sm:text-[12px] md:text-[15px]  lg:text-[13px] font-bold">
                     {item.name}
