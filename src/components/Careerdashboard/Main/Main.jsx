@@ -70,7 +70,7 @@ const Main = () => {
         <div
           className="col-span-6  rounded-xl"
           onClick={() => {
-            navigate("/cao-calculator");
+            navigate("/my-goals");
           }}
         >
           <img src={imgcard3} className=" bg-cover" />
@@ -78,16 +78,16 @@ const Main = () => {
         <div
           className="col-span-6  rounded-xl"
           onClick={() => {
-            navigate("/cao-calculator");
+            navigate("/my-study");
           }}
         >
           <img src={imgcard2} className=" bg-cover" />
         </div>
         <div
           className="col-span-6  rounded-xl"
-          onClick={() => {
-            navigate("/cao-calculator");
-          }}
+          // onClick={() => {
+          //   navigate("/cao-calculator");
+          // }}
         >
           <img src={imgcard4} className=" bg-cover" />
         </div>

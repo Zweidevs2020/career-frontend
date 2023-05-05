@@ -57,13 +57,12 @@ const MyGoal = () => {
       setProffession(res.data.data.proffession);
       setRealistic(res.data.data.realistic);
       setCountdown(new Date(res.data.data.countdown))
-      setCountdown3(dayjs(res.data.data.countdown).format("DD/MM/YYYY"));
+      setCountdown3(dayjs(res.data.data.countdown).format("YYYY-MM-DD"));
       setLoading(false)
     }
   }
 
   dayjs.extend(customParseFormat);
-  const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY", "DD-MM-YYYY", "DD-MM-YY"];
 
   function handleDateChange(date) {
     if (date) {
@@ -241,10 +240,10 @@ const MyGoal = () => {
               <Space direction="vertical" size={12}>
                 <DatePicker
                   className="dateLibr"
-                  value={dayjs(countdown3, dateFormatList[0])}
+                  value={dayjs(countdown3, "YYYY-MM-DD")}
                   onChange={handleDateChange}
                   format="YYYY-MM-DD"
-                  defaultValue={dayjs("01/01/2015", dateFormatList[0])}
+                  // defaultValue={dayjs("01/01/2015", "YYYY-MM-DD")}
                 />
               </Space>
             </div>
