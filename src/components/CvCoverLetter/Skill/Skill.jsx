@@ -29,6 +29,7 @@ const Skill = ({ setCurrent, current }) => {
   const handleChange = (value) => {
     setSelectOption(value);
   };
+
   return (
     <>
       <div className="flex flex-col justify-center">
@@ -55,7 +56,11 @@ const Skill = ({ setCurrent, current }) => {
                 >
                   {optionArray.map((item) => {
                     return (
-                      <Option value={item.value} label={item.label}>
+                      <Option
+                        value={item.value}
+                        key={item.value}
+                        label={item.label}
+                      >
                         {item.label}
                       </Option>
                     );

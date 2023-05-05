@@ -55,7 +55,6 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     onChange={onChangeHandle}
                     inputValue={profileObject.full_name}
                     isPrefix={false}
-                    className={"profileFormText"}
                   />
                 </Form.Item>
               </div>

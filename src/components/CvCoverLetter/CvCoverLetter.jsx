@@ -5,6 +5,7 @@ import Skill from "./Skill/Skill";
 import "./CvCoverLetter.css";
 import Steps from "./Steps/Steps";
 import Interest from "./Interests/Interest";
+import Reference from "./Reference/Reference";
 
 const CvCoverLetter = () => {
   const [current, setCurrent] = useState(1);
@@ -35,6 +36,8 @@ const CvCoverLetter = () => {
             <Skill setCurrent={setCurrent} current={current} />
           ) : current == 3 ? (
             <Interest setCurrent={setCurrent} current={current} />
+          ) : current == 4 ? (
+            <Reference setCurrent={setCurrent} current={current} />
           ) : (
             ""
           )}

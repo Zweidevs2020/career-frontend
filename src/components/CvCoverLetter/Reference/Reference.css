@@ -1,0 +1,50 @@
+.refHead{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #474749;
+    margin-left: 1.6%;
+    margin-top: 2%;
+}
+
+.refSubHeading{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    color: #737373;
+    margin-left: 1.6%;
+    margin-top: 0.5%;
+}
+
+.refForm{
+    padding: 0px 20px 0px 20px;
+    margin-top: 3%;
+}
+
+
+.refFormEmail{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    }
+    
+    .refFormEmailItem{
+        width: 49%
+    }
+    
+    .refItemLable .ant-form-item-label{
+        text-align: start !important;
+        font-weight: 600 !important;
+        font-size: 14px !important;
+        font-family: 'Inter' !important;
+        font-style: normal !important;
+    }
+    
+    .refFormItem{
+        margin-top: 24px;
+    }
+    
