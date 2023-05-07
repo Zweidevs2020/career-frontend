@@ -22,17 +22,16 @@
 
 .eduForm{
     padding: 0px 20px 0px 20px;
-    margin-top: 5%;
 }
 
 
-.eduFormEmail{
+.eduFormDouble{
     display: flex;
     width: 100%;
     justify-content: space-between;
     }
     
- .eduFormEmailItem{
+ .eduFormDoubleItem{
   width: 49%;
  }
     

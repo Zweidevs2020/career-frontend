@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Form, Select, Button } from "antd";
+import { Form, Button, DatePicker } from "antd";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
 import "./Education.css";
 
 const Education = ({ setCurrent, current }) => {
-  const [selectOption, setSelectOption] = useState([]);
   const [educationData, setEducationData] = useState({});
-  const [referArray, setReferArray] = useState([]);
+  const [educationArray, setEducationArray] = useState([
+    { index: 0, dataValue: { schoolName: "", monYear: "", examTaken: "" } },
+  ]);
   const [index, setIndex] = useState(0);
-  const { Option } = Select;
 
   const onsubmit = () => {
     setCurrent(current + 1);
@@ -18,16 +18,7 @@ const Education = ({ setCurrent, current }) => {
     if (current != 1) setCurrent(current - 1);
   };
 
-  const handleChange = (value) => {
-    let arr = [];
-    for (let index = 0; index < value; index++) {
-      arr.push(index);
-    }
-
-    setSelectOption(arr);
-  };
-
-  const onChangeHandleInput = (e, arrayIndex) => {
+  const onChangeHandle = (e, arrayIndex) => {
     const { name, value } = e.target;
     setIndex(arrayIndex);
     setEducationData({ ...educationData, [name]: value });
@@ -35,92 +26,74 @@ const Education = ({ setCurrent, current }) => {
 
   useEffect(() => {
     if (Object.keys(educationData).length > 0) {
-      let filterData = referArray.filter((item) => item.index !== index);
+      let filterData = educationArray.filter((item) => item.index !== index);
       filterData.push({
         index: index,
         dataValue: educationData,
       });
-      setReferArray(filterData);
+      setEducationArray(filterData);
     }
   }, [educationData]);
 
-  const EducationItems = (item) => {
+  const educationItems = (item, index) => {
     return (
       <>
-        <div style={{ marginTop: "30px" }}>
-          <div className="refFormEmail">
-            <div className="refFormEmailItem">
-              <Form.Item
-                label="Name"
-                name="name"
-                className="refItemLable"
-                rules={[{ required: true, message: "Please input name!" }]}
-              >
-                <MyCareerGuidanceInputField
-                  placeholder="Danial Brot"
-                  type="input"
-                  name="name"
-                  onChange={(e) => onChangeHandleInput(e, item)}
-                  inputValue={referArray[item]?.name}
-                  isPrefix={false}
-                />
-              </Form.Item>
-            </div>
-            <div className="refFormEmailItem">
-              <Form.Item
-                label="Position"
-                name="position"
-                className="refItemLable"
-                rules={[{ required: true, message: "Please input position!" }]}
-                style={{ marginBottom: "20px" }}
-              >
-                <MyCareerGuidanceInputField
-                  placeholder="e.g H&M"
-                  type="input"
-                  name="position"
-                  onChange={(e) => onChangeHandleInput(e, item)}
-                  inputValue={referArray[item]?.position}
-                  isPrefix={false}
-                />
-              </Form.Item>
-            </div>
+        <div className="eduFormDouble" style={{ marginTop: "5%" }}>
+          <div className="eduFormDoubleItem">
+            <Form.Item
+              label="School Name"
+              name="schoolName"
+              className="expItemLable"
+              rules={[{ required: true, message: "Please input your school!" }]}
+            >
+              <MyCareerGuidanceInputField
+                placeholder="e.g School Name"
+                type="input"
+                name="schoolName"
+                onChange={(event) => onChangeHandle(event, index)}
+                inputValue={item?.jobTitle}
+                isPrefix={false}
+              />
+            </Form.Item>
           </div>
-          <div className="refFormEmail">
-            <div className="refFormEmailItem">
-              <Form.Item
-                label="Contact Phone"
-                name="contact"
-                className="refItemLable"
-                rules={[{ required: true, message: "Please input name!" }]}
-              >
-                <MyCareerGuidanceInputField
-                  placeholder="+xx-xxx-xxx-xxxx"
-                  type="input"
-                  name="phone"
-                  onChange={(e) => onChangeHandleInput(e, item)}
-                  inputValue={referArray[item]?.phone}
-                  isPrefix={false}
-                />
-              </Form.Item>
-            </div>
-            <div className="refFormEmailItem">
-              <Form.Item
-                label="Contact Email"
-                name="email"
-                className="refItemLable"
-                rules={[{ required: true, message: "Please input position!" }]}
-                style={{ marginBottom: "20px" }}
-              >
-                <MyCareerGuidanceInputField
-                  placeholder="xyz@gmail.com"
-                  type="input"
-                  name="email"
-                  onChange={(e) => onChangeHandleInput(e, item)}
-                  inputValue={referArray[item]?.email}
-                  isPrefix={false}
-                />
-              </Form.Item>
-            </div>
+          <div className="expFormDoubleItem">
+            <Form.Item
+              label="Month/Year"
+              name="monYear"
+              className="expItemLable"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input start Month/Year!",
+                },
+              ]}
+            >
+              <DatePicker
+                picker="month"
+                format={"MM/YYYY"}
+                className="expDateInputFieldStyle"
+              />
+            </Form.Item>
+          </div>
+        </div>
+
+        <div className="eduFormDouble">
+          <div className="eduFormDoubleItem">
+            <Form.Item
+              label="Exams Taken"
+              name="examTaken"
+              className="expItemLable"
+              rules={[{ required: true, message: "Please input your school!" }]}
+            >
+              <MyCareerGuidanceInputField
+                placeholder="Exam Taken"
+                type="input"
+                name="examTaken"
+                onChange={(event) => onChangeHandle(event, index)}
+                inputValue={item?.jobTitle}
+                isPrefix={false}
+              />
+            </Form.Item>
           </div>
         </div>
       </>
@@ -131,45 +104,18 @@ const Education = ({ setCurrent, current }) => {
     <>
       <div className="flex flex-col justify-center">
         <div>
-          <h1 className="eduHead">Educations</h1>
+          <h1 className="eduHead">Tell us about your Education</h1>
           <p className="eduSubHeading">
-            Add anything else you want employers to know.
+            Include every school, even if you're still there or didn't graduate.
           </p>
         </div>
         <div className="eduForm">
           <Form layout="vertical" onFinish={onsubmit}>
-            <div>
-              <Form.Item
-                label="Do you want to Include Education"
-                name="skills"
-                className="eduItemLable"
-                rules={[{ required: true, message: "Please Select 1 Option" }]}
-              >
-                <Select
-                  placeholder="Select One Option"
-                  onChange={handleChange}
-                  optionLabelProp="label"
-                >
-                  <Option value={1} key={1} label={"One"}>
-                    One
-                  </Option>
-                  <Option value={2} key={2} label={"Two"}>
-                    Two
-                  </Option>
-                  <Option value={3} key={3} label={"Three"}>
-                    Three
-                  </Option>
-                </Select>
-              </Form.Item>
-            </div>
-            <div>
-              {selectOption.map((item) => {
-                {
-                  return EducationItems(item);
-                }
-              })}
-            </div>
-
+            {educationArray.length > 0
+              ? educationArray.map((item, index) => {
+                  return educationItems(item, index);
+                })
+              : ""}
             <div className="eduItemButton">
               <Form.Item>
                 <Button className="eduButtonBack" type="primary" onClick={prev}>
