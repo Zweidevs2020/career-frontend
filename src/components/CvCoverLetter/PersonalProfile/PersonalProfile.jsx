@@ -24,7 +24,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
   };
 
   const onSubmit = () => {
-    handleUpdateApi();
+    // handleUpdateApi();
     setCurrent(current + 1);
   };
 

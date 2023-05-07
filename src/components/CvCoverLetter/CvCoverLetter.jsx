@@ -6,6 +6,8 @@ import "./CvCoverLetter.css";
 import Steps from "./Steps/Steps";
 import Interest from "./Interests/Interest";
 import Reference from "./Reference/Reference";
+import Education from "./Eductaion/Education";
+import Experenice from "./Experenice/Experenice";
 
 const CvCoverLetter = () => {
   const [current, setCurrent] = useState(1);
@@ -33,10 +35,14 @@ const CvCoverLetter = () => {
           {current == 1 ? (
             <PersonalProfile setCurrent={setCurrent} current={current} />
           ) : current == 2 ? (
-            <Skill setCurrent={setCurrent} current={current} />
+            <Education setCurrent={setCurrent} current={current} />
           ) : current == 3 ? (
-            <Interest setCurrent={setCurrent} current={current} />
+            <Experenice setCurrent={setCurrent} current={current} />
           ) : current == 4 ? (
+            <Skill setCurrent={setCurrent} current={current} />
+          ) : current == 5 ? (
+            <Interest setCurrent={setCurrent} current={current} />
+          ) : current == 6 ? (
             <Reference setCurrent={setCurrent} current={current} />
           ) : (
             ""

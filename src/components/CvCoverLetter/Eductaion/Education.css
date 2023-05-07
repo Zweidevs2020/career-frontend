@@ -1,4 +1,4 @@
-.refHead{
+.eduHead{
     font-family: 'Poppins';
     font-style: normal;
     font-weight: 600;
@@ -9,7 +9,7 @@
     margin-top: 2%;
 }
 
-.refSubHeading{
+.eduSubHeading{
     font-family: 'Poppins';
     font-style: normal;
     font-weight: 400;
@@ -20,23 +20,23 @@
     margin-top: 0.5%;
 }
 
-.refForm{
+.eduForm{
     padding: 0px 20px 0px 20px;
     margin-top: 5%;
 }
 
 
-.refFormEmail{
+.eduFormEmail{
     display: flex;
     width: 100%;
     justify-content: space-between;
     }
     
- .refFormEmailItem{
+ .eduFormEmailItem{
   width: 49%;
  }
     
-.refItemLable .ant-form-item-label{
+.eduItemLable .ant-form-item-label{
     text-align: start !important;
     font-weight: 600 !important;
     font-size: 14px !important;
@@ -44,6 +44,31 @@
     font-style: normal !important;
 }
     
-.refFormItem{
+.eduFormItem{
     margin-top: 24px;
+}
+
+
+.eduItemButton{
+    margin-top: 3%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.eduButton{
+    border: 1px solid grey;
+    width: 144px;
+    height: 52px;
+    background: #1476B7;
+    font-size: 14px;
+    border-radius: 12px;
+}
+
+.eduButtonBack{
+    border: 1px solid #1476B7;
+    width: 144px;
+    height: 52px;
+    font-size: 14px;
+    border-radius: 12px;
+    color: #1476B7; 
 }
