@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Input, DatePicker, Checkbox } from "antd";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
-
 import "./Experenice.css";
 import { PlusCircleOutlined } from "@ant-design/icons";
 
@@ -210,10 +209,6 @@ const Experenice = ({ setCurrent, current }) => {
       setExpereniceArray(filterData);
     }
   }, [expereniceData]);
-
-  useEffect(() => {
-    console.log(expereniceArray);
-  }, [expereniceArray]);
 
   return (
     <>

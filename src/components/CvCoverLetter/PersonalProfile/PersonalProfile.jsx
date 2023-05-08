@@ -139,6 +139,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                 />
               </Form.Item>
             </div>
+
             <div className="profileFormEmail profileFormItem">
               <div style={{ width: "48%" }}>
                 <Form.Item
@@ -201,6 +202,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                 </Form.Item>
               </div>
             </div>
+
             <div className="profileFormItem">
               <Form.Item
                 label="Objective"

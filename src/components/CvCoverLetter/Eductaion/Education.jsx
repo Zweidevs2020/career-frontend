@@ -1,14 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, DatePicker } from "antd";
+import { Form, Button, DatePicker, Select } from "antd";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
+import { PlusCircleOutlined } from "@ant-design/icons";
 import "./Education.css";
 
 const Education = ({ setCurrent, current }) => {
+  const { Option } = Select;
+
   const [educationData, setEducationData] = useState({});
   const [educationArray, setEducationArray] = useState([
-    { index: 0, dataValue: { schoolName: "", monYear: "", examTaken: "" } },
+    {
+      index: 0,
+      dataValue: {
+        schoolName: "",
+        location: "",
+        degree: "",
+        field: "",
+        gStartDate: "",
+        gEndDate: "",
+      },
+    },
   ]);
   const [index, setIndex] = useState(0);
+
+  const optionArray = [
+    { label: "MS", value: "MS" },
+    { label: "BS", value: "BS" },
+    { label: "Intermediate", value: "Intermediate" },
+  ];
 
   const onsubmit = () => {
     setCurrent(current + 1);
@@ -22,6 +41,13 @@ const Education = ({ setCurrent, current }) => {
     const { name, value } = e.target;
     setIndex(arrayIndex);
     setEducationData({ ...educationData, [name]: value });
+  };
+  const onChangeDate = (name, date, dateString) => {
+    setEducationData({ ...educationData, [name]: dateString });
+  };
+
+  const handleChange = (value) => {
+    setEducationData({ ...educationData, degree: value });
   };
 
   useEffect(() => {
@@ -38,12 +64,12 @@ const Education = ({ setCurrent, current }) => {
   const educationItems = (item, index) => {
     return (
       <>
-        <div className="eduFormDouble" style={{ marginTop: "5%" }}>
+        <div className="eduFormDouble" style={{ marginTop: "3%" }}>
           <div className="eduFormDoubleItem">
             <Form.Item
               label="School Name"
               name="schoolName"
-              className="expItemLable"
+              className="eduItemLable"
               rules={[{ required: true, message: "Please input your school!" }]}
             >
               <MyCareerGuidanceInputField
@@ -58,20 +84,23 @@ const Education = ({ setCurrent, current }) => {
           </div>
           <div className="expFormDoubleItem">
             <Form.Item
-              label="Month/Year"
-              name="monYear"
-              className="expItemLable"
+              label="School Location"
+              name="location"
+              className="eduItemLable"
               rules={[
                 {
                   required: true,
-                  message: "Please input start Month/Year!",
+                  message: "Please input your school location!",
                 },
               ]}
             >
-              <DatePicker
-                picker="month"
-                format={"MM/YYYY"}
-                className="expDateInputFieldStyle"
+              <MyCareerGuidanceInputField
+                placeholder="e.g Location"
+                type="input"
+                name="location"
+                onChange={(event) => onChangeHandle(event, index)}
+                inputValue={item?.location}
+                isPrefix={false}
               />
             </Form.Item>
           </div>
@@ -80,18 +109,87 @@ const Education = ({ setCurrent, current }) => {
         <div className="eduFormDouble">
           <div className="eduFormDoubleItem">
             <Form.Item
-              label="Exams Taken"
-              name="examTaken"
-              className="expItemLable"
-              rules={[{ required: true, message: "Please input your school!" }]}
+              label="Degree"
+              name="degree"
+              className="eduItemLable"
+              rules={[{ required: true, message: "Please select one option!" }]}
+            >
+              <Select
+                placeholder="Select Option"
+                onChange={handleChange}
+                optionLabelProp="label"
+              >
+                {optionArray.map((item) => {
+                  return (
+                    <Option
+                      value={item.value}
+                      key={item.value}
+                      label={item.label}
+                    >
+                      {item.label}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </div>
+        </div>
+        <div className="eduFormDouble">
+          <div style={{ width: "49%" }}>
+            <Form.Item
+              label="Field of Study"
+              name="field"
+              className="eduItemLable"
+              rules={[{ required: true, message: "Please input your field!" }]}
             >
               <MyCareerGuidanceInputField
-                placeholder="Exam Taken"
+                placeholder="e.g Accounting Technology"
                 type="input"
-                name="examTaken"
-                onChange={(event) => onChangeHandle(event, index)}
-                inputValue={item?.jobTitle}
+                name="field"
+                onChange={onChangeHandle}
+                inputValue={item?.field}
                 isPrefix={false}
+              />
+            </Form.Item>
+          </div>
+          <div style={{ width: "24%" }}>
+            <Form.Item
+              label="Graduation Start Date"
+              name="gStartDate"
+              className="eduItemLable"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Start Graduation Date!",
+                },
+              ]}
+            >
+              <DatePicker
+                onChange={(date, dateString) =>
+                  onChangeDate("gStartDate", date, dateString)
+                }
+                className="expDateInputFieldStyle"
+              />
+            </Form.Item>
+          </div>
+
+          <div style={{ width: "24%" }}>
+            <Form.Item
+              label="Graduation End Date"
+              name="gEndDate"
+              className="eduItemLable"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input End Graduation Date!",
+                },
+              ]}
+            >
+              <DatePicker
+                onChange={(date, dateString) =>
+                  onChangeDate("gEndDate", date, dateString)
+                }
+                className="expDateInputFieldStyle"
               />
             </Form.Item>
           </div>
@@ -116,6 +214,42 @@ const Education = ({ setCurrent, current }) => {
                   return educationItems(item, index);
                 })
               : ""}
+
+            <div>
+              <Form.Item>
+                <Button
+                  className="eduAddButton"
+                  onClick={() =>
+                    setEducationArray((oldarr) => [
+                      ...oldarr,
+                      {
+                        index: index + 1,
+                        dataValue: {
+                          schoolName: "",
+                          location: "",
+                          degree: "",
+                          field: "",
+                          gStartDate: "",
+                          gEndDate: "",
+                        },
+                      },
+                    ])
+                  }
+                >
+                  <span>
+                    <PlusCircleOutlined
+                      style={{
+                        fontSize: "20px",
+                        display: "flex",
+                        alignItems: "center",
+                        marginRight: "10px",
+                      }}
+                    />
+                  </span>{" "}
+                  Add Another Education
+                </Button>
+              </Form.Item>
+            </div>
             <div className="eduItemButton">
               <Form.Item>
                 <Button className="eduButtonBack" type="primary" onClick={prev}>

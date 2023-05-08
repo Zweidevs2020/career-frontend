@@ -71,3 +71,21 @@
     border-radius: 12px;
     color: #1476B7; 
 }
+
+.eduAddButton{
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border: 1px solid #1984FF;
+    border-radius: 8px;
+    color: #1984FF;
+    height: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 3%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    }
