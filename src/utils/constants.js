@@ -14,4 +14,8 @@ export const API_URL = {
   POSTUSERGOAL: "goals/",
   POSTPROFILE: "cv/create-cv/",
   GETPROFILE: "cv/get-cv/",
+  UPDATEPROFILE: "cv/update-cv/",
+  POSTEDU: "cv/add-education/",
+  GETEDU: "cv/get-education/",
+  POSTJUN: "cv/add-junior-cert/",
 };

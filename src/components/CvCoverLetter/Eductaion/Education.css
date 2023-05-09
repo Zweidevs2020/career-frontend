@@ -89,3 +89,38 @@
     font-weight: 500;
     font-size: 14px;
     }
+
+.eduJunDiv{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 150%;
+    color: #111928;
+}
+
+.eduJunCheckDiv{
+    display: flex;
+    width: 14%;
+    justify-content: space-between;
+    margin-left: 0.25%;
+}
+
+.eduJunCheckBox .ant-checkbox .ant-checkbox-inner{
+    border: 1px solid #D1D5DB !important;
+    border-radius: 2.52632px !important;
+    width: 18px !important;
+    height: 18px !important;
+}
+
+.eduSelect .ant-select-selector{
+ height: 52px !important;
+background: #FFFFFF !important;
+border: 1px solid #D1D5DB !important;
+border-radius: 10px !important;
+}
+
+.eduSelectItem .ant-select-single .ant-select-selector .ant-select-selection-item:after{
+    display:  flex;
+    align-items: center;
+}

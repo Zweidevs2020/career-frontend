@@ -1,53 +1,93 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, DatePicker, Select } from "antd";
+import { Form, Button, DatePicker, Checkbox, Select } from "antd";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import "./Education.css";
+import { postApiWithAuth } from "../../../utils/api";
+import { API_URL } from "../../../utils/constants";
 
 const Education = ({ setCurrent, current }) => {
-  const { Option } = Select;
-
   const [educationData, setEducationData] = useState({});
   const [educationArray, setEducationArray] = useState([
     {
       index: 0,
       dataValue: {
-        schoolName: "",
-        location: "",
-        degree: "",
-        field: "",
-        gStartDate: "",
-        gEndDate: "",
+        school: "",
+        year: "",
+        examtaken: "",
+      },
+    },
+  ]);
+  const [resultData, setResultData] = useState({});
+  const [resultArrayData, setResultArrayData] = useState([
+    {
+      index: 0,
+      dataValue: {
+        subject: "",
+        level: "",
+        result: "",
       },
     },
   ]);
   const [index, setIndex] = useState(0);
+  const [resultIndex, setResultIndex] = useState(0);
+  const [isCheck, setIsCheck] = useState(true);
+  const { Option } = Select;
 
-  const optionArray = [
-    { label: "MS", value: "MS" },
-    { label: "BS", value: "BS" },
-    { label: "Intermediate", value: "Intermediate" },
+  const levelArray = [
+    { label: "Common", value: "1" },
+    { label: "Higher", value: "2" },
+    { label: "Ordinary", value: "3" },
   ];
 
-  const onsubmit = () => {
-    setCurrent(current + 1);
+  const resultArray = [
+    { label: "HIGHER MERIT", value: "1" },
+    { label: "MERIT", value: "2" },
+    { label: "ACHIEVED", value: "3" },
+    { label: "PARTIALLY ACHIEVED", value: "4" },
+    { label: "NOT GRADED", value: "5" },
+  ];
+
+  const onsubmit = async () => {
+    let data = createArrayData(educationArray);
+    let resData = createArrayData(resultArrayData);
+    const resp = await postApiWithAuth(API_URL.POSTEDU, data);
+    console.log(resp);
+    const resResult = await postApiWithAuth(API_URL.POSTJUN, resData);
+    console.log(resResult);
+
+    //setCurrent(current + 1);
   };
 
   const prev = () => {
     if (current != 1) setCurrent(current - 1);
   };
 
-  const onChangeHandle = (e, arrayIndex) => {
+  const createArrayData = (data) => {
+    let array = [];
+    data.map((item) => {
+      array.push(item.dataValue);
+    });
+
+    return array;
+  };
+
+  const onChangeHandle = (e, arrayIndex, type) => {
     const { name, value } = e.target;
-    setIndex(arrayIndex);
-    setEducationData({ ...educationData, [name]: value });
+    if (type === 1) {
+      setIndex(arrayIndex);
+      setEducationData({ ...educationData, [name]: value });
+    } else {
+      setResultIndex(arrayIndex);
+      setResultData({ ...resultData, [name]: value });
+    }
   };
   const onChangeDate = (name, date, dateString) => {
     setEducationData({ ...educationData, [name]: dateString });
   };
 
-  const handleChange = (value) => {
-    setEducationData({ ...educationData, degree: value });
+  const handleChange = (value, type) => {
+    setResultData({ ...resultData, [type]: value });
   };
 
   useEffect(() => {
@@ -61,6 +101,20 @@ const Education = ({ setCurrent, current }) => {
     }
   }, [educationData]);
 
+  useEffect(() => {
+    console.log(resultData);
+    if (Object.keys(resultData).length > 0) {
+      let filterData = resultArrayData.filter(
+        (item) => item.index !== resultIndex
+      );
+      filterData.push({
+        index: resultIndex,
+        dataValue: resultData,
+      });
+      setResultArrayData(filterData);
+    }
+  }, [resultData]);
+
   const educationItems = (item, index) => {
     return (
       <>
@@ -68,39 +122,39 @@ const Education = ({ setCurrent, current }) => {
           <div className="eduFormDoubleItem">
             <Form.Item
               label="School Name"
-              name="schoolName"
+              name="school"
               className="eduItemLable"
               rules={[{ required: true, message: "Please input your school!" }]}
             >
               <MyCareerGuidanceInputField
                 placeholder="e.g School Name"
                 type="input"
-                name="schoolName"
-                onChange={(event) => onChangeHandle(event, index)}
-                inputValue={item?.jobTitle}
+                name="school"
+                onChange={(event) => onChangeHandle(event, index, 1)}
+                inputValue={item?.school}
                 isPrefix={false}
               />
             </Form.Item>
           </div>
           <div className="expFormDoubleItem">
             <Form.Item
-              label="School Location"
-              name="location"
+              label="Month/year"
+              name="year"
               className="eduItemLable"
               rules={[
                 {
                   required: true,
-                  message: "Please input your school location!",
+                  message: "Please input Month/year!",
                 },
               ]}
             >
-              <MyCareerGuidanceInputField
-                placeholder="e.g Location"
-                type="input"
-                name="location"
-                onChange={(event) => onChangeHandle(event, index)}
-                inputValue={item?.location}
-                isPrefix={false}
+              <DatePicker
+                picker="month"
+                onChange={(date, dateString) =>
+                  onChangeDate("year", date, dateString)
+                }
+                format={"MM/YYYY"}
+                className="expDateInputFieldStyle"
               />
             </Form.Item>
           </div>
@@ -109,17 +163,66 @@ const Education = ({ setCurrent, current }) => {
         <div className="eduFormDouble">
           <div className="eduFormDoubleItem">
             <Form.Item
-              label="Degree"
-              name="degree"
+              label="Exam Taken"
+              name="examtaken"
               className="eduItemLable"
-              rules={[{ required: true, message: "Please select one option!" }]}
+              rules={[{ required: true, message: "Please input your school!" }]}
+            >
+              <MyCareerGuidanceInputField
+                placeholder="Exam Taken"
+                type="input"
+                name="examtaken"
+                onChange={(event) => onChangeHandle(event, index, 1)}
+                inputValue={item?.examtaken}
+                isPrefix={false}
+              />
+            </Form.Item>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const educationResult = (item, index) => {
+    return (
+      <>
+        <div className="eduFormDouble">
+          <div className="eduFormDoubleItem">
+            <Form.Item
+              label="Subject"
+              name="subject"
+              className="eduItemLable"
+              rules={[{ required: true, message: "Please input your school!" }]}
+            >
+              <MyCareerGuidanceInputField
+                placeholder="e.g. Subject"
+                type="input"
+                name="subject"
+                onChange={(event) => onChangeHandle(event, index, 2)}
+                inputValue={item.subject}
+                isPrefix={false}
+              />
+            </Form.Item>
+          </div>
+          <div className="expFormDoubleItem">
+            <Form.Item
+              label="Level"
+              name="level"
+              className="skillItemLable"
+              rules={[
+                {
+                  required: true,
+                  message: "Please Select 1 Option",
+                },
+              ]}
             >
               <Select
-                placeholder="Select Option"
-                onChange={handleChange}
+                placeholder="Select"
+                onChange={(event) => handleChange(event, "level")}
                 optionLabelProp="label"
+                className="eduSelect eduSelectItem"
               >
-                {optionArray.map((item) => {
+                {levelArray.map((item) => {
                   return (
                     <Option
                       value={item.value}
@@ -134,69 +237,46 @@ const Education = ({ setCurrent, current }) => {
             </Form.Item>
           </div>
         </div>
-        <div className="eduFormDouble">
-          <div style={{ width: "49%" }}>
-            <Form.Item
-              label="Field of Study"
-              name="field"
-              className="eduItemLable"
-              rules={[{ required: true, message: "Please input your field!" }]}
-            >
-              <MyCareerGuidanceInputField
-                placeholder="e.g Accounting Technology"
-                type="input"
-                name="field"
-                onChange={onChangeHandle}
-                inputValue={item?.field}
-                isPrefix={false}
-              />
-            </Form.Item>
-          </div>
-          <div style={{ width: "24%" }}>
-            <Form.Item
-              label="Graduation Start Date"
-              name="gStartDate"
-              className="eduItemLable"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input Start Graduation Date!",
-                },
-              ]}
-            >
-              <DatePicker
-                onChange={(date, dateString) =>
-                  onChangeDate("gStartDate", date, dateString)
-                }
-                className="expDateInputFieldStyle"
-              />
-            </Form.Item>
-          </div>
 
-          <div style={{ width: "24%" }}>
-            <Form.Item
-              label="Graduation End Date"
-              name="gEndDate"
-              className="eduItemLable"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input End Graduation Date!",
-                },
-              ]}
+        <div className="expFormDoubleItem">
+          <Form.Item
+            label="Result"
+            name="result"
+            className="skillItemLable"
+            rules={[
+              {
+                required: true,
+                message: "Please Select 1 Option",
+              },
+            ]}
+          >
+            <Select
+              placeholder="Select"
+              onChange={(event) => handleChange(event, "result")}
+              optionLabelProp="label"
+              className="eduSelect eduSelectItem"
             >
-              <DatePicker
-                onChange={(date, dateString) =>
-                  onChangeDate("gEndDate", date, dateString)
-                }
-                className="expDateInputFieldStyle"
-              />
-            </Form.Item>
-          </div>
+              {resultArray.map((item) => {
+                return (
+                  <Option
+                    value={item.value}
+                    key={item.value}
+                    label={item.label}
+                  >
+                    {item.label}
+                  </Option>
+                );
+              })}
+            </Select>
+          </Form.Item>
         </div>
       </>
     );
   };
+
+  useEffect(() => {
+    console.log("array result", educationArray, resultArrayData);
+  }, [educationArray, resultArrayData]);
 
   return (
     <>
@@ -225,12 +305,9 @@ const Education = ({ setCurrent, current }) => {
                       {
                         index: index + 1,
                         dataValue: {
-                          schoolName: "",
-                          location: "",
-                          degree: "",
-                          field: "",
-                          gStartDate: "",
-                          gEndDate: "",
+                          school: "",
+                          year: "",
+                          examtaken: "",
                         },
                       },
                     ])
@@ -250,6 +327,74 @@ const Education = ({ setCurrent, current }) => {
                 </Button>
               </Form.Item>
             </div>
+
+            <div className="eduJunDiv">Include Junior Cert Results *</div>
+            <div className="eduJunCheckDiv">
+              <Form.Item>
+                <Checkbox
+                  className="eduJunCheckBox"
+                  checked={isCheck}
+                  onChange={() => {
+                    setIsCheck(!isCheck);
+                  }}
+                >
+                  Yes
+                </Checkbox>
+              </Form.Item>
+              <Form.Item>
+                <Checkbox
+                  className="eduJunCheckBox"
+                  checked={!isCheck}
+                  onChange={() => {
+                    setIsCheck(!isCheck);
+                  }}
+                >
+                  No
+                </Checkbox>
+              </Form.Item>
+            </div>
+            {isCheck && educationArray.length > 0 ? (
+              <>
+                {resultArrayData.map((item, index) => {
+                  return educationResult(item, index);
+                })}
+                <div>
+                  <Form.Item>
+                    <Button
+                      className="eduAddButton"
+                      onClick={() =>
+                        setResultArrayData((oldarr) => [
+                          ...oldarr,
+                          {
+                            index: resultIndex + 1,
+                            dataValue: {
+                              subject: "",
+                              level: "",
+                              result: "",
+                            },
+                          },
+                        ])
+                      }
+                    >
+                      <span>
+                        <PlusCircleOutlined
+                          style={{
+                            fontSize: "20px",
+                            display: "flex",
+                            alignItems: "center",
+                            marginRight: "10px",
+                          }}
+                        />
+                      </span>{" "}
+                      Add Another Result
+                    </Button>
+                  </Form.Item>
+                </div>
+              </>
+            ) : (
+              ""
+            )}
+
             <div className="eduItemButton">
               <Form.Item>
                 <Button className="eduButtonBack" type="primary" onClick={prev}>

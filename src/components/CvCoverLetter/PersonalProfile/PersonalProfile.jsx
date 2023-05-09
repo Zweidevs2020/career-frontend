@@ -1,41 +1,48 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
 import "./PersonalProfile.css";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
 import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
 import { API_URL } from "../../../utils/constants";
+import { putApiWithAuth } from "../../../utils/api";
 
 const { TextArea } = Input;
 
 const PersonalProfile = ({ setCurrent, current }) => {
-  const [profileObject, setProfileObject] = useState({
-    full_name: "",
-    email: "",
-    address: "",
-    address2: "",
-    town: "",
-    eircode: "",
-    city: "",
-    objective: "",
-  });
+  const [profileObject, setProfileObject] = useState({});
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
     setProfileObject({ ...profileObject, [name]: value });
   };
 
   const onSubmit = () => {
-    // handleUpdateApi();
+    handleUpdateApi();
     setCurrent(current + 1);
   };
 
   const handleUpdateApi = async () => {
-    const respose = await postApiWithAuth(API_URL.POSTPROFILE, profileObject);
-    console.log(respose);
+    let respose = {};
+    if (profileObject?.id) {
+      respose = await putApiWithAuth(
+        `${API_URL.UPDATEPROFILE}${profileObject?.id}/`,
+        profileObject
+      );
+      if (respose?.data.success === false) {
+        message.error(respose?.data.data.message);
+      }
+    } else {
+      respose = await postApiWithAuth(API_URL.POSTPROFILE, profileObject);
+
+      if (respose?.data.success === false) message.error(respose?.data.message);
+    }
   };
 
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETPROFILE);
-    console.log(response);
+
+    if (response.data?.status === 200 && response.data.data?.id != undefined) {
+      setProfileObject(response.data.data);
+    }
   };
 
   useEffect(() => {
@@ -70,7 +77,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     type="input"
                     name="full_name"
                     onChange={onChangeHandle}
-                    inputValue={profileObject.full_name}
+                    inputValue={profileObject?.full_name}
                     isPrefix={false}
                   />
                 </Form.Item>
@@ -89,7 +96,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     type="input"
                     name="email"
                     onChange={onChangeHandle}
-                    inputValue={profileObject.email}
+                    inputValue={profileObject?.email}
                     isPrefix={false}
                   />
                 </Form.Item>
@@ -112,7 +119,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   type="input"
                   name="address"
                   onChange={onChangeHandle}
-                  inputValue={profileObject.address}
+                  inputValue={profileObject?.address}
                   isPrefix={false}
                 />
               </Form.Item>
@@ -155,7 +162,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     type="input"
                     name="town"
                     onChange={onChangeHandle}
-                    inputValue={profileObject.town}
+                    inputValue={profileObject?.town}
                     isPrefix={false}
                   />
                 </Form.Item>
@@ -174,7 +181,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     type="input"
                     name="city"
                     onChange={onChangeHandle}
-                    inputValue={profileObject.city}
+                    inputValue={profileObject?.city}
                     isPrefix={false}
                   />
                 </Form.Item>
@@ -196,7 +203,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     type="input"
                     name="eircode"
                     onChange={onChangeHandle}
-                    inputValue={profileObject.eircode}
+                    inputValue={profileObject?.eircode}
                     isPrefix={false}
                   />
                 </Form.Item>
@@ -216,7 +223,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   rows={4}
                   placeholder="Write Your Objective......"
                   className="inputFieldStyle"
-                  inputValue={profileObject.objective}
+                  inputValue={profileObject?.objective}
                   name="objective"
                   onChange={onChangeHandle}
                 />
