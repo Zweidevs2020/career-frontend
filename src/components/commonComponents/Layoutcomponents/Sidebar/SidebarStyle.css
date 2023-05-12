@@ -68,9 +68,6 @@
   height: 58px;
 }
 
-.cardprofile {
-  height: 53px;
-}
 
 .cardtext {
   display: flex;
@@ -97,6 +94,18 @@
   align-items: center;
 }
 
+.modalStyleClass2 {
+  border-radius: 15px;
+  width: 800px;
+  height: 400px;
+}
+
+.cardprofile {
+  height: 40px;
+  width: 40px;
+  border-radius: 10px;
+}
+
 @media only screen and (max-width: 480px) and (min-width: 320px) {
   .backgroundColorSidebar {
     display: none;
@@ -117,9 +126,6 @@
     height: 45px;
   }
 
-  .cardprofile {
-    height: 34px;
-  }
   .email {
     font-size: 8px;
   }
@@ -152,10 +158,6 @@
     width: 100%;
     height: 50px;
   }
-
-  .cardprofile {
-    height: 44px;
-  }
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 769px) {
@@ -180,9 +182,6 @@
     height: 50px;
   }
 
-  .cardprofile {
-    height: 44px;
-  }
 }
 .firstOption {
   display: flex;

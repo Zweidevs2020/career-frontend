@@ -1,5 +1,6 @@
 export const API_URL = {
   GETUSER: "user/me",
+  GETUSER2:'user/me/',
   SIGNIN: "auth/jwt/create/",
   GETUSERSCHOOL: "user/schools",
   SINGUPUSER: "user/signup/",
@@ -27,5 +28,7 @@ export const API_URL = {
   POSTREFERNACE:'cv/add-reference/',
   GETINTREST:"cv/get-interest/",
   POSTINTREST:"cv/add-interest/",
-  SAVEPDF:'cv/cv'
+  SAVEPDF:'cv/cv',
+  ADDSLOTTABLE:'timetable/add-timeslot/',
+  DASHBOARDTESTTYPES:'psychometric/testType/'
 };
