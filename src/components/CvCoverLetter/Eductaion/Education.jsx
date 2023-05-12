@@ -1,38 +1,82 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, DatePicker, Checkbox, Select } from "antd";
+import { Form, Button, DatePicker, Checkbox, Select,message } from "antd";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import "./Education.css";
-import { postApiWithAuth } from "../../../utils/api";
+import { postApiWithAuth, getApiWithAuth } from "../../../utils/api";
 import { API_URL } from "../../../utils/constants";
+import dayjs from "dayjs";
 
 const Education = ({ setCurrent, current }) => {
-  const [educationData, setEducationData] = useState({});
-  const [educationArray, setEducationArray] = useState([
-    {
-      index: 0,
-      dataValue: {
-        school: "",
-        year: "",
-        examtaken: "",
-      },
-    },
-  ]);
-  const [resultData, setResultData] = useState({});
-  const [resultArrayData, setResultArrayData] = useState([
-    {
-      index: 0,
-      dataValue: {
-        subject: "",
-        level: "",
-        result: "",
-      },
-    },
-  ]);
-  const [index, setIndex] = useState(0);
-  const [resultIndex, setResultIndex] = useState(0);
+  const [data, setData] = useState(null);
+
+  const [educationArray, setEducationArray] = useState([]);
+  const [resultArrayData, setResultArrayData] = useState([]);
   const [isCheck, setIsCheck] = useState(true);
   const { Option } = Select;
+
+  const handleGetApi = async () => {
+    const response = await getApiWithAuth(API_URL.GETEDUCATION);
+    if (response.data?.status === 200) {
+      setData(response.data.data);
+    }
+    else{
+      message.error("Fail to load Data");
+    }
+  };
+
+  useEffect(() => {
+    handleGetApi();
+  }, []);
+
+  useEffect(() => {
+    if (data !== null) {
+      if (data.education_data.length > 0) {
+        setEducationArray(
+          data.education_data.map((item, indexx) => {
+            return {
+              index: indexx,
+              dataValue: item,
+            };
+          })
+        );
+      } else {
+        setEducationArray([
+          {
+            index: 0,
+            dataValue: {
+              id: null,
+              school: "",
+              year: dayjs().format("MM/YYYY"),
+              examtaken: "",
+            },
+          },
+        ]);
+      }
+      if (data.junior_data.length > 0) {
+        setResultArrayData(
+          data.junior_data.map((item, indexx) => {
+            return {
+              index: indexx,
+              dataValue: item,
+            };
+          })
+        );
+      } else {
+        setResultArrayData([
+          {
+            index: 0,
+            dataValue: {
+              id: null,
+              subject: "",
+              level: "",
+              result: "",
+            },
+          },
+        ]);
+      }
+    }
+  }, [data]);
 
   const levelArray = [
     { label: "Common", value: "1" },
@@ -49,14 +93,19 @@ const Education = ({ setCurrent, current }) => {
   ];
 
   const onsubmit = async () => {
+    let sendDaata = {};
     let data = createArrayData(educationArray);
     let resData = createArrayData(resultArrayData);
-    const resp = await postApiWithAuth(API_URL.POSTEDU, data);
-    console.log(resp);
-    const resResult = await postApiWithAuth(API_URL.POSTJUN, resData);
-    console.log(resResult);
+    !isCheck
+      ? (sendDaata = { education_data: data,junior_data: [] })
+      : (sendDaata = { education_data: data, junior_data: resData });
 
-    //setCurrent(current + 1);
+    const respose = await postApiWithAuth(API_URL.POSTEDUCATION, sendDaata);
+    if (respose.data.status === 201) {
+      setCurrent(current + 1);
+    } else {
+       message.error(respose.data.message);
+    }
   };
 
   const prev = () => {
@@ -71,79 +120,81 @@ const Education = ({ setCurrent, current }) => {
 
     return array;
   };
-
   const onChangeHandle = (e, arrayIndex, type) => {
     const { name, value } = e.target;
+
     if (type === 1) {
-      setIndex(arrayIndex);
-      setEducationData({ ...educationData, [name]: value });
-    } else {
-      setResultIndex(arrayIndex);
-      setResultData({ ...resultData, [name]: value });
-    }
-  };
-  const onChangeDate = (name, date, dateString) => {
-    setEducationData({ ...educationData, [name]: dateString });
-  };
-
-  const handleChange = (value, type) => {
-    setResultData({ ...resultData, [type]: value });
-  };
-
-  useEffect(() => {
-    if (Object.keys(educationData).length > 0) {
-      let filterData = educationArray.filter((item) => item.index !== index);
-      filterData.push({
-        index: index,
-        dataValue: educationData,
-      });
-      setEducationArray(filterData);
-    }
-  }, [educationData]);
-
-  useEffect(() => {
-    console.log(resultData);
-    if (Object.keys(resultData).length > 0) {
-      let filterData = resultArrayData.filter(
-        (item) => item.index !== resultIndex
+      setEducationArray(
+        educationArray.map((item) => {
+          return item.index === arrayIndex
+            ? { ...item, dataValue: { ...item.dataValue, [name]: value } }
+            : item;
+        })
       );
-      filterData.push({
-        index: resultIndex,
-        dataValue: resultData,
-      });
-      setResultArrayData(filterData);
+    } else {
+      setResultArrayData(
+        resultArrayData.map((item) => {
+          return item.index === arrayIndex
+            ? { ...item, dataValue: { ...item.dataValue, [name]: value } }
+            : item;
+        })
+      );
     }
-  }, [resultData]);
+  };
+  const onChangeDate = (name, date, arrayIndex) => {
+    setEducationArray(
+      educationArray.map((item) => {
+        return item.index === arrayIndex
+          ? { ...item, dataValue: { ...item.dataValue, [name]: date } }
+          : item;
+      })
+    );
+  };
+
+  const handleChange = (value, name, arrayIndex) => {
+    setResultArrayData(
+      resultArrayData.map((item) => {
+        return item.index === arrayIndex
+          ? { ...item, dataValue: { ...item.dataValue, [name]: value } }
+          : item;
+      })
+    );
+  };
 
   const educationItems = (item, index) => {
     return (
       <>
-        <div className="eduFormDouble" style={{ marginTop: "3%" }}>
+        <div className="eduFormDouble" key={index} style={{ marginTop: "3%" }}>
           <div className="eduFormDoubleItem">
             <Form.Item
               label="School Name"
-              name="school"
+              name={`school ${index}`}
               className="eduItemLable"
-              rules={[{ required: true, message: "Please input your school!" }]}
+              rules={[
+                {
+                  required: item?.dataValue.school ? false : true,
+                  message: "Please input your school!",
+                },
+              ]}
             >
               <MyCareerGuidanceInputField
                 placeholder="e.g School Name"
                 type="input"
                 name="school"
                 onChange={(event) => onChangeHandle(event, index, 1)}
-                inputValue={item?.school}
+                inputValue={item?.dataValue.school}
                 isPrefix={false}
               />
             </Form.Item>
           </div>
           <div className="expFormDoubleItem">
             <Form.Item
+              name={`year ${index}`}
               label="Month/year"
-              name="year"
               className="eduItemLable"
               rules={[
                 {
-                  required: true,
+                  required: item?.dataValue.year ? false : true,
                   message: "Please input Month/year!",
                 },
               ]}
@@ -151,9 +202,12 @@ const Education = ({ setCurrent, current }) => {
               <DatePicker
                 picker="month"
                 onChange={(date, dateString) =>
-                  onChangeDate("year", date, dateString)
+                  onChangeDate("year", dateString, index)
                 }
+                name="year"
                 format={"MM/YYYY"}
+                value={dayjs(item?.dataValue.year, "MM/YYYY")}
+                defaultValue={dayjs(item?.dataValue.year, "MM/YYYY")}
                 className="expDateInputFieldStyle"
               />
             </Form.Item>
@@ -164,16 +218,21 @@ const Education = ({ setCurrent, current }) => {
           <div className="eduFormDoubleItem">
             <Form.Item
               label="Exam Taken"
-              name="examtaken"
+              name={`examtaken ${index}`}
               className="eduItemLable"
-              rules={[{ required: true, message: "Please input your school!" }]}
+              rules={[
+                {
+                  required: item?.dataValue.examtaken ? false : true,
+                  message: "Please input your Exam!",
+                },
+              ]}
             >
               <MyCareerGuidanceInputField
                 placeholder="Exam Taken"
                 type="input"
                 name="examtaken"
                 onChange={(event) => onChangeHandle(event, index, 1)}
-                inputValue={item?.examtaken}
+                inputValue={item?.dataValue.examtaken}
                 isPrefix={false}
               />
             </Form.Item>
@@ -187,19 +246,24 @@ const Education = ({ setCurrent, current }) => {
     return (
       <>
         <div className="eduFormDouble">
-          <div className="eduFormDoubleItem">
+          <div className="eduFormDoubleItem mt-3">
             <Form.Item
               label="Subject"
-              name="subject"
+              name={`subject ${index}`}
               className="eduItemLable"
-              rules={[{ required: true, message: "Please input your school!" }]}
+              rules={[
+                {
+                  required: item?.dataValue.subject ? false : true,
+                  message: "Please input your subject",
+                },
+              ]}
             >
               <MyCareerGuidanceInputField
                 placeholder="e.g. Subject"
                 type="input"
                 name="subject"
                 onChange={(event) => onChangeHandle(event, index, 2)}
-                inputValue={item.subject}
+                inputValue={item?.dataValue?.subject}
                 isPrefix={false}
               />
             </Form.Item>
@@ -207,20 +271,21 @@ const Education = ({ setCurrent, current }) => {
           <div className="expFormDoubleItem">
             <Form.Item
               label="Level"
-              name="level"
+              name={`level ${index}`}
               className="skillItemLable"
               rules={[
                 {
-                  required: true,
+                  required: item?.dataValue.level ? false : true,
                   message: "Please Select 1 Option",
                 },
               ]}
             >
               <Select
                 placeholder="Select"
-                onChange={(event) => handleChange(event, "level")}
+                onChange={(event) => handleChange(event, "level", index)}
                 optionLabelProp="label"
                 className="eduSelect eduSelectItem"
+                defaultValue={item?.dataValue?.level}
               >
                 {levelArray.map((item) => {
                   return (
@@ -241,20 +306,21 @@ const Education = ({ setCurrent, current }) => {
         <div className="expFormDoubleItem">
           <Form.Item
             label="Result"
-            name="result"
+            name={`result ${index}`}
             className="skillItemLable"
             rules={[
               {
-                required: true,
+                required: item?.dataValue.result ? false : true,
                 message: "Please Select 1 Option",
               },
             ]}
           >
             <Select
               placeholder="Select"
-              onChange={(event) => handleChange(event, "result")}
+              onChange={(event) => handleChange(event, "result", index)}
               optionLabelProp="label"
               className="eduSelect eduSelectItem"
+              defaultValue={item?.dataValue?.result}
             >
               {resultArray.map((item) => {
                 return (
@@ -273,10 +339,6 @@ const Education = ({ setCurrent, current }) => {
       </>
     );
   };
-
-  useEffect(() => {
-    console.log("array result", educationArray, resultArrayData);
-  }, [educationArray, resultArrayData]);
 
   return (
     <>
@@ -303,10 +365,11 @@ const Education = ({ setCurrent, current }) => {
                     setEducationArray((oldarr) => [
                       ...oldarr,
                       {
-                        index: index + 1,
+                        index: educationArray.length,
                         dataValue: {
+                          id: null,
                           school: "",
-                          year: "",
+                          year: dayjs().format("MM/YYYY"),
                           examtaken: "",
                         },
                       },
@@ -366,8 +429,9 @@ const Education = ({ setCurrent, current }) => {
                         setResultArrayData((oldarr) => [
                           ...oldarr,
                           {
-                            index: resultIndex + 1,
+                            index: resultArrayData.length,
                             dataValue: {
+                              id: null,
                               subject: "",
                               level: "",
                               result: "",

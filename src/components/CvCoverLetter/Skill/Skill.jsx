@@ -1,27 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Skill.css";
-import { Form, Select, Button } from "antd";
-
+import { Form, Select, Button, message } from "antd";
+import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
+import { API_URL } from "../../../utils/constants";
 const Skill = ({ setCurrent, current }) => {
   const [selectOption, setSelectOption] = useState([]);
+  const [userSkillData, setUserSkillsData] = useState([]);
+
   const { Option } = Select;
 
   const optionArray = [
-    { label: "React.js", value: "React.js" },
-    { label: "Next.js", value: "Next.js" },
-    { label: "Antd", value: "Antd" },
-    { label: "Bootstrap", value: "Bootstrap" },
-    { label: "R Studio", value: "rStudio" },
-    { label: "Java", value: "java" },
-    { label: "Machine Learning", value: "Machine Learning" },
-    { label: "Data Science", value: "Data Science" },
-    { label: "Matlab", value: "Matlab" },
+    { label: "SELF STARTER", value: "1" },
+    { label: "People Skills", value: "2" },
+    { label: "Critical Thinking Skills", value: "3" },
+    { label: "Practical Skills", value: "4" },
+    { label: "Communication Skills", value: "5" },
+    { label: "Teamwork Skills", value: "6" },
+    { label: "Information Skills", value: "7" },
+    { label: "Creative Skills", value: "8" },
+    { label: "Critical Problem Solving", value: "9" },
   ];
-
-  const onsubmit = () => {
-    setCurrent(current + 1);
+  const getSkills = async () => {
+    const response = await getApiWithAuth(API_URL.GETSKILLS);
+    if (response.data?.status === 200) {
+      let array = [];
+      let array2 = [];
+      response.data.data.map((item, index) => {
+        array.push(item.skill_dropdown);
+        array2.push({ id: item.id, skill_dropdown: item.skill_dropdown });
+      });
+      setSelectOption(array);
+      setUserSkillsData(array2);
+    } else {
+      message.error("Fail to load Data");
+    }
   };
 
+  useEffect(() => {
+    getSkills();
+  }, []);
+
+  const onsubmit = async () => {
+    const result = [];
+    selectOption.forEach((value) => {
+      const match = userSkillData.find((obj) => obj.skill_dropdown === value);
+      if (match) {
+        result.push(match);
+      } else {
+        result.push({ id: null, skill_dropdown: value });
+      }
+    });
+
+    const respose = await postApiWithAuth(API_URL.POSTSKILLS, result);
+    if (respose.data.status === 201 || respose.data.status === 200) {
+      setCurrent(current + 1);
+    } else {
+      message.error(respose.data.message);
+    }
+  };
   const prev = () => {
     if (current != 1) setCurrent(current - 1);
   };
@@ -42,7 +78,7 @@ const Skill = ({ setCurrent, current }) => {
             <div>
               <Form.Item
                 label="Skill"
-                name="skills"
+                // name="skills"
                 className="skillItemLable"
                 rules={[
                   { required: true, message: "Please Select atleast 1 Option" },
@@ -53,14 +89,12 @@ const Skill = ({ setCurrent, current }) => {
                   placeholder="Select Option"
                   onChange={handleChange}
                   optionLabelProp="label"
+                  // defaultValue={userSkillData}
+                  value={selectOption}
                 >
                   {optionArray.map((item) => {
                     return (
-                      <Option
-                        value={item.value}
-                        key={item.value}
-                        label={item.label}
-                      >
+                      <Option value={item.value} label={item.label}>
                         {item.label}
                       </Option>
                     );

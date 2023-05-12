@@ -9,7 +9,9 @@ import { putApiWithAuth } from "../../../utils/api";
 const { TextArea } = Input;
 
 const PersonalProfile = ({ setCurrent, current }) => {
-  const [profileObject, setProfileObject] = useState({});
+  const [form] = Form.useForm();
+
+  const [profileObject, setProfileObject] = useState({ id: null });
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
     setProfileObject({ ...profileObject, [name]: value });
@@ -17,31 +19,32 @@ const PersonalProfile = ({ setCurrent, current }) => {
 
   const onSubmit = () => {
     handleUpdateApi();
-    setCurrent(current + 1);
   };
 
   const handleUpdateApi = async () => {
-    let respose = {};
-    if (profileObject?.id) {
-      respose = await putApiWithAuth(
-        `${API_URL.UPDATEPROFILE}${profileObject?.id}/`,
-        profileObject
-      );
-      if (respose?.data.success === false) {
-        message.error(respose?.data.data.message);
-      }
+    const respose = await postApiWithAuth(API_URL.POSTPROFILE, [profileObject]);
+    if (respose.data.status === 201 || respose.data.status === 200) {
+      setCurrent(current + 1);
     } else {
-      respose = await postApiWithAuth(API_URL.POSTPROFILE, profileObject);
-
-      if (respose?.data.success === false) message.error(respose?.data.message);
+      message.error(respose.data.message);
     }
   };
 
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETPROFILE);
 
-    if (response.data?.status === 200 && response.data.data?.id != undefined) {
-      setProfileObject(response.data.data);
+    if (response.data?.status === 200 && response.data.data.length>0) {
+      setProfileObject(response.data.data[0]);
+      form.setFieldsValue({
+        full_name: response.data.data[0].full_name,
+        email: response.data.data[0].email,
+        address: response.data.data[0].address,
+        address2: response.data.data[0].address2,
+        town: response.data.data[0].town,
+        city: response.data.data[0].city,
+        eircode: response.data.data[0].eircode,
+        objective: response.data.data[0].objective,
+      });
     }
   };
 
@@ -61,7 +64,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
           </p>
         </div>
         <div className="profileForm">
-          <Form layout="vertical" onFinish={onSubmit}>
+          <Form layout="vertical" form={form} onFinish={onSubmit}>
             <div className="profileFormEmail">
               <div className="profileFormEmailItem">
                 <Form.Item

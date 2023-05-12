@@ -1,17 +1,92 @@
 import React, { useState, useEffect } from "react";
-import { Form, Select, Button } from "antd";
+import { Form, Select, Button, message } from "antd";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
 import "./Reference.css";
+import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
+import { API_URL } from "../../../utils/constants";
+import { useNavigate, useLocation } from "react-router-dom";
+import { PlusCircleOutlined } from "@ant-design/icons";
 
 const Reference = ({ setCurrent, current }) => {
-  const [selectOption, setSelectOption] = useState([]);
-  const [referenceData, setReferenceData] = useState({});
+  const navigate = useNavigate();
+  const [data, setData] = useState(null);
+
   const [referArray, setReferArray] = useState([]);
-  const [index, setIndex] = useState(0);
   const { Option } = Select;
 
-  const onsubmit = () => {
-    setCurrent(current + 1);
+  const handleGetApi = async () => {
+    const response = await getApiWithAuth(API_URL.GETREFERANCE);
+    if (response.data?.status === 200) {
+      setData(response.data.data);
+    } else {
+      message.error("Fail to load Data");
+    }
+  };
+
+  useEffect(() => {
+    handleGetApi();
+  }, []);
+  useEffect(() => {
+    if (data !== null) {
+      if (data.length > 0) {
+        setReferArray(
+          data.map((item, indexx) => {
+            return {
+              index: indexx,
+              dataValue: item,
+            };
+          })
+        );
+      } else {
+        setReferArray([
+          {
+            index: 0,
+            dataValue: {
+              id: null,
+              contact_number: "",
+              email: "",
+              name: "",
+              position: "",
+            },
+          },
+        ]);
+      }
+    }
+  }, [data]);
+
+  const onsubmit = async () => {
+    let data = createArrayData(referArray);
+
+    const respose = await postApiWithAuth(API_URL.POSTREFERNACE, data);
+    console.log("================res post", respose);
+    if (respose.data.status === 201) {
+      setCurrent(1);
+      message.success("Cv Save Successfully");
+      navigate("/cover-letter");
+    } else {
+      message.error(respose.data.message);
+    }
+  };
+
+  const SavePdf = async () => {
+    let data = createArrayData(referArray);
+
+    const respose = await getApiWithAuth(API_URL.SAVEPDF);
+    console.log("================res get", respose);
+    if (respose.data.status === 201) {
+      // setCurrent(current + 1);
+    } else {
+      message.error(respose.data.message);
+    }
+  };
+
+  const createArrayData = (data) => {
+    let array = [];
+    data.map((item) => {
+      array.push(item.dataValue);
+    });
+
+    return array;
   };
 
   const prev = () => {
@@ -20,31 +95,34 @@ const Reference = ({ setCurrent, current }) => {
 
   const handleChange = (value) => {
     let arr = [];
-    for (let index = 0; index < value; index++) {
-      arr.push(index);
+    for (let i = 0; i < value; i++) {
+      arr.push({
+        index: i,
+        dataValue: {
+          id: null,
+          name: "",
+          position: "",
+          contact_number: "",
+          email: "",
+        },
+      });
     }
 
-    setSelectOption(arr);
+    setReferArray(arr);
   };
 
   const onChangeHandleInput = (e, arrayIndex) => {
     const { name, value } = e.target;
-    setIndex(arrayIndex);
-    setReferenceData({ ...referenceData, [name]: value });
+    setReferArray(
+      referArray.map((item) => {
+        return item.index === arrayIndex
+          ? { ...item, dataValue: { ...item.dataValue, [name]: value } }
+          : item;
+      })
+    );
   };
 
-  useEffect(() => {
-    if (Object.keys(referenceData).length > 0) {
-      let filterData = referArray.filter((item) => item.index !== index);
-      filterData.push({
-        index: index,
-        dataValue: referenceData,
-      });
-      setReferArray(filterData);
-    }
-  }, [referenceData]);
-
-  const referenceItems = (item) => {
+  const referenceItems = (item, index) => {
     return (
       <>
         <div style={{ marginTop: "30px" }}>
@@ -52,16 +130,16 @@ const Reference = ({ setCurrent, current }) => {
             <div className="refFormEmailItem">
               <Form.Item
                 label="Name"
-                name="name"
+                name={`name ${index}`}
                 className="refItemLable"
-                rules={[{ required: true, message: "Please input name!" }]}
+                rules={[{ required: item?.dataValue.name ? false : true, message: "Please input name!" }]}
               >
                 <MyCareerGuidanceInputField
                   placeholder="Danial Brot"
                   type="input"
                   name="name"
-                  onChange={(e) => onChangeHandleInput(e, item)}
-                  inputValue={referArray[item]?.name}
+                  onChange={(e) => onChangeHandleInput(e, index)}
+                  inputValue={item?.dataValue?.name}
                   isPrefix={false}
                 />
               </Form.Item>
@@ -69,17 +147,17 @@ const Reference = ({ setCurrent, current }) => {
             <div className="refFormEmailItem">
               <Form.Item
                 label="Position"
-                name="position"
+                name={`position ${index}`}
                 className="refItemLable"
-                rules={[{ required: true, message: "Please input position!" }]}
+                rules={[{ required: item?.dataValue.position ? false : true, message: "Please input position!" }]}
                 style={{ marginBottom: "20px" }}
               >
                 <MyCareerGuidanceInputField
                   placeholder="e.g H&M"
                   type="input"
                   name="position"
-                  onChange={(e) => onChangeHandleInput(e, item)}
-                  inputValue={referArray[item]?.position}
+                  onChange={(e) => onChangeHandleInput(e, index)}
+                  inputValue={item?.dataValue?.position}
                   isPrefix={false}
                 />
               </Form.Item>
@@ -89,16 +167,16 @@ const Reference = ({ setCurrent, current }) => {
             <div className="refFormEmailItem">
               <Form.Item
                 label="Contact Phone"
-                name="contact"
+                name={`contact_number ${index}`}
                 className="refItemLable"
-                rules={[{ required: true, message: "Please input name!" }]}
+                rules={[{ required: item?.dataValue.contact_number ? false : true, message: "Please input Contact!" }]}
               >
                 <MyCareerGuidanceInputField
                   placeholder="+xx-xxx-xxx-xxxx"
                   type="input"
-                  name="phone"
-                  onChange={(e) => onChangeHandleInput(e, item)}
-                  inputValue={referArray[item]?.phone}
+                  name="contact_number"
+                  onChange={(e) => onChangeHandleInput(e, index)}
+                  inputValue={item?.dataValue?.contact_number}
                   isPrefix={false}
                 />
               </Form.Item>
@@ -106,17 +184,19 @@ const Reference = ({ setCurrent, current }) => {
             <div className="refFormEmailItem">
               <Form.Item
                 label="Contact Email"
-                name="email"
+                name={`email ${index}`}
                 className="refItemLable"
-                rules={[{ required: true, message: "Please input position!" }]}
+                rules={[
+                  { required: item?.dataValue.email ? false : true, message: "Please input Contact Email!" },
+                ]}
                 style={{ marginBottom: "20px" }}
               >
                 <MyCareerGuidanceInputField
                   placeholder="xyz@gmail.com"
-                  type="input"
+                  type="email"
                   name="email"
-                  onChange={(e) => onChangeHandleInput(e, item)}
-                  inputValue={referArray[item]?.email}
+                  onChange={(e) => onChangeHandleInput(e, index)}
+                  inputValue={item?.dataValue?.email}
                   isPrefix={false}
                 />
               </Form.Item>
@@ -139,37 +219,46 @@ const Reference = ({ setCurrent, current }) => {
         <div className="refForm">
           <Form layout="vertical" onFinish={onsubmit}>
             <div>
-              <Form.Item
-                label="Do you want to Include Refrences"
-                name="skills"
-                className="skillItemLable"
-                rules={[{ required: true, message: "Please Select 1 Option" }]}
-              >
-                <Select
-                  placeholder="Select One Option"
-                  onChange={handleChange}
-                  optionLabelProp="label"
-                >
-                  <Option value={1} key={1} label={"One"}>
-                    One
-                  </Option>
-                  <Option value={2} key={2} label={"Two"}>
-                    Two
-                  </Option>
-                  <Option value={3} key={3} label={"Three"}>
-                    Three
-                  </Option>
-                </Select>
-              </Form.Item>
-            </div>
-            <div>
-              {selectOption.map((item) => {
+              {referArray.map((item, index) => {
                 {
-                  return referenceItems(item);
+                  return referenceItems(item, index);
                 }
               })}
             </div>
-
+            <div>
+              <Form.Item>
+                <Button
+                  className="expAddButton"
+                  onClick={() =>
+                    setReferArray((oldarr) => [
+                      ...oldarr,
+                      {
+                        index: referArray.length,
+                        dataValue: {
+                          id: null,
+                          contact_number: "",
+                          email: "",
+                          name: "",
+                          position: "",
+                        },
+                      },
+                    ])
+                  }
+                >
+                  <span>
+                    <PlusCircleOutlined
+                      style={{
+                        fontSize: "20px",
+                        display: "flex",
+                        alignItems: "center",
+                        marginRight: "10px",
+                      }}
+                    />
+                  </span>{" "}
+                  Add Another Position
+                </Button>
+              </Form.Item>
+            </div>
             <div className="skillsItemButton">
               <Form.Item>
                 <Button
@@ -183,11 +272,19 @@ const Reference = ({ setCurrent, current }) => {
 
               <Form.Item>
                 <Button
+                  className="skillsButton me-3 "
+                  type="primary"
+                  htmlType="submit"
+                  onClick={SavePdf}
+                >
+                  Download CV
+                </Button>
+                <Button
                   className="skillsButton"
                   type="primary"
                   htmlType="submit"
                 >
-                  NEXT
+                  Save
                 </Button>
               </Form.Item>
             </div>

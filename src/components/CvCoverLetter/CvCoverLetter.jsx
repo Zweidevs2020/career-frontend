@@ -10,7 +10,7 @@ import Education from "./Eductaion/Education";
 import Experenice from "./Experenice/Experenice";
 
 const CvCoverLetter = () => {
-  const [current, setCurrent] = useState(1);
+  const [current, setCurrent] = useState(6);
 
   return (
     <>

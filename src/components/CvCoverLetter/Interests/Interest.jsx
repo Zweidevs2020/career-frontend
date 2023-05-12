@@ -1,13 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Interest.css";
-import { Form, Button, Input } from "antd";
-
+import { Form, Button, Input, message } from "antd";
+import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
+import { API_URL } from "../../../utils/constants";
 const Interest = ({ setCurrent, current }) => {
   const { TextArea } = Input;
-  const [textData, setTextData] = useState("");
+  const [textData, setTextData] = useState({ id: null });
 
-  const onsubmit = () => {
-    setCurrent(current + 1);
+  const onsubmit = async () => {
+    const respose = await postApiWithAuth(API_URL.POSTINTREST, [textData]);
+    if (respose.data.status === 201) {
+      setCurrent(current + 1);
+    } else {
+      message.error("Error, Please try again");
+    }
   };
 
   const prev = () => {
@@ -15,9 +21,21 @@ const Interest = ({ setCurrent, current }) => {
   };
 
   const handleChange = (event) => {
-    const { value } = event.target;
-    setTextData(value);
+    const { name, value } = event.target;
+    setTextData({ ...textData, [name]: value });
   };
+
+  const getIntrest = async () => {
+    const response = await getApiWithAuth(API_URL.GETINTREST);
+    if (response.data?.status === 200) {
+      if (response.data.data.length > 0) {
+        setTextData(response.data.data[0]);
+      }
+    }
+  };
+  useEffect(() => {
+    getIntrest();
+  }, []);
 
   return (
     <>
@@ -31,7 +49,6 @@ const Interest = ({ setCurrent, current }) => {
             <div>
               <Form.Item
                 label="Interest"
-                name="interest"
                 className="interestItemLable"
                 rules={[
                   { required: true, message: "Please input your Interest!" },
@@ -41,8 +58,8 @@ const Interest = ({ setCurrent, current }) => {
                   rows={4}
                   placeholder="Write Your Interests......"
                   className="inputFieldStyle"
-                  inputValue={textData}
-                  name="objective"
+                  value={textData.interest}
+                  name="interest"
                   onChange={handleChange}
                 />
               </Form.Item>
