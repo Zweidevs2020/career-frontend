@@ -29,7 +29,7 @@ const EmailVerification = () => {
       navigate("/new-password", { state: { data } });
     } else {
       setLoading(false);
-      message.success(response.data.message[0]);
+      message.error(response.data.message[0]);
     }
   };
 
