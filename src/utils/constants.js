@@ -30,5 +30,7 @@ export const API_URL = {
   POSTINTREST:"cv/add-interest/",
   SAVEPDF:'cv/cv',
   ADDSLOTTABLE:'timetable/add-timeslot/',
-  DASHBOARDTESTTYPES:'psychometric/testType/'
+  DASHBOARDTESTTYPES:'psychometric/testType/',
+  GETCHOICES:'choices/selected/',
+  REMOVECHOICES:'choices/selected/'
 };
