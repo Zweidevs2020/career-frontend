@@ -1,0 +1,50 @@
+.noDataChoices {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 168px;
+}
+.choicesWithoutBorder {
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  height: 95px;
+  margin-top: 15px;
+  cursor: pointer;
+
+}
+
+.choicesWithBorder {
+  background: #ffffff;
+  border: 1px solid rgba(20, 118, 183, 0.76);
+  border-radius: 10px;
+  height: 95px;
+  margin-top: 15px;
+  cursor: pointer;
+
+}
+
+.addChoicesButton {
+  min-width: 100px;
+  max-width: 144px;
+  height: 41px;
+  background: #1476b7;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.removeChoicesButton{
+  width: 91px;
+  height: 41px;
+  background: #ffffff;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 1px solid #1476B7;
+  color: #1476b7;
+
+}

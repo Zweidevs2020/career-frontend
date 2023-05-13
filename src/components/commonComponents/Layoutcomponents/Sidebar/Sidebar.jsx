@@ -32,6 +32,7 @@ import {
   ProfileSvg,
   AssesmentSvg,
   StudySvg,
+  ChoicesSvg,
 } from "../../../../utils/svg";
 import { API_URL } from "../../../../utils/constants";
 import "./SidebarStyle.css";
@@ -122,7 +123,7 @@ const Sidebar = ({ children, flags }) => {
       setIsModalOpen(false);
       getUserData();
       setLoading2(false);
-      message.success('Data Upadte')
+      message.success("Data Upadte");
     } else {
       setLoading2(false);
     }
@@ -149,6 +150,8 @@ const Sidebar = ({ children, flags }) => {
       navigate("/self-assesment");
     } else if (key === "EducationalGuidance") {
       navigate("/educational-guidance");
+    } else if (key === "MyChoices") {
+      navigate("/my-choices");
     } else {
       navigate("/my-study");
     }
@@ -172,6 +175,11 @@ const Sidebar = ({ children, flags }) => {
       location.pathname === "/educational-guidance-test"
     ) {
       setSelectedMenuItem("EducationalGuidance");
+    } else if (
+      location.pathname === "/my-choices" ||
+      location.pathname === "/my-choice-edit"
+    ) {
+      setSelectedMenuItem("MyChoices");
     } else {
       setSelectedMenuItem("MyStudy");
     }
@@ -295,6 +303,23 @@ const Sidebar = ({ children, flags }) => {
               <span className="textStyling">
                 My Study{" "}
                 {selectedMenuItem === "MyStudy" ? (
+                  <span> &nbsp;&nbsp;&#x25cf; </span>
+                ) : null}
+              </span>
+            </Menu.Item>
+            <Menu.Item
+              key="MyChoices"
+              icon={
+                <ChoicesSvg
+                  fill={
+                    selectedMenuItem === "MyChoices" ? "#1476B7" : "#BDBDBD"
+                  }
+                />
+              }
+            >
+              <span className="textStyling">
+                My Choices{" "}
+                {selectedMenuItem === "MyChoices" ? (
                   <span> &nbsp;&nbsp;&#x25cf; </span>
                 ) : null}
               </span>

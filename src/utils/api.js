@@ -34,7 +34,7 @@ export const patchApiWithAuth = async (url, body) => {
   try {
     const res = await baseInstance.patch(url, body);
     return {
-      data: res.data,
+      data: res,
     };
   } catch (err) {
     return err.response;
@@ -68,7 +68,7 @@ export const deleteApiWithAuth = async (url) => {
   try {
     const res = await baseInstance.delete(url);
     return {
-      data: res.data,
+      data: res,
     };
   } catch (err) {
     return err.response;

@@ -24,6 +24,8 @@ import EducationalGuidance from "./components/EducationalGuidance";
 import TakeTest from "./components/TakeTest";
 import TakeSelfTest from "./components/TakeSelfTest";
 import MyStudy from "./components/MyStudy";
+import MyChoices from "./components/MyChoices";
+import MyChoicesEdit from './components/MyChoicesEdit'
 function App() {
   return (
     <BrowserRouter>
@@ -88,7 +90,7 @@ function App() {
             </PrivateRoute>
           }
         />
-         <Route
+        <Route
           path="/self-assesment-test"
           element={
             <PrivateRoute>
@@ -151,12 +153,32 @@ function App() {
             </PrivateRoute>
           }
         />
-                <Route
+        <Route
           path="/my-study"
           element={
             <PrivateRoute>
               <Sidebar>
                 <MyStudy />
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/my-choices"
+          element={
+            <PrivateRoute>
+              <Sidebar>
+                <MyChoices />
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/my-choice-edit"
+          element={
+            <PrivateRoute>
+              <Sidebar>
+                <MyChoicesEdit />
               </Sidebar>
             </PrivateRoute>
           }
