@@ -56,12 +56,16 @@ const MyChoices = () => {
     getChoices();
   }, []);
   useEffect(() => {
-    if (data.length > 0) {
-      const filteredOptions = choicesData.filter((option) =>
-        data.includes(option.id)
-      );
+    if (data === undefined) {
+      setUserGetChoices([]);
+    } else {
+      if (data?.length > 0) {
+        const filteredOptions = choicesData.filter((option) =>
+          data.includes(option.id)
+        );
 
-      setUserGetChoices(filteredOptions);
+        setUserGetChoices(filteredOptions);
+      }
     }
   }, [data]);
   const getChoices = async () => {
@@ -79,7 +83,7 @@ const MyChoices = () => {
       if (choices.length + userGetChoices.length < 3) {
         setChoices([...choices, selectedItem]);
       } else {
-        message.error("Not select more then 3 choices");
+        message.error("Not Add more then 3 choices");
       }
     } else {
       let filtered_array = choices.filter((item) => item.id != selectedItem.id);
@@ -88,18 +92,24 @@ const MyChoices = () => {
   };
 
   const addChoices = async () => {
-    const postData = choices.map((item) => {
-      return {
-        [item.id]: true,
-      };
-    });
-    const response = await postApiWithAuth(API_URL.GETCHOICES, postData);
-    if (response.data.status === 200) {
-      getChoices();
-      setLoading(false);
+    if (choices.length === 0) {
+      message.error("Select At least one choice");
     } else {
-      setLoading(false);
-      message.error("Fail to add");
+      const postData = choices.map((item) => {
+        return {
+          [item.id]: true,
+        };
+      });
+      const response = await postApiWithAuth(API_URL.GETCHOICES, postData);
+      if (response.data.status === 200) {
+        message.success("Choice add successfully");
+        setChoices([]);
+        getChoices();
+        setLoading(false);
+      } else {
+        setLoading(false);
+        message.error("Fail to add");
+      }
     }
   };
 
@@ -112,7 +122,7 @@ const MyChoices = () => {
     const response = await postApiWithAuth(API_URL.REMOVECHOICES, postData);
     if (response.data.status === 200) {
       message.success("Choice remove successfully");
-
+      setChoices([]);
       getChoices();
     } else {
       setLoading(false);
