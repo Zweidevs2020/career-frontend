@@ -56,12 +56,16 @@ const MyChoices = () => {
     getChoices();
   }, []);
   useEffect(() => {
-    if (data.length > 0) {
-      const filteredOptions = choicesData.filter((option) =>
-        data.includes(option.id)
-      );
+    if (data === undefined) {
+      setUserGetChoices([]);
+    } else {
+      if (data?.length > 0) {
+        const filteredOptions = choicesData.filter((option) =>
+          data.includes(option.id)
+        );
 
-      setUserGetChoices(filteredOptions);
+        setUserGetChoices(filteredOptions);
+      }
     }
   }, [data]);
   const getChoices = async () => {
@@ -95,6 +99,8 @@ const MyChoices = () => {
     });
     const response = await postApiWithAuth(API_URL.GETCHOICES, postData);
     if (response.data.status === 200) {
+      message.success("Choice add successfully");
+      
       getChoices();
       setLoading(false);
     } else {
@@ -112,7 +118,7 @@ const MyChoices = () => {
     const response = await postApiWithAuth(API_URL.REMOVECHOICES, postData);
     if (response.data.status === 200) {
       message.success("Choice remove successfully");
-
+      setChoices([])
       getChoices();
     } else {
       setLoading(false);
