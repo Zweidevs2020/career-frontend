@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { API_URL } from "../../../utils/constants";
 import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
 import { Spin, Modal } from "antd";
+import Chart from "react-apexcharts";
 
 const Right = () => {
   const navigate = useNavigate();
@@ -15,7 +16,8 @@ const Right = () => {
 
   const getducationGuidance = async () => {
     setLoading(true);
-    const response = await getApiWithAuth(API_URL.DASHBOARDTESTTYPES);
+    const response = await getApiWithAuth("psychometric/calculate/");
+    console.log("========================res", response);
     if (response.data.status === 200) {
       setEducationGuidance(response.data.data);
       setLoading(false);
@@ -23,79 +25,69 @@ const Right = () => {
       setLoading(false);
     }
   };
+  const options = {
+    // plotOptions: {
+    //   bar: {
+    //     horizontal: true
+    //   }
+    // },
+    chart: {
+      id: 'basic-bar',
+      toolbar: {
+        show: false
+      }
+    },
+    plotOptions: {
+      bar: {
+        columnWidth: 20,
+        colors: {
+          backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#1984FF"], // Set the background color of the bars
+        },
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    labels: educationGuidance
+      .map((item) => item.scores.map((score) => score.name))
+      .flat(),
+    colors: ["#1984FF"],
+    series: [
+      {
+        data: educationGuidance
+          .map((item) => item.scores.map((score) => score.score))
+          .flat(),
+      },
+    ],
+  };
 
   return (
     <>
-      <div class="h-[100%] w-[100%] items-center flex flex-col">
-        <div class="h-[30px] w-[98%]  flex items-center md:h-[40px] md:items-end">
-          <p class="text-[#474749] mt-3 sm:text-[15px] ml-2 text-[16px] font-bold">
-            Self Assessment
-          </p>
-        </div>
-        <div className="flex flex-wrap justify-center ">
-          {loading ? (
-            <Spin className="spinStyle" />
-          ) : educationGuidance.length === 0 ? (
-            <div className="quizDetailsStyle">No Data Found</div>
-          ) : (
-            educationGuidance.map((item) => {
-              return (
-                <div key={item.id}>
-                  <div
-                    style={{
-                      background: "#EBF5FF",
-                      borderRadius: "20px",
-                      width: 180,
-                      height: 180,
-                      display: "flex",
-                      justifyContent: "center",
-                      margin: 10,
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: "80%",
-                        height: 160,
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "space-around",
-                      }}
-                    >
-                      <div
-                        style={{
-                          color: "#89AEC4",
-                          fontSize: "16px",
-                          fontWeight: "500",
-                        }}
-                      >
-                        {item.type}
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        <div class="h-7 w-1 bg-[#006Ed3] ml-2 "></div>
-                        <div
-                          style={{
-                            color: "#006ED3",
-                            fontSize: "40px",
-                            fontWeight: "700",
-                          }}
-                        >
-                          {" "}
-                          {item.score?.total ? item.score.total : 0}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+      <div class="h-[100%] w-[100%]  flex flex-col">
+        {loading ? (
+          <Spin className="spinStyle" />
+        ) : educationGuidance.length === 0 ? (
+          <div className="quizDetailsStyle spinStyle">No Data Found</div>
+        ) : (
+          educationGuidance.map((item) => {
+            return (
+              <div key={item.id} className="ms-3">
+                <div class="h-[30px]">
+                  <p class="text-[#474749] mt-3 sm:text-[15px text-[16px] font-bold">
+                    {item.test_name}
+                  </p>
                 </div>
-              );
-            })
-          )}
-        </div>
+                <Chart
+                  options={options}
+                  series={options.series}
+                  type="bar"
+                  width={380}
+                  height={320}
+                />
+              </div>
+            );
+          })
+        )}
       </div>
     </>
   );

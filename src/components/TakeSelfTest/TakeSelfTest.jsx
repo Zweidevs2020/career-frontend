@@ -43,7 +43,10 @@ const TakeSelfTest = () => {
     });
     if (response.data.status === 200) {
       message.success("Quiz taken successfully");
-      navigate("/self-assesment");
+      navigate("/occupation", {
+        state: { data: response.data.data.test_id },
+      })
+     
       setSpinnerLoading(false);
     } else {
       setSpinnerLoading(false);

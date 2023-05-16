@@ -167,7 +167,8 @@ const Sidebar = ({ children, flags }) => {
       setSelectedMenuItem("CoverLater");
     } else if (
       location.pathname === "/self-assesment" ||
-      location.pathname === "/self-assesment-test"
+      location.pathname === "/self-assesment-test" ||
+      location.pathname === "/occupation" 
     ) {
       setSelectedMenuItem("SelfAssessment");
     } else if (

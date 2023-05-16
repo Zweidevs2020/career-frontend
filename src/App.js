@@ -26,6 +26,7 @@ import TakeSelfTest from "./components/TakeSelfTest";
 import MyStudy from "./components/MyStudy";
 import MyChoices from "./components/MyChoices";
 import MyChoicesEdit from './components/MyChoicesEdit'
+import Occupational from "./components/Occupational";
 function App() {
   return (
     <BrowserRouter>
@@ -179,6 +180,16 @@ function App() {
             <PrivateRoute>
               <Sidebar>
                 <MyChoicesEdit />
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/occupation"
+          element={
+            <PrivateRoute>
+              <Sidebar>
+                <Occupational />
               </Sidebar>
             </PrivateRoute>
           }
