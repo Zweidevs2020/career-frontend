@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Spin, message, Radio, TimePicker, Modal } from "antd";
-import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
+import { Spin, message, Button, TimePicker, Modal } from "antd";
+import { getApiWithAuth, postApiWithAuth,deleteApiWithAuth } from "../../utils/api";
 import {
   MyCareerGuidanceButton,
   MyCareerGuidanceInputField,
@@ -26,6 +26,8 @@ const MyStudy = () => {
   const [title, setTitle] = useState("");
   const [loadingBooking, setLoadingBooking] = useState(false);
   const [openBooking, setOpenBooking] = useState(false);
+  const [deleteHandler, setDeleteHandler] = useState(false);
+
   const handleOpenBooking = () => setOpenBooking(true);
   const handleCloseBooking = () => setOpenBooking(false);
   useEffect(() => {
@@ -124,10 +126,40 @@ const MyStudy = () => {
       message.error(response.data.message[0]);
     }
   };
+  const handleDelete = async () => {
+    setDeleteHandler(true)
+    const respose = await deleteApiWithAuth(`timetable/reset-timeslot/`);
+    if (respose.data.data.success) {
+      message.success("Reset Data succesfully");
+      setSelectedTime("");
+      setSelectedEndTime("");
+      setWeekDay("");
+      setTitle("");
+      setOpenBooking(false);
+      setLoadingBooking(false);
+      setData([]);
+      setDatatime([]);
+      getCalanderData();
+      setDeleteHandler(false)
+    } else {
+      setDeleteHandler(false)
+       message.error(respose.data.message);
+    }
+  };
   return (
     <>
       <div className="educationalGuidanceMainDiv">
+        <div  style={{ display: "flex", justifyContent:'space-between',alignItems:'center' }}>
         <div className="welcomeHaddingText pb-4">Schedule Management</div>
+              <Button
+               className="viewResultButton"
+                type="primary"
+                loading={deleteHandler}
+                onClick={handleDelete}
+              >
+                Reset all
+              </Button>
+            </div>
         {loading ? (
           <Spin className="spinStyle" />
         ) : (
