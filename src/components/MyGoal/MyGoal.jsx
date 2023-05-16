@@ -15,7 +15,6 @@ const MyGoal = () => {
 
   const [proffession, setProffession] = useState("");
   const [loading, setLoading] = useState(false);
-  const [actions, seActions] = useState("");
   const [goal, setGoal] = useState("");
   const [realistic, setRealistic] = useState(false);
   const [countdown, setCountdown] = useState("");
@@ -25,6 +24,13 @@ const MyGoal = () => {
     hours: 0,
     minutes: 0,
     seconds: 0,
+  });
+  const [actions, seActions] = useState({
+    action1: "",
+    action2: "",
+    action3: "",
+    action4: "",
+    action5: "",
   });
 
   useEffect(() => {
@@ -62,11 +68,19 @@ const MyGoal = () => {
     const res = await getApiWithAuth(API_URL.GETUSERGOAL);
     if (res.data.data) {
       setGoal(res.data.data.goal);
-      seActions(res.data.data.actions);
+      seActions(res.data.data.action);
       setProffession(res.data.data.proffession);
       setRealistic(res.data.data.realistic);
-      setCountdown(new Date(res.data.data.countdown));
-      setCountdown3(dayjs(res.data.data.countdown).format("DD-MM-YYYY"));
+      setCountdown(
+        res.data.data.countdown === null
+          ? dayjs().format("DD-MM-YYYY")
+          : new Date(res.data.data.countdown)
+      );
+      setCountdown3(
+        res.data.data.countdown === null
+          ? dayjs().format("DD-MM-YYYY")
+          : dayjs(res.data.data.countdown).format("DD-MM-YYYY")
+      );
       setLoading(false);
     }
   };
@@ -114,6 +128,10 @@ const MyGoal = () => {
     }
   };
 
+  const onChangeHandle = (e) => {
+    const { name, value } = e.target;
+    seActions({ ...actions, [name]: value });
+  };
   return (
     <>
       {loading ? (
@@ -145,13 +163,12 @@ const MyGoal = () => {
               </div>
               <div className="inputGoal">
                 <input
-                  className="inputCarrer"
                   type="text"
                   value={proffession}
                   onChange={(e) => setProffession(e.target.value)}
                   name="input"
                   placeholder="eg Accountant"
-                  class=" sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
+                  className="inputCarrer sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
                 />
               </div>
 
@@ -160,13 +177,12 @@ const MyGoal = () => {
               </div>
               <div className="inputGoal">
                 <input
-                  className="inputCarrer"
                   type="text"
                   value={goal}
                   onChange={(e) => setGoal(e.target.value)}
                   name="input"
                   placeholder="eg Accountant"
-                  class="  sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
+                  className="inputCarrer  sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
                 />
               </div>
               <div className="inputContainer">
@@ -174,70 +190,81 @@ const MyGoal = () => {
                   5 Actions to Achieve the Above:
                 </h>
               </div>
-              <div
-                className="h"
-                class="w-[100%] h-[70px] w-[97%]  sm:h-[100px] sm:flex-wrap sm:flex flex items-center justify-around pl-4 "
-              >
+              <div className="w-[100%] h-[70px] w-[97%]  sm:h-[100px] sm:flex-wrap sm:flex flex items-center justify-around pl-4 ">
                 <input
                   type="text"
-                  name="input"
+                  name="action1"
+                  value={actions.action1}
                   placeholder="Write down your goal"
-                  class=" sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[19%] rounded-md border-solid border-2 border-gray-400 outline-none "
+                  className=" sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[19%] rounded-md border-solid border-2 border-gray-400 outline-none "
+                  onChange={(e) => {
+                    onChangeHandle(e);
+                  }}
                 />
                 <input
                   type="text"
-                  name="input"
+                  name="action2"
+                  value={actions.action2}
                   placeholder="Set a deadline"
-                  class=" px-2 sm:text-[8px] md:text-[8px] h-[50px] xl:text-[11px] w-[19%] sm:w-[30%] sm:h-[35px] md:h-[38px] rounded-md border-solid border-2 border-gray-400 outline-none "
+                  className=" px-2 sm:text-[8px] md:text-[8px] h-[50px] xl:text-[11px] w-[19%] sm:w-[30%] sm:h-[35px] md:h-[38px] rounded-md border-solid border-2 border-gray-400 outline-none "
+                  onChange={(e) => {
+                    onChangeHandle(e);
+                  }}
                 />
                 <input
                   type="text"
-                  name="input"
+                  name="action3"
+                  value={actions.action3}
                   placeholder="Work on your mindset"
-                  class=" sm:text-[8px] md:text-[8px] px-2 xl:text-[11px] h-[50px] sm:h-[35px] w-[19%] md:h-[38px] sm:w-[30%] rounded-md border-solid border-2 border-gray-400 outline-none "
+                  className=" sm:text-[8px] md:text-[8px] px-2 xl:text-[11px] h-[50px] sm:h-[35px] w-[19%] md:h-[38px] sm:w-[30%] rounded-md border-solid border-2 border-gray-400 outline-none "
+                  onChange={(e) => {
+                    onChangeHandle(e);
+                  }}
                 />
                 <input
                   type="text"
-                  name="input"
+                  name="action4"
+                  value={actions.action4}
                   placeholder="Develop your skillset"
-                  class=" sm:text-[8px] md:text-[8px] px-2 xl:text-[11px] h-[50px] sm:h-[35px] w-[19%] md:h-[38px] sm:w-[30%] rounded-md border-solid border-2 border-gray-400 outline-none "
+                  className=" sm:text-[8px] md:text-[8px] px-2 xl:text-[11px] h-[50px] sm:h-[35px] w-[19%] md:h-[38px] sm:w-[30%] rounded-md border-solid border-2 border-gray-400 outline-none "
+                  onChange={(e) => {
+                    onChangeHandle(e);
+                  }}
                 />
                 <input
                   type="text"
-                  name="input"
+                  name="action5"
+                  value={actions.action5}
                   placeholder="Reward yourself"
-                  class=" px-2 sm:text-[8px] md:text-[8px] h-[50px] xl:text-[11px] w-[19%] sm:h-[35px] sm:w-[30%] md:h-[38px]  rounded-md border-solid border-2 border-gray-400 outline-none "
-                />
-                <input
-                  type="text"
-                  name="input"
-                  placeholder="Reward yourself"
-                  class=" md:hidden lg:hidden xl:hidden xxl:hidden px-2 sm:text-[8px] h-[50px] w-[19%] sm:h-[35px] sm:w-[30%]  rounded-md border-solid border-2 border-gray-400 outline-none "
+                  className=" px-2 sm:text-[8px] md:text-[8px] h-[50px] xl:text-[11px] w-[19%] sm:h-[35px] sm:w-[30%] md:h-[38px]  rounded-md border-solid border-2 border-gray-400 outline-none "
+                  onChange={(e) => {
+                    onChangeHandle(e);
+                  }}
                 />
               </div>
               <div className="inputContainer">
                 <h style={{ color: "#111928" }}>Is this Realistic ?</h>
               </div>
-              <div class="h-[50px] w-[20%]  sm:w-[50%] md:w-[40%] lg:w-[40%] flex items-center pl-2">
-                <div class="h-[40px] w-[50%] flex items-center justify-around ">
+              <div className="h-[50px] w-[20%]  sm:w-[50%] md:w-[40%] lg:w-[40%] flex items-center pl-2">
+                <div className="h-[40px] w-[50%] flex items-center justify-around ">
                   <input
                     type="checkbox"
                     checked={realistic ? true : false}
                     onChange={() => setRealistic(true)}
-                    class="h-[24px] w-[24px] border-none text-[#fff] bg-[#1476B7] "
+                    className="h-[24px] w-[24px] border-none text-[#fff] bg-[#1476B7] "
                   />
-                  <p class="text-[#737373] sm:text-[14px] md:text-[16px] text-[18px]  ">
+                  <p className="text-[#737373] sm:text-[14px] md:text-[16px] text-[18px]  ">
                     Yes
                   </p>
                 </div>
-                <div class="h-[40px] w-[50%]  flex items-center justify-around ">
+                <div className="h-[40px] w-[50%]  flex items-center justify-around ">
                   <input
                     type="checkbox"
                     checked={!realistic ? true : false}
                     onChange={() => setRealistic(false)}
-                    class="h-[24px] w-[24px] border-none text-[#F4F6F8] bg[#F4F6F8] "
+                    className="h-[24px] w-[24px] border-none text-[#F4F6F8] bg[#F4F6F8] "
                   />
-                  <p class="text-[#737373] sm:text-[14px] md:text-[16px] text-[18px] ">
+                  <p className="text-[#737373] sm:text-[14px] md:text-[16px] text-[18px] ">
                     No
                   </p>
                 </div>
@@ -257,36 +284,36 @@ const MyGoal = () => {
                 </Space>
               </div>
               <div className="timer">
-                <div class="contact h-[110px] w-[97%] flex items-center justify-center gap-5 bg-white rounded-md border-solid border-2 border-gray-400  ">
-                  <div class="h-[80px] w-[10%]  flex flex-col items-center justify-center">
-                    <p class="text-[#DB614D] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px] ">
+                <div className="contact h-[110px] w-[97%] flex items-center justify-center gap-5 bg-white rounded-md border-solid border-2 border-gray-400  ">
+                  <div className="h-[80px] w-[10%]  flex flex-col items-center justify-center">
+                    <p className="text-[#DB614D] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px] ">
                       {countdown2.days} :
                     </p>
-                    <p class="text-[#DB614D] text-[28px] font-bold sm:text-[14px] md:text-[16px] lg:text-[16px] ">
+                    <p className="text-[#DB614D] text-[28px] font-bold sm:text-[14px] md:text-[16px] lg:text-[16px] ">
                       Days
                     </p>
                   </div>
-                  <div class="h-[80px] w-[10%]  flex flex-col items-center justify-center">
-                    <p class="text-[#474749] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px] ">
+                  <div className="h-[80px] w-[10%]  flex flex-col items-center justify-center">
+                    <p className="text-[#474749] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px] ">
                       {countdown2.hours} :
                     </p>
-                    <p class="text-[#474749] text-[28px] font-bold  sm:text-[14px] md:text-[16px] lg:text-[16px] ">
+                    <p className="text-[#474749] text-[28px] font-bold  sm:text-[14px] md:text-[16px] lg:text-[16px] ">
                       Hours
                     </p>
                   </div>
-                  <div class="h-[80px] w-[10%]  flex flex-col items-center justify-center">
-                    <p class="text-[#474749] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px] ">
+                  <div className="h-[80px] w-[10%]  flex flex-col items-center justify-center">
+                    <p className="text-[#474749] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px] ">
                       {countdown2.minutes} :
                     </p>
-                    <p class="text-[#474749] text-[28px] font-bold sm:text-[14px] md:text-[16px] lg:text-[16px] ">
+                    <p className="text-[#474749] text-[28px] font-bold sm:text-[14px] md:text-[16px] lg:text-[16px] ">
                       Mins
                     </p>
                   </div>
-                  <div class="h-[80px] w-[10%]  flex flex-col items-center justify-center">
-                    <p class="text-[#474749] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px] ">
+                  <div className="h-[80px] w-[10%]  flex flex-col items-center justify-center">
+                    <p className="text-[#474749] text-[28px] font-bold sm:text-[16px] md:text-[16px] lg:text-[16px] ">
                       {countdown2.seconds} :
                     </p>
-                    <p class="text-[#474749] text-[28px] font-bold sm:text-[14px] md:text-[16px] lg:text-[16px] ">
+                    <p className="text-[#474749] text-[28px] font-bold sm:text-[14px] md:text-[16px] lg:text-[16px] ">
                       Secs
                     </p>
                   </div>
