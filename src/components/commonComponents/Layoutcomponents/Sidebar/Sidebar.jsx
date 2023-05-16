@@ -119,9 +119,12 @@ const Sidebar = ({ children, flags }) => {
   const handleUpdate = async () => {
     setLoading2(true);
     const response = await patchApiWithAuth(API_URL.GETUSER2, updateData);
-    if (response.data.success) {
+    console.log("====================goals levels", response);
+
+    if (response.data.status===200) {
       setIsModalOpen(false);
       getUserData();
+      setEditMode(false)
       setLoading2(false);
       message.success("Data Upadte");
     } else {
@@ -167,7 +170,8 @@ const Sidebar = ({ children, flags }) => {
       setSelectedMenuItem("CoverLater");
     } else if (
       location.pathname === "/self-assesment" ||
-      location.pathname === "/self-assesment-test"
+      location.pathname === "/self-assesment-test" ||
+      location.pathname === "/occupation" 
     ) {
       setSelectedMenuItem("SelfAssessment");
     } else if (

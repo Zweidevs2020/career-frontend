@@ -94,7 +94,11 @@ const Selfassesment = () => {
                           className="viewResultButton"
                           type="button"
                           htmlType="button"
-                          onClick={() => showModal(item)}
+                          onClick={() =>
+                            navigate("/occupation", {
+                              state: { data: item },
+                            })
+                          }
                         />
                       </div>
                     )}

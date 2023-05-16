@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Spin, message, Radio, TimePicker, Modal } from "antd";
-import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
+import { Spin, message, Button, TimePicker, Modal } from "antd";
+import {
+  getApiWithAuth,
+  postApiWithAuth,
+  deleteApiWithAuth,
+} from "../../utils/api";
 import {
   MyCareerGuidanceButton,
   MyCareerGuidanceInputField,
@@ -26,8 +30,14 @@ const MyStudy = () => {
   const [title, setTitle] = useState("");
   const [loadingBooking, setLoadingBooking] = useState(false);
   const [openBooking, setOpenBooking] = useState(false);
+  const [deleteHandler, setDeleteHandler] = useState(false);
+  const [openViewBooking, setOpenViewBooking] = useState(false);
+  const [viewData, setViewData] = useState({});
   const handleOpenBooking = () => setOpenBooking(true);
   const handleCloseBooking = () => setOpenBooking(false);
+
+  const handleOpenViewBooking = () => setOpenViewBooking(true);
+  const handleCloseViewBooking = () => setOpenViewBooking(false);
   useEffect(() => {
     getCalanderData();
   }, []);
@@ -57,6 +67,7 @@ const MyStudy = () => {
         extendedProps: {
           title: item.title,
           id: item.day,
+          selectID: item.id,
           start: new Date(
             `${setShowData(item.day, dataTime)} ${item.timeslot}`
           ),
@@ -124,10 +135,71 @@ const MyStudy = () => {
       message.error(response.data.message[0]);
     }
   };
+  const handleDelete = async () => {
+    setDeleteHandler(true);
+    const respose = await deleteApiWithAuth(`timetable/reset-timeslot/`);
+    if (respose.data.data.success) {
+      message.success("Reset Data succesfully");
+      setSelectedTime("");
+      setSelectedEndTime("");
+      setWeekDay("");
+      setTitle("");
+      setOpenBooking(false);
+      setLoadingBooking(false);
+      setData([]);
+      setDatatime([]);
+      getCalanderData();
+      setDeleteHandler(false);
+    } else {
+      setDeleteHandler(false);
+      message.error(respose.data.message);
+    }
+  };
+
+  const handleEventClick = (clickInfo) => {
+    setViewData(clickInfo.event._def.extendedProps);
+    handleOpenViewBooking();
+  };
+
+
+  const deleteCurrent = async (id) => {
+    setDeleteHandler(true);
+    const respose = await deleteApiWithAuth(`timetable/delete-timeslot/${id}`);
+    if (respose.data.status === 204) {
+      message.success("Reset Data succesfully");
+      setOpenBooking(false);
+      setLoadingBooking(false);
+      getCalanderData();
+      handleCloseViewBooking();
+      setData([]);
+      setDatatime([]);
+      setDeleteHandler(false);
+    } else {
+      setDeleteHandler(false);
+      message.error(respose.data.message);
+    }
+  };
+  
   return (
     <>
       <div className="educationalGuidanceMainDiv">
-        <div className="welcomeHaddingText pb-4">Schedule Management</div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <div className="welcomeHaddingText pb-4">Schedule Management</div>
+          <Button
+            className="viewResultButton"
+            type="primary"
+            loading={deleteHandler}
+            onClick={handleDelete}
+          >
+            Reset all
+          </Button>
+        </div>
         {loading ? (
           <Spin className="spinStyle" />
         ) : (
@@ -141,7 +213,7 @@ const MyStudy = () => {
             initialView="timeGridWeek"
             events={calenderData}
             eventContent={renderEventContent} // this function print data
-            // eventClick={handleEventClick} //when we select data this function called
+            eventClick={handleEventClick} //when we select data this function called
             select={handleDateSelect}
             selectable={true}
             allDaySlot={false}
@@ -216,6 +288,77 @@ const MyStudy = () => {
               type="button"
               htmlType="button"
               onClick={createNewEvent}
+              loading={loadingBooking}
+            />
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        className="modalStyleClass"
+        bodyStyle={{
+          background: "none",
+          width: "97%",
+        }}
+        open={openViewBooking}
+        onCancel={handleCloseViewBooking}
+        footer={[]}
+      >
+        <div className="mt-5 pt-5 ps-2">
+          <MyCareerGuidanceInputField
+            placeholder="Add Title"
+            disabled
+            type="input"
+            name="full_name"
+            inputValue={viewData.title}
+          />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: 20,
+            }}
+          >
+            <TimePicker
+              value={dayjs(viewData.start)}
+              use12Hours={true}
+              minuteStep={15}
+              disabled
+              format="h:mm a"
+              style={{ width: 200 }}
+              className="inputFieldStyle"
+            />
+            <TimePicker
+              disabled
+              value={dayjs(viewData.end)}
+              use12Hours={true}
+              minuteStep={15}
+              format="h:mm a"
+              className="inputFieldStyle"
+              style={{ width: 200 }}
+            />
+          </div>
+          <div
+            className="mt-3"
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <MyCareerGuidanceButton
+              label={"cancel"}
+              className="viewResultButton me-3"
+              type="button"
+              htmlType="button"
+              onClick={handleCloseViewBooking}
+            />
+            <MyCareerGuidanceButton
+              label={"Delete"}
+              className="takebutton"
+              type="button"
+              htmlType="button"
+              onClick={() => deleteCurrent(viewData.selectID)}
               loading={loadingBooking}
             />
           </div>
