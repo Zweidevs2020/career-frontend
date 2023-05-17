@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { DatePicker, Space, Spin, message } from "antd";
 import dayjs from "dayjs";
 import jsPDF from "jspdf";
-import { MyCareerGuidanceInputField } from "../commonComponents";
+import { MyCareerGuidanceButton } from "../commonComponents";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import DownloadPage from "./DownloadPage";
 import { API_URL } from "../../utils/constants";
@@ -15,6 +15,8 @@ const MyGoal = () => {
 
   const [proffession, setProffession] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
+
   const [goal, setGoal] = useState("");
   const [realistic, setRealistic] = useState(false);
   const [countdown, setCountdown] = useState("");
@@ -109,22 +111,22 @@ const MyGoal = () => {
   };
 
   const SaveInput = async () => {
-    setLoading(true);
+    setLoading2(true);
     const data = {
       proffession: proffession,
       goal: goal,
       actions: actions,
       realistic: realistic,
-      date: countdown,
+      date:  dayjs(countdown).format("DD-MM-YYYY"),
     };
     const response = await postApiWithAuth(API_URL.POSTUSERGOAL, data);
 
     if (response.data.status === 200) {
       message.success("Goals set successfully");
-      setLoading(false);
+      setLoading2(false);
     } else {
-      setLoading(false);
-      message.error(response.data.detail);
+      setLoading2(false);
+      message.error(response.data.message);
     }
   };
 
@@ -339,9 +341,12 @@ const MyGoal = () => {
                 >
                   Download PDF
                 </button>
-                <button onClick={() => SaveInput()} className="buttonGoalPage">
-                  Save Data
-                </button>
+                <MyCareerGuidanceButton
+                label=" Save Data"
+                loading={loading2}
+                className="buttonGoalPage"
+                onClick={() => SaveInput()}
+                />
               </div>
               <br />
             </div>
