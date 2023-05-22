@@ -2,3 +2,15 @@
 background-color: #F8FAFC;
 margin: 0px 37px 0px 37px;
 }
+.mybtnGoal{
+    justify-content: end;
+    width: 20%;
+}
+.customBtnGoal{
+    width: 55%;
+}
+.btnDisabled{
+    background-color: gray;
+    cursor: not-allowed;
+    padding: 10px;
+}

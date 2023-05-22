@@ -10,7 +10,7 @@ import { PlusCircleOutlined } from "@ant-design/icons";
 const Reference = ({ setCurrent, current }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
-
+  const [downloadBtn, setDownloadBtn]=useState(false);
   const [referArray, setReferArray] = useState([]);
   const { Option } = Select;
 
@@ -207,6 +207,19 @@ const Reference = ({ setCurrent, current }) => {
     );
   };
 
+  const getUserData = async() => {
+    const response = await getApiWithAuth(API_URL.GETUSER2);
+    if(response.data.status === 200){
+     if(response.data.data.cv_completed===true){
+      setDownloadBtn(true);
+     }
+    }
+  }
+
+  useEffect(()=>{
+    getUserData();
+  },[])
+
   return (
     <>
       <div className="flex flex-col justify-center">
@@ -272,7 +285,7 @@ const Reference = ({ setCurrent, current }) => {
 
               <Form.Item>
                 <Button
-                  className="skillsButton me-3 "
+                  className={downloadBtn === false ? "disabledBtn me-3": "skillsButton me-3 "}
                   type="primary"
                   htmlType="submit"
                   onClick={SavePdf}

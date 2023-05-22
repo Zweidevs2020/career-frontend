@@ -32,10 +32,10 @@ const Right = () => {
     //   }
     // },
     chart: {
-      id: 'basic-bar',
+      id: "basic-bar",
       toolbar: {
-        show: false
-      }
+        show: false,
+      },
     },
     plotOptions: {
       bar: {
@@ -69,24 +69,35 @@ const Right = () => {
         ) : educationGuidance.length === 0 ? (
           <div className="quizDetailsStyle spinStyle">No Data Found</div>
         ) : (
-          educationGuidance.map((item) => {
-            return (
-              <div key={item.id} className="ms-3">
-                <div class="h-[30px]">
-                  <p class="text-[#474749] mt-3 sm:text-[15px text-[16px] font-bold">
-                    {item.test_name}
-                  </p>
+          <div>
+            {educationGuidance.map((item, index) => {
+              const labels = item.scores.map((score) => score.name);
+              const series = item.scores.map((score) => score.score);
+
+              const chartOptions = {
+                ...options,
+                labels,
+                series: [{ data: series }],
+              };
+
+              return (
+                <div key={index} className="ms-3">
+                  <div class="h-[30px]">
+                    <p class="text-[#474749] mt-3 sm:text-[15px text-[16px] font-bold">
+                      {item.test_name}
+                    </p>
+                  </div>
+                  <Chart
+                    options={chartOptions}
+                    series={chartOptions.series}
+                    type="bar"
+                    width={380}
+                    height={320}
+                  />
                 </div>
-                <Chart
-                  options={options}
-                  series={options.series}
-                  type="bar"
-                  width={380}
-                  height={320}
-                />
-              </div>
-            );
-          })
+              );
+            })}
+          </div>
         )}
       </div>
     </>

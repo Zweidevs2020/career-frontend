@@ -6,6 +6,7 @@ import { API_URL } from "../../../utils/constants";
 const Skill = ({ setCurrent, current }) => {
   const [selectOption, setSelectOption] = useState([]);
   const [userSkillData, setUserSkillsData] = useState([]);
+  const [downloadBtn, setDownloadBtn]=useState(false);
 
   const { Option } = Select;
 
@@ -66,6 +67,31 @@ const Skill = ({ setCurrent, current }) => {
     setSelectOption(value);
   };
 
+  const SavePdf = async () => {
+    // let data = createArrayData(referArray);
+
+    const respose = await getApiWithAuth(API_URL.SAVEPDF);
+    console.log("================res get", respose);
+    if (respose.data.status === 201) {
+      // setCurrent(current + 1);
+    } else {
+      message.error(respose.data.message);
+    }
+  };
+
+  const getUserData = async() => {
+    const response = await getApiWithAuth(API_URL.GETUSER2);
+    if(response.data.status === 200){
+     if(response.data.data.cv_completed===true){
+      setDownloadBtn(true);
+     }
+    }
+  }
+
+  useEffect(()=>{
+    getUserData();
+  },[])
+  
   return (
     <>
       <div className="flex flex-col justify-center">
@@ -115,6 +141,14 @@ const Skill = ({ setCurrent, current }) => {
               </Form.Item>
 
               <Form.Item>
+              <Button
+                  className={downloadBtn === false ? "disabledBtn me-3": "skillsButton me-3 "}
+                  type="primary"
+                  htmlType="submit"
+                  onClick={SavePdf}
+                >
+                  Download CV
+                </Button>
                 <Button
                   className="skillsButton"
                   type="primary"
