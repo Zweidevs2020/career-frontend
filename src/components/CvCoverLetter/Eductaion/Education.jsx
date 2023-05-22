@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 const Education = ({ setCurrent, current }) => {
   const [data, setData] = useState(null);
 
+  const [downloadBtn, setDownloadBtn]=useState(false);
   const [educationArray, setEducationArray] = useState([]);
   const [resultArrayData, setResultArrayData] = useState([]);
   const [isCheck, setIsCheck] = useState(true);
@@ -160,6 +161,31 @@ const Education = ({ setCurrent, current }) => {
       })
     );
   };
+
+  const SavePdf = async () => {
+    // let data = createArrayData(referArray);
+
+    const respose = await getApiWithAuth(API_URL.SAVEPDF);
+    console.log("================res get", respose);
+    if (respose.data.status === 201) {
+      // setCurrent(current + 1);
+    } else {
+      message.error(respose.data.message);
+    }
+  };
+
+  const getUserData = async() => {
+    const response = await getApiWithAuth(API_URL.GETUSER2);
+    if(response.data.status === 200){
+     if(response.data.data.cv_completed===true){
+      setDownloadBtn(true);
+     }
+    }
+  }
+
+  useEffect(()=>{
+    getUserData();
+  },[])
 
   const educationItems = (item, index) => {
     return (
@@ -467,6 +493,14 @@ const Education = ({ setCurrent, current }) => {
               </Form.Item>
 
               <Form.Item>
+              <Button
+                  className={downloadBtn === false ? "disabledBtn me-3": "skillsButton me-3 "}
+                  type="primary"
+                  htmlType="submit"
+                  onClick={SavePdf}
+                >
+                  Download CV
+                </Button>
                 <Button className="eduButton" type="primary" htmlType="submit">
                   NEXT
                 </Button>

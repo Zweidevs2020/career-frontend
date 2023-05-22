@@ -3,7 +3,9 @@ import "./Interest.css";
 import { Form, Button, Input, message } from "antd";
 import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
 import { API_URL } from "../../../utils/constants";
+
 const Interest = ({ setCurrent, current }) => {
+  const [downloadBtn, setDownloadBtn]=useState(false);
   const { TextArea } = Input;
   const [textData, setTextData] = useState({ id: null });
 
@@ -33,8 +35,31 @@ const Interest = ({ setCurrent, current }) => {
       }
     }
   };
+
+  const SavePdf = async () => {
+    // let data = createArrayData(referArray);
+
+    const respose = await getApiWithAuth(API_URL.SAVEPDF);
+    console.log("================res get", respose);
+    if (respose.data.status === 201) {
+      // setCurrent(current + 1);
+    } else {
+      message.error(respose.data.message);
+    }
+  };
+
+  const getUserData = async() => {
+    const response = await getApiWithAuth(API_URL.GETUSER2);
+    if(response.data.status === 200){
+     if(response.data.data.cv_completed===true){
+      setDownloadBtn(true);
+     }
+    }
+  }
+  
   useEffect(() => {
     getIntrest();
+    getUserData();
   }, []);
 
   return (
@@ -77,6 +102,14 @@ const Interest = ({ setCurrent, current }) => {
               </Form.Item>
 
               <Form.Item>
+              <Button
+                  className={downloadBtn === false ? "disabledBtn me-3": "skillsButton me-3 "}
+                  type="primary"
+                  htmlType="submit"
+                  onClick={SavePdf}
+                >
+                  Download CV
+                </Button>
                 <Button
                   className="interestButton"
                   type="primary"

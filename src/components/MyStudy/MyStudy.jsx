@@ -4,6 +4,7 @@ import {
   getApiWithAuth,
   postApiWithAuth,
   deleteApiWithAuth,
+  putApiWithAuth,
 } from "../../utils/api";
 import {
   MyCareerGuidanceButton,
@@ -21,6 +22,7 @@ import "./Mystudy.css";
 const MyStudy = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [updateLoading, setUpdateLoading] = useState(false);
   const [data, setData] = useState([]);
   const [dataTime, setDatatime] = useState([]);
   const [calenderData, setCalenderData] = useState([]);
@@ -30,14 +32,20 @@ const MyStudy = () => {
   const [title, setTitle] = useState("");
   const [loadingBooking, setLoadingBooking] = useState(false);
   const [openBooking, setOpenBooking] = useState(false);
+  const [deleteBooking, setDeleteBooking] = useState(false);
   const [deleteHandler, setDeleteHandler] = useState(false);
   const [openViewBooking, setOpenViewBooking] = useState(false);
   const [viewData, setViewData] = useState({});
+  const [btnDisabled, setBtnDisabled] = useState(true);
   const handleOpenBooking = () => setOpenBooking(true);
   const handleCloseBooking = () => setOpenBooking(false);
+  const handleCloseBooking2 = () => setDeleteBooking(false);
+
 
   const handleOpenViewBooking = () => setOpenViewBooking(true);
   const handleCloseViewBooking = () => setOpenViewBooking(false);
+  
+
   useEffect(() => {
     getCalanderData();
   }, []);
@@ -55,6 +63,7 @@ const MyStudy = () => {
   const setShowData = (dayCount, AllArray) => {
     return AllArray[dayCount];
   };
+
   useEffect(() => {
     let check = [];
     check = data.map((item) => {
@@ -77,6 +86,7 @@ const MyStudy = () => {
     });
     setCalenderData(check);
   }, [dataTime]);
+
   const getCalanderData = async () => {
     setLoading(true);
     const response = await getApiWithAuth(`timetable/list-timeslot/`);
@@ -161,7 +171,6 @@ const MyStudy = () => {
     handleOpenViewBooking();
   };
 
-
   const deleteCurrent = async (id) => {
     setDeleteHandler(true);
     const respose = await deleteApiWithAuth(`timetable/delete-timeslot/${id}`);
@@ -179,7 +188,49 @@ const MyStudy = () => {
       message.error(respose.data.message);
     }
   };
-  
+
+  const handleChangeViewData = (e) => {
+    setBtnDisabled(false);
+    const { name, value } = e.target;
+    setViewData({ ...viewData, [name]: value });
+  };
+
+  const handleChangeStartTime = (e, d) => {
+    setBtnDisabled(false);
+    setViewData({ ...viewData, start: e?.$d });
+  };
+
+  const handleChangeEndTime = (e, d) => {
+    setBtnDisabled(false);
+    setViewData({ ...viewData, end: e?.$d });
+  };
+
+  const handleEdit = async(id) => {
+    setUpdateLoading(true);
+    let startTime = moment(viewData.start).format("hh:mm:ss");
+    let endTime = dayjs(viewData.end).format("hh:mm:ss");
+    // let dataarr = []
+    // data.map((e,i)=>(
+    //   dataarr.push(e.day) 
+    // ))
+    setBtnDisabled(true);
+    const response = await putApiWithAuth(`timetable/update-timeslot/${id}`,{
+      timeslot: startTime,
+      endslot: endTime,
+      day: viewData.id,
+      title: viewData.title,
+    })
+    if(response.data.success === true){
+      message.success("Booking Updated Successfully");
+      setUpdateLoading(false);
+      getCalanderData();
+      setOpenViewBooking(false);
+    }
+    if(response.data.success === false){
+      message.error(response.data.message)
+    }
+  }
+
   return (
     <>
       <div className="educationalGuidanceMainDiv">
@@ -276,19 +327,53 @@ const MyStudy = () => {
             }}
           >
             <MyCareerGuidanceButton
-              label={"cancel"}
-              className="viewResultButton me-3"
-              type="button"
-              htmlType="button"
-              onClick={handleCloseBooking}
-            />
-            <MyCareerGuidanceButton
-              label={"Okay"}
+              label={"Create"}
               className="takebutton"
               type="button"
               htmlType="button"
               onClick={createNewEvent}
               loading={loadingBooking}
+            />
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        className="modalStyleClass"
+        bodyStyle={{
+          background: "none",
+          width: "97%",
+        }}
+        open={deleteBooking}
+        onCancel={handleCloseBooking2}
+        footer={[]}
+      >
+        <div className="mt-5 pt-5 ps-2">
+          <div>
+          <span className="warnText">Are you sure you want to Delete this?</span>
+          </div>
+          <div
+            className="mt-3"
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <MyCareerGuidanceButton
+              label={"Delete"}
+              className="takebutton deleteBtn"
+              type="button"
+              htmlType="button"
+              onClick={() => {deleteCurrent(viewData.selectID); setDeleteBooking(false)}}
+              loading={loadingBooking}
+            />
+            <MyCareerGuidanceButton
+              label={"Cancel"}
+              className="viewResultButton"
+              type="button"
+              htmlType="button"
+              onClick={() => setDeleteBooking(false)}
             />
           </div>
         </div>
@@ -307,10 +392,10 @@ const MyStudy = () => {
         <div className="mt-5 pt-5 ps-2">
           <MyCareerGuidanceInputField
             placeholder="Add Title"
-            disabled
             type="input"
-            name="full_name"
+            name="title"
             inputValue={viewData.title}
+            onChange={handleChangeViewData}
           />
           <div
             style={{
@@ -323,19 +408,19 @@ const MyStudy = () => {
               value={dayjs(viewData.start)}
               use12Hours={true}
               minuteStep={15}
-              disabled
               format="h:mm a"
               style={{ width: 200 }}
               className="inputFieldStyle"
+              onChange={(e, s) => handleChangeStartTime(e, s)}
             />
             <TimePicker
-              disabled
               value={dayjs(viewData.end)}
               use12Hours={true}
               minuteStep={15}
               format="h:mm a"
               className="inputFieldStyle"
               style={{ width: 200 }}
+              onChange={(e, d) => handleChangeEndTime(e, d)}
             />
           </div>
           <div
@@ -343,23 +428,26 @@ const MyStudy = () => {
             style={{
               width: "100%",
               display: "flex",
-              justifyContent: "flex-end",
+              justifyContent: "space-between",
             }}
           >
             <MyCareerGuidanceButton
-              label={"cancel"}
-              className="viewResultButton me-3"
+              label={"Delete"}
+              className="takebutton deleteBtn"
               type="button"
               htmlType="button"
-              onClick={handleCloseViewBooking}
+              onClick={() => {setOpenViewBooking(false); setDeleteBooking(true)}}
+              loading={loadingBooking}
             />
             <MyCareerGuidanceButton
-              label={"Delete"}
-              className="takebutton"
+              label={updateLoading? <Spin size="small"/> : "Edit"}
+              disabled={btnDisabled}
+              className={
+                btnDisabled ? "disabledBtnStyle" : "viewResultButton editBtn"
+              }
               type="button"
               htmlType="button"
-              onClick={() => deleteCurrent(viewData.selectID)}
-              loading={loadingBooking}
+              onClick={() => handleEdit(viewData.selectID)}
             />
           </div>
         </div>

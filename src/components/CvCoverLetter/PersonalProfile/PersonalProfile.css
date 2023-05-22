@@ -74,5 +74,15 @@ margin-bottom: -2%;
     font-size: 14px;
     border-radius: 12px;
   }
+  .disabledBtn, .profileItemButton .disabledBtn:hover{
+    background-color: gray;
+    cursor: not-allowed;
+    border: 1px solid grey;
+    width: 144px;
+    height: 52px;
+    font-size: 14px;
+    border-radius: 12px;
+
+  }
 
 

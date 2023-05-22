@@ -18,3 +18,34 @@
     white-space: nowrap;
     width: 85%
 }
+.disabledBtnStyle{
+    background-color: gray;
+    cursor: not-allowed;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    height: 40px;
+    width: 130px;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    color: white;
+}
+button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-button.viewResultButton.editBtn {
+    margin-left: 0px;
+}
+button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary.ant-btn-sm {
+    background-color: #4096ff;
+    color: white;
+}
+.warnText{
+    text-align: center;
+    font-size: 18px;
+    display: block;
+}
+button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-button.takebutton.deleteBtn {
+    background: red;
+}
