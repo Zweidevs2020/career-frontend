@@ -1,83 +1,223 @@
+import React, { useState, useEffect, useRef } from "react";
+import { Select, Table } from "antd";
 import add from "../../assets/add.svg";
-import React, { useEffect, useState } from "react";
-import { API_URL } from "../../utils/constants";
-import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
-import { MyCareerGuidanceButton } from "../../components/commonComponents";
-import { Table, Select } from "antd";
 import {
   buildStyles,
   CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
+import { MyCareerGuidanceButton } from "../commonComponents";
 import "react-circular-progressbar/dist/styles.css";
 import "./CaoCalculator.css";
+import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
+import { API_URL } from "../../utils/constants";
+
+const { Option } = Select;
 
 const CaoCalculator = () => {
-  const [data, setData] = useState({
+  const refDiv = useRef();
+  const [finalData, setFinalData] = useState({
     points: 0,
     bonus_points: 0,
     total_points: 0,
   });
-  const [loading, setLoading] = useState(false);
-  const [subjects, setSubjects] = useState([]);
-  const [subjectsData, setSubjectData] = useState([]);
-  const [subjectsLevelsAll, setSubjectLevelsAll] = useState([]);
-  const [grades, setGrades] = useState([]);
-  const [subjectsLevelsAll2, setSubjectLevelsAll2] = useState([]);
+  const [firstDropdownValue, setFirstDropdownValue] = useState("");
+  const [secondDropdownValue, setSecondDropdownValue] = useState("");
+  const [thirdDropdownValue, setThirdDropdownValue] = useState("");
   const [loadingFirst, setLoadingFirst] = useState(false);
-  const [loadingSecond, setLoadingSecond] = useState(-1);
-  const [loadingThird, setLoadingThird] = useState(-1);
+  const [loadingThird, setLoadingThird] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [gradeId, setGradeId] = useState([]);
+  const [gradeIdApi, setGradeIdApi] = useState([]);
+  const [gradeId1, setGradeId1] = useState([{}, {}]);
 
-  const subjectHandleSelect = (id, record) => {
-    setLoadingSecond(record.No);
-    const filter = subjects.filter((item) => item.id === id);
+  const [grades, setGrades] = useState([]);
+  const [subjects, setSubjects] = useState("");
+  const [level, setLevel] = useState("");
+  const [grade, setGrade] = useState("");
+  const [thirdDropdownOptions, setThirdDropdownOptions] = useState([]);
+  const [tableKey, setTableKey] = useState(0);
+  const [btnDisabled, setBtnDisabled] = useState(true);
+  const [currentState, setCurrectState] = useState(-1);
+  const [tableData, setTableData] = useState([
+    {
+      No: 0,
+      name: "",
+      level: null,
+      grades: null,
+    },
+    {
+      No: 1,
+      name: "",
+      level: null,
+      grades: null,
+    },
+    {
+      No: 2,
+      name: "",
+      level: null,
+      grades: null,
+    },
+    {
+      No: 3,
+      name: "",
+      level: null,
+      grades: null,
+    },
+    {
+      No: 4,
+      name: "",
+      level: null,
+      grades: null,
+    },
+    {
+      No: 5,
+      name: "",
+      level: null,
+      grades: null,
+    },
+  ]);
 
-    const level = filter[0].level.map((item) => {
-      return {
-        value: item.level__subjectlevel,
-        label: item.level__subjectlevel,
-      };
-    });
-    let temp = subjectsLevelsAll.filter((item) => item.row !== record.No);
-    temp.push({ subjectId: id, row: record.No, level: level });
-    let sortArray = temp.sort((a, b) => a.row - b.row);
-    setSubjectLevelsAll(sortArray);
-    setLoadingSecond(-1);
+  const handleAdd = () => {
+    const newData = {
+      No: tableData.length,
+      name: "",
+      level: "",
+      grades: "",
+    };
+
+    setTableData([...tableData, newData]);
   };
-  const levelHandleSelect = async (levelName, record) => {
-    setLoadingThird(record.No);
-    let singleData = subjectsLevelsAll.filter((item) => item.row === record.No);
 
+  useEffect(() => {
+    if (firstDropdownValue !== "" && secondDropdownValue !== "") {
+      // Call the API and update the third dropdown's options and table data based on the selected values
+      // Example: fetch('api-url')
+      //           .then(response => response.json())
+      //           .then(data => {
+      //              setThirdDropdownOptions(data.dropdownOptions);
+      //              setTableData(data.tableData);
+      //           });
+    }
+  }, [firstDropdownValue, secondDropdownValue]);
+
+  const handleThridDropDownApi = async (index) => {
+    setLoadingThird(true);
+    setCurrectState(index);
+    setThirdDropdownOptions([]);
     const response = await getApiWithAuth(
-      `calculator/check-level-grade/?level=${levelName}&subject=${singleData[0].subjectId}`
+      `calculator/check-level-grade/?level=${tableData[index].level}&subject=${tableData[index].name}`
     );
     if (response.data.status === 200) {
-      const level = response.data.data.map((item) => {
-        return {
-          value: item.pk,
-          label: item.grade,
-        };
-      });
-
-      let newArray = singleData.map((item) => {
-        return { ...item, GradeData: level, levelId: levelName };
-      });
-      let temp = grades.filter((item) => item.row !== record.No);
-      temp.push(newArray[0]);
-      let sortArray = temp.sort((a, b) => a.row - b.row);
-
-      setGrades(sortArray);
-      setLoadingThird(-1);
-    } else {
-      setLoadingThird(-1);
+      setLoadingThird(false);
+      setCurrectState(-1);
+      setGrades(response.data.data);
+      const options = response.data.data.map((e) => ({ value: e.grade }));
+      setThirdDropdownOptions(options);
     }
   };
-  const handleSelect = async (gradeId, record) => {
-    let temp = subjectsLevelsAll2.filter((item) => item.row !== record.No);
-    temp.push({ row: record.No, grade: gradeId });
-    let sortArray = temp.sort((a, b) => a.row - b.row);
-    setSubjectLevelsAll2(sortArray);
+
+  const handleFirstDropdownChange = (value, record) => {
+    const tempData = tableData?.map((item, index) => {
+      if (item?.No == record?.No) {
+        return {
+          ...item,
+          name: value,
+          level: null,
+          grades: null,
+        };
+      } else {
+        return item;
+      }
+    });
+    setTableData(tempData);
+    // setTableKey((prevKey) => prevKey + 1);
+    // setTableData((prevTableData) => [
+    //   {
+    //     ...prevTableData[0],
+    //     Level: "", // Set the level to the default value
+    //     Expected_Grades: "", // Set the expected grades to the default value
+    //   },
+    //   ...prevTableData.slice(1),
+    // ]);
+
+    // if (tableData.name !== value) {
+    //   tableData.Level=""
+    //   tableData.Expected_Grades=""
+    // }
+    // setFirstDropdownValue(value);
+    // setSecondDropdownValue("");
+    // setThirdDropdownValue("");
+    // setThirdDropdownOptions([]);
+    // handle("",record)
+    // setTableData([]);
   };
-  const defaultColumns = [
+
+  const handleSecondDropdownChange = (value, record) => {
+    const tempData = tableData?.map((item, index) => {
+      if (item?.No == record?.No) {
+        return {
+          ...item,
+          level: value,
+          grades: null,
+        };
+      } else {
+        return item;
+      }
+    });
+    setTableData(tempData);
+
+    // setSecondDropdownValue(value);
+    // setThirdDropdownValue("");
+    // setThirdDropdownOptions([]);
+    // setTableData([]);
+    // handleThridDropDownApi(value,record.No);
+  };
+
+  const handleThirdDropdownChange = (value, index) => {
+    // refDiv.current.value=value
+    console.log("==thirdval", value, index);
+    if (index == 0) setGradeId(value);
+    else console.log("===777", refDiv.value);
+    setThirdDropdownValue(value);
+  };
+
+  const handle = (value, record) => {
+    const tempData = tableData?.map((item, index) => {
+      if (item?.No == record?.No) {
+        return {
+          ...item,
+          grades: value,
+        };
+      } else {
+        return item;
+      }
+    });
+    setTableData(tempData);
+    const gradeid = grades.filter((item) => item.grade === value);
+
+    setGradeId((prevGrades) => [...prevGrades, { grade: gradeid[0].pk }]);
+
+    // setGradeId((prevGradeId) => [...prevGradeId, gradeid[0].pk]);
+    // console.log(value,indexp)
+    // const tempArray=gradeId1?.map((item,index)=>{
+    //   if (index===indexp) {
+    //     return {
+    //       ...item,
+    //       value:value,
+    //     }
+    //   }else{
+    //     return value;
+    //   }
+    // })
+    // setGradeId1(tempArray)
+  };
+
+  // useEffect(()=>{
+  //   console.log("working",gradeId1)
+  // },[gradeId1])
+
+  const columns = [
     {
       title: "#",
       dataIndex: "No",
@@ -90,131 +230,168 @@ const CaoCalculator = () => {
       render: (_, record) => (
         <>
           <Select
-            placeholder={"Pick Subject"}
-            options={subjectsData}
-            name="name"
+            placeholder={"Select Subject"}
+            value={tableData[record?.No]?.name}
+            onChange={(e) => handleFirstDropdownChange(e, record)}
             className="selectFieldStyle"
-            onChange={(e) => subjectHandleSelect(e, record)}
-            bordered={false}
+            style={{ width: 200 }}
             loading={loadingFirst}
-            value={subjectsLevelsAll[record.No]?.subjectId}
-          />
+            key={record}
+          >
+            {data?.map((item) => (
+              <Option key={item.name} value={item.name}>
+                {item.name}
+              </Option>
+            ))}
+          </Select>
         </>
       ),
     },
     {
       title: "Level",
-      dataIndex: "level",
+      dataIndex: "name",
       align: "center",
-      render: (_, record) => (
-        <>
-          <Select
-            placeholder={"Higher"}
-            options={subjectsLevelsAll[record.No]?.level}
-            name="school"
-            className="selectFieldStyle"
-            onChange={(e) => levelHandleSelect(e, record)}
-            bordered={false}
-            loading={record.No === loadingSecond}
-            value={grades[record.No]?.levelId}
-          />
-        </>
-      ),
+      render: (_, record) => {
+        return (
+          <>
+            <Select
+              placeholder={"Select Level"}
+              value={tableData[record?.No]?.level}
+              onChange={(e) => handleSecondDropdownChange(e, record)}
+              className="selectFieldStyle"
+              style={{ width: 200 }}
+              key={record}
+            >
+              {tableData[record?.No]?.name &&
+                data
+                  .find((item) => item.name == tableData[record?.No]?.name)
+                  ?.level?.map((level) => (
+                    <Option
+                      key={level?.level__id}
+                      value={level?.level__subjectlevel}
+                    >
+                      {level?.level__subjectlevel}
+                    </Option>
+                  ))}
+            </Select>
+          </>
+        );
+      },
     },
     {
-      title: "Expected Grades",
+      title: "Expected_Grades",
+      dataIndex: "name",
       align: "center",
-      dataIndex: "grades",
       render: (_, record) => (
         <Select
-          placeholder={"A1"}
-          options={grades[record.No]?.GradeData}
-          name="school"
+          key={record}
+          placeholder={"Select Grade"}
+          value={tableData[record?.No]?.grades}
+          // onChange={(value)=>handleThirdDropdownChange(value,record.No)}
+          onChange={(value) => handle(value, record)}
+          onClick={() => handleThridDropDownApi(record.No)}
           className="selectFieldStyle"
-          onChange={(e) => handleSelect(e, record)}
-          bordered={false}
-          loading={record.No === loadingThird}
-          value={subjectsLevelsAll2[record.No]?.grade}
-        />
+          style={{ width: 200 }}
+          loading={record.No === currentState}
+        >
+          {tableData[record?.No]?.level &&
+            thirdDropdownOptions.map((option) => (
+              <Option key={option.id} value={option.value}>
+                {option.label}
+              </Option>
+            ))}
+        </Select>
       ),
     },
   ];
-  const [dataSource, setDataSource] = useState([
-    {
-      No: 0,
-      name: "",
-      level: "",
-      grades: "",
-    },
-    {
-      No: 1,
-      name: "",
-      level: "",
-      grades: "",
-    },
-    {
-      No: 2,
-      name: "",
-      level: "",
-      grades: "",
-    },
-  ]);
 
-  useEffect(() => {
-    if (subjects.length > 0) {
-      const subject = subjects.map((item) => {
-        return {
-          value: item.id,
-          label: item.name,
-        };
-      });
-      setSubjectData(subject);
+  const clearAllData = () => {
+    const completeTableData = tableData.map((item) => {
+      item.name = null;
+      item.grades = null;
+      item.level = null;
+    });
+    setTableData(completeTableData);
+  };
+
+  const calCulateData = async () => {
+    setLoading(true);
+    const response = await postApiWithAuth(API_URL.CALCULATEDATA, gradeId);
+    if (response.data.data.success) {
+      setFinalData(response.data.data.data);
+      setLoading(false);
+    } else {
+      setLoading(false);
     }
-  }, [subjects]);
-
-  const handleAdd = () => {
-    const newData = {
-      No: dataSource.length,
-      name: "",
-      level: "",
-      grades: "",
-    };
-
-    setDataSource([...dataSource, newData]);
   };
 
   useEffect(() => {
-    getSubject();
+    getFiltersData();
   }, []);
 
-  const getSubject = async () => {
+  useEffect(() => {
+    if (data.length > 0) {
+      getCurrectSelectedValues();
+    }
+  }, [data]);
+
+  useEffect(() => {
+    const TD = tableData.map((item) => {
+      // console.log("====itemmmmmmmm",item)
+      if (item.name !== null && item.grades !== null && item.level !== null) {
+        setBtnDisabled(false);
+      }
+    });
+  }, [tableData]);
+
+  const getFiltersData = async () => {
     setLoadingFirst(true);
     const response = await getApiWithAuth(API_URL.SUBJECTLIST);
     if (response.data.status === 200) {
-      setSubjects(response.data.data);
+      setData(response.data.data);
       setLoadingFirst(false);
     } else {
       setLoadingFirst(false);
     }
   };
-  const calCulateData = async () => {
-    setLoading(true);
-    const response = await postApiWithAuth(
-      API_URL.CALCULATEDATA,
-      subjectsLevelsAll2
-    );
-    if (response.data.data.success) {
-      setData(response.data.data.data);
-      setLoading(false);
-    } else {
-      setLoading(false);
+
+  const getCurrectSelectedValues = async () => {
+    let NewDataTable=[];
+    let filterGrade=[];
+    const response = await getApiWithAuth(`calculator/user-points/`);
+    for (let i = 0; i < response.data.data.subjects.length; i++) {
+      const filterSubjects = data.filter(
+        (item) => item.id == response.data.data.subjects[i]
+      );
+      const filterLevel = filterSubjects[0].level.filter((item)=> item.level__id == response.data.data.levels[i])
+      const response1 = await getApiWithAuth(
+        `calculator/check-level-grade/?level=${filterLevel[0].level__subjectlevel}&subject=${filterSubjects[0].name}`
+      );
+      if(response1.data.status === 200){
+        filterGrade = response1?.data?.data?.filter((item)=> item.pk== response.data.data.grades[i])
+      }
+      const tempObj = {
+        No: i,
+        name: filterSubjects[0]?.name,
+        level: filterLevel[0]?.level__subjectlevel,
+        grades: filterGrade[0].grade,
+      }
+      NewDataTable.push(tempObj);
     }
+
+    setTableData(NewDataTable);
+    console.log("=newwwwwwwwwwwww",NewDataTable)
   };
-  const clearAllData = async () => {
-    setSubjectLevelsAll([]);
-    setGrades([]);
-    setSubjectLevelsAll2([]);
-  };
+
+  // useEffect(() => {
+  //   if (
+  //     firstDropdownValue !== "" &&
+  //     secondDropdownValue !== "" &&
+  //     thirdDropdownValue !== ""
+  //   ) {
+  //     getCurrectSelectedValues();
+  //   }
+  // }, [firstDropdownValue, secondDropdownValue, thirdDropdownValue]);
 
   return (
     <div className="caoMainDiv">
@@ -239,17 +416,20 @@ const CaoCalculator = () => {
                 }}
               >
                 <div className="textStyle18">Subjects</div>
-                <div onClick={handleAdd}>
+                <div onClick={handleAdd}></div>
+                <div>
                   <img src={add} alt="" />
                 </div>
               </div>
-              <Table
-                rowClassName={() => "backgroundF4F6F8"}
-                dataSource={dataSource}
-                columns={defaultColumns}
-                pagination={false}
-                // bordered
-              />
+              <div>
+                <Table
+                  dataSource={tableData}
+                  columns={columns}
+                  rowClassName={() => "backgroundF4F6F8"}
+                  pagination={false}
+                  // key={tableKey}
+                />
+              </div>
             </div>
             <div className="coaPointsWidth">
               <div
@@ -266,17 +446,21 @@ const CaoCalculator = () => {
                     <div className="textStyle18">CAO Points</div>
                     <div className="coaPointTextMain">
                       <div className="coaPointTextStyle">Points</div>
-                      <div>{data.points ? data.points : 0}</div>
+                      <div>{finalData.points ? finalData.points : 0}</div>
                     </div>
                     <hr />
                     <div className="coaPointTextMain">
                       <div className="coaPointTextStyle">Bonus Points</div>
-                      <div>{data.bonus_points ? data.bonus_points : 0}</div>
+                      <div>
+                        {finalData.bonus_points ? finalData.bonus_points : 0}
+                      </div>
                     </div>
                     <hr />
                     <div className="coaPointTextMain">
                       <div className="coaPointTextStyle">Final Points</div>
-                      <div>{data.total_points ? data.total_points : 0}</div>
+                      <div>
+                        {finalData.total_points ? finalData.total_points : 0}
+                      </div>
                     </div>
                     <hr />
                     <div
@@ -289,7 +473,7 @@ const CaoCalculator = () => {
                       <div className="circularBarMainDiv">
                         <div style={{ width: 130 }}>
                           <CircularProgressbarWithChildren
-                            value={data}
+                            value={finalData}
                             minValue={0}
                             maxValue={1000}
                             styles={buildStyles({
@@ -303,7 +487,9 @@ const CaoCalculator = () => {
                             })}
                           >
                             <div className="welcomeHaddingText">
-                              {data.total_points ? data.total_points : 0}
+                              {finalData.total_points
+                                ? finalData.total_points
+                                : 0}
                             </div>
                             <div className="cao2ndText">
                               <strong>Points</strong>
@@ -321,7 +507,6 @@ const CaoCalculator = () => {
                   className="clearAllButton"
                   type="primary"
                   htmlType="button"
-                  // loading={loading}
                   onClick={clearAllData}
                 />
                 <MyCareerGuidanceButton
@@ -329,7 +514,7 @@ const CaoCalculator = () => {
                   className="calculateButton"
                   type="primary"
                   htmlType="button"
-                  disabled={subjectsLevelsAll2.length < 1}
+                  disabled={btnDisabled}
                   onClick={calCulateData}
                   loading={loading}
                 />

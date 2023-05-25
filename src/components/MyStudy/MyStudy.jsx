@@ -175,7 +175,7 @@ const MyStudy = () => {
     setDeleteHandler(true);
     const respose = await deleteApiWithAuth(`timetable/delete-timeslot/${id}`);
     if (respose.data.status === 204) {
-      message.success("Reset Data succesfully");
+      message.success("Delete Data succesfully");
       setOpenBooking(false);
       setLoadingBooking(false);
       getCalanderData();
@@ -183,6 +183,7 @@ const MyStudy = () => {
       setData([]);
       setDatatime([]);
       setDeleteHandler(false);
+      setDeleteBooking(false)
     } else {
       setDeleteHandler(false);
       message.error(respose.data.message);
@@ -357,23 +358,23 @@ const MyStudy = () => {
             style={{
               width: "100%",
               display: "flex",
-              justifyContent: "flex-end",
+              justifyContent: "center",
             }}
           >
             <MyCareerGuidanceButton
-              label={"Delete"}
-              className="takebutton deleteBtn"
-              type="button"
-              htmlType="button"
-              onClick={() => {deleteCurrent(viewData.selectID); setDeleteBooking(false)}}
-              loading={loadingBooking}
-            />
-            <MyCareerGuidanceButton
               label={"Cancel"}
-              className="viewResultButton"
+              className="viewResultButton mr-2"
               type="button"
               htmlType="button"
               onClick={() => setDeleteBooking(false)}
+            />
+            <MyCareerGuidanceButton
+              label={deleteHandler ? <Spin size="small"/> : "Delete"}
+              className="takebutton deleteBtn"
+              type="button"
+              htmlType="button"
+              onClick={() => {deleteCurrent(viewData.selectID)}}
+              loading={loadingBooking}
             />
           </div>
         </div>
