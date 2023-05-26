@@ -79,7 +79,7 @@ const Sidebar = ({ children, flags }) => {
   const getUserData = async () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETUSER);
-    if (response.data.status === 200) {
+    if (response?.data?.status === 200) {
       setUserData(response.data.data);
       setLoading(false);
     } else {
@@ -93,7 +93,7 @@ const Sidebar = ({ children, flags }) => {
 
   const getSchools = async () => {
     const response = await getApiWithoutAuth(API_URL.GETUSERSCHOOL);
-    if (response.data.success) {
+    if (response?.data?.success) {
       const school = response.data.data?.map((item) => {
         return {
           value: item.pk,

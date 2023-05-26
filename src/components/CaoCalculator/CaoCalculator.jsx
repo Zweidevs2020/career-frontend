@@ -42,37 +42,37 @@ const CaoCalculator = () => {
   const [tableData, setTableData] = useState([
     {
       No: 0,
-      name: "",
+      name: null,
       level: null,
       grades: null,
     },
     {
       No: 1,
-      name: "",
+      name: null,
       level: null,
       grades: null,
     },
     {
       No: 2,
-      name: "",
+      name: null,
       level: null,
       grades: null,
     },
     {
       No: 3,
-      name: "",
+      name: null,
       level: null,
       grades: null,
     },
     {
       No: 4,
-      name: "",
+      name: null,
       level: null,
       grades: null,
     },
     {
       No: 5,
-      name: "",
+      name: null,
       level: null,
       grades: null,
     },
@@ -81,9 +81,9 @@ const CaoCalculator = () => {
   const handleAdd = () => {
     const newData = {
       No: tableData.length,
-      name: "",
-      level: "",
-      grades: "",
+      name: null,
+      level: null,
+      grades: null,
     };
 
     setTableData([...tableData, newData]);
@@ -108,7 +108,7 @@ const CaoCalculator = () => {
     const response = await getApiWithAuth(
       `calculator/check-level-grade/?level=${tableData[index].level}&subject=${tableData[index].name}`
     );
-    if (response.data.status === 200) {
+    if (response?.data?.status === 200) {
       setLoadingThird(false);
       setCurrectState(-1);
       setGrades(response.data.data);
@@ -194,9 +194,18 @@ const CaoCalculator = () => {
       }
     });
     setTableData(tempData);
-    const gradeid = grades.filter((item) => item.grade === value);
 
-    setGradeId((prevGrades) => [...prevGrades, { grade: gradeid[0].pk }]);
+    const gradeid = grades.filter((item) => item.grade === value);
+    console.log("====gradeIDDdddd", gradeid);
+    // setGradeId((prevGrades) => [...prevGrades, { grade: gradeid[0].pk }]);
+
+    setGradeId((prevState) => {
+      const newArray = [...prevState];
+      newArray[record.No] = { grade: gradeid[0].pk };
+      return newArray;
+    });
+
+    // setGradeId([{ grade: gradeid[0].pk }]);
 
     // setGradeId((prevGradeId) => [...prevGradeId, gradeid[0].pk]);
     // console.log(value,indexp)
@@ -213,9 +222,9 @@ const CaoCalculator = () => {
     // setGradeId1(tempArray)
   };
 
-  // useEffect(()=>{
-  //   console.log("working",gradeId1)
-  // },[gradeId1])
+  useEffect(() => {
+    console.log("ddfdf gradeIDDDDDD", gradeId);
+  }, [gradeId]);
 
   const columns = [
     {
@@ -234,7 +243,6 @@ const CaoCalculator = () => {
             value={tableData[record?.No]?.name}
             onChange={(e) => handleFirstDropdownChange(e, record)}
             className="selectFieldStyle"
-            style={{ width: 200 }}
             loading={loadingFirst}
             key={record}
           >
@@ -259,7 +267,6 @@ const CaoCalculator = () => {
               value={tableData[record?.No]?.level}
               onChange={(e) => handleSecondDropdownChange(e, record)}
               className="selectFieldStyle"
-              style={{ width: 200 }}
               key={record}
             >
               {tableData[record?.No]?.name &&
@@ -291,7 +298,6 @@ const CaoCalculator = () => {
           onChange={(value) => handle(value, record)}
           onClick={() => handleThridDropDownApi(record.No)}
           className="selectFieldStyle"
-          style={{ width: 200 }}
           loading={record.No === currentState}
         >
           {tableData[record?.No]?.level &&
@@ -335,19 +341,33 @@ const CaoCalculator = () => {
     }
   }, [data]);
 
-  useEffect(() => {
-    const TD = tableData.map((item) => {
-      // console.log("====itemmmmmmmm",item)
-      if (item.name !== null && item.grades !== null && item.level !== null) {
-        setBtnDisabled(false);
-      }
-    });
-  }, [tableData]);
+  // useEffect(() => {
+  //   console.log("===innout")
+
+  //   // const TD = tableData.map((item) => {
+  //   //   if (item.name !== null && item.grades !== null && item.level !== null) {
+  //   //     console.log("===inn",item.name, item.grades, item.level)
+  //   //     setBtnDisabled(false);
+  //   //   }
+  //   //   else{
+  //   //     setBtnDisabled(true);
+  //   //   }
+  //   // });
+
+  //   for(let i=0; i< tableData.length; i++){
+  //     if (tableData[i].name !== null) {
+  //       if (tableData[i].grades == null || tableData[i].level == null)
+  //       // console.log("===inn",item.name, item.grades, item.level)
+  //       setBtnDisabled(false);
+  //       break;
+  //     }
+  //   }
+  // }, [tableData]);
 
   const getFiltersData = async () => {
     setLoadingFirst(true);
     const response = await getApiWithAuth(API_URL.SUBJECTLIST);
-    if (response.data.status === 200) {
+    if (response?.data?.status === 200) {
       setData(response.data.data);
       setLoadingFirst(false);
     } else {
@@ -356,33 +376,84 @@ const CaoCalculator = () => {
   };
 
   const getCurrectSelectedValues = async () => {
-    let NewDataTable=[];
-    let filterGrade=[];
+    let NewDataTable = [];
+    let filterGrade = [];
+    let count = 1;
+
     const response = await getApiWithAuth(`calculator/user-points/`);
-    for (let i = 0; i < response.data.data.subjects.length; i++) {
+    // console.log("===gettttRess", response.data.data);
+
+    const newData = response?.data?.data[0]?.grades.map((item, index) => {
       const filterSubjects = data.filter(
-        (item) => item.id == response.data.data.subjects[i]
+        (SubItem) => SubItem.id == item?.subject
       );
-      const filterLevel = filterSubjects[0].level.filter((item)=> item.level__id == response.data.data.levels[i])
+      // console.log("aqqqq",filterSubjects)
+
+      const filterLevel = filterSubjects[0].level.filter(
+        (levelItem) => levelItem.level__id == item.level
+      );
+
+      const newObj = {
+        No: index,
+        name: filterSubjects[0].name,
+        level: filterLevel[0].level__subjectlevel,
+        grades: item.grade,
+      };
+      return newObj;
+    });
+    // console.log("=newwww", newData.length);
+
+    // for (let i = 0; i < response?.data?.data?.subjects?.length; i++) {
+    //   const filterSubjects = data.filter(
+    //     (item) => item.id == response.data.data.subjects[i]
+    //   );
+    //   const filterLevel = filterSubjects[0].level.filter(
+    //     (item) => item.level__id == response.data.data.levels[i]
+    //   );
+    //   const response1 = await getApiWithAuth(
+    //     `calculator/check-level-grade/?level=${filterLevel[0].level__subjectlevel}&subject=${filterSubjects[0].name}`
+    //   );
+    //   if (response1.data.status === 200) {
+    //     filterGrade = response1?.data?.data?.filter(
+    //       (item) => item.pk == response.data.data.grades[i]
+    //     );
+    //   }
+    //   const tempObj = {
+    //     No: i,
+    //     name: filterSubjects[0]?.name,
+    //     level: filterLevel[0]?.level__subjectlevel,
+    //     grades: filterGrade[0].grade,
+    //   };
+    //   count = count + i;
+    //   NewDataTable.push(tempObj);
+    // }
+
+    for (let i = 0; i < newData.length; i++) {
+      console.log("newwdattatatta", newData[i]);
       const response1 = await getApiWithAuth(
-        `calculator/check-level-grade/?level=${filterLevel[0].level__subjectlevel}&subject=${filterSubjects[0].name}`
+        `calculator/check-level-grade/?level=${newData[i].level}&subject=${newData[i].name}`
       );
-      if(response1.data.status === 200){
-        filterGrade = response1?.data?.data?.filter((item)=> item.pk== response.data.data.grades[i])
+      console.log("res11111apiii", response1.data.data);
+      if (response1.data.status === 200) {
+        filterGrade = response1.data.data.filter(
+          (gradeItem) => gradeItem.grade == newData[i]?.grades
+        );
       }
-      const tempObj = {
-        No: i,
-        name: filterSubjects[0]?.name,
-        level: filterLevel[0]?.level__subjectlevel,
-        grades: filterGrade[0].grade,
-      }
-      NewDataTable.push(tempObj);
+      console.log("finalfilterGradeee", filterGrade);
+      gradeId.push({grade: filterGrade[0].pk});
     }
-
-    setTableData(NewDataTable);
-    console.log("=newwwwwwwwwwwww",NewDataTable)
+    console.log("gradeIDddddstat",gradeId)
+    for (let j = newData?.length + 1; j <= 6; j++) {
+      const ND = {
+        No: j - 1,
+        name: null,
+        level: null,
+        grades: null,
+      };
+      newData.push(ND);
+    }
+    setTableData(newData);
   };
-
   // useEffect(() => {
   //   if (
   //     firstDropdownValue !== "" &&
@@ -393,6 +464,9 @@ const CaoCalculator = () => {
   //   }
   // }, [firstDropdownValue, secondDropdownValue, thirdDropdownValue]);
 
+  useEffect(() => {
+    console.log("tableData", tableData);
+  }, [tableData]);
   return (
     <div className="caoMainDiv">
       <div style={{ background: "white" }}>
@@ -416,20 +490,16 @@ const CaoCalculator = () => {
                 }}
               >
                 <div className="textStyle18">Subjects</div>
-                <div onClick={handleAdd}></div>
-                <div>
+                <div onClick={handleAdd}>
                   <img src={add} alt="" />
                 </div>
               </div>
-              <div>
-                <Table
-                  dataSource={tableData}
-                  columns={columns}
-                  rowClassName={() => "backgroundF4F6F8"}
-                  pagination={false}
-                  // key={tableKey}
-                />
-              </div>
+              <Table
+                dataSource={tableData}
+                columns={columns}
+                rowClassName={() => "backgroundF4F6F8"}
+                pagination={false}
+              />
             </div>
             <div className="coaPointsWidth">
               <div
@@ -514,7 +584,7 @@ const CaoCalculator = () => {
                   className="calculateButton"
                   type="primary"
                   htmlType="button"
-                  disabled={btnDisabled}
+                  // disabled={btnDisabled}
                   onClick={calCulateData}
                   loading={loading}
                 />
