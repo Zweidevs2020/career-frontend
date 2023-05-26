@@ -298,7 +298,7 @@ const CaoCalculator = () => {
           onChange={(value) => handle(value, record)}
           onClick={() => handleThridDropDownApi(record.No)}
           className="selectFieldStyle"
-          loading={record.No === currentState}
+          loading={record?.No === currentState}
         >
           {tableData[record?.No]?.level &&
             thirdDropdownOptions.map((option) => (
