@@ -66,6 +66,22 @@ code {
 :where(.css-ed5zg0).ant-select:not(.ant-select-customize-input) .ant-select-selector{
   border: none;
 }
+
+:where(.css-dev-only-do-not-override-ed5zg0).ant-select:not(.ant-select-customize-input) .ant-select-selector{
+  border: none;
+}
+.ant-select-focused:where(.css-dev-only-do-not-override-ed5zg0).ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector {
+  box-shadow: none;
+}
+:where(.css-ed5zg0).ant-select:not(.ant-select-customize-input) .ant-select-selector{
+  border: none;
+}
+:where(.css-ed5zg0).ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer):hover .ant-select-selector {
+  border-color: none;
+}
+.ant-select-focused:where(.css-ed5zg0).ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector {
+  border-color: none;
+}
 /* .fc-timegrid-event-harness > .fc-timegrid-event {
   bottom: 100;
 } */
