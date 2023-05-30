@@ -20,6 +20,7 @@ const CaoCalculator = () => {
     bonus_points: 0,
     total_points: 0,
   });
+  const [countFields,setCountFields]=useState("0");
   const [firstDropdownValue, setFirstDropdownValue] = useState("");
   const [secondDropdownValue, setSecondDropdownValue] = useState("");
   const [thirdDropdownValue, setThirdDropdownValue] = useState("");
@@ -79,6 +80,7 @@ const CaoCalculator = () => {
   ]);
 
   const handleAdd = () => {
+    setCountFields(countFields+1);
     const newData = {
       No: tableData.length,
       name: null,
@@ -401,7 +403,8 @@ const CaoCalculator = () => {
       };
       return newObj;
     });
-    // console.log("=newwww", newData.length);
+    console.log("=newwww", newData.length);
+    setCountFields(newData.length+1);
 
     // for (let i = 0; i < response?.data?.data?.subjects?.length; i++) {
     //   const filterSubjects = data.filter(
@@ -443,7 +446,7 @@ const CaoCalculator = () => {
       gradeId.push({grade: filterGrade[0].pk});
     }
     console.log("gradeIDddddstat",gradeId)
-    for (let j = newData?.length + 1; j <= 6; j++) {
+    for (let j = newData?.length + 1; j <= countFields; j++) {
       const ND = {
         No: j - 1,
         name: null,
@@ -453,6 +456,7 @@ const CaoCalculator = () => {
       newData.push(ND);
     }
     setTableData(newData);
+    console.log("=====7count fieldsnew data",newData.length)
   };
   // useEffect(() => {
   //   if (
@@ -467,6 +471,10 @@ const CaoCalculator = () => {
   useEffect(() => {
     console.log("tableData", tableData);
   }, [tableData]);
+
+  useEffect(()=>{
+    console.log("=====7count fieldssssss",countFields)
+  },[countFields])
   return (
     <div className="caoMainDiv">
       <div style={{ background: "white" }}>
@@ -490,7 +498,7 @@ const CaoCalculator = () => {
                 }}
               >
                 <div className="textStyle18">Subjects</div>
-                <div onClick={handleAdd}>
+                <div onClick={handleAdd} style={{cursor:"pointer"}}>
                   <img src={add} alt="" />
                 </div>
               </div>
