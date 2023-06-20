@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import sideAuthImage from "../../../assets/sideAuthImage.png";
-import myCareerGuidanceIcon from "../../../assets/myCareerGuidanceIcon.png";
+import myCareerGuidanceIcon from "../../../assets/my-guidance-logo.png";
 import usernameIcon from "../../../assets/usernameIcon.svg";
 import lockIcon from "../../../assets/lockIcon.svg";
 import { Link } from "react-router-dom";

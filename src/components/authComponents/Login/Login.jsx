@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import sideAuthImage from "../../../assets/sideAuthImage.png";
-import myCareerGuidanceIcon from "../../../assets/myCareerGuidanceIcon.png";
+import sideAuthImage from "../../../assets/kid-front-page.png";
+import myCareerGuidanceIcon from "../../../assets/my-guidance-logo.png";
 import usernameIcon from "../../../assets/usernameIcon.svg";
 import lockIcon from "../../../assets/lockIcon.svg";
 import { Link } from "react-router-dom";
@@ -49,7 +49,8 @@ const Login = () => {
       <div className="leftDiv">
         <Image preview={false} src={myCareerGuidanceIcon} width={207} />
         <Form onFinish={handlerSubmit} className="formStyle">
-          <div className="welcomeHaddingText">Welcome Back</div>
+          <div className="welcomeHaddingText">Welcome to My Guidance.</div>
+          <div className="welcomeHaddingText" style={{fontWeight:"normal"}}>Please login or register an account.</div>
           <div className="textStyle18" style={{ marginBottom: 10 }}>
             Enter your email and password
           </div>
