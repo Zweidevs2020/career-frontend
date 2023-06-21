@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import sideAuthImage from "../../../assets/kid-front-page.png";
+import sideAuthImage from "../../../assets/kid-front-page.jpeg";
 import myCareerGuidanceIcon from "../../../assets/my-guidance-logo.png";
 import usernameIcon from "../../../assets/usernameIcon.svg";
 import lockIcon from "../../../assets/lockIcon.svg";

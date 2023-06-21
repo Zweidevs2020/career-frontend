@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import sideAuthImage from "../../../assets/sideAuthImage.png";
-import myCareerGuidanceIcon from "../../../assets/myCareerGuidanceIcon.png";
+import React, { useState, useEffect, useRef } from "react";
+import sideAuthImage from "../../../assets/kid-front-page.jpeg";
+import myCareerGuidanceIcon from "../../../assets/my-guidance-logo.png";
 import usernameIcon from "../../../assets/usernameIcon.svg";
 import nameIcon from "../../../assets/nameIcon.svg";
 
 import lockIcon from "../../../assets/lockIcon.svg";
 import dropdownIcon from "../../../assets/dropdownIcon.svg";
 import { Link } from "react-router-dom";
-import { DatePicker, Form, Image, Select, Upload, message } from "antd";
+import { DatePicker, Form, Image, Select, Upload, message, Button } from "antd";
 import {
   MyCareerGuidanceInputField,
   MyCareerGuidanceButton,
@@ -22,24 +22,31 @@ import {
   convertBase64,
 } from "../../../utils/helper";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "antd";
+import countyImg from "../../../assets/county.png";
+import schoolImg from "../../../assets/schoolimg.png";
 
 const Signup = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
   const [schools, setSchools] = useState([]);
+  const [newSchools, setNewSchools] = useState("");
   const [dobSave, setDobSave] = useState({});
+  const [open, setOpen] = useState(false);
+
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
   const handlerSaveSubmit = async () => {
+    setLoading(true);
     const response = await postApiWithoutAuth(API_URL.SINGUPUSER, {
       ...data,
       dob: `${dobSave.year}-${dobSave.month}-${dobSave.day}`,
     });
     if (response.status === 200) {
-      message.success("User Create Successfully");
+      message.success("User is Created Successfully, You can now Login");
       navigate("/");
     } else {
       setLoading(false);
@@ -54,14 +61,20 @@ const Signup = () => {
     }
   };
   const handleSelect = (schoolValue) => {
-    setData({ ...data, school: schoolValue });
+    const schoolName = schools.filter((item) => {
+      return item.value === schoolValue;
+    });
+    setData({ ...data, school: schoolName[0].label });
   };
+
   const handleSelectMonth = (m) => {
     setDobSave({ ...dobSave, month: m });
   };
+
   const handleSelectDay = (d) => {
     setDobSave({ ...dobSave, day: d });
   };
+
   const onChangeYear = (date) => {
     setDobSave({ ...dobSave, year: date?.$y });
   };
@@ -69,6 +82,11 @@ const Signup = () => {
   useEffect(() => {
     getSchools();
   }, []);
+
+  const handleSchool = (e) => {
+    const { value } = e.target;
+    setNewSchools(value);
+  };
 
   const getSchools = async () => {
     const response = await getApiWithoutAuth(API_URL.GETUSERSCHOOL);
@@ -85,6 +103,10 @@ const Signup = () => {
     } else {
       setLoading(false);
     }
+  };
+
+  const addNewSchool = () => {
+    setData({ ...data, school: newSchools });
   };
   return (
     <div className="mainDiv">
@@ -147,13 +169,19 @@ const Signup = () => {
             />
           </Form.Item>
           <Form.Item
-            name="school"
-            rules={[{ required: true, message: "Please Select School!" }]}
+            // name="school"
+            rules={[{ required: true, message: "Please select a school!" }]}
+            style={{ marginBottom: "12px" }}
           >
             <Select
-              placeholder={"School"}
-              options={schools}
+              showSearch // Enable search functionality
+              placeholder="School"
               name="school"
+              value={data?.school}
+              optionFilterProp="children" // Search filter based on option children
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              } // Filter options based on user input
               className="inputSelectFieldStyle"
               onChange={handleSelect}
               bordered={false}
@@ -165,8 +193,57 @@ const Signup = () => {
                   style={{ marginRight: 10 }}
                 />
               }
-            />
+            >
+              {schools.map((school) => (
+                <Select.Option key={school.value} value={school.value}>
+                  {school.label}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
+
+          <span>If your school is not listed above</span>
+          <span
+            style={{ cursor: "pointer", color: "#1476b7", paddingLeft: "5px" }}
+            onClick={() => setOpen(true)}
+          >
+            Click here to add
+          </span>
+          <div className="schoolModalStyling">
+            <Modal
+              title="Add your school"
+              centered
+              open={open}
+              onOk={() => setOpen(false)}
+              footer={[
+                <Button
+                  key="submit"
+                  type="primary"
+                  onClick={() => setOpen(false)}
+                >
+                  Update
+                </Button>,
+              ]}
+            >
+              <Form>
+                <Form.Item
+                  name="school"
+                  rules={[
+                    { required: true, message: "Please input your School!" },
+                  ]}
+                >
+                  <MyCareerGuidanceInputField
+                    placeholder="School Name"
+                    prefix={schoolImg}
+                    type="input"
+                    name="school"
+                    onChange={handleSchool}
+                    onBlur={addNewSchool}
+                  />
+                </Form.Item>
+              </Form>
+            </Modal>
+          </div>
 
           <div
             style={{
@@ -178,15 +255,15 @@ const Signup = () => {
           >
             <div style={{ width: "33%" }}>
               <Form.Item
-                name="month"
-                rules={[{ required: true, message: "Please Select Month!" }]}
+                name="day"
+                rules={[{ required: true, message: "Please Select Day!" }]}
               >
                 <Select
-                  placeholder="Month"
-                  name="month"
-                  options={monthArray}
+                  placeholder="Day"
+                  name="day"
+                  options={dayArray}
                   className="inputSelectFieldStyle"
-                  onSelect={handleSelectMonth}
+                  onSelect={handleSelectDay}
                   bordered={false}
                   suffixIcon={
                     <Image
@@ -201,15 +278,15 @@ const Signup = () => {
             </div>
             <div style={{ width: "28%" }}>
               <Form.Item
-                name="day"
-                rules={[{ required: true, message: "Please Select Day!" }]}
+                name="month"
+                rules={[{ required: true, message: "Please Select Month!" }]}
               >
                 <Select
-                  placeholder="Day"
-                  name="day"
-                  options={dayArray}
+                  placeholder="Month"
+                  name="month"
+                  options={monthArray}
                   className="inputSelectFieldStyle"
-                  onSelect={handleSelectDay}
+                  onSelect={handleSelectMonth}
                   bordered={false}
                   suffixIcon={
                     <Image
@@ -246,7 +323,7 @@ const Signup = () => {
           </div>
           <Form.Item
             name="profile_image"
-            rules={[{ required: true, message: "Please Add Picture!" }]}
+            // rules={[{ required: true, message: "Please Add Picture!" }]}
           >
             <Upload
               beforeUpload={() => false}
