@@ -103,7 +103,9 @@
   width: 70%;
   align-self: center;
 }
-
+.rightImageStyle img.ant-image-img{
+  border-radius: 3%;
+}
 @media only screen and (min-width: 0px) and (max-width: 650px) {
   .rightImageStyle {
     display: none;
@@ -201,13 +203,13 @@
 
 @media only screen and (min-width: 1401px) {
   .rightImageStyle {
-    /* width: 45%; */
+    width: 55%;
   }
   .welcomeHaddingText{
     font-size: 20px;
   }
   .leftDiv {
-    width: 55%;
+    width: 45%;
     padding-top: 20px;
     padding-bottom: 20px;
   }

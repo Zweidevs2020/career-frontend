@@ -31,6 +31,36 @@
   width:100vmin;
 }
 
+.ant-modal-content{
+  width: 430px;
+  margin: auto;
+}
+
+span.anticon.anticon-close.ant-modal-close-icon {
+  display: none;
+}
+
+.ant-modal-footer {
+  display: flex;
+  justify-content: center;
+}
+button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary {
+  background: #1476b7;
+  /* width: 25%; */
+  height: 45px;
+}
+button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-default {
+  border: 1px solid #1476b7;
+  /* width: 25%; */
+  height: 45px;
+}
+button.ant-modal-close {
+  display: none;
+}
+.ant-modal-header {
+  text-align: center;
+}
+
 
 @media only screen and (min-width: 0px) and (max-width: 650px) {
   .signInButtonStyle {
@@ -56,6 +86,6 @@
 
 @media only screen and (min-width: 1401px) {
   .signInButtonStyle {
-    width:32vw;
+    width:26vw;
   }
 }
