@@ -220,6 +220,7 @@ const Signup = () => {
                   key="submit"
                   type="primary"
                   onClick={() => setOpen(false)}
+                  style={{background:"#1476b7"}}
                 >
                   Update
                 </Button>,

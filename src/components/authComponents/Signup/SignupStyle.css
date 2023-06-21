@@ -44,7 +44,7 @@ span.anticon.anticon-close.ant-modal-close-icon {
   display: flex;
   justify-content: center;
 }
-button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary {
+button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary,:where(.css-ed5zg0).ant-btn-primary:not(:disabled) {
   background: #1476b7;
   /* width: 25%; */
   height: 45px;
@@ -59,6 +59,12 @@ button.ant-modal-close {
 }
 .ant-modal-header {
   text-align: center;
+}
+img.ant-image-img.ant-input-password-icon {
+  cursor: pointer;
+}
+.ant-select-show-search:where(.css-dev-only-do-not-override-ed5zg0).ant-select:not(.ant-select-customize-input) .ant-select-selector{
+  cursor: pointer;
 }
 
 
