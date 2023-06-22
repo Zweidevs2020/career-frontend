@@ -105,9 +105,6 @@ const Signup = () => {
     }
   };
 
-  const addNewSchool = () => {
-    setData({ ...data, school: newSchools });
-  };
   return (
     <div className="mainDiv">
       <div className="leftDiv">
@@ -219,8 +216,11 @@ const Signup = () => {
                 <Button
                   key="submit"
                   type="primary"
-                  onClick={() => setOpen(false)}
-                  style={{background:"#1476b7"}}
+                  onClick={() => {
+                    setOpen(false);
+                    setData({ ...data, school: newSchools });
+                  }}
+                  style={{ background: "#1476b7" }}
                 >
                   Update
                 </Button>,
@@ -239,7 +239,6 @@ const Signup = () => {
                     type="input"
                     name="school"
                     onChange={handleSchool}
-                    onBlur={addNewSchool}
                   />
                 </Form.Item>
               </Form>
