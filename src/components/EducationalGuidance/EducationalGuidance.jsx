@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {  Modal, Spin } from "antd";
+import { Modal, Spin } from "antd";
 import { API_URL } from "../../utils/constants";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import { MyCareerGuidanceButton } from "../../components/commonComponents";
@@ -15,6 +15,8 @@ const EducationalGuidance = () => {
   const [loading, setLoading] = useState(false);
   const [quizz, setQuizz] = useState([]);
   const [singlequizData, setSinglequizData] = useState({});
+  const [open, setOpen] = useState(false);
+  const [testId, setTestId] = useState({});
 
   useEffect(() => {
     getQuiz();
@@ -41,7 +43,7 @@ const EducationalGuidance = () => {
   return (
     <>
       <div className="educationalGuidanceMainDiv">
-      <div className="welcomeHaddingText pb-3">My Educational Guidance</div>
+        <div className="welcomeHaddingText pb-3">My Educational Guidance</div>
         <div className="educationalGuidanceSecondDiv">
           {loading ? (
             <Spin className="spinStyle" />
@@ -67,11 +69,15 @@ const EducationalGuidance = () => {
                         className="takebutton"
                         type="button"
                         htmlType="button"
-                        onClick={() =>
-                          navigate("/educational-guidance-test", {
-                            state: { data: item },
-                          })
-                        }
+                        // onClick={() =>
+                        //   navigate("/educational-guidance-test", {
+                        //     state: { data: item },
+                        //   })
+                        // }
+                        onClick={() => {
+                          setTestId(item);
+                          setOpen(true);
+                        }}
                       />
                     ) : (
                       <div>
@@ -136,6 +142,38 @@ const EducationalGuidance = () => {
               />
             </div>
           </div>
+        </div>
+      </Modal>
+      <Modal
+        title="Youtube"
+        centered
+        open={open}
+        footer={[]}
+        closable={true}
+        onCancel={() => setOpen(false)}
+      >
+        <iframe
+          width="100%"
+          height="315"
+          src={`https://www.youtube.com/embed/${22}`}
+          title="YouTube Video"
+          frameBorder="0"
+          allowFullScreen
+        ></iframe>
+        <div
+          style={{ display: "flex", justifyContent: "center", width: "100%" }}
+        >
+          <MyCareerGuidanceButton
+            label="Continue Test"
+            className="resultDataButton"
+            type="button"
+            htmlType="button"
+            onClick={() =>
+              navigate("/educational-guidance-test", {
+                state: { data: testId },
+              })
+            }
+          />
         </div>
       </Modal>
     </>

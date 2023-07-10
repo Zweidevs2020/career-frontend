@@ -502,17 +502,17 @@ const CaoCalculator = () => {
   return (
     <div className="caoMainDiv">
       <div style={{ background: "white" }}>
-        <div className="welcomeHaddingText">
+        {/* <div className="welcomeHaddingText">
           Let’s Calculate Your Grade Points Average{" "}
-        </div>
-        <div className="cao2ndText py-3">
+        </div> */}
+        {/* <div className="cao2ndText py-3">
           Lorem ipsum is a placeholder text commonly used to demonstrate
-        </div>
+        </div> */}
         <div className="coaInnerf8fafcDiv">
           <div className="welcomeHaddingText">My CAO Points: </div>
-          <div className="cao2ndText pb-4">
+          {/* <div className="cao2ndText pb-4">
             Lorem ipsum is a placeholder text commonly used to demonstrate
-          </div>
+          </div> */}
           <div className="coaSubjectDiv p-3">
             <div className="coaSubjectWidth">
               <div
@@ -542,11 +542,9 @@ const CaoCalculator = () => {
                 }}
               >
                 <div style={{ padding: 10 }}>
-                  <div className="textStyle18">
-                    Expected Points for Semester 01
-                  </div>
+                  <div className="textStyle18">My CAO points.</div>
                   <div>
-                    <div className="textStyle18">CAO Points</div>
+                    {/* <div className="textStyle18">CAO Points</div> */}
                     <div className="coaPointTextMain">
                       <div className="coaPointTextStyle">Points</div>
                       <div>{finalData.points ? finalData.points : 0}</div>

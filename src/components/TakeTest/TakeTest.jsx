@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Spin, message, Radio, Space } from "antd";
+import { Spin, message, Radio, Space, Modal } from "antd";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import { MyCareerGuidanceButton } from "../commonComponents";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./TakeTest.css";
+import Chart from "react-apexcharts";
 
 const TakeTest = () => {
   const navigate = useNavigate();
@@ -13,7 +14,16 @@ const TakeTest = () => {
   const [quizData, setQuizData] = useState({});
   const { data } = location.state || {};
   const [spinnerLoading, setSpinnerLoading] = useState(false);
-
+  const [open, setOpen] = useState(false);
+  const chartData = {
+    series: [250, 300],
+    options: {
+      chart: {
+        type: "pie",
+      },
+      labels: ["Label 1", "Label 2"],
+    },
+  };
   const onChange = (e) => {
     const { name, value } = e.target;
     let temp = quizResult.filter((item) => item.question_id !== name);
@@ -42,9 +52,11 @@ const TakeTest = () => {
       quiz: data.id,
       answers: quizResult,
     });
+    console.log("============res", response);
     if (response.data.status === 200) {
       message.success("Quiz taken successfully");
-      navigate("/educational-guidance");
+      // navigate("/educational-guidance");
+      setOpen(true);
       setSpinnerLoading(false);
     } else {
       setSpinnerLoading(false);
@@ -110,6 +122,26 @@ const TakeTest = () => {
           )}
         </div>
       </div>
+      <Modal
+        title="Chart"
+        centered
+        width={700}
+        open={open}
+        onOk={() => setOpen(false)}
+        onCancel={() => {
+          setOpen(false);
+          navigate("/educational-guidance");
+        }}
+        cancelText="Cancel"
+        okText="Retake"
+      >
+        <Chart
+          options={chartData.options}
+          series={chartData.series}
+          type="pie"
+          width={400}
+        />
+      </Modal>
     </>
   );
 };

@@ -19,6 +19,7 @@ import moment from "moment";
 import dayjs from "dayjs";
 import { API_URL } from "../../utils/constants";
 import "./Mystudy.css";
+const isMobile = window.innerWidth <= 768;
 const MyStudy = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -41,10 +42,8 @@ const MyStudy = () => {
   const handleCloseBooking = () => setOpenBooking(false);
   const handleCloseBooking2 = () => setDeleteBooking(false);
 
-
   const handleOpenViewBooking = () => setOpenViewBooking(true);
   const handleCloseViewBooking = () => setOpenViewBooking(false);
-  
 
   useEffect(() => {
     getCalanderData();
@@ -183,7 +182,7 @@ const MyStudy = () => {
       setData([]);
       setDatatime([]);
       setDeleteHandler(false);
-      setDeleteBooking(false)
+      setDeleteBooking(false);
     } else {
       setDeleteHandler(false);
       message.error(respose.data.message);
@@ -206,31 +205,31 @@ const MyStudy = () => {
     setViewData({ ...viewData, end: e?.$d });
   };
 
-  const handleEdit = async(id) => {
+  const handleEdit = async (id) => {
     setUpdateLoading(true);
     let startTime = moment(viewData.start).format("hh:mm:ss");
     let endTime = dayjs(viewData.end).format("hh:mm:ss");
     // let dataarr = []
     // data.map((e,i)=>(
-    //   dataarr.push(e.day) 
+    //   dataarr.push(e.day)
     // ))
     setBtnDisabled(true);
-    const response = await putApiWithAuth(`timetable/update-timeslot/${id}`,{
+    const response = await putApiWithAuth(`timetable/update-timeslot/${id}`, {
       timeslot: startTime,
       endslot: endTime,
       day: viewData.id,
       title: viewData.title,
-    })
-    if(response.data.success === true){
+    });
+    if (response.data.success === true) {
       message.success("Booking Updated Successfully");
       setUpdateLoading(false);
       getCalanderData();
       setOpenViewBooking(false);
     }
-    if(response.data.success === false){
-      message.error(response.data.message)
+    if (response.data.success === false) {
+      message.error(response.data.message);
     }
-  }
+  };
 
   return (
     <>
@@ -242,7 +241,7 @@ const MyStudy = () => {
             alignItems: "center",
           }}
         >
-          <div className="welcomeHaddingText pb-4">Schedule Management</div>
+          <div className="welcomeHaddingText pb-4">My Study Timetable</div>
           <Button
             className="viewResultButton"
             type="primary"
@@ -262,7 +261,8 @@ const MyStudy = () => {
               center: "",
               right: "",
             }}
-            initialView="timeGridWeek"
+            initialView={isMobile ? "timeGridDay" : "timeGridWeek"}
+
             events={calenderData}
             eventContent={renderEventContent} // this function print data
             eventClick={handleEventClick} //when we select data this function called
@@ -270,7 +270,15 @@ const MyStudy = () => {
             selectable={true}
             allDaySlot={false}
             height="100vh"
-            dayMaxEventRows={5}
+            dayMaxEventRows={isMobile ? 1 : 5}
+            dayHeaderContent={(args) => {
+              const date = args.date;
+              const dayOfWeek = date.toLocaleString("default", {
+                weekday: "long",
+              });
+              return `${dayOfWeek}`;
+            }}
+            slotMinTime="06:00:00"
           />
         )}
       </div>
@@ -351,7 +359,9 @@ const MyStudy = () => {
       >
         <div className="mt-5 pt-5 ps-2">
           <div>
-          <span className="warnText">Are you sure you want to Delete this?</span>
+            <span className="warnText">
+              Are you sure you want to Delete this?
+            </span>
           </div>
           <div
             className="mt-3"
@@ -369,11 +379,13 @@ const MyStudy = () => {
               onClick={() => setDeleteBooking(false)}
             />
             <MyCareerGuidanceButton
-              label={deleteHandler ? <Spin size="small"/> : "Delete"}
+              label={deleteHandler ? <Spin size="small" /> : "Delete"}
               className="takebutton deleteBtn"
               type="button"
               htmlType="button"
-              onClick={() => {deleteCurrent(viewData.selectID)}}
+              onClick={() => {
+                deleteCurrent(viewData.selectID);
+              }}
               loading={loadingBooking}
             />
           </div>
@@ -437,11 +449,14 @@ const MyStudy = () => {
               className="takebutton deleteBtn"
               type="button"
               htmlType="button"
-              onClick={() => {setOpenViewBooking(false); setDeleteBooking(true)}}
+              onClick={() => {
+                setOpenViewBooking(false);
+                setDeleteBooking(true);
+              }}
               loading={loadingBooking}
             />
             <MyCareerGuidanceButton
-              label={updateLoading? <Spin size="small"/> : "Edit"}
+              label={updateLoading ? <Spin size="small" /> : "Edit"}
               disabled={btnDisabled}
               className={
                 btnDisabled ? "disabledBtnStyle" : "viewResultButton editBtn"
