@@ -4,25 +4,38 @@ import { API_URL } from "../../../utils/constants";
 import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
 import { Spin, Modal } from "antd";
 import Chart from "react-apexcharts";
+import "./Right.css";
 
 const Right = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [educationGuidance, setEducationGuidance] = useState([]);
-
+  const [psychometricTestName, setPsychometricTestName] = useState([]);
   useEffect(() => {
     getducationGuidance();
+    getPsychometricTestNames();
   }, []);
 
   const getducationGuidance = async () => {
     setLoading(true);
     const response = await getApiWithAuth("psychometric/calculate/");
     console.log("========================res", response);
-    if (response.data.status === 200) {
+    if (response?.data?.status === 200) {
       setEducationGuidance(response.data.data);
       setLoading(false);
     } else {
       setLoading(false);
+    }
+  };
+  const getPsychometricTestNames = async () => {
+    const response = await getApiWithAuth(API_URL.GETPSYCHOMETRICTEST);
+    // console.log("===res get names", response);
+    if (response?.data?.status === 200) {
+      const filterSCore = response.data.data.filter(
+        (item) => item.score === null
+      );
+      // console.log("===filterScore", filterSCore);
+      setPsychometricTestName(filterSCore);
     }
   };
   const options = {
@@ -60,45 +73,125 @@ const Right = () => {
       },
     ],
   };
+  useEffect(() => {
+    console.log("===educationl guidencee", educationGuidance.length);
+  }, [educationGuidance]);
 
+  useEffect(() => {
+    console.log("====psy name", psychometricTestName.length);
+  }, [psychometricTestName]);
+
+  // const rightSideDashBoardGraphTakeTest = async () => {
+  //   // setSpinnerLoading(true);
+  //   const response = await postApiWithAuth(`/psychometric/take-test/`, {
+  //     // test: data.id,
+  //     // answers: quizResult,
+  //   });
+  //   if (response.data.status === 200) {
+  //     message.success("Quiz taken successfully");
+  //     navigate("/occupation", {
+  //       state: { data: response.data.data.test_id },
+  //     });
+
+  //     // setSpinnerLoading(false);
+  //   } else {
+  //     // setSpinnerLoading(false);
+  //   }
+  // };
   return (
     <>
       <div class="h-[100%] w-[100%]  flex flex-col">
-        {loading ? (
-          <Spin className="spinStyle" />
-        ) : educationGuidance.length === 0 ? (
-          <div className="quizDetailsStyle spinStyle">No Data Found</div>
-        ) : (
-          <div>
-            {educationGuidance.map((item, index) => {
-              const labels = item.scores.map((score) => score.name);
-              const series = item.scores.map((score) => score.score);
-
-              const chartOptions = {
-                ...options,
-                labels,
-                series: [{ data: series }],
-              };
-
-              return (
-                <div key={index} className="ms-3">
-                  <div class="h-[30px]">
-                    <p class="text-[#474749] mt-3 sm:text-[15px text-[16px] font-bold">
-                      {item.test_name}
-                    </p>
-                  </div>
-                  <Chart
-                    options={chartOptions}
-                    series={chartOptions.series}
-                    type="bar"
-                    width={380}
-                    height={320}
-                  />
-                </div>
-              );
-            })}
+        <div class="w-[90%]">
+          <div className="dashboardRightDivv">
+            <h1 className="dashboardRightHeadingDiv">Psychometric Tests</h1>
           </div>
-        )}
+          {loading ? (
+            <Spin className="spinStyle" />
+          ) : educationGuidance.length === 0 ? (
+            psychometricTestName.map((item) => (
+              <div className="dashboardRightDiv">
+                <div className="parentRightDashboardDiv">
+                  <div className="parentRightDashboardDivTextDiv">
+                    <h1>{item.name}</h1>
+                  </div>
+                  <div className="parentRightDashboardDivBtnDiv">
+                    <button
+                      onClick={() =>
+                        navigate("/self-assesment-test", {
+                          state: { data: item },
+                        })
+                      }
+                    >
+                      Take Test
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div>
+              {educationGuidance.map((item, index) => {
+                const labels = item.scores.map((score) => score.name);
+                const series = item.scores.map((score) => score.score);
+
+                const chartOptions = {
+                  ...options,
+                  labels,
+                  series: [{ data: series }],
+                };
+
+                return (
+                  <div key={index} className="ms-3">
+                    <div class="h-[30px] flex justify-between items-center mt-5 chartHeadingwBtn">
+                      <p class="text-[#474749] mt-3 sm:text-[15px text-[16px] font-bold chartHeading">
+                        {item.test_name}
+                      </p>
+                      <div className="rightGraphBtn">
+                        <button
+                          onClick={() =>
+                            navigate("/self-assesment-test", {
+                              state: { data: item },
+                            })
+                          }
+                        >
+                          Re-take Test
+                        </button>
+                      </div>
+                    </div>
+                    <Chart
+                      options={chartOptions}
+                      series={chartOptions.series}
+                      type="bar"
+                      width="100%"
+                      height={320}
+                    />
+                    <hr />
+                  </div>
+                );
+              })}
+              {psychometricTestName.map((item) => (
+                <div className="dashboardRightDiv">
+                  <div className="parentRightDashboardDiv">
+                    <div className="parentRightDashboardDivTextDiv">
+                      <h1>{item.name}</h1>
+                    </div>
+                    <div className="parentRightDashboardDivBtnDiv">
+                      <button
+                        onClick={() =>
+                          navigate("/self-assesment-test", {
+                            state: { data: item },
+                          })
+                        }
+                      >
+                        Take Test
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

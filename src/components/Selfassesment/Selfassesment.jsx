@@ -22,7 +22,8 @@ const Selfassesment = () => {
   const getPsychometricTest = async () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETPSYCHOMETRICTEST);
-    if (response.data.status === 200) {
+    console.log("===res",response)
+    if (response?.data?.status === 200) {
       setPsychometricTest(response.data.data);
       setLoading(false);
     } else {

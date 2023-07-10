@@ -120,6 +120,9 @@
   border-color: white;
   box-shadow: none;
 }
+button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary.clearAllButton,button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary.calculateButton{
+  color: white;
+}
 
 @media only screen and (min-width: 0px) and (max-width: 650px) {
   .caoMainDiv {
