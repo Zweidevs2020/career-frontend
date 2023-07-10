@@ -26,7 +26,7 @@ const Login = () => {
   };
 
   const handlerSubmit = async () => {
-  console.log("===in")
+    console.log("===in");
     setLoading(true);
     const response = await postApiWithoutAuth(API_URL.SIGNIN, data);
     if (response?.status === 200) {
@@ -34,14 +34,12 @@ const Login = () => {
       setLoading(false);
       setToken(response.data.access);
       navigate("/dashboard");
-    }
-    else if(response.status === 400){
+    } else if (response?.status === 400) {
       message.error(response.data.message);
       setLoading(false);
-    } 
-    else {
+    } else {
       setLoading(false);
-      message.success(response.data.detail);
+      message.success(response?.data?.detail);
     }
   };
 
@@ -55,7 +53,9 @@ const Login = () => {
         <Image preview={false} src={myCareerGuidanceIcon} width={207} />
         <Form onFinish={handlerSubmit} className="formStyle">
           <div className="welcomeHaddingText">Welcome to My Guidance.</div>
-          <div className="welcomeHaddingText" style={{fontWeight:"normal"}}>Please login or register an account.</div>
+          <div className="welcomeHaddingText" style={{ fontWeight: "normal" }}>
+            Please login or register an account.
+          </div>
           <div className="textStyle18" style={{ marginBottom: 10 }}>
             Enter your email and password
           </div>

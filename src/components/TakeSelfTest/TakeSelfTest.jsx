@@ -12,6 +12,7 @@ const TakeSelfTest = () => {
   const [quizData, setQuizData] = useState({});
   const { data } = location.state || {};
   const [spinnerLoading, setSpinnerLoading] = useState(false);
+  console.log("===data", data);
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -26,8 +27,10 @@ const TakeSelfTest = () => {
 
   const getQuizData = async () => {
     setLoading(true);
-    const response = await getApiWithAuth(`/psychometric/psychometric/${data.id}/`);
-    if (response.data.status === 200) {
+    const response = await getApiWithAuth(
+      `/psychometric/psychometric/${data.id}/`
+    );
+    if (response?.data?.status === 200) {
       setQuizData(response.data.data);
       setLoading(false);
     } else {
@@ -45,8 +48,8 @@ const TakeSelfTest = () => {
       message.success("Quiz taken successfully");
       navigate("/occupation", {
         state: { data: response.data.data.test_id },
-      })
-     
+      });
+
       setSpinnerLoading(false);
     } else {
       setSpinnerLoading(false);
@@ -112,7 +115,7 @@ const TakeSelfTest = () => {
                   className="viewResultButton"
                   type="button"
                   htmlType="button"
-                  onClick={() =>  navigate("/self-assesment")}
+                  onClick={() => navigate("/self-assesment")}
                 />
               </div>
             </>

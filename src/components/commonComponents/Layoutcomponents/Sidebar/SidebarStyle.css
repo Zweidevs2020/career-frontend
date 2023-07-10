@@ -68,7 +68,6 @@
   height: 58px;
 }
 
-
 .cardtext {
   display: flex;
   flex-direction: column;
@@ -106,10 +105,23 @@
   border-radius: 10px;
 }
 
+.mobLogoutBtn{
+  background-color: #f8fafc !important;
+  border: 1px solid #1476b7;
+  height: 40px !important;
+  width: 50px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @media only screen and (max-width: 480px) and (min-width: 320px) {
-  .backgroundColorSidebar {
+  /* .backgroundColorSidebar {
     display: none;
-  }
+  } */
+  /* .backgroundColorSidebar {
+    min-width: 220px !important;
+  } */
   .navtext {
     width: 80%;
     margin-left: 5px;
@@ -132,12 +144,33 @@
   .name {
     font-size: 8px;
   }
+  .sideBarStyle,
+  .backgroundColorSidebar,
+  .ant-menu-inline .ant-menu-item,
+  .careerBtnDiv,
+  .logoStyle,
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 65px !important;
+  }
+  .careerBtnDiv button {
+    background-color: #f8fafc !important;
+  }
+  aside.ant-layout-sider.ant-layout-sider-dark.backgroundColorSidebar {
+    max-width: 15% !important;
+    min-width: 15% !important;
+  }
+  :where(.css-dev-only-do-not-override-ed5zg0).ant-layout-header {
+    height: 85px;
+  }
 }
 
 @media only screen and (max-width: 768px) and (min-width: 481px) {
-  .backgroundColorSidebar {
+  /* .backgroundColorSidebar {
     display: none;
-  }
+  } */
+  /* .backgroundColorSidebar {
+      min-width: 220px !important;
+    } */
   .Navbar {
     display: flex;
     justify-content: space-between;
@@ -181,7 +214,6 @@
     width: 100%;
     height: 50px;
   }
-
 }
 .firstOption {
   display: flex;

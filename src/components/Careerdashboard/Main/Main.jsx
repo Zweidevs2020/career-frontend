@@ -5,12 +5,15 @@ import imgcard2 from "../../../assets/imgcard2.svg";
 import imgcard3 from "../../../assets/imgcard3.svg";
 import imgcard4 from "../../../assets/imgcard4.svg";
 import winningCup from "../../../assets/winningCup.svg";
+import imgcard5 from "../../../assets/myChoiceCard.svg";
+import imgcard6 from "../../../assets/imgcard6.svg";
 import { MyCareerGuidanceButton } from "../../../components/commonComponents";
 import { useLocation, useNavigate } from "react-router-dom";
 import { API_URL } from "../../../utils/constants";
 import { getApiWithAuth } from "../../../utils/api";
 import { Spin, Modal } from "antd";
 import bookImage from "../../../assets/bookImage.png";
+import "../Main/Main.css";
 
 const Main = () => {
   const navigate = useNavigate();
@@ -26,7 +29,7 @@ const Main = () => {
   const getducationGuidance = async () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETGOALS);
-    if (response.data.status === 200) {
+    if (response?.data?.status === 200) {
       setEducationGuidance(response.data.data);
       setLoading(false);
     } else {
@@ -38,29 +41,34 @@ const Main = () => {
     setSinglequizData(scoreView);
     setIsModalOpen(true);
   };
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
   return (
     <>
-      <div className="h-[40px] w-[100%] flex items-center justify-between">
-        <div className="h-[40px] w-[53%] flex items-center ml-3  sm:flex sm:items-center sm:justify-start md:flex md:items-center md:justify-start md:h-[40px] md:w-[60%] lg:flex lg:items-center lg:justify-start  lg:h-[40px] lg:w-[60%]">
-          <h1 className="text-[18px] sm:text-[15px]  text-[#474749] font-bold ml-1">
+      <div className="h-[40px] w-[100%] flex items-center justify-between careerGuidenceSearchPDiv">
+        <div className="h-[40px] w-[53%] flex items-center ml-3  sm:flex sm:items-center sm:justify-start md:flex md:items-center md:justify-start md:h-[40px] md:w-[60%] lg:flex lg:items-center lg:justify-start  lg:h-[40px] lg:w-[60%] custom-heading sm:w-[100%] sm:ml-0">
+          <h1 className="text-[18px] sm:text-[15px]  text-[#474749] font-bold ml-1 sm:text-center w-[100%]">
             Career Guidance
           </h1>
         </div>
-        <div className="h-[40px] w-[25%]  mr-2 flex items-center justify-around sm:w-[35%] sm:mr-1 md:mr-1 md:h-[40px] md:w-[30%] lg:h-[40px] lg:w-[35%] ">
-          <img src={searchicon} className="sm:h-[16px] md:h-[18px]" />
-          <input
-            type="text"
-            placeholder="Search..."
-            className="w-[75%] sm:w-[70%] border-none outline-none"
-          />
+        <div className="sm:flex sm:justify-center">
+          <div className="h-[40px] w-[45%]  sm:w-[22%] mr-2 flex items-center justify-around sm:w-[100%] sm:mr-1 md:mr-1 md:h-[40px] md:w-[30%] lg:h-[40px] lg:w-[35%] ">
+            <img src={searchicon} className="sm:h-[16px] md:h-[18px]" />
+            <input
+              type="text"
+              placeholder="Search..."
+              className="w-[75%] sm:w-[70%] border-none outline-none"
+            />
+          </div>
         </div>
       </div>
-      <div className="grid grid-cols-12 gap-4 px-3">
+      <div className="grid grid-cols-12 gap-4 px-3 careerGuidenceGrid">
         <div
-          className="col-span-6  rounded-xl"
+          // className="col-span-6 rounded-xl"
+          className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto"
           onClick={() => {
             navigate("/cao-calculator");
           }}
@@ -68,7 +76,8 @@ const Main = () => {
           <img src={imgcard} className=" bg-cover" />
         </div>
         <div
-          className="col-span-6  rounded-xl"
+          // className="col-span-6rounded-xl"
+          className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto"
           onClick={() => {
             navigate("/my-goals");
           }}
@@ -76,7 +85,8 @@ const Main = () => {
           <img src={imgcard3} className=" bg-cover" />
         </div>
         <div
-          className="col-span-6  rounded-xl"
+          // className="col-span-sm-12 col-span-6  rounded-xl"
+          className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto"
           onClick={() => {
             navigate("/my-study");
           }}
@@ -84,22 +94,41 @@ const Main = () => {
           <img src={imgcard2} className=" bg-cover" />
         </div>
         <div
-          className="col-span-6  rounded-xl"
+          // className="col-span-sm-12 col-span-6  rounded-xl"
+          className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto"
           // onClick={() => {
           //   navigate("/cao-calculator");
           // }}
         >
           <img src={imgcard4} className=" bg-cover" />
         </div>
+        <div
+          // className="col-span-sm-12 col-span-6  rounded-xl"
+          className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto"
+          // onClick={() => {
+          //   navigate("/cao-calculator");
+          // }}
+        >
+          <img src={imgcard5} className=" bg-cover" />
+        </div>
+        <div
+          // className="col-span-sm-12 col-span-6  rounded-xl"
+          className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto"
+          // onClick={() => {
+          //   navigate("/cao-calculator");
+          // }}
+        >
+          <img src={imgcard6} className=" bg-cover" />
+        </div>
       </div>
       <div className="h-[30px] w-[100%] flex items-center justify-start ">
-        <div className="h-[40px] w-[53%] mt-3 ml-3 flex items-center sm:h-[30px] sm:w-[90%] md:w-[90%] lg:w-[90%] ">
-          <h1 className="text-[18px] sm:text-[15px] text-[#474749]  font-bold ml-1 ">
+        <div className="h-[40px] w-[53%] mt-3 ml-3 flex items-center sm:h-[30px] sm:w-[90%] md:w-[90%] lg:w-[90%] custom-heading">
+          <h1 className="text-[18px] sm:text-[15px] text-[#474749]  font-bold ml-1 sm:text-center sm:w-[100%]">
             My Educational Guidance
           </h1>
         </div>
       </div>
-      <div className="w-[100%] grid sm:grid-cols-1 lg:grid-cols-1 grid-cols-2 gap-2">
+      <div className="w-[100%] grid sm:grid-cols-1 lg:grid-cols-1 md:grid-cols-1 grid-cols-2 gap-2">
         {loading ? (
           <Spin className="spinStyle" />
         ) : educationGuidance.length === 0 ? (
@@ -111,10 +140,7 @@ const Main = () => {
                 key={item.id}
                 className="h-[60px] w-[90%] mt-3 bg-[#F7F7F7] sm:ms-4 rounded-lg flex items-center justify-around sm:h-[50px] lg:h-[60px] px-2 "
               >
-                  <img
-                    src={bookImage}
-                    className="h-[70%] "
-                  />
+                <img src={bookImage} className="h-[70%] " />
                 <div className="h-[45px] w-[50%]  flex flex-col items-start sm:h-[30px]  md:h-[35px] lg:h-[35px]">
                   <p className="text-[#303030] sm:text-[12px] md:text-[15px]  lg:text-[13px] font-bold">
                     {item.name}

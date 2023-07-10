@@ -91,7 +91,7 @@ const Signup = () => {
   const getSchools = async () => {
     const response = await getApiWithoutAuth(API_URL.GETUSERSCHOOL);
 
-    if (response.data.success) {
+    if (response?.data?.success) {
       const school = response.data.data?.map((item) => {
         return {
           value: item.pk,
