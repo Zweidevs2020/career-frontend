@@ -7,6 +7,7 @@ const Skill = ({ setCurrent, current }) => {
   const [selectOption, setSelectOption] = useState([]);
   const [selectOption2, setSelectOption2] = useState([]);
   const [userSkillData, setUserSkillsData] = useState([]);
+  const [userQualityData, setUserQualityData] = useState([]);
   const [downloadBtn, setDownloadBtn] = useState(false);
 
   const { Option } = Select;
@@ -124,23 +125,48 @@ const Skill = ({ setCurrent, current }) => {
     if (response.data?.status === 200) {
       let array = [];
       let array2 = [];
-      response.data.data.map((item, index) => {
+      let array3 = [];
+      let array4 = [];
+      response.data.data.skill_data.map((item, index) => {
         array.push(item.skill_dropdown);
         array2.push({ id: item.id, skill_dropdown: item.skill_dropdown });
       });
       setSelectOption(array);
       setUserSkillsData(array2);
+
+      response.data.data.quality_data.map((item, index) => {
+        array3.push(item.quality_dropdown);
+        array4.push({ id: item.id, quality_dropdown: item.quality_dropdown });
+      });
+      setSelectOption2(array3);
+      setUserQualityData(array4);
     } else {
       message.error("Fail to load Data");
     }
   };
 
   useEffect(() => {
+    console.log(
+      "=============================res",
+      selectOption,
+      selectOption2,
+      userSkillData,
+      userQualityData
+    );
+  }, [selectOption, selectOption2, userSkillData, userQualityData]);
+  useEffect(() => {
     getSkills();
   }, []);
 
   const onsubmit = async () => {
     const result = [];
+    console.log(
+      "=============================ress",
+      selectOption,
+      userSkillData
+    );
+    const result2 = [];
+
     selectOption.forEach((value) => {
       const match = userSkillData.find((obj) => obj.skill_dropdown === value);
       if (match) {
@@ -149,8 +175,21 @@ const Skill = ({ setCurrent, current }) => {
         result.push({ id: null, skill_dropdown: value });
       }
     });
-
-    const respose = await postApiWithAuth(API_URL.POSTSKILLS, result);
+    selectOption2.forEach((value) => {
+      const match = userQualityData.find(
+        (obj) => obj.quality_dropdown === value
+      );
+      if (match) {
+        result2.push(match);
+      } else {
+        result2.push({ id: null, quality_dropdown: value });
+      }
+    });
+    console.log("=============================res", result, result2);
+    const respose = await postApiWithAuth(API_URL.POSTSKILLS, {
+      skill_data: result,
+      quality_data: result2,
+    });
     if (respose.data.status === 201 || respose.data.status === 200) {
       setCurrent(current + 1);
     } else {
@@ -216,7 +255,6 @@ const Skill = ({ setCurrent, current }) => {
                   placeholder="Select Option"
                   onChange={handleChange}
                   optionLabelProp="label"
-                  // defaultValue={userSkillData}
                   value={selectOption}
                 >
                   {optionArray.map((item) => {
@@ -246,7 +284,6 @@ const Skill = ({ setCurrent, current }) => {
                   placeholder="Select Option"
                   onChange={handleChange2}
                   optionLabelProp="label"
-                  // defaultValue={userSkillData}
                   value={selectOption2}
                 >
                   {optionArrayQualities.map((item) => {
