@@ -39,7 +39,7 @@ const Steps = ({ current }) => {
           "Work Experience",
           "Skill's",
           "Interests",
-          "Reference",
+          "Refernces", 
         ].map((item, index) => {
           return (
             <div className="step-item" key={index + 2}>
