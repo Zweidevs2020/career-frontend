@@ -73,7 +73,11 @@ const Main = () => {
             navigate("/cao-calculator");
           }}
         >
-          <img src={imgcard} className=" bg-cover" />
+          <img
+            src={imgcard}
+            className=" bg-cover"
+            style={{ cursor: "pointer" }}
+          />
         </div>
         <div
           // className="col-span-6rounded-xl"
@@ -82,7 +86,11 @@ const Main = () => {
             navigate("/my-goals");
           }}
         >
-          <img src={imgcard3} className=" bg-cover" />
+          <img
+            src={imgcard3}
+            className=" bg-cover"
+            style={{ cursor: "pointer" }}
+          />
         </div>
         <div
           // className="col-span-sm-12 col-span-6  rounded-xl"
@@ -91,7 +99,11 @@ const Main = () => {
             navigate("/my-study");
           }}
         >
-          <img src={imgcard2} className=" bg-cover" />
+          <img
+            src={imgcard2}
+            className=" bg-cover"
+            style={{ cursor: "pointer" }}
+          />
         </div>
         <div
           // className="col-span-sm-12 col-span-6  rounded-xl"
@@ -100,25 +112,37 @@ const Main = () => {
           //   navigate("/cao-calculator");
           // }}
         >
-          <img src={imgcard4} className=" bg-cover" />
+          <img
+            src={imgcard4}
+            className=" bg-cover"
+            style={{ cursor: "pointer" }}
+          />
         </div>
         <div
           // className="col-span-sm-12 col-span-6  rounded-xl"
           className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto"
-          // onClick={() => {
-          //   navigate("/cao-calculator");
-          // }}
+          onClick={() => {
+            navigate("/my-choices");
+          }}
         >
-          <img src={imgcard5} className=" bg-cover" />
+          <img
+            src={imgcard5}
+            className=" bg-cover"
+            style={{ cursor: "pointer" }}
+          />
         </div>
         <div
           // className="col-span-sm-12 col-span-6  rounded-xl"
           className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto"
-          // onClick={() => {
-          //   navigate("/cao-calculator");
-          // }}
+          onClick={() => {
+            navigate("/my-study");
+          }}
         >
-          <img src={imgcard6} className=" bg-cover" />
+          <img
+            src={imgcard6}
+            className=" bg-cover"
+            style={{ cursor: "pointer" }}
+          />
         </div>
       </div>
       <div className="h-[30px] w-[100%] flex items-center justify-start ">

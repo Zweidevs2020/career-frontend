@@ -104,26 +104,49 @@
   height: 158px;
   border-radius: 50%;
 }
-:where(.css-dev-only-do-not-override-ed5zg0).ant-select:not(.ant-select-customize-input) .ant-select-selector{
+:where(.css-dev-only-do-not-override-ed5zg0).ant-select:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
   border: none;
 }
-.ant-select-focused:where(.css-dev-only-do-not-override-ed5zg0).ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector {
+.ant-select-focused:where(.css-dev-only-do-not-override-ed5zg0).ant-select:not(
+    .ant-select-disabled
+  ):not(.ant-select-customize-input):not(.ant-pagination-size-changer)
+  .ant-select-selector {
   box-shadow: none;
 }
-:where(.css-ed5zg0).ant-select:not(.ant-select-customize-input) .ant-select-selector{
+:where(.css-ed5zg0).ant-select:not(.ant-select-customize-input)
+  .ant-select-selector {
   border: none;
 }
-:where(.css-ed5zg0).ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer):hover .ant-select-selector {
+:where(.css-ed5zg0).ant-select:not(.ant-select-disabled):not(
+    .ant-select-customize-input
+  ):not(.ant-pagination-size-changer):hover
+  .ant-select-selector {
   border-color: white;
 }
-.ant-select-focused:where(.css-ed5zg0).ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector {
+.ant-select-focused:where(.css-ed5zg0).ant-select:not(.ant-select-disabled):not(
+    .ant-select-customize-input
+  ):not(.ant-pagination-size-changer)
+  .ant-select-selector {
   border-color: white;
   box-shadow: none;
 }
-button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary.clearAllButton,button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary.calculateButton{
-  color: white;
+button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary.clearAllButton,
+button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary.calculateButton {
+  color: white !important;
 }
-
+button.ant-btn.css-ed5zg0.ant-btn-primary.clearAllButton,
+button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
+  color: white !important;
+}
+.coaSubjectWidth td.ant-table-cell{
+width: 290px !important;
+}
+.coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search{
+  width: 260px !important;
+}
 @media only screen and (min-width: 0px) and (max-width: 650px) {
   .caoMainDiv {
     padding: 5px;
@@ -181,5 +204,35 @@ button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary.clearAllButto
   }
   .coaPointsWidth {
     width: 35%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .coaSubjectDiv {
+    display: block;
+  }
+  .coaPointsWidth {
+    width: 100%;
+  }
+  .coaSubjectWidth {
+    width: 100%;
+  }
+  .coaPointsWidth.coaPointsWidth2 {
+    padding-top: 30px;
+  }
+}
+
+@media(max-width:768px){
+  .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+      width: 120px !important;
+    }
+}
+
+@media (max-width: 425px) {
+  .welcomeHaddingText {
+    font-size: 16px;
+  }
+  .coaSubjectWidth {
+    overflow-y: scroll;
   }
 }
