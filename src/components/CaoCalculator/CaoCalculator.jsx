@@ -561,11 +561,11 @@ const CaoCalculator = () => {
                   }}
                 >
                   <div style={{ padding: 10 }}>
-                    <div className="textStyle18">
+                    {/* <div className="textStyle18">
                       Expected Points for Semester 01
-                    </div>
+                    </div> */}
                     <div>
-                      <div className="textStyle18">CAO Points</div>
+                      <div className="textStyle18">My CAO Points.</div>
                       <div className="coaPointTextMain">
                         <div className="coaPointTextStyle">Points</div>
                         <div>{finalData.points ? finalData.points : 0}</div>
