@@ -11,6 +11,8 @@ const Right = () => {
   const [loading, setLoading] = useState(false);
   const [educationGuidance, setEducationGuidance] = useState([]);
   const [psychometricTestName, setPsychometricTestName] = useState([]);
+  // const [psychometricTestId, setPsychometricTestId] = useState([]);
+
   useEffect(() => {
     getducationGuidance();
     getPsychometricTestNames();
@@ -29,13 +31,15 @@ const Right = () => {
   };
   const getPsychometricTestNames = async () => {
     const response = await getApiWithAuth(API_URL.GETPSYCHOMETRICTEST);
-    // console.log("===res get names", response);
+    console.log("===res get names", response);
     if (response?.data?.status === 200) {
       const filterSCore = response.data.data.filter(
         (item) => item.score === null
       );
       // console.log("===filterScore", filterSCore);
       setPsychometricTestName(filterSCore);
+      // const filterId = response.data.data.filter((item) => item.score !== null);
+      // setPsychometricTestId(filterId);
     }
   };
   const options = {
@@ -74,11 +78,11 @@ const Right = () => {
     ],
   };
   useEffect(() => {
-    console.log("===educationl guidencee", educationGuidance.length);
+    console.log("===educationl guidencee", educationGuidance);
   }, [educationGuidance]);
 
   useEffect(() => {
-    console.log("====psy name", psychometricTestName.length);
+    console.log("====psy name", psychometricTestName);
   }, [psychometricTestName]);
 
   // const rightSideDashBoardGraphTakeTest = async () => {
@@ -98,6 +102,10 @@ const Right = () => {
   //     // setSpinnerLoading(false);
   //   }
   // };
+
+  // useEffect(() => {
+  //   console.log("====iddddd", psychometricTestId);
+  // }, [psychometricTestId]);
   return (
     <>
       <div class="h-[100%] w-[100%]  flex flex-col">
@@ -139,7 +147,7 @@ const Right = () => {
                   labels,
                   series: [{ data: series }],
                 };
-
+                console.log("====itemmmmm", item);
                 return (
                   <div key={index} className="ms-3">
                     <div class="h-[30px] flex justify-between items-center mt-5 chartHeadingwBtn">

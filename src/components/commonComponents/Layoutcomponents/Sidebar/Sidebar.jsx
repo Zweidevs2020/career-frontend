@@ -222,7 +222,7 @@ const Sidebar = ({ children, flags }) => {
   };
   return (
     <>
-      {screenSize.width >= "440" ? (
+      {screenSize.width > "748" ? (
         <Layout
           style={{
             height: "100%",
