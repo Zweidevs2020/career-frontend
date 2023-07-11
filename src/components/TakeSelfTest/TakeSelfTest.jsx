@@ -12,7 +12,7 @@ const TakeSelfTest = () => {
   const [quizData, setQuizData] = useState({});
   const { data } = location.state || {};
   const [spinnerLoading, setSpinnerLoading] = useState(false);
-  console.log("===data", data);
+  console.log("===data prevvv", data);
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -26,10 +26,13 @@ const TakeSelfTest = () => {
   }, [data]);
 
   const getQuizData = async () => {
+    // console.log("===innnnn");
     setLoading(true);
+    console.log("===data iddddds", data);
     const response = await getApiWithAuth(
       `/psychometric/psychometric/${data.id}/`
     );
+    console.log("=====reseeeeeeepomseeeeee", response);
     if (response?.data?.status === 200) {
       setQuizData(response.data.data);
       setLoading(false);

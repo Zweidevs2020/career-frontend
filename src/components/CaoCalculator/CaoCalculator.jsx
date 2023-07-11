@@ -20,6 +20,23 @@ const CaoCalculator = () => {
     bonus_points: 0,
     total_points: 0,
   });
+  const [screenSize, setScreenSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup the event listener on unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   const [countFields, setCountFields] = useState(0);
   const [firstDropdownValue, setFirstDropdownValue] = useState("");
   const [secondDropdownValue, setSecondDropdownValue] = useState("");
@@ -496,9 +513,10 @@ const CaoCalculator = () => {
     //  setTableData(newData);
   }, [countFields]);
 
-  // useEffect(()=>{
-  //   console.log("=====7count fieldssssss",countFields)
-  // },[countFields])
+  useEffect(() => {
+    console.log("==widthhhh", screenSize.width);
+  }, [screenSize]);
+
   return (
     <div className="caoMainDiv">
       <div style={{ background: "white" }}>
@@ -513,117 +531,235 @@ const CaoCalculator = () => {
           <div className="cao2ndText pb-4">
             Lorem ipsum is a placeholder text commonly used to demonstrate
           </div>
-          <div className="coaSubjectDiv p-3">
-            <div className="coaSubjectWidth">
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-              >
-                <div className="textStyle18">Subjects</div>
-                <div onClick={handleAdd} style={{ cursor: "pointer" }}>
-                  {/* <img src={add} alt="" /> */}
-                  <span>Add more row</span>
-                </div>
-              </div>
-              <Table
-                dataSource={tableData}
-                columns={columns}
-                rowClassName={() => "backgroundF4F6F8"}
-                pagination={false}
-              />
-            </div>
-            <div className="coaPointsWidth">
-              <div
-                style={{
-                  background:
-                    "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(25, 132, 255, 0.1) 100%)",
-                }}
-              >
-                <div style={{ padding: 10 }}>
-                  <div className="textStyle18">
-                    Expected Points for Semester 01
+          {screenSize.width > "748" ? (
+            <div className="coaSubjectDiv p-3">
+              <div className="coaSubjectWidth">
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div className="textStyle18">Subjects</div>
+                  <div onClick={handleAdd} style={{ cursor: "pointer" }}>
+                    {/* <img src={add} alt="" /> */}
+                    <span>Add more row</span>
                   </div>
-                  <div>
-                    <div className="textStyle18">CAO Points</div>
-                    <div className="coaPointTextMain">
-                      <div className="coaPointTextStyle">Points</div>
-                      <div>{finalData.points ? finalData.points : 0}</div>
+                </div>
+                <Table
+                  dataSource={tableData}
+                  columns={columns}
+                  rowClassName={() => "backgroundF4F6F8"}
+                  pagination={false}
+                />
+              </div>
+              <div className="coaPointsWidth coaPointsWidth2">
+                <div
+                  style={{
+                    background:
+                      "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(25, 132, 255, 0.1) 100%)",
+                  }}
+                >
+                  <div style={{ padding: 10 }}>
+                    <div className="textStyle18">
+                      Expected Points for Semester 01
                     </div>
-                    <hr />
-                    <div className="coaPointTextMain">
+                    <div>
+                      <div className="textStyle18">CAO Points</div>
+                      <div className="coaPointTextMain">
+                        <div className="coaPointTextStyle">Points</div>
+                        <div>{finalData.points ? finalData.points : 0}</div>
+                      </div>
+                      <hr />
+                      {/* <div className="coaPointTextMain">
                       <div className="coaPointTextStyle">Bonus Points</div>
                       <div>
                         {finalData.bonus_points ? finalData.bonus_points : 0}
                       </div>
-                    </div>
-                    <hr />
-                    <div className="coaPointTextMain">
-                      <div className="coaPointTextStyle">Final Points</div>
-                      <div>
-                        {finalData.total_points ? finalData.total_points : 0}
+                    </div> */}
+                      <hr />
+                      <div className="coaPointTextMain">
+                        <div className="coaPointTextStyle">Final Points</div>
+                        <div>
+                          {finalData.total_points ? finalData.total_points : 0}
+                        </div>
                       </div>
-                    </div>
-                    <hr />
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        marginTop: 20,
-                      }}
-                    >
-                      <div className="circularBarMainDiv">
-                        <div style={{ width: 130 }}>
-                          <CircularProgressbarWithChildren
-                            value={finalData}
-                            minValue={0}
-                            maxValue={1000}
-                            styles={buildStyles({
-                              rotation: 0.72,
-                              strokeLinecap: "dashboard",
-                              textSize: "19px",
-                              pathTransitionDuration: 0.5,
-                              pathColor: "#1476B7",
-                              textColor: "#263238",
-                              trailColor: "#d6d6d6",
-                            })}
-                          >
-                            <div className="welcomeHaddingText">
-                              {finalData.total_points
-                                ? finalData.total_points
-                                : 0}
-                            </div>
-                            <div className="cao2ndText">
-                              <strong>Points</strong>
-                            </div>
-                          </CircularProgressbarWithChildren>
+                      <hr />
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          marginTop: 20,
+                        }}
+                      >
+                        <div className="circularBarMainDiv">
+                          <div style={{ width: 130 }}>
+                            <CircularProgressbarWithChildren
+                              value={finalData}
+                              minValue={0}
+                              maxValue={1000}
+                              styles={buildStyles({
+                                rotation: 0.72,
+                                strokeLinecap: "dashboard",
+                                textSize: "19px",
+                                pathTransitionDuration: 0.5,
+                                pathColor: "#1476B7",
+                                textColor: "#263238",
+                                trailColor: "#d6d6d6",
+                              })}
+                            >
+                              <div className="welcomeHaddingText">
+                                {finalData.total_points
+                                  ? finalData.total_points
+                                  : 0}
+                              </div>
+                              <div className="cao2ndText">
+                                <strong>Points</strong>
+                              </div>
+                            </CircularProgressbarWithChildren>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                <div
+                  style={{ display: "flex", justifyContent: "space-evenly" }}
+                >
+                  <MyCareerGuidanceButton
+                    label="Clear All"
+                    className="clearAllButton"
+                    type="primary"
+                    htmlType="button"
+                    onClick={clearAllData}
+                  />
+                  <MyCareerGuidanceButton
+                    label="Calculate"
+                    className="calculateButton"
+                    type="primary"
+                    htmlType="button"
+                    // disabled={btnDisabled}
+                    onClick={calCulateData}
+                    loading={loading}
+                  />
+                </div>
               </div>
-              <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-                <MyCareerGuidanceButton
-                  label="Clear All"
-                  className="clearAllButton"
-                  type="primary"
-                  htmlType="button"
-                  onClick={clearAllData}
-                />
-                <MyCareerGuidanceButton
-                  label="Calculate"
-                  className="calculateButton"
-                  type="primary"
-                  htmlType="button"
-                  // disabled={btnDisabled}
-                  onClick={calCulateData}
-                  loading={loading}
+            </div>
+          ) : (
+            <div className="coaSubjectDiv p-3">
+              <div className="coaPointsWidth">
+                <div
+                  style={{
+                    background:
+                      "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(25, 132, 255, 0.1) 100%)",
+                  }}
+                >
+                  <div style={{ padding: 10 }}>
+                    <div className="textStyle18">
+                      Expected Points for Semester 01
+                    </div>
+                    <div>
+                      <div className="textStyle18">CAO Points</div>
+                      <div className="coaPointTextMain">
+                        <div className="coaPointTextStyle">Points</div>
+                        <div>{finalData.points ? finalData.points : 0}</div>
+                      </div>
+                      <hr />
+                      {/* <div className="coaPointTextMain">
+                      <div className="coaPointTextStyle">Bonus Points</div>
+                      <div>
+                        {finalData.bonus_points ? finalData.bonus_points : 0}
+                      </div>
+                    </div> */}
+                      <hr />
+                      <div className="coaPointTextMain">
+                        <div className="coaPointTextStyle">Final Points</div>
+                        <div>
+                          {finalData.total_points ? finalData.total_points : 0}
+                        </div>
+                      </div>
+                      <hr />
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          marginTop: 20,
+                        }}
+                      >
+                        <div className="circularBarMainDiv">
+                          <div style={{ width: 130 }}>
+                            <CircularProgressbarWithChildren
+                              value={finalData}
+                              minValue={0}
+                              maxValue={1000}
+                              styles={buildStyles({
+                                rotation: 0.72,
+                                strokeLinecap: "dashboard",
+                                textSize: "19px",
+                                pathTransitionDuration: 0.5,
+                                pathColor: "#1476B7",
+                                textColor: "#263238",
+                                trailColor: "#d6d6d6",
+                              })}
+                            >
+                              <div className="welcomeHaddingText">
+                                {finalData.total_points
+                                  ? finalData.total_points
+                                  : 0}
+                              </div>
+                              <div className="cao2ndText">
+                                <strong>Points</strong>
+                              </div>
+                            </CircularProgressbarWithChildren>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style={{ display: "flex", justifyContent: "space-evenly" }}
+                >
+                  <MyCareerGuidanceButton
+                    label="Clear All"
+                    className="clearAllButton"
+                    type="primary"
+                    htmlType="button"
+                    onClick={clearAllData}
+                  />
+                  <MyCareerGuidanceButton
+                    label="Calculate"
+                    className="calculateButton"
+                    type="primary"
+                    htmlType="button"
+                    // disabled={btnDisabled}
+                    onClick={calCulateData}
+                    loading={loading}
+                  />
+                </div>
+              </div>
+              <div className="coaSubjectWidth" style={{ paddingTop: "30px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div className="textStyle18">Subjects</div>
+                  <div onClick={handleAdd} style={{ cursor: "pointer" }}>
+                    {/* <img src={add} alt="" /> */}
+                    <span>Add more row</span>
+                  </div>
+                </div>
+                <Table
+                  dataSource={tableData}
+                  columns={columns}
+                  rowClassName={() => "backgroundF4F6F8"}
+                  pagination={false}
                 />
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
