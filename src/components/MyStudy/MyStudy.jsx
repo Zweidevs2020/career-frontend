@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Spin, message, Button, TimePicker, Modal } from "antd";
+import { Spin, message, Button, TimePicker, Modal, Select } from "antd";
 import {
   getApiWithAuth,
   postApiWithAuth,
@@ -21,6 +21,8 @@ import { API_URL } from "../../utils/constants";
 import "./Mystudy.css";
 const isMobile = window.innerWidth <= 768;
 const MyStudy = () => {
+  const { Option } = Select;
+
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
@@ -44,6 +46,44 @@ const MyStudy = () => {
 
   const handleOpenViewBooking = () => setOpenViewBooking(true);
   const handleCloseViewBooking = () => setOpenViewBooking(false);
+  const optionArray = [
+    { label: "06:00 AM", value: "06:00 AM" },
+    { label: "06:30 AM", value: "06:30 AM" },
+    { label: "07:00 AM", value: "07:00 AM" },
+    { label: "07:30 AM", value: "07:30 AM" },
+    { label: "08:00 AM", value: "08:00 AM" },
+    { label: "08:30 AM", value: "08:30 AM" },
+    { label: "09:00 AM", value: "09:00 AM" },
+    { label: "09:30 AM", value: "09:30 AM" },
+    { label: "10:00 AM", value: "10:00 AM" },
+    { label: "10:30 AM", value: "10:30 AM" },
+    { label: "11:00 AM", value: "11:00 AM" },
+    { label: "11:30 AM", value: "11:30 AM" },
+    { label: "12:00 PM", value: "12:00 PM" },
+    { label: "12:30 PM", value: "12:30 PM" },
+    { label: "01:00 PM", value: "01:00 PM" },
+    { label: "01:30 PM", value: "01:30 PM" },
+    { label: "02:00 PM", value: "02:00 PM" },
+    { label: "02:30 PM", value: "02:30 PM" },
+    { label: "03:00 PM", value: "03:00 PM" },
+    { label: "03:30 PM", value: "03:30 PM" },
+    { label: "04:00 PM", value: "04:00 PM" },
+    { label: "04:30 PM", value: "04:30 PM" },
+    { label: "05:00 PM", value: "05:00 PM" },
+    { label: "05:30 PM", value: "05:30 PM" },
+    { label: "06:00 PM", value: "06:00 PM" },
+    { label: "06:30 PM", value: "06:30 PM" },
+    { label: "07:00 PM", value: "07:00 PM" },
+    { label: "07:30 PM", value: "07:30 PM" },
+    { label: "08:00 PM", value: "08:00 PM" },
+    { label: "08:30 PM", value: "08:30 PM" },
+    { label: "09:00 PM", value: "09:00 PM" },
+    { label: "09:30 PM", value: "09:30 PM" },
+    { label: "10:00 PM", value: "10:00 PM" },
+    { label: "10:30 PM", value: "10:30 PM" },
+    { label: "11:00 PM", value: "11:00 PM" },
+    { label: "11:30 PM", value: "11:30 PM" },
+  ];
 
   useEffect(() => {
     getCalanderData();
@@ -114,20 +154,26 @@ const MyStudy = () => {
 
   const handleDateSelect = (selectInfo) => {
     setWeekDay(dayjs(selectInfo.start).format("d"));
-    setSelectedTime(dayjs(selectInfo.start));
-    setSelectedEndTime(dayjs(selectInfo.end));
+    // setSelectedTime(dayjs(selectInfo.start));
+    setSelectedTime(dayjs(selectInfo.start).locale("en").format("hh:mm A"));
+    // setSelectedEndTime(dayjs(selectInfo.end));
+    setSelectedEndTime(dayjs(selectInfo.end).locale("en").format("hh:mm A"));
+
     handleOpenBooking();
   };
   const createNewEvent = async () => {
     setLoadingBooking(true);
-    let startTime = dayjs(selectedTime.$d).format("HH:mm:ss");
-    let endTime = dayjs(selectedEndTime.$d).format("HH:mm:ss");
+    // let startTime = dayjs(selectedTime.$d).format("HH:mm:ss");
+    // let endTime = dayjs(selectedEndTime.$d).format("HH:mm:ss");
+    let startTime = dayjs(selectedTime, "hh:mm A").format("hh:mm:ss");
+    let endTime = dayjs(selectedEndTime, "hh:mm A").format("hh:mm:ss");
     const response = await postApiWithAuth(API_URL.ADDSLOTTABLE, {
       timeslot: startTime,
       endslot: endTime,
       day: weekDay,
       title: title,
     });
+
     if (response.data.status === 201) {
       message.success("Booking Added");
       setSelectedTime("");
@@ -230,7 +276,13 @@ const MyStudy = () => {
       message.error(response.data.message);
     }
   };
+  function handleChange(value) {
+    setSelectedTime(value);
+  }
 
+  function handleChange2(value) {
+    setSelectedEndTime(value);
+  }
   return (
     <>
       <div className="educationalGuidanceMainDiv">
@@ -262,7 +314,6 @@ const MyStudy = () => {
               right: "",
             }}
             initialView={isMobile ? "timeGridDay" : "timeGridWeek"}
-
             events={calenderData}
             eventContent={renderEventContent} // this function print data
             eventClick={handleEventClick} //when we select data this function called
@@ -308,7 +359,19 @@ const MyStudy = () => {
               marginTop: 20,
             }}
           >
-            <TimePicker
+            <Select
+              placeholder="Select time"
+              onChange={handleChange}
+              value={selectedTime}
+              className="inputFieldStyle"
+            >
+              {optionArray.map((option) => (
+                <Option key={option.value} value={option.value}>
+                  {option.label}
+                </Option>
+              ))}
+            </Select>
+            {/* <TimePicker
               onChange={(e) => setSelectedTime(e)}
               value={selectedTime}
               use12Hours={true}
@@ -316,8 +379,8 @@ const MyStudy = () => {
               format="h:mm a"
               style={{ width: 200 }}
               className="inputFieldStyle"
-            />
-            <TimePicker
+            /> */}
+            {/* <TimePicker
               onChange={(e) => setSelectedEndTime(e)}
               value={selectedEndTime}
               use12Hours={true}
@@ -325,7 +388,20 @@ const MyStudy = () => {
               format="h:mm a"
               className="inputFieldStyle"
               style={{ width: 200 }}
-            />
+            /> */}
+
+            <Select
+              placeholder="Select end Time"
+              onChange={handleChange2}
+              value={selectedEndTime}
+              className="inputFieldStyle"
+            >
+              {optionArray.map((option) => (
+                <Option key={option.value} value={option.value}>
+                  {option.label}
+                </Option>
+              ))}
+            </Select>
           </div>
           <div
             className="mt-3"
@@ -417,7 +493,37 @@ const MyStudy = () => {
               marginTop: 20,
             }}
           >
-            <TimePicker
+            <Select
+              placeholder="Select time"
+              onChange={(value) => {
+                setBtnDisabled(false);
+                setViewData({ ...viewData, start: value });
+              }}
+              value={dayjs(viewData.start).locale("en").format("hh:mm A")}
+              className="inputFieldStyle"
+            >
+              {optionArray.map((option) => (
+                <Option key={option.value} value={option.value}>
+                  {option.label}
+                </Option>
+              ))}
+            </Select>
+            <Select
+              placeholder="Select End time"
+              onChange={(value) => {
+                setBtnDisabled(false);
+                setViewData({ ...viewData, end: value });
+              }}
+              value={dayjs(viewData.end).locale("en").format("hh:mm A")}
+              className="inputFieldStyle"
+            >
+              {optionArray.map((option) => (
+                <Option key={option.value} value={option.value}>
+                  {option.label}
+                </Option>
+              ))}
+            </Select>
+            {/* <TimePicker
               value={dayjs(viewData.start)}
               use12Hours={true}
               minuteStep={15}
@@ -434,7 +540,7 @@ const MyStudy = () => {
               className="inputFieldStyle"
               style={{ width: 200 }}
               onChange={(e, d) => handleChangeEndTime(e, d)}
-            />
+            /> */}
           </div>
           <div
             className="mt-3"

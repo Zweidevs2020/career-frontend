@@ -19,7 +19,7 @@ const { Option } = Select;
 
 const Experenice = ({ setCurrent, current }) => {
   const [data, setData] = useState(null);
-  const [downloadBtn, setDownloadBtn]=useState(false);
+  const [downloadBtn, setDownloadBtn] = useState(false);
   const [expereniceArray, setExpereniceArray] = useState([]);
   const [isCurrentCheck, setIsCurrentCheck] = useState(false);
   const getExperiance = async () => {
@@ -56,7 +56,7 @@ const Experenice = ({ setCurrent, current }) => {
             index: 0,
             dataValue: {
               id: null,
-              jobtitle: "",
+              job_title: "",
               company: "",
               country: "",
               city: "",
@@ -134,18 +134,18 @@ const Experenice = ({ setCurrent, current }) => {
     }
   };
 
-  const getUserData = async() => {
+  const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
-    if(response.data.status === 200){
-     if(response.data.data.cv_completed===true){
-      setDownloadBtn(true);
-     }
+    if (response.data.status === 200) {
+      if (response.data.data.cv_completed === true) {
+        setDownloadBtn(true);
+      }
     }
-  }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     getUserData();
-  },[])
+  }, []);
 
   return (
     <>
@@ -167,11 +167,32 @@ const Experenice = ({ setCurrent, current }) => {
                     <div className="expFormDoubleItem">
                       <Form.Item
                         label="Job Title"
-                        name={`jobtitle ${index}`}
+                        name={`job_title ${index}`}
+                        className="expItemLable"
+                        rules={[
+                          {
+                            required: item?.dataValue.job_title ? false : true,
+                            message: "Please input Job Title!",
+                          },
+                        ]}
+                      >
+                        <MyCareerGuidanceInputField
+                          placeholder=""
+                          type="input"
+                          name="job_title"
+                          onChange={(event) => onChangeHandle(event, index)}
+                          inputValue={item?.dataValue?.job_title}
+                          isPrefix={false}
+                        />
+                      </Form.Item>
+
+                      {/* <Form.Item
+                        label="Job Title"
+                        name={`job_title ${index}`}
                         className="skillItemLable"
                         rules={[
                           {
-                            required: item?.dataValue.jobtitle ? false : true,
+                            required: item?.dataValue.job_title ? false : true,
                             message: "Please Select 1 Option",
                           },
                         ]}
@@ -179,11 +200,11 @@ const Experenice = ({ setCurrent, current }) => {
                         <Select
                           placeholder="Select"
                           onChange={(event) =>
-                            handleChange(event, "jobtitle", index)
+                            handleChange(event, "job_title", index)
                           }
                           optionLabelProp="label"
                           className="eduSelect eduSelectItem"
-                          defaultValue={item?.dataValue?.jobtitle}
+                          defaultValue={item?.dataValue?.job_title}
                         >
                           {titleArray.map((item) => {
                             return (
@@ -197,7 +218,7 @@ const Experenice = ({ setCurrent, current }) => {
                             );
                           })}
                         </Select>
-                      </Form.Item>
+                      </Form.Item> */}
                     </div>
                     <div className="expFormDoubleItem">
                       <Form.Item
@@ -237,7 +258,7 @@ const Experenice = ({ setCurrent, current }) => {
                         ]}
                       >
                         <MyCareerGuidanceInputField
-                          placeholder="e.g Cebu City, Cebu"
+                          placeholder="Town/Area"
                           type="input"
                           name="city"
                           onChange={(event) => onChangeHandle(event, index)}
@@ -259,7 +280,7 @@ const Experenice = ({ setCurrent, current }) => {
                         ]}
                       >
                         <MyCareerGuidanceInputField
-                          placeholder="e.g Philippines"
+                          placeholder="Dublin"
                           type="input"
                           name="country"
                           onChange={(event) => onChangeHandle(event, index)}
@@ -323,6 +344,31 @@ const Experenice = ({ setCurrent, current }) => {
                           className="expDateInputFieldStyle"
                         />
                       </Form.Item>
+                      <div>
+                        <Checkbox
+                          className="expCheckBox"
+                          name="is_current_work"
+                          inputValue={item?.dataValue?.is_current_work}
+                          onChange={(e) => {
+                            setExpereniceArray(
+                              expereniceArray.map((item) => {
+                                return item.index === index
+                                  ? {
+                                      ...item,
+                                      dataValue: {
+                                        ...item.dataValue,
+                                        is_current_work: e.target.checked,
+                                      },
+                                    }
+                                  : item;
+                              })
+                            );
+                            setIsCurrentCheck(!isCurrentCheck);
+                          }}
+                        >
+                          I Currently Work here
+                        </Checkbox>
+                      </div>
                     </div>
                   </div>
 
@@ -348,32 +394,6 @@ const Experenice = ({ setCurrent, current }) => {
                       />
                     </Form.Item>
                   </div>
-
-                  <div>
-                    <Checkbox
-                      className="expCheckBox"
-                      name="is_current_work"
-                      inputValue={item?.dataValue?.is_current_work}
-                      onChange={(e) => {
-                        setExpereniceArray(
-                          expereniceArray.map((item) => {
-                            return item.index === index
-                              ? {
-                                  ...item,
-                                  dataValue: {
-                                    ...item.dataValue,
-                                    is_current_work: e.target.checked,
-                                  },
-                                }
-                              : item;
-                          })
-                        );
-                        setIsCurrentCheck(!isCurrentCheck);
-                      }}
-                    >
-                      I Currently Work here
-                    </Checkbox>
-                  </div>
                 </>
               );
             })}
@@ -389,7 +409,7 @@ const Experenice = ({ setCurrent, current }) => {
                         index: expereniceArray.length,
                         dataValue: {
                           id: null,
-                          jobtitle: "",
+                          job_title: "",
                           company: "",
                           country: "",
                           city: "",
@@ -425,8 +445,12 @@ const Experenice = ({ setCurrent, current }) => {
                 </Button>
               </Form.Item>
               <Form.Item>
-              <Button
-                  className={downloadBtn === false ? "disabledBtn me-3": "skillsButton me-3 "}
+                <Button
+                  className={
+                    downloadBtn === false
+                      ? "disabledBtn me-3"
+                      : "skillsButton me-3 "
+                  }
                   type="primary"
                   htmlType="submit"
                   onClick={SavePdf}

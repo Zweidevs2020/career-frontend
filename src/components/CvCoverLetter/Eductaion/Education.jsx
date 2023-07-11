@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, DatePicker, Checkbox, Select,message } from "antd";
+import { Form, Button, DatePicker, Checkbox, Select, message } from "antd";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import "./Education.css";
@@ -10,18 +10,20 @@ import dayjs from "dayjs";
 const Education = ({ setCurrent, current }) => {
   const [data, setData] = useState(null);
 
-  const [downloadBtn, setDownloadBtn]=useState(false);
+  const [downloadBtn, setDownloadBtn] = useState(false);
   const [educationArray, setEducationArray] = useState([]);
   const [resultArrayData, setResultArrayData] = useState([]);
   const [isCheck, setIsCheck] = useState(true);
+  const [isCurrentCheck, setIsCurrentCheck] = useState(false);
+
   const { Option } = Select;
 
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETEDUCATION);
+    console.log("================res get", response);
     if (response.data?.status === 200) {
       setData(response.data.data);
-    }
-    else{
+    } else {
       message.error("Fail to load Data");
     }
   };
@@ -50,6 +52,8 @@ const Education = ({ setCurrent, current }) => {
               school: "",
               year: dayjs().format("MM/YYYY"),
               examtaken: "",
+              enddate: dayjs(dayjs()).add(1, "day").format("DD-MM-YYYY"),
+              present: false,
             },
           },
         ]);
@@ -95,17 +99,18 @@ const Education = ({ setCurrent, current }) => {
 
   const onsubmit = async () => {
     let sendDaata = {};
+    console.log('===================sendDaata',sendDaata,educationArray,resultArrayData)
+
     let data = createArrayData(educationArray);
     let resData = createArrayData(resultArrayData);
     !isCheck
-      ? (sendDaata = { education_data: data,junior_data: [] })
+      ? (sendDaata = { education_data: data, junior_data: [] })
       : (sendDaata = { education_data: data, junior_data: resData });
-
     const respose = await postApiWithAuth(API_URL.POSTEDUCATION, sendDaata);
     if (respose.data.status === 201) {
       setCurrent(current + 1);
     } else {
-       message.error(respose.data.message);
+      message.error(respose.data.message);
     }
   };
 
@@ -143,6 +148,7 @@ const Education = ({ setCurrent, current }) => {
     }
   };
   const onChangeDate = (name, date, arrayIndex) => {
+    console.log('==================================educationArray',educationArray,name,date,arrayIndex)
     setEducationArray(
       educationArray.map((item) => {
         return item.index === arrayIndex
@@ -174,26 +180,31 @@ const Education = ({ setCurrent, current }) => {
     }
   };
 
-  const getUserData = async() => {
+  const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
-    if(response.data.status === 200){
-     if(response.data.data.cv_completed===true){
-      setDownloadBtn(true);
-     }
+    if (response.data.status === 200) {
+      if (response.data.data.cv_completed === true) {
+        setDownloadBtn(true);
+      }
     }
-  }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     getUserData();
-  },[])
+  }, []);
+
+  useEffect(() => {
+    console.log('===============educationArray',educationArray)
+  }, [educationArray]);
 
   const educationItems = (item, index) => {
+    console.log('===============item',item)
     return (
       <>
         <div className="eduFormDouble" key={index} style={{ marginTop: "3%" }}>
           <div className="eduFormDoubleItem">
             <Form.Item
-              label="School Name"
+              label="Place of Study"
               name={`school ${index}`}
               className="eduItemLable"
               rules={[
@@ -262,6 +273,56 @@ const Education = ({ setCurrent, current }) => {
                 isPrefix={false}
               />
             </Form.Item>
+          </div>
+          <div className="expFormDoubleItem">
+            <Form.Item
+              label="End Date"
+              name={`enddate ${index}`}
+              className="expItemLable"
+              rules={[
+                {
+                  required: item?.dataValue.enddate ? false : true,
+                  message: "Please input end Date!",
+                },
+              ]}
+            >
+              <DatePicker
+                onChange={(date, dateString) =>
+                  onChangeDate("enddate", dateString, index)
+
+                }
+                format={"DD-MM-YYYY"}
+                value={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
+                defaultValue={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
+                disabled={item?.dataValue.present}
+                className="expDateInputFieldStyle"
+              />
+            </Form.Item>
+            <div>
+              <Checkbox
+                className="expCheckBox"
+                name="present"
+                inputValue={item?.dataValue?.present}
+                onChange={(e) => {
+                  setEducationArray(
+                    educationArray.map((item) => {
+                      return item.index === index
+                        ? {
+                            ...item,
+                            dataValue: {
+                              ...item.dataValue,
+                              present: e.target.checked,
+                            },
+                          }
+                        : item;
+                    })
+                  );
+                  setIsCurrentCheck(!isCurrentCheck);
+                }}
+              >
+               I'm still studing here
+              </Checkbox>
+            </div>
           </div>
         </div>
       </>
@@ -397,6 +458,10 @@ const Education = ({ setCurrent, current }) => {
                           school: "",
                           year: dayjs().format("MM/YYYY"),
                           examtaken: "",
+                          enddate: dayjs(dayjs())
+                            .add(1, "day")
+                            .format("DD-MM-YYYY"),
+                          present: false,
                         },
                       },
                     ])
@@ -412,7 +477,7 @@ const Education = ({ setCurrent, current }) => {
                       }}
                     />
                   </span>{" "}
-                  Add Another Education
+                  Add Another Place of Study
                 </Button>
               </Form.Item>
             </div>
@@ -476,7 +541,7 @@ const Education = ({ setCurrent, current }) => {
                           }}
                         />
                       </span>{" "}
-                      Add Another Result
+                      Add Another Subject
                     </Button>
                   </Form.Item>
                 </div>
@@ -493,8 +558,12 @@ const Education = ({ setCurrent, current }) => {
               </Form.Item>
 
               <Form.Item>
-              <Button
-                  className={downloadBtn === false ? "disabledBtn me-3": "skillsButton me-3 "}
+                <Button
+                  className={
+                    downloadBtn === false
+                      ? "disabledBtn me-3"
+                      : "skillsButton me-3 "
+                  }
                   type="primary"
                   htmlType="submit"
                   onClick={SavePdf}

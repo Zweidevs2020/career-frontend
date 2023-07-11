@@ -100,7 +100,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   ]}
                 >
                   <MyCareerGuidanceInputField
-                    placeholder="e.g Maria"
+                    placeholder="Maria Murphy"
                     type="input"
                     name="full_name"
                     onChange={onChangeHandle}
@@ -137,12 +137,12 @@ const PersonalProfile = ({ setCurrent, current }) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Temporary Address!",
+                    message: "Please input your Address line 1!",
                   },
                 ]}
               >
                 <MyCareerGuidanceInputField
-                  placeholder="Temporary Address"
+                  placeholder="Address line 1"
                   type="input"
                   name="address"
                   onChange={onChangeHandle}
@@ -158,13 +158,13 @@ const PersonalProfile = ({ setCurrent, current }) => {
                 className="profileItemLable"
                 rules={[
                   {
-                    required: true,
-                    message: "Please input your Permanent Address!",
+                    required: false,
+                    message: "Please input your Address line 2!",
                   },
                 ]}
               >
                 <MyCareerGuidanceInputField
-                  placeholder="Permanent  Address"
+                  placeholder="Address line 2"
                   type="input"
                   name="address2"
                   onChange={onChangeHandle}
@@ -185,7 +185,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   ]}
                 >
                   <MyCareerGuidanceInputField
-                    placeholder="e.g Cebu City, Cebu"
+                    placeholder="Clonmel/Coolock"
                     type="input"
                     name="town"
                     onChange={onChangeHandle}
@@ -196,11 +196,11 @@ const PersonalProfile = ({ setCurrent, current }) => {
               </div>
               <div style={{ width: "24%" }}>
                 <Form.Item
-                  label="City"
+                  label="County"
                   name="city"
                   className="profileItemLable"
                   rules={[
-                    { required: true, message: "Please input your City!" },
+                    { required: true, message: "Please input your County!" },
                   ]}
                 >
                   <MyCareerGuidanceInputField
@@ -215,13 +215,13 @@ const PersonalProfile = ({ setCurrent, current }) => {
               </div>
               <div style={{ width: "24%" }}>
                 <Form.Item
-                  label="Eircodel Code"
+                  label="Eircode"
                   name="eircode"
                   className="profileItemLable"
                   rules={[
                     {
-                      required: true,
-                      message: "Please input your Eircodel Code!",
+                      required: false,
+                      message: "Please input your Eircode!",
                     },
                   ]}
                 >
@@ -243,7 +243,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                 name="objective"
                 className="profileItemLable"
                 rules={[
-                  { required: true, message: "Please input your Objective!" },
+                  { required: false, message: "Please input your Objective!" },
                 ]}
               >
                 <TextArea
