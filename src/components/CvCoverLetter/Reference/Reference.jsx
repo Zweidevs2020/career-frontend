@@ -268,7 +268,7 @@ const Reference = ({ setCurrent, current }) => {
                       }}
                     />
                   </span>{" "}
-                  Add Another Position
+                  Add Another Referee
                 </Button>
               </Form.Item>
             </div>

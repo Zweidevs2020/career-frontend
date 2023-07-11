@@ -6,6 +6,7 @@ import { MyCareerGuidanceButton } from "../../components/commonComponents";
 import bookImage from "../../assets/bookImage.png";
 import winningCup from "../../assets/winningCup.svg";
 import { useNavigate } from "react-router-dom";
+import Chart from "react-apexcharts";
 
 const Selfassesment = () => {
   const navigate = useNavigate();
@@ -18,11 +19,55 @@ const Selfassesment = () => {
   useEffect(() => {
     getPsychometricTest();
   }, []);
-
+  const options = {
+    // plotOptions: {
+    //   bar: {
+    //     horizontal: true
+    //   }
+    // },
+    chart: {
+      id: "basic-bar",
+      toolbar: {
+        show: false,
+      },
+    },
+    plotOptions: {
+      bar: {
+        columnWidth: 20,
+        colors: {
+          backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#1984FF"], // Set the background color of the bars
+        },
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    // labels: educationGuidance
+    //   .map((item) => item.scores.map((score) => score.name))
+    //   .flat(),
+    // colors: ["#1984FF"],
+    // series: [
+    //   {
+    //     data: educationGuidance
+    //       .map((item) => item.scores.map((score) => score.score))
+    //       .flat(),
+    //   },
+    // ],
+    title: {
+      text: "", // Add the graph name/title
+      align: "center",
+      margin: 10,
+      offsetY: 20,
+      style: {
+        fontSize: "16px",
+        fontWeight: "bold",
+        fontFamily: undefined,
+      },
+    },
+  };
   const getPsychometricTest = async () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETPSYCHOMETRICTEST);
-    console.log("===res",response)
     if (response?.data?.status === 200) {
       setPsychometricTest(response.data.data);
       setLoading(false);
@@ -40,32 +85,36 @@ const Selfassesment = () => {
   };
   return (
     <>
-      <div className="educationalGuidanceMainDiv">
+      <div className="educationalGuidanceMainDiv"> 
         <div className="welcomeHaddingText ">Psychometric Test</div>
         <div className="textStyle18 pt-1 pb-3">
           Lorem ipsum is a placeholder text commonly used to demonstrate
         </div>
-
-        <div className="educationalGuidanceSecondDiv">
-          {loading ? (
-            <Spin className="spinStyle" />
-          ) : psychometricTest.length === 0 ? (
-            <div className="quizDetailsStyle">No Data Found</div>
-          ) : (
-            psychometricTest.map((item) => {
-              return (
-                <div className="quizStyle" key={item.id}>
-                  <div className="width90">
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <img src={bookImage} alt="" />
-                      <div style={{ marginLeft: 20 }}>
-                        <div className="quizHeadingStyle">{item.name}</div>
-                        <div className="quizDetailsStyle">
-                          {item.description}
-                        </div>
-                      </div>
-                    </div>
-                    {!item.complete ? (
+        <div style={{ display: "flex", flexWrap: "wrap", margin: 10 }}>
+          {psychometricTest?.map((mapData, index) => {
+            const labels = mapData?.test_results[0]?.question_scores?.map((score) => score.question)
+            const series =  mapData?.test_results[0]?.question_scores?.map((score) => score.score)
+            const title = mapData.name;
+            const chartOptions = {
+              ...options,
+              labels,
+              series: [{ data: series }],
+              title: { text: title },
+            };
+            return (
+              <>
+                <div key={mapData.id} className="ms-3 mt-5">
+                  <Chart
+                    options={chartOptions}
+                    series={chartOptions.series}
+                    type="bar"
+                    width={450}
+                    height={320}
+                  />
+                  <div
+                    style={{ display: "flex", justifyContent: "center" }}
+                  >
+                    {!mapData.complete ? (
                       <MyCareerGuidanceButton
                         label="Take Test"
                         className="takebutton"
@@ -73,7 +122,7 @@ const Selfassesment = () => {
                         htmlType="button"
                         onClick={() =>
                           navigate("/self-assesment-test", {
-                            state: { data: item },
+                            state: { data: mapData },
                           })
                         }
                       />
@@ -86,18 +135,18 @@ const Selfassesment = () => {
                           htmlType="button"
                           onClick={() =>
                             navigate("/self-assesment-test", {
-                              state: { data: item },
+                              state: { data: mapData },
                             })
                           }
                         />
                         <MyCareerGuidanceButton
                           label="View Results"
                           className="viewResultButton"
-                          type="button"
+                          type="button ms-3"
                           htmlType="button"
                           onClick={() =>
                             navigate("/occupation", {
-                              state: { data: item },
+                              state: { data: mapData },
                             })
                           }
                         />
@@ -105,9 +154,10 @@ const Selfassesment = () => {
                     )}
                   </div>
                 </div>
-              );
-            })
-          )}
+              </>
+            );
+          })}
+      
         </div>
       </div>
       <Modal

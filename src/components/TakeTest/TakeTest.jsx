@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Spin, message, Radio, Space } from "antd";
+import { Spin, message, Radio, Space, Modal } from "antd";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import { MyCareerGuidanceButton } from "../commonComponents";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -13,7 +13,6 @@ const TakeTest = () => {
   const [quizData, setQuizData] = useState({});
   const { data } = location.state || {};
   const [spinnerLoading, setSpinnerLoading] = useState(false);
-
   const onChange = (e) => {
     const { name, value } = e.target;
     let temp = quizResult.filter((item) => item.question_id !== name);
@@ -42,9 +41,12 @@ const TakeTest = () => {
       quiz: data.id,
       answers: quizResult,
     });
+    console.log("============res", response);
     if (response.data.status === 200) {
       message.success("Quiz taken successfully");
-      navigate("/educational-guidance");
+      navigate("/educational-guidance", {
+        state: { data: response.data.data },
+      });
       setSpinnerLoading(false);
     } else {
       setSpinnerLoading(false);

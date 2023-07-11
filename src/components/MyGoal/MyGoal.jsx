@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { DatePicker, Space, Spin, message } from "antd";
+import { DatePicker, Space, Spin, message, Radio } from "antd";
 import dayjs from "dayjs";
 import jsPDF from "jspdf";
 import { MyCareerGuidanceButton } from "../commonComponents";
@@ -117,7 +117,7 @@ const MyGoal = () => {
       goal: goal,
       actions: actions,
       realistic: realistic,
-      date:  dayjs(countdown).format("DD-MM-YYYY"),
+      date: dayjs(countdown).format("DD-MM-YYYY"),
     };
     const response = await postApiWithAuth(API_URL.POSTUSERGOAL, data);
 
@@ -142,26 +142,28 @@ const MyGoal = () => {
         <div className="mainPage">
           <div className="topContainer">
             <div>
-              <h5 className="goalHeading">My Goal</h5>
+              <h5 className="goalHeading">My Goals</h5>
             </div>
             <div className="subHead">
               <h className="subHeading">
-                Lorem ipsum is a placeholder text commonly used to demonstrate
+                Writing down your goal increases your chances of success. Fill
+                out this form to view any time or print and put you can see
+                daily.
               </h>
             </div>
           </div>
           <div className="lowerContainer2">
             <div className="lowerContainer">
-              <div className="employeGoal">
+              {/* <div className="employeGoal">
                 <h className="employersContact">
                   What’s the best way for employers to contact you?
                 </h>
               </div>
               <div className="secondContainer">
                 <h>What’s the best way for employers to contact you?</h>
-              </div>
+              </div> */}
               <div className="inputContainer">
-                <h style={{ color: "#111928" }}>What I want to Become:</h>
+                <h style={{ color: "#111928" }}>What I want to:</h>
               </div>
               <div className="inputGoal">
                 <input
@@ -169,15 +171,17 @@ const MyGoal = () => {
                   value={proffession}
                   onChange={(e) => setProffession(e.target.value)}
                   name="input"
-                  placeholder="eg Accountant"
+                  placeholder=" EG: Accountant or Save the planet"
                   className="inputCarrer sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
                 />
               </div>
 
               <div className="inputContainer">
-                <h style={{ color: "#111928" }}>Specific Goal for the Year:</h>
+                <h style={{ color: "#111928" }}>
+                  Specific goal for week/month/term/year:
+                </h>
               </div>
-              <div className="inputGoal">
+              {/* <div className="inputGoal">
                 <input
                   type="text"
                   value={goal}
@@ -186,34 +190,50 @@ const MyGoal = () => {
                   placeholder="eg Accountant"
                   className="inputCarrer  sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
                 />
+              </div> */}
+              <div className="inputGoal">
+                <div className="mt-3">
+                  <Radio.Group
+                    name="input"
+                    onChange={(e) => setGoal(e.target.value)}
+                    value={goal}
+                  >
+                    <Space direction="horizontal">
+                      <Radio value={"week"}>Week</Radio>
+                      <Radio value={"month"}>Month</Radio>
+                      <Radio value={"term"}>Term</Radio>
+                      <Radio value={"year"}>Year</Radio>
+                    </Space>
+                  </Radio.Group>
+                </div>
               </div>
               <div className="inputContainer">
                 <h style={{ color: "#111928" }}>
-                  5 Actions to Achieve the Above:
+                  2 Actions to Achieve the Above:
                 </h>
               </div>
-              <div className="w-[100%] h-[70px] w-[97%]  sm:h-[100px] sm:flex-wrap sm:flex flex items-center justify-around pl-4 ">
+              <div className="w-[100%] h-[100px] pl-4 ">
                 <input
                   type="text"
+                  placeholder="Action 1"
                   name="action1"
                   value={actions.action1}
-                  placeholder="Write down your goal"
-                  className=" sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[19%] rounded-md border-solid border-2 border-gray-400 outline-none "
+                  className=" sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 mt-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[100%] rounded-md border-solid border-2 border-gray-400 outline-none "
                   onChange={(e) => {
                     onChangeHandle(e);
                   }}
                 />
                 <input
                   type="text"
+                  placeholder="Action 2"
                   name="action2"
                   value={actions.action2}
-                  placeholder="Set a deadline"
-                  className=" px-2 sm:text-[8px] md:text-[8px] h-[50px] xl:text-[11px] w-[19%] sm:w-[30%] sm:h-[35px] md:h-[38px] rounded-md border-solid border-2 border-gray-400 outline-none "
+                  className=" px-2 sm:text-[8px] md:text-[8px] mt-2 h-[50px] xl:text-[11px] w-[100%] sm:w-[30%] sm:h-[35px] md:h-[38px] rounded-md border-solid border-2 border-gray-400 outline-none "
                   onChange={(e) => {
                     onChangeHandle(e);
                   }}
                 />
-                <input
+                {/* <input
                   type="text"
                   name="action3"
                   value={actions.action3}
@@ -242,7 +262,7 @@ const MyGoal = () => {
                   onChange={(e) => {
                     onChangeHandle(e);
                   }}
-                />
+                /> */}
               </div>
               <div className="inputContainer">
                 <h style={{ color: "#111928" }}>Is this Realistic ?</h>
@@ -342,10 +362,10 @@ const MyGoal = () => {
                   Download PDF
                 </button>
                 <MyCareerGuidanceButton
-                label=" Save Data"
-                loading={loading2}
-                className="buttonGoalPage"
-                onClick={() => SaveInput()}
+                  label=" Save Data"
+                  loading={loading2}
+                  className="buttonGoalPage"
+                  onClick={() => SaveInput()}
                 />
               </div>
               <br />
