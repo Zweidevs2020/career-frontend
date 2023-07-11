@@ -5,11 +5,19 @@ import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import { MyCareerGuidanceButton } from "../../components/commonComponents";
 import bookImage from "../../assets/bookImage.png";
 import winningCup from "../../assets/winningCup.svg";
-import "./EducationalGuidance.css";
-import { useNavigate } from "react-router-dom";
+import homeModal from "../../assets/homeModal.svg";
+import crossIconModal from "../../assets/crossIconModal.svg";
 
+import "./EducationalGuidance.css";
+import { useNavigate, useLocation } from "react-router-dom";
+import {
+  buildStyles,
+  CircularProgressbarWithChildren,
+} from "react-circular-progressbar";
 const EducationalGuidance = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { data } = location.state || {};
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -17,7 +25,13 @@ const EducationalGuidance = () => {
   const [singlequizData, setSinglequizData] = useState({});
   const [open, setOpen] = useState(false);
   const [testId, setTestId] = useState({});
+  const [openPieChart, setOpenPieChart] = useState(false);
 
+  useEffect(() => {
+    if (data !== undefined) {
+      setOpenPieChart(true);
+    }
+  }, [data]);
   useEffect(() => {
     getQuiz();
   }, []);
@@ -25,6 +39,7 @@ const EducationalGuidance = () => {
   const getQuiz = async () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETGOALS);
+    console.log("==========response", response);
     if (response.data.status === 200) {
       setQuizz(response.data.data);
       setLoading(false);
@@ -75,8 +90,14 @@ const EducationalGuidance = () => {
                         //   })
                         // }
                         onClick={() => {
-                          setTestId(item);
-                          setOpen(true);
+                          if (item.youtube_link !== null) {
+                            setTestId(item);
+                            setOpen(true);
+                          } else {
+                            navigate("/educational-guidance-test", {
+                              state: { data: item },
+                            });
+                          }
                         }}
                       />
                     ) : (
@@ -86,11 +107,16 @@ const EducationalGuidance = () => {
                           className="takebutton"
                           type="button"
                           htmlType="button"
-                          onClick={() =>
-                            navigate("/educational-guidance-test", {
-                              state: { data: item },
-                            })
-                          }
+                          onClick={() => {
+                            if (item.youtube_link !== null) {
+                              setTestId(item);
+                              setOpen(true);
+                            } else {
+                              navigate("/educational-guidance-test", {
+                                state: { data: item },
+                              });
+                            }
+                          }}
                         />
                         <MyCareerGuidanceButton
                           label="View Results"
@@ -108,7 +134,7 @@ const EducationalGuidance = () => {
           )}
         </div>
       </div>
-      <Modal
+      {/* <Modal
         className="modalStyleClass"
         bodyStyle={{
           background: "none",
@@ -143,9 +169,70 @@ const EducationalGuidance = () => {
             </div>
           </div>
         </div>
+      </Modal> */}
+
+      <Modal
+        centered
+        width={700}
+        open={isModalOpen}
+        footer={[]}
+        closable={true}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+            paddingBottom: 5,
+            borderBottom: "1px solid #DADADA",
+          }}
+        >
+          <div onClick={() => navigate("/dashboard")}>
+            <img src={homeModal} alt="homeModal" />
+          </div>
+          <div onClick={() => setIsModalOpen(false)}>
+            <img src={crossIconModal} alt="crossIconModal" />
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <div className="quizHeadingStyle">{singlequizData?.name}</div>
+          <div className="circularBarMainDiv">
+            <div style={{ width: 130 }}>
+              <CircularProgressbarWithChildren
+                value={singlequizData?.score}
+                minValue={0}
+                maxValue={singlequizData?.total_score}
+                styles={buildStyles({
+                  rotation: 0.99,
+                  strokeLinecap: "dashboard",
+                  textSize: "19px",
+                  pathTransitionDuration: 0.5,
+                  pathColor: "#1476B7",
+                  textColor: "#263238",
+                  trailColor: "#d6d6d6",
+                })}
+              >
+                <div className="welcomeHaddingText">
+                  {singlequizData?.total_score}
+                </div>
+                <div className="cao2ndText">
+                  <strong>Points</strong>
+                </div>
+              </CircularProgressbarWithChildren>
+            </div>
+          </div>
+        </div>
       </Modal>
       <Modal
-        title="Youtube"
+        title="Youtube Vedio"
         centered
         open={open}
         footer={[]}
@@ -155,7 +242,7 @@ const EducationalGuidance = () => {
         <iframe
           width="100%"
           height="315"
-          src={`https://www.youtube.com/embed/${22}`}
+          src={testId.youtube_link}
           title="YouTube Video"
           frameBorder="0"
           allowFullScreen
@@ -174,6 +261,65 @@ const EducationalGuidance = () => {
               })
             }
           />
+        </div>
+      </Modal>
+
+      <Modal
+        centered
+        width={700}
+        open={openPieChart}
+        footer={[]}
+        closable={true}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+            paddingBottom: 5,
+            borderBottom: "1px solid #DADADA",
+          }}
+        >
+          <div onClick={() => navigate("/dashboard")}>
+            <img src={homeModal} alt="homeModal" />
+          </div>
+          <div onClick={() => setOpenPieChart(false)}>
+            <img src={crossIconModal} alt="crossIconModal" />
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <div className="quizHeadingStyle">{data?.quiz}</div>
+          <div className="circularBarMainDiv">
+            <div style={{ width: 130 }}>
+              <CircularProgressbarWithChildren
+                value={data?.obtained_score}
+                minValue={0}
+                maxValue={data?.total_score}
+                styles={buildStyles({
+                  rotation: 0.99,
+                  strokeLinecap: "dashboard",
+                  textSize: "19px",
+                  pathTransitionDuration: 0.5,
+                  pathColor: "#1476B7",
+                  textColor: "#263238",
+                  trailColor: "#d6d6d6",
+                })}
+              >
+                <div className="welcomeHaddingText">{data?.total_score}</div>
+                <div className="cao2ndText">
+                  <strong>Points</strong>
+                </div>
+              </CircularProgressbarWithChildren>
+            </div>
+          </div>
         </div>
       </Modal>
     </>
