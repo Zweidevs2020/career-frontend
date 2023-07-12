@@ -90,12 +90,17 @@ const EducationalGuidance = () => {
                         //   })
                         // }
                         onClick={() => {
-                          if (item.youtube_link !== null) {
-                            console.log("helllo====>", item.youtube_link);
+                          console.log("=====>item", item.youtube_link.length);
+                          if (item.youtube_link?.length !== 0) {
                             setTestId(
-                              "https://www.youtube.com/embed/GCvt9C4FLgA"
+                              `https://www.youtube.com/embed/${item.youtube_link}`
                             );
-                            setOpen(true);
+                            navigate("/video", {
+                              state: {
+                                data: item,
+                                videoId: `https://www.youtube.com/embed/${item.youtube_link}`,
+                              },
+                            });
                           } else {
                             navigate("/educational-guidance-test", {
                               state: { data: item },
@@ -111,9 +116,16 @@ const EducationalGuidance = () => {
                           type="button"
                           htmlType="button"
                           onClick={() => {
-                            if (item.youtube_link !== null) {
-                              setTestId(item.youtube_link);
-                              setOpen(true);
+                            if (item.youtube_link?.length !== 0) {
+                              setTestId(
+                                `https://www.youtube.com/embed/${item.youtube_link}`
+                              );
+                              navigate("/video", {
+                                state: {
+                                  data: item,
+                                  videoId: `https://www.youtube.com/embed/${item.youtube_link}`,
+                                },
+                              });
                             } else {
                               navigate("/educational-guidance-test", {
                                 state: { data: item },

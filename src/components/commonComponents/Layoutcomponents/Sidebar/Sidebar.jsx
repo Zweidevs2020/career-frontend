@@ -845,7 +845,7 @@ const Sidebar = ({ children, flags }) => {
             </div>
           </Sider>
           <Layout className="site-layout">
-            <Header style={{ padding: 0 }} className="Navbar">
+            <Header className="Navbar">
               <div className="navtext">
                 <p className="nav-text">
                   Hello <strong>{userData.full_name}</strong>, welcome back!

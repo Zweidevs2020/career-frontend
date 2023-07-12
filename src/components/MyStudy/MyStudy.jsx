@@ -47,6 +47,13 @@ const MyStudy = () => {
 
   const handleOpenViewBooking = () => setOpenViewBooking(true);
   const handleCloseViewBooking = () => setOpenViewBooking(false);
+
+  useEffect(() => {
+    console.log("calender data ----", calenderData);
+  }, [calenderData]);
+  useEffect(() => {
+    console.log(" data ----", data);
+  }, [data]);
   // const optionArray = [
   //   { label: "06:00 AM", value: "06:00 AM" },
   //   { label: "06:30 AM", value: "06:30 AM" },
@@ -122,8 +129,6 @@ const MyStudy = () => {
   };
   const handleEventDrop = async (event) => {
     const { id, start, end } = event.event;
-    console.log("drop====", start, end);
-    console.log("drop===t=", end);
 
     if (start && end) {
       const viewData = {
@@ -132,9 +137,14 @@ const MyStudy = () => {
         start: start.toISOString(),
         end: end.toISOString(),
       };
-      console.log("drop====1");
 
-      await handleEditCalender(id, viewData);
+      try {
+        await handleEditCalender(id, viewData);
+        event.event.setProp("start", start); // Manually update event start
+        event.event.setProp("end", end); // Manually update event end
+      } catch (error) {
+        // Handle error
+      }
     }
   };
 
@@ -166,24 +176,51 @@ const MyStudy = () => {
         day: viewData.id,
         title: viewData.title,
       });
+      console.log("000====", response);
 
       if (response.data.success === true) {
+        console.log("rrrrr==", response.data.data);
         message.success("Booking Updated Successfully");
-
-        setCalenderData((prevCalenderData) => {
-          const updatedCalenderData = prevCalenderData.map((event) => {
-            if (event.extendedProps.selectID === id) {
-              return {
-                ...event,
-                start: new Date(viewData.start),
-                end: new Date(viewData.end),
-              };
-            }
-            return event;
-          });
-          return updatedCalenderData;
+        let check = [];
+        check = response?.data.data.map((item) => {
+          return {
+            title: item.title,
+            id: parseInt(item.day),
+            start: new Date(
+              `${setShowData(parseInt(item.day), dataTime)} ${item.timeslot}`
+            ),
+            end: new Date(
+              `${setShowData(parseInt(item.day), dataTime)} ${item.endslot}`
+            ),
+            backgroundColor: "rgba(41, 204, 57, 0.05)",
+            extendedProps: {
+              title: item.title,
+              id: parseInt(item.day),
+              selectID: item.id,
+              start: new Date(
+                `${setShowData(parseInt(item.day), dataTime)} ${item.timeslot}`
+              ),
+              end: new Date(
+                `${setShowData(parseInt(item.day), dataTime)} ${item.endslot}`
+              ),
+            },
+          };
         });
-
+        console.log("===>check", check);
+        setCalenderData(check);
+        // const updatedEvent = {
+        //   id: id,
+        //   start: viewData.start,
+        //   end: viewData.end,
+        //   day: viewData.id,
+        // };
+        // setCalenderData((prevData) => {
+        //   console.log("--------------------------", prevData);
+        //   const updatedData = prevData.map((event) =>
+        //     event.id === id ? { ...event, ...updatedEvent } : event
+        //   );
+        //   return updatedData;
+        // });
         setUpdateLoading(false);
         setOpenViewBooking(false);
       } else {
@@ -221,6 +258,7 @@ const MyStudy = () => {
   const getCalanderData = async () => {
     setLoading(true);
     const response = await getApiWithAuth(`timetable/list-timeslot/`);
+    console.log("=====>", response);
     if (response?.data.status === 200) {
       setData(response.data.data);
       setLoading(false);
@@ -388,7 +426,7 @@ const MyStudy = () => {
         >
           <div className="welcomeHaddingText pb-4">My Study Timetable</div>
           <Button
-            className="viewResultButton"
+            className="takebutton"
             type="primary"
             loading={deleteHandler}
             onClick={handleDelete}

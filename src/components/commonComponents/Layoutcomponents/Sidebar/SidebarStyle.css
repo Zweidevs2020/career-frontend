@@ -37,6 +37,7 @@
   align-items: center;
   justify-content: space-between;
   height: 85px;
+  padding-inline: 10px;
 }
 
 .navtext {
@@ -163,6 +164,7 @@
   }
   :where(.css-dev-only-do-not-override-ed5zg0).ant-layout-header {
     height: 85px;
+    padding-inline: 5px !important;
   }
 }
 
