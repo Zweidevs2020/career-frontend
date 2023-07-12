@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Spin, message, Button, TimePicker, Modal, Select } from "antd";
+import dayjs from "dayjs";
+
 import {
   getApiWithAuth,
   postApiWithAuth,
@@ -16,7 +18,6 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import moment from "moment";
-import dayjs from "dayjs";
 import { API_URL } from "../../utils/constants";
 import "./Mystudy.css";
 const isMobile = window.innerWidth <= 768;
@@ -46,44 +47,61 @@ const MyStudy = () => {
 
   const handleOpenViewBooking = () => setOpenViewBooking(true);
   const handleCloseViewBooking = () => setOpenViewBooking(false);
-  const optionArray = [
-    { label: "06:00 AM", value: "06:00 AM" },
-    { label: "06:30 AM", value: "06:30 AM" },
-    { label: "07:00 AM", value: "07:00 AM" },
-    { label: "07:30 AM", value: "07:30 AM" },
-    { label: "08:00 AM", value: "08:00 AM" },
-    { label: "08:30 AM", value: "08:30 AM" },
-    { label: "09:00 AM", value: "09:00 AM" },
-    { label: "09:30 AM", value: "09:30 AM" },
-    { label: "10:00 AM", value: "10:00 AM" },
-    { label: "10:30 AM", value: "10:30 AM" },
-    { label: "11:00 AM", value: "11:00 AM" },
-    { label: "11:30 AM", value: "11:30 AM" },
-    { label: "12:00 PM", value: "12:00 PM" },
-    { label: "12:30 PM", value: "12:30 PM" },
-    { label: "01:00 PM", value: "01:00 PM" },
-    { label: "01:30 PM", value: "01:30 PM" },
-    { label: "02:00 PM", value: "02:00 PM" },
-    { label: "02:30 PM", value: "02:30 PM" },
-    { label: "03:00 PM", value: "03:00 PM" },
-    { label: "03:30 PM", value: "03:30 PM" },
-    { label: "04:00 PM", value: "04:00 PM" },
-    { label: "04:30 PM", value: "04:30 PM" },
-    { label: "05:00 PM", value: "05:00 PM" },
-    { label: "05:30 PM", value: "05:30 PM" },
-    { label: "06:00 PM", value: "06:00 PM" },
-    { label: "06:30 PM", value: "06:30 PM" },
-    { label: "07:00 PM", value: "07:00 PM" },
-    { label: "07:30 PM", value: "07:30 PM" },
-    { label: "08:00 PM", value: "08:00 PM" },
-    { label: "08:30 PM", value: "08:30 PM" },
-    { label: "09:00 PM", value: "09:00 PM" },
-    { label: "09:30 PM", value: "09:30 PM" },
-    { label: "10:00 PM", value: "10:00 PM" },
-    { label: "10:30 PM", value: "10:30 PM" },
-    { label: "11:00 PM", value: "11:00 PM" },
-    { label: "11:30 PM", value: "11:30 PM" },
-  ];
+  // const optionArray = [
+  //   { label: "06:00 AM", value: "06:00 AM" },
+  //   { label: "06:30 AM", value: "06:30 AM" },
+  //   { label: "07:00 AM", value: "07:00 AM" },
+  //   { label: "07:30 AM", value: "07:30 AM" },
+  //   { label: "08:00 AM", value: "08:00 AM" },
+  //   { label: "08:30 AM", value: "08:30 AM" },
+  //   { label: "09:00 AM", value: "09:00 AM" },
+  //   { label: "09:30 AM", value: "09:30 AM" },
+  //   { label: "10:00 AM", value: "10:00 AM" },
+  //   { label: "10:30 AM", value: "10:30 AM" },
+  //   { label: "11:00 AM", value: "11:00 AM" },
+  //   { label: "11:30 AM", value: "11:30 AM" },
+  //   { label: "12:00 PM", value: "12:00 PM" },
+  //   { label: "12:30 PM", value: "12:30 PM" },
+  //   { label: "01:00 PM", value: "01:00 PM" },
+  //   { label: "01:30 PM", value: "01:30 PM" },
+  //   { label: "02:00 PM", value: "02:00 PM" },
+  //   { label: "02:30 PM", value: "02:30 PM" },
+  //   { label: "03:00 PM", value: "03:00 PM" },
+  //   { label: "03:30 PM", value: "03:30 PM" },
+  //   { label: "04:00 PM", value: "04:00 PM" },
+  //   { label: "04:30 PM", value: "04:30 PM" },
+  //   { label: "05:00 PM", value: "05:00 PM" },
+  //   { label: "05:30 PM", value: "05:30 PM" },
+  //   { label: "06:00 PM", value: "06:00 PM" },
+  //   { label: "06:30 PM", value: "06:30 PM" },
+  //   { label: "07:00 PM", value: "07:00 PM" },
+  //   { label: "07:30 PM", value: "07:30 PM" },
+  //   { label: "08:00 PM", value: "08:00 PM" },
+  //   { label: "08:30 PM", value: "08:30 PM" },
+  //   { label: "09:00 PM", value: "09:00 PM" },
+  //   { label: "09:30 PM", value: "09:30 PM" },
+  //   { label: "10:00 PM", value: "10:00 PM" },
+  //   { label: "10:30 PM", value: "10:30 PM" },
+  //   { label: "11:00 PM", value: "11:00 PM" },
+  //   { label: "11:30 PM", value: "11:30 PM" },
+  // ];
+  const optionArray = [];
+
+  const startTime = new Date("2000-01-01T06:00:00");
+  const endTime = new Date("2000-01-02T00:00:00");
+  const interval = 15 * 60 * 1000;
+  for (
+    let time = startTime;
+    time < endTime;
+    time.setTime(time.getTime() + interval)
+  ) {
+    const label = time.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+    });
+    const value = label;
+    optionArray.push({ label, value });
+  }
 
   useEffect(() => {
     getCalanderData();
@@ -101,6 +119,79 @@ const MyStudy = () => {
 
   const setShowData = (dayCount, AllArray) => {
     return AllArray[dayCount];
+  };
+  const handleEventDrop = async (event) => {
+    const { id, start, end } = event.event;
+    console.log("drop====", start, end);
+    console.log("drop===t=", end);
+
+    if (start && end) {
+      const viewData = {
+        id: start.getDay(),
+        title: event.event.title,
+        start: start.toISOString(),
+        end: end.toISOString(),
+      };
+      console.log("drop====1");
+
+      await handleEditCalender(id, viewData);
+    }
+  };
+
+  const handleEventResize = async (event) => {
+    const { id, start, end } = event.event;
+    console.log("resize====");
+
+    if (start && end) {
+      const viewData = {
+        id: start.getDay(),
+        title: event.event.title,
+        start: start.toISOString(),
+        end: end.toISOString(),
+      };
+
+      await handleEditCalender(id, viewData);
+    }
+  };
+
+  const handleEditCalender = async (id, viewData) => {
+    setUpdateLoading(true);
+    const startTime = moment(viewData.start).format("hh:mm:ss");
+    const endTime = dayjs(viewData.end).format("hh:mm:ss");
+
+    try {
+      const response = await putApiWithAuth(`timetable/update-timeslot/${id}`, {
+        timeslot: startTime,
+        endslot: endTime,
+        day: viewData.id,
+        title: viewData.title,
+      });
+
+      if (response.data.success === true) {
+        message.success("Booking Updated Successfully");
+
+        setCalenderData((prevCalenderData) => {
+          const updatedCalenderData = prevCalenderData.map((event) => {
+            if (event.extendedProps.selectID === id) {
+              return {
+                ...event,
+                start: new Date(viewData.start),
+                end: new Date(viewData.end),
+              };
+            }
+            return event;
+          });
+          return updatedCalenderData;
+        });
+
+        setUpdateLoading(false);
+        setOpenViewBooking(false);
+      } else {
+        message.error(response.data.message);
+      }
+    } catch (error) {
+      message.error("An error occurred while updating the booking.");
+    }
   };
 
   useEffect(() => {
@@ -123,13 +214,14 @@ const MyStudy = () => {
         },
       };
     });
+    console.log("===>check", check);
     setCalenderData(check);
   }, [dataTime]);
 
   const getCalanderData = async () => {
     setLoading(true);
     const response = await getApiWithAuth(`timetable/list-timeslot/`);
-    if (response.data.status === 200) {
+    if (response?.data.status === 200) {
       setData(response.data.data);
       setLoading(false);
     } else {
@@ -277,6 +369,7 @@ const MyStudy = () => {
     }
   };
   function handleChange(value) {
+    console.log("000000======>", value);
     setSelectedTime(value);
   }
 
@@ -315,10 +408,13 @@ const MyStudy = () => {
             }}
             initialView={isMobile ? "timeGridDay" : "timeGridWeek"}
             events={calenderData}
-            eventContent={renderEventContent} // this function print data
-            eventClick={handleEventClick} //when we select data this function called
+            eventContent={renderEventContent}
+            eventClick={handleEventClick}
             select={handleDateSelect}
             selectable={true}
+            editable={true}
+            eventDrop={handleEventDrop}
+            eventResize={handleEventResize}
             allDaySlot={false}
             height="100vh"
             dayMaxEventRows={isMobile ? 1 : 5}
@@ -363,7 +459,7 @@ const MyStudy = () => {
               placeholder="Select time"
               onChange={handleChange}
               value={selectedTime}
-              className="inputFieldStyle"
+              className="inputFieldStyleSelect"
             >
               {optionArray.map((option) => (
                 <Option key={option.value} value={option.value}>
@@ -394,7 +490,7 @@ const MyStudy = () => {
               placeholder="Select end Time"
               onChange={handleChange2}
               value={selectedEndTime}
-              className="inputFieldStyle"
+              className="inputFieldStyleSelect"
             >
               {optionArray.map((option) => (
                 <Option key={option.value} value={option.value}>
@@ -495,12 +591,21 @@ const MyStudy = () => {
           >
             <Select
               placeholder="Select time"
+              // onChange={(value) => {
+              //   setBtnDisabled(false);
+              //   setViewData({ ...viewData, start: value });
+              // }}
               onChange={(value) => {
                 setBtnDisabled(false);
-                setViewData({ ...viewData, start: value });
+                const selectedTime = dayjs(value, "hh:mm A");
+                const updatedStartDate = dayjs(viewData.start)
+                  .set("hour", selectedTime.hour())
+                  .set("minute", selectedTime.minute())
+                  .toDate();
+                setViewData({ ...viewData, start: updatedStartDate });
               }}
               value={dayjs(viewData.start).locale("en").format("hh:mm A")}
-              className="inputFieldStyle"
+              className="inputFieldStyleSelect"
             >
               {optionArray.map((option) => (
                 <Option key={option.value} value={option.value}>
@@ -510,12 +615,21 @@ const MyStudy = () => {
             </Select>
             <Select
               placeholder="Select End time"
+              // onChange={(value) => {
+              //   setBtnDisabled(false);
+              //   setViewData({ ...viewData, end: value });
+              // }}
               onChange={(value) => {
                 setBtnDisabled(false);
-                setViewData({ ...viewData, end: value });
+                const selectedTime = dayjs(value, "hh:mm A");
+                const updatedStartDate = dayjs(viewData.start)
+                  .set("hour", selectedTime.hour())
+                  .set("minute", selectedTime.minute())
+                  .toDate();
+                setViewData({ ...viewData, end: updatedStartDate });
               }}
               value={dayjs(viewData.end).locale("en").format("hh:mm A")}
-              className="inputFieldStyle"
+              className="inputFieldStyleSelect"
             >
               {optionArray.map((option) => (
                 <Option key={option.value} value={option.value}>

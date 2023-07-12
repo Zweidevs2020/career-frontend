@@ -22,9 +22,12 @@ const Selfassesment = () => {
   const options = {
     plotOptions: {
       bar: {
-        horizontal: true,
-        barHeight: "30px"
-      }
+        horizontal: false,
+        columnWidth: "20", // Adjust the width as per your requirement
+        colors: {
+          backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#1984FF"],
+        },
+      },
     },
     chart: {
       id: "basic-bar",
@@ -32,40 +35,12 @@ const Selfassesment = () => {
         show: false,
       },
     },
-    // plotOptions: {
-    //   bar: {
-    //     columnWidth: 20,
-    //     colors: {
-    //       backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#1984FF"], // Set the background color of the bars
-    //     },
-    //   },
-    // },
     dataLabels: {
       enabled: false,
     },
-    // labels: educationGuidance
-    //   .map((item) => item.scores.map((score) => score.name))
-    //   .flat(),
-    // colors: ["#1984FF"],
-    // series: [
-    //   {
-    //     data: educationGuidance
-    //       .map((item) => item.scores.map((score) => score.score))
-    //       .flat(),
-    //   },
-    // ],
-    title: {
-      text: "", // Add the graph name/title
-      align: "center",
-      margin: 10,
-      offsetY: 20,
-      style: {
-        fontSize: "16px",
-        fontWeight: "bold",
-        fontFamily: undefined,
-      },
-    },
+    // Rest of your options and data
   };
+
   const getPsychometricTest = async () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETPSYCHOMETRICTEST);
@@ -88,10 +63,10 @@ const Selfassesment = () => {
   return (
     <>
       <div className="educationalGuidanceMainDiv">
-        <div className="welcomeHaddingText ">Psychometric Test</div>
-        <div className="textStyle18 pt-1 pb-3">
+        <div className="welcomeHaddingText ">Self Assessment Results</div>
+        {/* <div className="textStyle18 pt-1 pb-3">
           Lorem ipsum is a placeholder text commonly used to demonstrate
-        </div>
+        </div> */}
         <div style={{ display: "flex", flexWrap: "wrap", margin: 10 }}>
           {psychometricTest?.map((mapData, index) => {
             let chartOptions;
@@ -114,19 +89,19 @@ const Selfassesment = () => {
                 ...options,
                 labels: [0, 0, 0],
                 series: [{ data: [0, 0, 0] }],
-                title: { text:  mapData?.name },
+                title: { text: mapData?.name },
               };
             }
             return (
               <>
                 <div key={mapData.id} className="ms-3 mt-5">
-                    <Chart
-                      options={chartOptions}
-                      series={chartOptions.series}
-                      type="bar"
-                      width={450}
-                      height={320}
-                    />
+                  <Chart
+                    options={chartOptions}
+                    series={chartOptions.series}
+                    type="bar"
+                    width={450}
+                    height={320}
+                  />
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     {!mapData.complete ? (
                       <MyCareerGuidanceButton

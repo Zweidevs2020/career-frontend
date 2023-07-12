@@ -40,7 +40,7 @@ const EducationalGuidance = () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETGOALS);
     console.log("==========response", response);
-    if (response.data.status === 200) {
+    if (response?.data.status === 200) {
       setQuizz(response.data.data);
       setLoading(false);
     } else {
@@ -91,7 +91,10 @@ const EducationalGuidance = () => {
                         // }
                         onClick={() => {
                           if (item.youtube_link !== null) {
-                            setTestId(item);
+                            console.log("helllo====>", item.youtube_link);
+                            setTestId(
+                              "https://www.youtube.com/embed/GCvt9C4FLgA"
+                            );
                             setOpen(true);
                           } else {
                             navigate("/educational-guidance-test", {
@@ -109,7 +112,7 @@ const EducationalGuidance = () => {
                           htmlType="button"
                           onClick={() => {
                             if (item.youtube_link !== null) {
-                              setTestId(item);
+                              setTestId(item.youtube_link);
                               setOpen(true);
                             } else {
                               navigate("/educational-guidance-test", {
@@ -232,7 +235,7 @@ const EducationalGuidance = () => {
         </div>
       </Modal>
       <Modal
-        title="Youtube Vedio"
+        title="Youtube Video"
         centered
         open={open}
         footer={[]}
@@ -242,7 +245,7 @@ const EducationalGuidance = () => {
         <iframe
           width="100%"
           height="315"
-          src={testId.youtube_link}
+          src={testId}
           title="YouTube Video"
           frameBorder="0"
           allowFullScreen

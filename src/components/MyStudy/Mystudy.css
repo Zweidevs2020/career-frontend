@@ -2,7 +2,7 @@
     color: white;
     background-color: #1476B7;
     border-radius: 5px;
-    min-height:20px;
+    height: 100%;
 }
 .showDateData2{
     display:flex;
