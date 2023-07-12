@@ -108,7 +108,10 @@ const Right = () => {
   // }, [psychometricTestId]);
   return (
     <>
-      <div class="h-[100%] w-[100%]  flex flex-col">
+      <div
+        class="h-[100%] w-[100%]  flex flex-col "
+        className="rightContainerStyle"
+      >
         <div class="w-[90%]">
           <div className="dashboardRightDivv">
             <h1 className="dashboardRightHeadingDiv">Psychometric Tests</h1>
@@ -190,7 +193,7 @@ const Right = () => {
                             state: { data: item },
                           })
                         }
-                        style={{width:120}}
+                        style={{ width: 120 }}
                       >
                         Take Test
                       </button>

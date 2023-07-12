@@ -37,7 +37,7 @@ code {
 
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
   border-radius: 5px !important;
-  height: 58px !important;
+  height: 40px !important;
   color: #1476b7;
   width: 244px !important;
   font-family: Poppins;
@@ -49,7 +49,7 @@ code {
 }
 
 .ant-menu-inline .ant-menu-item {
-  height: 58px !important;
+  height: 40px !important;
   transition: none !important;
   width: 244px !important;
   color: #737373;

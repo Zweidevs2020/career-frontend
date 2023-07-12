@@ -225,10 +225,13 @@ const Sidebar = ({ children, flags }) => {
       {screenSize.width > "748" ? (
         <Layout
           style={{
-            height: "100%",
+            height: "100vh",
             width: "100%",
             minHeight: "100vh",
             background: "#F8FAFC",
+            overflow: "auto",
+            position: "sticky",
+            top: 0,
           }}
         >
           <Sider className="backgroundColorSidebar">
@@ -413,7 +416,14 @@ const Sidebar = ({ children, flags }) => {
             </div>
           </Sider>
           <Layout className="site-layout">
-            <Header style={{ padding: 0 }} className="Navbar">
+            <Header
+              className="Navbar"
+              style={{
+                position: "sticky",
+                top: 0,
+                zIndex: 1,
+              }}
+            >
               <div className="navtext">
                 <p className="nav-text">
                   Hello <strong>{userData.full_name}</strong>, welcome back!
@@ -431,7 +441,7 @@ const Sidebar = ({ children, flags }) => {
                 </div>
               </div>
             </Header>
-            <Content className="marginContent">
+            <Content className="marginContent" style={{ overflow: "auto" }}>
               <div className="site-layout-background">{children}</div>
             </Content>
             <Modal
@@ -835,7 +845,7 @@ const Sidebar = ({ children, flags }) => {
             </div>
           </Sider>
           <Layout className="site-layout">
-            <Header style={{ padding: 0 }} className="Navbar">
+            <Header className="Navbar">
               <div className="navtext">
                 <p className="nav-text">
                   Hello <strong>{userData.full_name}</strong>, welcome back!
