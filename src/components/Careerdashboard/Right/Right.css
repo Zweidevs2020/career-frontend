@@ -16,7 +16,7 @@
   border: 1px solid #e0e0e059;
 }
 .parentRightDashboardDivTextDiv {
-  width: 70%;
+  width: 65%;
 }
 .parentRightDashboardDivTextDiv h1 {
   font-size: 16px;
@@ -31,6 +31,7 @@
   border-radius: 5px;
   color: white;
   justify-content: center;
+  width: 25%;
 }
 .parentRightDashboardDivBtnDiv button {
   font-size: 14px;
