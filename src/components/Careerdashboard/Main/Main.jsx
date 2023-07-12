@@ -54,7 +54,7 @@ const Main = () => {
             Career Guidance
           </h1>
         </div>
-        <div className="sm:flex sm:justify-center">
+        {/* <div className="sm:flex sm:justify-center">
           <div className="h-[40px] w-[45%]  sm:w-[22%] mr-2 flex items-center justify-around sm:w-[100%] sm:mr-1 md:mr-1 md:h-[40px] md:w-[30%] lg:h-[40px] lg:w-[35%] ">
             <img src={searchicon} className="sm:h-[16px] md:h-[18px]" />
             <input
@@ -63,7 +63,7 @@ const Main = () => {
               className="w-[75%] sm:w-[70%] border-none outline-none"
             />
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="grid grid-cols-12 gap-4 px-3 careerGuidenceGrid">
         <div
