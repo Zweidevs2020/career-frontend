@@ -577,13 +577,13 @@ const CaoCalculator = () => {
                         {finalData.bonus_points ? finalData.bonus_points : 0}
                       </div>
                     </div> */}
-                      <hr />
+                      {/* <hr />
                       <div className="coaPointTextMain">
                         <div className="coaPointTextStyle">Final Points</div>
                         <div>
                           {finalData.total_points ? finalData.total_points : 0}
                         </div>
-                      </div>
+                      </div> */}
                       <hr />
                       <div
                         style={{
