@@ -180,47 +180,36 @@ const MyStudy = () => {
 
       if (response.data.success === true) {
         console.log("rrrrr==", response.data.data);
+        const arr = [response.data.data];
         message.success("Booking Updated Successfully");
-        let check = [];
-        check = response?.data.data.map((item) => {
+
+        const updatedCalenderData = arr.map((item) => {
+          // if (item.id === parseInt(viewData.id)) {
           return {
-            title: item.title,
-            id: parseInt(item.day),
+            ...item,
+            title: viewData.title,
             start: new Date(
-              `${setShowData(parseInt(item.day), dataTime)} ${item.timeslot}`
+              `${setShowData(parseInt(viewData.id), dataTime)} ${startTime}`
             ),
             end: new Date(
-              `${setShowData(parseInt(item.day), dataTime)} ${item.endslot}`
+              `${setShowData(parseInt(viewData.id), dataTime)} ${endTime}`
             ),
-            backgroundColor: "rgba(41, 204, 57, 0.05)",
             extendedProps: {
-              title: item.title,
-              id: parseInt(item.day),
-              selectID: item.id,
+              ...item.extendedProps,
+              title: viewData.title,
               start: new Date(
-                `${setShowData(parseInt(item.day), dataTime)} ${item.timeslot}`
+                `${setShowData(parseInt(viewData.id), dataTime)} ${startTime}`
               ),
               end: new Date(
-                `${setShowData(parseInt(item.day), dataTime)} ${item.endslot}`
+                `${setShowData(parseInt(viewData.id), dataTime)} ${endTime}`
               ),
             },
           };
+          // }
+          return item;
         });
-        console.log("===>check", check);
-        setCalenderData(check);
-        // const updatedEvent = {
-        //   id: id,
-        //   start: viewData.start,
-        //   end: viewData.end,
-        //   day: viewData.id,
-        // };
-        // setCalenderData((prevData) => {
-        //   console.log("--------------------------", prevData);
-        //   const updatedData = prevData.map((event) =>
-        //     event.id === id ? { ...event, ...updatedEvent } : event
-        //   );
-        //   return updatedData;
-        // });
+
+        setCalenderData(updatedCalenderData);
         setUpdateLoading(false);
         setOpenViewBooking(false);
       } else {
