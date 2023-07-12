@@ -190,6 +190,7 @@ const Right = () => {
                             state: { data: item },
                           })
                         }
+                        style={{width:120}}
                       >
                         Take Test
                       </button>

@@ -20,25 +20,26 @@ const Selfassesment = () => {
     getPsychometricTest();
   }, []);
   const options = {
-    // plotOptions: {
-    //   bar: {
-    //     horizontal: true
-    //   }
-    // },
+    plotOptions: {
+      bar: {
+        horizontal: true,
+        barHeight: "30px"
+      }
+    },
     chart: {
       id: "basic-bar",
       toolbar: {
         show: false,
       },
     },
-    plotOptions: {
-      bar: {
-        columnWidth: 20,
-        colors: {
-          backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#1984FF"], // Set the background color of the bars
-        },
-      },
-    },
+    // plotOptions: {
+    //   bar: {
+    //     columnWidth: 20,
+    //     colors: {
+    //       backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#1984FF"], // Set the background color of the bars
+    //     },
+    //   },
+    // },
     dataLabels: {
       enabled: false,
     },
@@ -68,6 +69,7 @@ const Selfassesment = () => {
   const getPsychometricTest = async () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETPSYCHOMETRICTEST);
+    console.log("=======================", response);
     if (response?.data?.status === 200) {
       setPsychometricTest(response.data.data);
       setLoading(false);
@@ -85,35 +87,47 @@ const Selfassesment = () => {
   };
   return (
     <>
-      <div className="educationalGuidanceMainDiv"> 
+      <div className="educationalGuidanceMainDiv">
         <div className="welcomeHaddingText ">Psychometric Test</div>
         <div className="textStyle18 pt-1 pb-3">
           Lorem ipsum is a placeholder text commonly used to demonstrate
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", margin: 10 }}>
           {psychometricTest?.map((mapData, index) => {
-            const labels = mapData?.test_results[0]?.question_scores?.map((score) => score.question)
-            const series =  mapData?.test_results[0]?.question_scores?.map((score) => score.score)
-            const title = mapData.name;
-            const chartOptions = {
-              ...options,
-              labels,
-              series: [{ data: series }],
-              title: { text: title },
-            };
+            let chartOptions;
+            if (mapData?.test_results?.length > 0) {
+              const labels = mapData?.test_results[0]?.question_scores?.map(
+                (score) => score.question
+              );
+              const series = mapData?.test_results[0]?.question_scores?.map(
+                (score) => score.score
+              );
+              const title = mapData.name;
+              chartOptions = {
+                ...options,
+                labels,
+                series: [{ data: series }],
+                title: { text: title },
+              };
+            } else {
+              chartOptions = {
+                ...options,
+                labels: [0, 0, 0],
+                series: [{ data: [0, 0, 0] }],
+                title: { text:  mapData?.name },
+              };
+            }
             return (
               <>
                 <div key={mapData.id} className="ms-3 mt-5">
-                  <Chart
-                    options={chartOptions}
-                    series={chartOptions.series}
-                    type="bar"
-                    width={450}
-                    height={320}
-                  />
-                  <div
-                    style={{ display: "flex", justifyContent: "center" }}
-                  >
+                    <Chart
+                      options={chartOptions}
+                      series={chartOptions.series}
+                      type="bar"
+                      width={450}
+                      height={320}
+                    />
+                  <div style={{ display: "flex", justifyContent: "center" }}>
                     {!mapData.complete ? (
                       <MyCareerGuidanceButton
                         label="Take Test"
@@ -157,7 +171,6 @@ const Selfassesment = () => {
               </>
             );
           })}
-      
         </div>
       </div>
       <Modal

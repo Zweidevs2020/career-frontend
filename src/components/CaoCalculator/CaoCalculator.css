@@ -1,7 +1,7 @@
 .selectFieldStyle {
   border: 1px solid rgba(224, 224, 224, 0.63);
   border-radius: 3px;
-  width: 100%;
+  width:120px;
   min-width: 125px;
   height: 48px;
   display: flex;
@@ -144,9 +144,9 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
 .coaSubjectWidth td.ant-table-cell{
 width: 290px !important;
 }
-.coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search{
+/* .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search{
   width: 260px !important;
-}
+} */
 @media only screen and (min-width: 0px) and (max-width: 650px) {
   .caoMainDiv {
     padding: 5px;
@@ -161,7 +161,7 @@ width: 290px !important;
     padding: 5px;
   }
   .selectFieldStyle {
-    width: 100%;
+    width: 120px;
     min-width: 25px;
   }
   .coaPointsWidth {
@@ -183,7 +183,7 @@ width: 290px !important;
     padding: 10px;
   }
   .selectFieldStyle {
-    width: 100%;
+    width: 120px;
     min-width: 25px;
   }
   .coaPointsWidth {
@@ -199,7 +199,7 @@ width: 290px !important;
     padding: 10px;
   }
   .selectFieldStyle {
-    width: 100%;
+    width: 150px;
     min-width: 25px;
   }
   .coaPointsWidth {
@@ -222,11 +222,11 @@ width: 290px !important;
   }
 }
 
-@media(max-width:768px){
+/* @media(max-width:768px){
   .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
-      width: 120px !important;
+      width: 120px;
     }
-}
+} */
 
 @media (max-width: 425px) {
   .welcomeHaddingText {

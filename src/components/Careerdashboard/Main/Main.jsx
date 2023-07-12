@@ -145,7 +145,7 @@ const Main = () => {
           />
         </div>
       </div>
-      <div className="h-[30px] w-[100%] flex items-center justify-start ">
+      {/* <div className="h-[30px] w-[100%] flex items-center justify-start ">
         <div className="h-[40px] w-[53%] mt-3 ml-3 flex items-center sm:h-[30px] sm:w-[90%] md:w-[90%] lg:w-[90%] custom-heading">
           <h1 className="text-[18px] sm:text-[15px] text-[#474749]  font-bold ml-1 sm:text-center sm:w-[100%]">
             My Educational Guidance
@@ -200,7 +200,7 @@ const Main = () => {
             );
           })
         )}
-      </div>
+      </div> */}
       <Modal
         className="modalStyleClass"
         bodyStyle={{
