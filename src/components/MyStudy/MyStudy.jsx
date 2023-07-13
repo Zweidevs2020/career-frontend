@@ -48,12 +48,6 @@ const MyStudy = () => {
   const handleOpenViewBooking = () => setOpenViewBooking(true);
   const handleCloseViewBooking = () => setOpenViewBooking(false);
 
-  useEffect(() => {
-    console.log("calender data ----", calenderData);
-  }, [calenderData]);
-  useEffect(() => {
-    console.log(" data ----", data);
-  }, [data]);
   // const optionArray = [
   //   { label: "06:00 AM", value: "06:00 AM" },
   //   { label: "06:30 AM", value: "06:30 AM" },
@@ -139,7 +133,10 @@ const MyStudy = () => {
       };
 
       try {
-        await handleEditCalender(id, viewData);
+        await handleEditCalender(
+          event.event._def.extendedProps.selectID,
+          viewData
+        );
         event.event.setProp("start", start); // Manually update event start
         event.event.setProp("end", end); // Manually update event end
       } catch (error) {
@@ -150,7 +147,7 @@ const MyStudy = () => {
 
   const handleEventResize = async (event) => {
     const { id, start, end } = event.event;
-    console.log("resize====");
+    // setViewData(clickInfo.event._def.extendedProps);
 
     if (start && end) {
       const viewData = {
@@ -160,7 +157,10 @@ const MyStudy = () => {
         end: end.toISOString(),
       };
 
-      await handleEditCalender(id, viewData);
+      await handleEditCalender(
+        event.event._def.extendedProps.selectID,
+        viewData
+      );
     }
   };
 
@@ -173,13 +173,11 @@ const MyStudy = () => {
       const response = await putApiWithAuth(`timetable/update-timeslot/${id}`, {
         timeslot: startTime,
         endslot: endTime,
-        day: viewData.id,
+        day: viewData.id.toString(),
         title: viewData.title,
       });
-      console.log("000====", response);
 
       if (response.data.success === true) {
-        console.log("rrrrr==", response.data.data);
         const arr = [response.data.data];
         message.success("Booking Updated Successfully");
 
@@ -212,6 +210,8 @@ const MyStudy = () => {
         setCalenderData(updatedCalenderData);
         setUpdateLoading(false);
         setOpenViewBooking(false);
+        getCalanderData();
+        // getCalanderData();
       } else {
         message.error(response.data.message);
       }
@@ -240,14 +240,12 @@ const MyStudy = () => {
         },
       };
     });
-    console.log("===>check", check);
     setCalenderData(check);
   }, [dataTime]);
 
   const getCalanderData = async () => {
     setLoading(true);
     const response = await getApiWithAuth(`timetable/list-timeslot/`);
-    console.log("=====>", response);
     if (response?.data.status === 200) {
       setData(response.data.data);
       setLoading(false);
@@ -396,7 +394,6 @@ const MyStudy = () => {
     }
   };
   function handleChange(value) {
-    console.log("000000======>", value);
     setSelectedTime(value);
   }
 
