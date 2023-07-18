@@ -311,7 +311,7 @@ const Sidebar = ({ children, flags }) => {
                   }
                 >
                   <span className="textStyling">
-                    CV/Cover Later{" "}
+                  My CV{" "}
                     {selectedMenuItem === "CoverLater" ? (
                       <span> &nbsp;&nbsp;&#x25cf; </span>
                     ) : null}
@@ -330,7 +330,7 @@ const Sidebar = ({ children, flags }) => {
                   }
                 >
                   <span className="textStyling">
-                    Self Assessment{" "}
+                  My Self Assessment{" "}
                     {selectedMenuItem === "SelfAssessment" ? (
                       <span> &nbsp;&nbsp;&#x25cf; </span>
                     ) : null}
@@ -383,7 +383,7 @@ const Sidebar = ({ children, flags }) => {
                   }
                 >
                   <span className="textStyling">
-                    Educational Guidance
+                  My Educational Guidance
                     {selectedMenuItem === "EducationalGuidance" ? (
                       <span> &nbsp;&#x25cf; </span>
                     ) : null}
@@ -664,7 +664,7 @@ const Sidebar = ({ children, flags }) => {
         >
           <Sider className="backgroundColorSidebar">
             <div className="logoStyle my-2">
-              <img src={myCareer} alt="cyberLegendLogo" width="40%" />
+              {/* <img src={myCareer} alt="cyberLegendLogo" width="40%" /> */}
             </div>
             <div className="selectTextMain">
               <Menu

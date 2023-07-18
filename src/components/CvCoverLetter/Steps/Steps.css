@@ -60,10 +60,13 @@
 
 .step-item-content-active {
   color: #1476b7;
+cursor: pointer;
 }
 
 .step-item-content-nonActive {
   color: #cac9cf;
+  cursor: pointer;
+
 }
 
 .step-item-line {
