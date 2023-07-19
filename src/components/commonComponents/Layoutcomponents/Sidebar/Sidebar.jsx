@@ -664,7 +664,7 @@ const Sidebar = ({ children, flags }) => {
         >
           <Sider className="backgroundColorSidebar">
             <div className="logoStyle my-2">
-              {/* <img src={myCareer} alt="cyberLegendLogo" width="40%" /> */}
+              <img src={myCareer} alt="cyberLegendLogo" width="40%" />
             </div>
             <div className="selectTextMain">
               <Menu

@@ -9,6 +9,7 @@ import { API_URL } from "../../utils/constants";
 import "./MyGoalStyle.css";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import moment from "moment";
+import { PDFDocument } from 'pdf-lib';
 
 const MyGoal = () => {
   const reportTemplateRef = useRef(null);
@@ -16,6 +17,7 @@ const MyGoal = () => {
   const [proffession, setProffession] = useState("");
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
+  const [loading3, setLoading3] = useState(false);
 
   const [goal, setGoal] = useState("");
   const [realistic, setRealistic] = useState(false);
@@ -96,18 +98,46 @@ const MyGoal = () => {
     }
   }
 
-  const DownloadBtn = () => {
-    const doc = new jsPDF({
-      format: "a4",
-      unit: "px",
-    });
+  const DownloadBtn = async () => {
+    // const doc = new jsPDF({
+    //   format: "a4",
+    //   unit: "px",
+    // });
 
-    doc.html(reportTemplateRef.current, {
-      async callback(doc) {
-        await doc.save("Download");
-      },
-      html2canvas: { scale: 0.67 },
-    });
+    // doc.html(reportTemplateRef.current, {
+    //   async callback(doc) {
+    //     await doc.save("Download");
+    //   },
+    //   html2canvas: { scale: 0.67 },
+    // });
+
+    setLoading3(true);
+    const res = await getApiWithAuth(API_URL.GETMYGOALPDF);
+    console.log("===========res", res);
+    if (res.data.status === 200) {
+      console.log("===========res 2", res.data.data);
+
+      const data = res.data.data; // Assuming res.data.data contains the file data
+
+      const pdfBytes = Uint8Array.from([...data].map((char) => char.charCodeAt(0)));
+
+      // Create a new PDF document
+      const pdfDoc = await PDFDocument.load(pdfBytes);
+    
+      // Generate a new blob containing the PDF file
+      const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
+    
+      // Create a temporary link element
+      const link = document.createElement('a');
+      link.href = pdfDataUri;
+      link.download = 'file.pdf';
+    
+      // Simulate a click event to trigger the file download
+      link.dispatchEvent(new MouseEvent('click'));
+      setLoading3(false);
+    } else {
+      setLoading3(false);
+    }
   };
 
   const SaveInput = async () => {
@@ -355,12 +385,12 @@ const MyGoal = () => {
                 </div>
               </div>
               <div className="buttonGoal">
-                <button
-                  onClick={() => DownloadBtn()}
+                <MyCareerGuidanceButton
+                  label=" Download PDF"
+                  loading={loading3}
                   className="buttonGoalPage"
-                >
-                  Download PDF
-                </button>
+                  onClick={() => DownloadBtn()}
+                />
                 <MyCareerGuidanceButton
                   label=" Save Data"
                   loading={loading2}
