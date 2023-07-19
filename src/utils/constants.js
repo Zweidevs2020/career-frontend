@@ -32,5 +32,6 @@ export const API_URL = {
   ADDSLOTTABLE:'timetable/add-timeslot/',
   DASHBOARDTESTTYPES:'psychometric/testType/',
   GETCHOICES:'choices/selected/',
-  REMOVECHOICES:'choices/selected/'
+  REMOVECHOICES:'choices/selected/',
+  GETMYGOALPDF:'goals/goalPdf/'
 };

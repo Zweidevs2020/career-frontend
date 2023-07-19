@@ -5,9 +5,13 @@ const Steps = ({ current, setCurrent }) => {
   return (
     <>
       <div className="steps">
-        <div className="step-item" key={1} onClick={() => {
-                setCurrent(1);
-              }}>
+        <div
+          className="step-item"
+          key={1}
+          onClick={() => {
+            setCurrent(1);
+          }}
+        >
           <div
             className={
               current >= 1
@@ -48,7 +52,9 @@ const Steps = ({ current, setCurrent }) => {
               className="step-item"
               key={index + 2}
               onClick={() => {
-                setCurrent(index+ 2);
+                if (current > index + 2) {
+                  setCurrent(index + 2);
+                }
               }}
             >
               <div
