@@ -135,8 +135,8 @@ export const dayArray = [
     label: "21",
   },
   {
-    value: "12",
-    label: "12",
+    value: "22",
+    label: "22",
   },
   {
     value: "23",

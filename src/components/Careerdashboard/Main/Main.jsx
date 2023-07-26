@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import searchicon from "../../../assets/searchicon.svg";
 import imgcard from "../../../assets/imgcard.svg";
-import imgcard2 from "../../../assets/imgcard2.svg";
-import imgcard3 from "../../../assets/imgcard3.svg";
-import imgcard4 from "../../../assets/imgcard4.svg";
+import imgcard2 from "../../../assets/imgcard3.svg";
+import imgcard3 from "../../../assets/imgcard4.svg";
+import imgcard4 from "../../../assets/self-assesment-test.svg";
+import imgcard5 from "../../../assets/imgcard2.svg";
+import imgcard6 from "../../../assets/myChoiceCard.svg";
+import imgcard7 from "../../../assets/educational-guidance-test.svg";
 import winningCup from "../../../assets/winningCup.svg";
-import imgcard5 from "../../../assets/myChoiceCard.svg";
-import imgcard6 from "../../../assets/imgcard6.svg";
 import { MyCareerGuidanceButton } from "../../../components/commonComponents";
 import { useLocation, useNavigate } from "react-router-dom";
 import { API_URL } from "../../../utils/constants";
@@ -87,19 +88,6 @@ const Main = () => {
           }}
         >
           <img
-            src={imgcard3}
-            className=" bg-cover"
-            style={{ cursor: "pointer" }}
-          />
-        </div>
-        <div
-          // className="col-span-sm-12 col-span-6  rounded-xl"
-          className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto"
-          onClick={() => {
-            navigate("/my-study");
-          }}
-        >
-          <img
             src={imgcard2}
             className=" bg-cover"
             style={{ cursor: "pointer" }}
@@ -108,9 +96,22 @@ const Main = () => {
         <div
           // className="col-span-sm-12 col-span-6  rounded-xl"
           className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto"
-          // onClick={() => {
-          //   navigate("/cao-calculator");
-          // }}
+          onClick={() => {
+            navigate("/cover-letter");
+          }}
+        >
+          <img
+            src={imgcard3}
+            className=" bg-cover"
+            style={{ cursor: "pointer" }}
+          />
+        </div>
+        <div
+          // className="col-span-6rounded-xl"
+          className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto"
+          onClick={() => {
+            navigate("/self-assesment");
+          }}
         >
           <img
             src={imgcard4}
@@ -122,7 +123,7 @@ const Main = () => {
           // className="col-span-sm-12 col-span-6  rounded-xl"
           className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto"
           onClick={() => {
-            navigate("/my-choices");
+            navigate("/my-study");
           }}
         >
           <img
@@ -135,11 +136,24 @@ const Main = () => {
           // className="col-span-sm-12 col-span-6  rounded-xl"
           className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto"
           onClick={() => {
-            navigate("/my-study");
+            navigate("/my-choices");
           }}
         >
           <img
             src={imgcard6}
+            className=" bg-cover"
+            style={{ cursor: "pointer" }}
+          />
+        </div>
+        <div
+          // className="col-span-sm-12 col-span-6  rounded-xl"
+          className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto"
+          onClick={() => {
+            navigate("/educational-guidance");
+          }}
+        >
+          <img
+            src={imgcard7}
             className=" bg-cover"
             style={{ cursor: "pointer" }}
           />

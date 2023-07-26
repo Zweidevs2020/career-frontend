@@ -8,8 +8,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 8px;
+  padding-right: 8px;
   border-radius: 10px;
   margin-bottom: 5px;
   border: 1px solid #e0e0e059;
@@ -58,7 +58,7 @@
   .parentRightDashboardDivBtnDiv button {
     font-size: 12px;
   }
-  .rightGraphBtn{
+  .rightGraphBtn,.parentRightDashboardDivBtnDiv{
     width: 30%;
   }
 }
@@ -66,12 +66,9 @@
   .parentRightDashboardDivTextDiv h1 {
     font-size: 12px;
   }
-  .parentRightDashboardDivBtnDiv {
+  /* .parentRightDashboardDivBtnDiv {
     width: 35%;
-  }
-  .rightGraphBtn{
-    height: 3vh;
-  }
+  } */
 }
 @media (max-width: 768px) {
   .parentRightDashboardDiv {
@@ -91,7 +88,7 @@
     margin-right: 6px;
   }
   .parentRightDashboardDivBtnDiv {
-    width: 80%;
+    width: 60%;
     margin: auto;
   }
   .parentRightDashboardDivTextDiv h1 {
@@ -99,9 +96,9 @@
     text-align: center;
     padding-bottom: 8px;
   }
-  .parentRightDashboardDivBtnDiv {
+  /* .parentRightDashboardDivBtnDiv {
     height: 32px;
-  }
+  } */
   .parentRightDashboardDivTextDiv {
     width: 100%;
   }
@@ -116,13 +113,16 @@
   .rightGraphBtn {
       width: 60%;
   }
+  .rightGraphBtn,.parentRightDashboardDivBtnDiv {
+      height: 3vh;
+  }
 }
 @media (max-width: 425px) {
   .parentRightDashboardDiv {
     display: flex;
   }
   .parentRightDashboardDivBtnDiv {
-    width: 28%;
+    width: 50%;
   }
   .parentRightDashboardDiv {
     height: 5vh;
