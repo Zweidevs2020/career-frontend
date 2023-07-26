@@ -109,10 +109,10 @@ const Right = () => {
   return (
     <>
       <div
-        class="h-[100%] w-[100%]  flex flex-col "
-        className="rightContainerStyle"
+        className="h-[100%] w-[100%]  flex flex-col rightContainerStyle"
+        // className="rightContainerStyle"
       >
-        <div class="w-[90%]">
+        <div className="w-[90%]">
           <div className="dashboardRightDivv">
             <h1 className="dashboardRightHeadingDiv">Psychometric Tests</h1>
           </div>
@@ -149,12 +149,17 @@ const Right = () => {
                   ...options,
                   labels,
                   series: [{ data: series }],
+                  plotOptions: {
+                    bar: {
+                      horizontal: true,
+                    },
+                  },
                 };
                 console.log("====itemmmmm", item);
                 return (
                   <div key={index} className="ms-3">
-                    <div class="h-[30px] flex justify-between items-center mt-5 chartHeadingwBtn">
-                      <p class="text-[#474749] mt-3 sm:text-[15px text-[16px] font-bold chartHeading">
+                    <div className="h-[30px] flex justify-between items-center mt-5 chartHeadingwBtn">
+                      <p className="text-[#474749] mt-3 sm:text-[15px text-[16px] font-bold chartHeading">
                         {item.test_name}
                       </p>
                       <div className="rightGraphBtn">

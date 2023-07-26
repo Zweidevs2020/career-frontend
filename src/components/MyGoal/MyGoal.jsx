@@ -239,7 +239,7 @@ const MyGoal = () => {
               </div>
               <div className="inputContainer">
                 <h style={{ color: "#111928" }}>
-                  2 Actions to Achieve the Above:
+                  2 actions to achieve the above:
                 </h>
               </div>
               <div className="w-[100%] h-[100px] pl-4 ">
@@ -295,7 +295,7 @@ const MyGoal = () => {
                 /> */}
               </div>
               <div className="inputContainer">
-                <h style={{ color: "#111928" }}>Is this Realistic ?</h>
+                <h style={{ color: "#111928" }}>Is this realistic ?</h>
               </div>
               <div className="h-[50px] w-[20%]  sm:w-[50%] md:w-[40%] lg:w-[40%] flex items-center pl-2">
                 <div className="h-[40px] w-[50%] flex items-center justify-around ">
@@ -322,7 +322,7 @@ const MyGoal = () => {
                 </div>
               </div>
               <div className="inputContainer">
-                <h style={{ color: "#111928" }}>How Long Do I have ?</h>
+                <h style={{ color: "#111928" }}>How long do I have ?</h>
               </div>
               <div className="calenderGoal">
                 <Space direction="vertical" size={12}>

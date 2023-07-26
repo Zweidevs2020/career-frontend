@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import sideAuthImage from "../../../assets/kid-front-page.png";
+import sideAuthImage from "../../../assets/kid-front-page-min.png";
 import myCareerGuidanceIcon from "../../../assets/my-guidance-logo.png";
 import usernameIcon from "../../../assets/usernameIcon.svg";
 import nameIcon from "../../../assets/nameIcon.svg";

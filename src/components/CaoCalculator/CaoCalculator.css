@@ -1,7 +1,7 @@
 .selectFieldStyle {
   border: 1px solid rgba(224, 224, 224, 0.63);
   border-radius: 3px;
-  width:120px;
+  /* width:120px; */
   min-width: 125px;
   height: 48px;
   display: flex;
@@ -140,12 +140,16 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.clearAllButton,
 button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   color: white !important;
 }
-.coaSubjectWidth td.ant-table-cell{
-width: 290px !important;
+.coaSubjectWidth td.ant-table-cell {
+  max-width: 163px !important;
 }
-/* .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search{
-  width: 260px !important;
-} */
+.coaSubjectWidth
+  .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+  width: 300px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 @media only screen and (min-width: 0px) and (max-width: 650px) {
   .caoMainDiv {
     /* padding: 5px; */
@@ -185,8 +189,8 @@ width: 290px !important;
     padding: 10px;
   }
   .selectFieldStyle {
-    width: 120px;
-    min-width: 25px;
+    /* width: 120px; */
+    /* min-width: 25px; */
   }
   .coaPointsWidth {
     width: 100%;
@@ -201,12 +205,33 @@ width: 290px !important;
     padding: 10px;
   }
   .selectFieldStyle {
-    width: 150px;
-    min-width: 25px;
+    width: 210px;
+    /* min-width: 25px; */
   }
   .coaPointsWidth {
     width: 35%;
   }
+}
+
+@media(max-width:1600px){
+  .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+      width: 230px !important;
+  }
+}
+@media (max-width: 1440px) {
+  .coaSubjectWidth td.ant-table-cell {
+    max-width: 190px !important;
+  }
+  .coaSubjectWidth
+    .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+    width: 235px !important;
+  }
+}
+
+@media(max-width:1200px){
+  .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+      width: 200px !important;
+    }
 }
 
 @media (max-width: 1024px) {
@@ -222,13 +247,30 @@ width: 290px !important;
   .coaPointsWidth.coaPointsWidth2 {
     padding-top: 30px;
   }
+  .coaSubjectWidth
+    .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+    width: 210px !important;
+  }
+  .coaSubjectWidth td.ant-table-cell {
+    max-width: 200px !important;
+  }
 }
 
-/* @media(max-width:768px){
-  .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
-      width: 120px;
+@media (max-width: 768px) {
+  /* .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+      width: 120px !important;
+    } */
+  .coaSubjectWidth
+    .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+    /* width: 160px !important; */
+  }
+  .coaSubjectWidth td.ant-table-cell {
+    max-width: 195px !important;
+  }
+    .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+      width: 220px !important;
     }
-} */
+}
 
 @media (max-width: 425px) {
   .welcomeHaddingText {
@@ -237,4 +279,7 @@ width: 290px !important;
   .coaSubjectWidth {
     overflow-y: scroll;
   }
+    .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+      width: 125px !important;
+    }
 }
