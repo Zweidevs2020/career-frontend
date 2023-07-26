@@ -13,7 +13,7 @@ import {
   Col,
   message,
 } from "antd";
-import mycareer from "../../../../assets/my-guidance-logo.png";
+import mycareer from "../../../../assets/my-guidance-logo1.png";
 import myCareer from "../../../../assets/myCareerlogo.png";
 import logout from "../../../../assets/logout.svg";
 import logout1 from "../../../../assets/logout1.svg";
