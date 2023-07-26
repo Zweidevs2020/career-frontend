@@ -37,7 +37,7 @@ const MyChoices = () => {
       name: "Level 6/7 Ord Degrees of Higher Cert",
     },
     {
-      id: "Level5",
+      id: "level5",
       icon: Choice3,
       name: "Level 5 PLC/ Further Ed  ",
     },
@@ -133,7 +133,7 @@ const MyChoices = () => {
     <>
       <div className="educationalGuidanceMainDiv">
         <div className="educationalGuidanceSecondDiv">
-          <div className="welcomeHaddingText pb-3">Selected Choices</div>
+          <div className="welcomeHaddingText pb-3">Choices</div>
           <div
             style={{
               marginTop: 10,
@@ -145,12 +145,10 @@ const MyChoices = () => {
           >
             {loading ? (
               <Spin className="noDataChoices" />
-            ) : userGetChoices.length === 0 ? (
-              <div className="noDataChoices">No Selected Choices!</div>
             ) : (
-              userGetChoices.map((item, index) => {
+              choicesData.map((item, index) => {
                 return (
-                  <div className={"choicesWithBorder"} key={index}>
+                  <div className={"choicesWithoutBorder"} key={index}>
                     <div
                       style={{
                         display: "flex",
@@ -180,14 +178,14 @@ const MyChoices = () => {
                         >
                           Edit
                         </Button>
-                        <Button
+                        {/* <Button
                           className="removeChoicesButton me-3 "
                           type="primary"
                           htmlType="b"
                           onClick={() => removeChoices(item)}
                         >
                           Remove
-                        </Button>
+                        </Button> */}
                       </div>
                     </div>
                   </div>
@@ -195,7 +193,7 @@ const MyChoices = () => {
               })
             )}
           </div>
-          <div
+          {/* <div
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -258,7 +256,7 @@ const MyChoices = () => {
                   </div>
                 </div>
               );
-            })}
+            })} */}
         </div>
       </div>
     </>

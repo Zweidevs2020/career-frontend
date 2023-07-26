@@ -20,54 +20,31 @@ const Selfassesment = () => {
     getPsychometricTest();
   }, []);
   const options = {
-    // plotOptions: {
-    //   bar: {
-    //     horizontal: true
-    //   }
-    // },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: "20", // Adjust the width as per your requirement
+        colors: {
+          backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#1984FF"],
+        },
+      },
+    },
     chart: {
       id: "basic-bar",
       toolbar: {
         show: false,
       },
     },
-    plotOptions: {
-      bar: {
-        columnWidth: 20,
-        colors: {
-          backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#1984FF"], // Set the background color of the bars
-        },
-      },
-    },
     dataLabels: {
       enabled: false,
     },
-    // labels: educationGuidance
-    //   .map((item) => item.scores.map((score) => score.name))
-    //   .flat(),
-    // colors: ["#1984FF"],
-    // series: [
-    //   {
-    //     data: educationGuidance
-    //       .map((item) => item.scores.map((score) => score.score))
-    //       .flat(),
-    //   },
-    // ],
-    title: {
-      text: "", // Add the graph name/title
-      align: "center",
-      margin: 10,
-      offsetY: 20,
-      style: {
-        fontSize: "16px",
-        fontWeight: "bold",
-        fontFamily: undefined,
-      },
-    },
+    // Rest of your options and data
   };
+
   const getPsychometricTest = async () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETPSYCHOMETRICTEST);
+    console.log("=======================", response);
     if (response?.data?.status === 200) {
       setPsychometricTest(response.data.data);
       setLoading(false);
@@ -85,22 +62,36 @@ const Selfassesment = () => {
   };
   return (
     <>
-      <div className="educationalGuidanceMainDiv"> 
-        <div className="welcomeHaddingText ">Psychometric Test</div>
-        <div className="textStyle18 pt-1 pb-3">
+      <div className="educationalGuidanceMainDiv">
+        <div className="welcomeHaddingText ">Self Assessment Results</div>
+        {/* <div className="textStyle18 pt-1 pb-3">
           Lorem ipsum is a placeholder text commonly used to demonstrate
-        </div>
+        </div> */}
         <div style={{ display: "flex", flexWrap: "wrap", margin: 10 }}>
           {psychometricTest?.map((mapData, index) => {
-            const labels = mapData?.test_results[0]?.question_scores?.map((score) => score.question)
-            const series =  mapData?.test_results[0]?.question_scores?.map((score) => score.score)
-            const title = mapData.name;
-            const chartOptions = {
-              ...options,
-              labels,
-              series: [{ data: series }],
-              title: { text: title },
-            };
+            let chartOptions;
+            if (mapData?.test_results?.length > 0) {
+              const labels = mapData?.test_results[0]?.question_scores?.map(
+                (score) => score.question
+              );
+              const series = mapData?.test_results[0]?.question_scores?.map(
+                (score) => score.score
+              );
+              const title = mapData.name;
+              chartOptions = {
+                ...options,
+                labels,
+                series: [{ data: series }],
+                title: { text: title },
+              };
+            } else {
+              chartOptions = {
+                ...options,
+                labels: [0, 0, 0],
+                series: [{ data: [0, 0, 0] }],
+                title: { text: mapData?.name },
+              };
+            }
             return (
               <>
                 <div key={mapData.id} className="ms-3 mt-5">
@@ -111,9 +102,7 @@ const Selfassesment = () => {
                     width={450}
                     height={320}
                   />
-                  <div
-                    style={{ display: "flex", justifyContent: "center" }}
-                  >
+                  <div style={{ display: "flex", justifyContent: "center" }}>
                     {!mapData.complete ? (
                       <MyCareerGuidanceButton
                         label="Take Test"
@@ -157,7 +146,6 @@ const Selfassesment = () => {
               </>
             );
           })}
-      
         </div>
       </div>
       <Modal

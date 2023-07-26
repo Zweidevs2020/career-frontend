@@ -36,6 +36,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 85px;
+  padding-inline: 10px;
 }
 
 .navtext {
@@ -48,6 +50,7 @@
 .nav-text {
   font-size: 20px;
   color: #1476b7;
+  font-family: 'Poppins';
 }
 
 .img {
@@ -64,7 +67,7 @@
   background-color: #1476b7;
   border-radius: 8px;
   margin-right: 10px;
-  width: 60%;
+  width: 70%;
   height: 58px;
 }
 
@@ -115,7 +118,7 @@
   align-items: center;
 }
 
-@media only screen and (max-width: 480px) and (min-width: 320px) {
+@media only screen and (max-width: 600px) and (min-width: 320px) {
   /* .backgroundColorSidebar {
     display: none;
   } */
@@ -161,19 +164,31 @@
   }
   :where(.css-dev-only-do-not-override-ed5zg0).ant-layout-header {
     height: 85px;
+    padding-inline: 5px !important;
   }
 }
 
-@media only screen and (max-width: 768px) and (min-width: 481px) {
+@media only screen and (max-width: 768px) and (min-width: 601px) {
   /* .backgroundColorSidebar {
     display: none;
   } */
   /* .backgroundColorSidebar {
       min-width: 220px !important;
     } */
+
   .Navbar {
     display: flex;
     justify-content: space-between;
+  }
+  .sideBarStyle,
+  .backgroundColorSidebar,
+  .ant-menu-inline .ant-menu-item,
+  .careerBtnDiv,
+  .logoStyle,
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 65px !important;
+    min-width: 65px !important;
+    max-width: 65px !important;
   }
 
   .navtext {

@@ -1,10 +1,11 @@
 .dashboardRightDiv, .dashboardRightDivv {
-  margin-left: 10px;
-  margin-right: 10px;
+  /* margin-left: 10px;
+  margin-right: 10px; */
   margin-top: 10px;
 }
+
 .parentRightDashboardDiv {
-  height: 6vh;
+  height: 7vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -13,10 +14,9 @@
   border-radius: 10px;
   margin-bottom: 5px;
   border: 1px solid #e0e0e059;
-  background-color: #f7f7f7;
 }
 .parentRightDashboardDivTextDiv {
-  width: 70%;
+  width: 65%;
 }
 .parentRightDashboardDivTextDiv h1 {
   font-size: 16px;
@@ -27,19 +27,23 @@
   background: #1476b7;
   display: flex;
   align-items: center;
-  width: 20%;
+  width: 120px;
   border-radius: 5px;
   color: white;
   justify-content: center;
+  width: 25%;
 }
 .parentRightDashboardDivBtnDiv button {
   font-size: 14px;
   font-weight: 500;
 }
 .dashboardRightHeadingDiv {
-  font-size: 24px;
-  font-weight: 600;
-  padding-bottom: 15px;
+  color: #474749;
+font-family: Poppins;
+font-size: 24px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
 }
 .rightGraphBtn {
   border: 1px solid #1476b7;
@@ -54,13 +58,23 @@
 .rightGraphBtn button{
     font-size: 12px;
 }
+.rightContainerStyle{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  overflow: auto;
+}
+.chartHeadingwBtn{
+  margin: 0 12 0 12;
+}
 @media (max-width: 1440px) {
   .parentRightDashboardDivBtnDiv button {
     font-size: 12px;
   }
   .rightGraphBtn,.parentRightDashboardDivBtnDiv{
     width: 30%;
-  }
+}
 }
 @media (max-width: 1024px) {
   .parentRightDashboardDivTextDiv h1 {
@@ -69,6 +83,14 @@
   /* .parentRightDashboardDivBtnDiv {
     width: 35%;
   } */
+/* =======
+  .parentRightDashboardDivBtnDiv {
+    width: 120px;
+  }
+  .rightGraphBtn{
+    height: 3vh;
+  }
+>>>>>>> 77aa82dcd37b015004c2e84a0d4e584f88f4d98e */
 }
 @media (max-width: 768px) {
   .parentRightDashboardDiv {
@@ -84,8 +106,8 @@
     margin-bottom: 10px;
   }
   .dashboardRightDiv, .dashboardRightDivv {
-    margin-left: 6px;
-    margin-right: 6px;
+    /* margin-left: 6px;
+    margin-right: 6px; */
   }
   .parentRightDashboardDivBtnDiv {
     width: 60%;
@@ -106,12 +128,13 @@
     display: block;
     height: 60px;
     margin-top: 10px;
+   
   }
   .chartHeading{
     margin-top: 15px;
   }
   .rightGraphBtn {
-      width: 60%;
+      width: 120px
   }
   .rightGraphBtn,.parentRightDashboardDivBtnDiv {
       height: 3vh;
@@ -136,6 +159,6 @@
     display: flex;
   }
   .rightGraphBtn {
-      width: 30%;
+      width: 120px;
   }
 }

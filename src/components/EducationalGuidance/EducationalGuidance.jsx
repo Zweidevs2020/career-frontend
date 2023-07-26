@@ -40,7 +40,7 @@ const EducationalGuidance = () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETGOALS);
     console.log("==========response", response);
-    if (response.data.status === 200) {
+    if (response?.data.status === 200) {
       setQuizz(response.data.data);
       setLoading(false);
     } else {
@@ -90,9 +90,17 @@ const EducationalGuidance = () => {
                         //   })
                         // }
                         onClick={() => {
-                          if (item.youtube_link !== null) {
-                            setTestId(item);
-                            setOpen(true);
+                          console.log("=====>item", item.youtube_link.length);
+                          if (item.youtube_link?.length !== 0) {
+                            setTestId(
+                              `https://www.youtube.com/embed/${item.youtube_link}`
+                            );
+                            navigate("/video", {
+                              state: {
+                                data: item,
+                                videoId: `https://www.youtube.com/embed/${item.youtube_link}`,
+                              },
+                            });
                           } else {
                             navigate("/educational-guidance-test", {
                               state: { data: item },
@@ -108,9 +116,16 @@ const EducationalGuidance = () => {
                           type="button"
                           htmlType="button"
                           onClick={() => {
-                            if (item.youtube_link !== null) {
-                              setTestId(item);
-                              setOpen(true);
+                            if (item.youtube_link?.length !== 0) {
+                              setTestId(
+                                `https://www.youtube.com/embed/${item.youtube_link}`
+                              );
+                              navigate("/video", {
+                                state: {
+                                  data: item,
+                                  videoId: `https://www.youtube.com/embed/${item.youtube_link}`,
+                                },
+                              });
                             } else {
                               navigate("/educational-guidance-test", {
                                 state: { data: item },
@@ -232,7 +247,7 @@ const EducationalGuidance = () => {
         </div>
       </Modal>
       <Modal
-        title="Youtube Vedio"
+        title="Youtube Video"
         centered
         open={open}
         footer={[]}
@@ -242,7 +257,7 @@ const EducationalGuidance = () => {
         <iframe
           width="100%"
           height="315"
-          src={testId.youtube_link}
+          src={testId}
           title="YouTube Video"
           frameBorder="0"
           allowFullScreen

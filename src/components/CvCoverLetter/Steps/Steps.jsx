@@ -1,11 +1,17 @@
 import React from "react";
 import "./Steps.css";
 
-const Steps = ({ current }) => {
+const Steps = ({ current, setCurrent }) => {
   return (
     <>
       <div className="steps">
-        <div className="step-item" key={1}>
+        <div
+          className="step-item"
+          key={1}
+          onClick={() => {
+            setCurrent(1);
+          }}
+        >
           <div
             className={
               current >= 1
@@ -39,10 +45,18 @@ const Steps = ({ current }) => {
           "Work Experience",
           "Skill's",
           "Interests",
-          "Refernces", 
+          "Refernces",
         ].map((item, index) => {
           return (
-            <div className="step-item" key={index + 2}>
+            <div
+              className="step-item"
+              key={index + 2}
+              onClick={() => {
+                if (current > index + 2) {
+                  setCurrent(index + 2);
+                }
+              }}
+            >
               <div
                 className={
                   current >= index + 2
