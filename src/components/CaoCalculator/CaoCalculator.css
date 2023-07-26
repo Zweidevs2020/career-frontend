@@ -140,16 +140,24 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.clearAllButton,
 button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   color: white !important;
 }
-.coaSubjectWidth td.ant-table-cell {
+/* .coaSubjectWidth td.ant-table-cell {
   max-width: 163px !important;
-}
+} */
 .coaSubjectWidth
   .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
-  width: 300px !important;
+  width: 290px !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin: auto;
 }
+.ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow {
+  width: 290px;
+  margin: auto;
+}
+/* .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search{
+  width: 235px;
+} */
 @media only screen and (min-width: 0px) and (max-width: 650px) {
   .caoMainDiv {
     /* padding: 5px; */
@@ -170,9 +178,9 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   .coaPointsWidth {
     width: 100%;
   }
-.coaPointTextMain {
-  display: none;
-}
+  .coaPointTextMain {
+    display: none;
+  }
 }
 
 @media only screen and (min-width: 651px) and (max-width: 1000px) {
@@ -213,25 +221,40 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   }
 }
 
-@media(max-width:1600px){
-  .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+@media (max-width: 1600px) {
+  /* .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
       width: 230px !important;
-  }
+  } */
 }
 @media (max-width: 1440px) {
-  .coaSubjectWidth td.ant-table-cell {
+  /* .coaSubjectWidth td.ant-table-cell {
     max-width: 190px !important;
-  }
-  .coaSubjectWidth
+  } */
+  /* .coaSubjectWidth
     .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
     width: 235px !important;
+  } */
+  .coaSubjectWidth
+    .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+    width: 180px !important;
+  }
+  .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow {
+    width: 180px;
   }
 }
 
-@media(max-width:1200px){
-  .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+@media (max-width: 1200px) {
+  /* .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
       width: 200px !important;
-    }
+    } */
+  .coaSubjectWidth
+    .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+    width: 160px !important;
+  }
+
+  .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow {
+    width: 160px;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -247,12 +270,20 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   .coaPointsWidth.coaPointsWidth2 {
     padding-top: 30px;
   }
-  .coaSubjectWidth
+  /* .coaSubjectWidth
     .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
     width: 210px !important;
-  }
+  } */
   .coaSubjectWidth td.ant-table-cell {
     max-width: 200px !important;
+  }
+  .coaSubjectWidth
+    .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+    width: 200px !important;
+  }
+
+  .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow {
+    width: 200px;
   }
 }
 
@@ -267,9 +298,17 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   .coaSubjectWidth td.ant-table-cell {
     max-width: 195px !important;
   }
-    .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+  /* .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
       width: 220px !important;
-    }
+    } */
+  .coaSubjectWidth
+    .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+    width: 190px !important;
+  }
+
+  .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow {
+    width: 190px;
+  }
 }
 
 @media (max-width: 425px) {
@@ -279,7 +318,15 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   .coaSubjectWidth {
     overflow-y: scroll;
   }
-    .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+  /* .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
       width: 125px !important;
+    } */
+
+    .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+      width: 160px !important;
+    }
+  
+    .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow {
+      width: 160px;
     }
 }
