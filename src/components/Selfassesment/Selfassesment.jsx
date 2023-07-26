@@ -22,7 +22,7 @@ const Selfassesment = () => {
   const options = {
     plotOptions: {
       bar: {
-        horizontal: false,
+        horizontal: true,
         columnWidth: "20", // Adjust the width as per your requirement
         colors: {
           backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#1984FF"],
