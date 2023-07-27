@@ -44,6 +44,73 @@ const Occupational = () => {
       setLoading(false);
     }
   };
+  console.log("===========edddd", educationGuidance);
+
+  // Custom sorting function to sort the data in ascending order based on 'score'
+  // const sortByScore = (a, b) => a.score - b.score;
+
+  // Sort the data based on the 'score' field in ascending order
+  // const sortedData = educationGuidance.slice().sort(sortByScore);
+  // console.log("=====22222", sortedData);
+
+  // const options = {
+  //   chart: {
+  //     id: "bar",
+  //     toolbar: {
+  //       show: false,
+  //     },
+  //     height: 350,
+  //   },
+  //   plotOptions: {
+  //     bar: {
+  //       horizontal: true,
+  //       columnWidth: "50%",
+  //       colors: {
+  //         backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#8BBDDB"], // Set the background color of the bars
+  //       },
+  //     },
+  //   },
+  //   dataLabels: {
+  //     enabled: false,
+  //   },
+  //   // xaxis: {
+  //   //   categories: educationGuidance.map((item) => item.question_type).flat(),
+  //   // },
+  //   xaxis: {
+  //     categories: sortedData.map((item) => item.question_type),
+  //   },
+  //   colors: ["#8BBDDB"],
+  //   series: [
+  //     {
+  //       data: sortedData.map((item) => item.score),
+  //     },
+  //   ],
+  //   title: {
+  //     text: educationGuidance[0]?.test_name,
+  //     align: "center",
+  //   },
+  //   tooltip: {
+  //     y: {
+  //       formatter: (value) => value, // Show the exact value in the tooltip
+  //     },
+  //   },
+  // };
+  // Custom sorting function to sort the data in ascending order based on 'score'
+  const sortByScore = (a, b) => a.score - b.score;
+
+  // Sort the data based on the 'score' field in ascending order
+  const sortedData = educationGuidance.slice().sort(sortByScore);
+
+  // Extract scores and question types separately from the sortedData
+  const scores = sortedData.map((item) => item.score);
+  const questionTypes = sortedData.map((item) => item.question_type);
+
+  // Now you can use the sorted data directly in the ApexCharts series data
+  const series = [
+    {
+      data: scores,
+    },
+  ];
 
   const options = {
     chart: {
@@ -56,9 +123,10 @@ const Occupational = () => {
     plotOptions: {
       bar: {
         horizontal: true,
-        columnWidth: 20,
+        columnWidth: "50%",
         colors: {
-          backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#8BBDDB"], // Set the background color of the bars
+          // backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#8BBDDB"],
+          backgroundBarColors: ["white"],
         },
       },
     },
@@ -66,17 +134,22 @@ const Occupational = () => {
       enabled: false,
     },
     xaxis: {
-      categories: educationGuidance.map((item) => item.question_type).flat(),
+      categories: questionTypes,
     },
     colors: ["#8BBDDB"],
     series: [
       {
-        data: educationGuidance.map((item) => item.score).flat(),
+        data: scores,
       },
     ],
     title: {
       text: educationGuidance[0]?.test_name,
       align: "center",
+    },
+    tooltip: {
+      y: {
+        formatter: (value) => value,
+      },
     },
   };
   return (
@@ -90,9 +163,10 @@ const Occupational = () => {
           <>
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
               <Button
-               className="viewResultButton"
+                className="viewResultButton"
                 type="primary"
                 onClick={() => navigate("/self-assesment")}
+                style={{ color: "white" }}
               >
                 BACK
               </Button>

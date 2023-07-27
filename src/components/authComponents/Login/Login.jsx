@@ -56,9 +56,9 @@ const Login = () => {
           <div className="welcomeHaddingText" style={{ fontWeight: "normal" }}>
             Please login or register an account.
           </div>
-          <div className="textStyle18" style={{ marginBottom: 10 }}>
+          {/* <div className="textStyle18" style={{ marginBottom: 10 }}>
             Enter your email and password
-          </div>
+          </div> */}
           <Form.Item
             name="email"
             rules={[
@@ -135,7 +135,7 @@ const Login = () => {
           </div>
         </Form>
         <span className="allRights">
-          © 2023 My Career Guidance. All Rights Reserved
+          © 2023 My Guidance. All Rights Reserved
         </span>
       </div>
       <div className="rightImageStyle">

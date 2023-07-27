@@ -16,7 +16,9 @@ import { API_URL } from "../../../utils/constants";
 import { getApiWithoutAuth, postApiWithoutAuth } from "../../../utils/api";
 import "./SignupStyle.css";
 import {
-  dayArray,
+  dayArray31,
+  dayArray30,
+  dayArray28,
   monthArray,
   createFormDataObject,
   convertBase64,
@@ -70,6 +72,8 @@ const Signup = () => {
   const handleSelectMonth = (m) => {
     setDobSave({ ...dobSave, month: m });
   };
+
+  console.log("===dateofbirth", dobSave.month);
 
   const handleSelectDay = (d) => {
     setDobSave({ ...dobSave, day: d });
@@ -177,8 +181,8 @@ const Signup = () => {
               value={data?.school}
               optionFilterProp="children" // Search filter based on option children
               filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              } // Filter options based on user input
+                option.children.toLowerCase().startsWith(input.toLowerCase())
+              } // Filter options based on user input (show options that start with the input)
               className="inputSelectFieldStyle"
               onChange={handleSelect}
               bordered={false}
@@ -261,7 +265,23 @@ const Signup = () => {
                 <Select
                   placeholder="Day"
                   name="day"
-                  options={dayArray}
+                  options={
+                    dobSave.month === "01" &&
+                    "03" &&
+                    "05" &&
+                    "07" &&
+                    "08" &&
+                    "10" &&
+                    "12"
+                      ? dayArray31
+                      : dobSave.month === "02"
+                      ? dayArray28
+                      : dobSave.month === "04" && "06" && "09" && "11"
+                      ? dayArray30
+                      : dobSave.month === "undefined"
+                      ? dayArray28
+                      : dayArray31
+                  }
                   className="inputSelectFieldStyle"
                   onSelect={handleSelectDay}
                   bordered={false}
@@ -370,7 +390,7 @@ const Signup = () => {
           </div>
         </Form>
         <span className="allRights">
-          © 2023 My Career Guidance. All Rights Reserved
+          © 2023 My Guidance. All Rights Reserved
         </span>
       </div>
       <div className="rightImageStyle">

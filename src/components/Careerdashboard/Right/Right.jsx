@@ -68,7 +68,7 @@ const Right = () => {
     labels: educationGuidance
       .map((item) => item.scores.map((score) => score.name))
       .flat(),
-    colors: ["#1984FF"],
+    colors: ["#8BBDDB"],
     series: [
       {
         data: educationGuidance

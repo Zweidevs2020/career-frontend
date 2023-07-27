@@ -613,7 +613,7 @@ const Sidebar = ({ children, flags }) => {
                           placeholder={"School"}
                           options={schools}
                           name="school"
-                          className="inputSelectFieldStyle"
+                          className="inputSelectFieldStyle profilestyle"
                           onChange={handleSelect}
                           bordered={false}
                           disabled={!editMode}
@@ -953,6 +953,7 @@ const Sidebar = ({ children, flags }) => {
                           borderRadius: "50%",
                           width: "100px",
                           height: "100px",
+                          cursor: "pointer"
                         }}
                       />
 
