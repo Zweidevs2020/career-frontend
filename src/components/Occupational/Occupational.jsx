@@ -95,11 +95,11 @@ const Occupational = () => {
   //     },
   //   },
   // };
-  // Custom sorting function to sort the data in ascending order based on 'score'
-  const sortByScore = (a, b) => a.score - b.score;
+  // Custom sorting function to sort the data in descending order based on 'score'
+  const sortByScoreDescending = (a, b) => b.score - a.score;
 
-  // Sort the data based on the 'score' field in ascending order
-  const sortedData = educationGuidance.slice().sort(sortByScore);
+  // Sort the data based on the 'score' field in descending order
+  const sortedData = educationGuidance.slice().sort(sortByScoreDescending);
 
   // Extract scores and question types separately from the sortedData
   const scores = sortedData.map((item) => item.score);
