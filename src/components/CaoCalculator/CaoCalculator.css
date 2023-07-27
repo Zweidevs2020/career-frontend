@@ -227,6 +227,16 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   /* .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
       width: 230px !important;
   } */
+  .coaSubjectWidth
+    .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search,
+  .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+    width: 255px !important;
+  }
+
+  .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow,
+  .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow {
+    width: 230px;
+  }
 }
 @media (max-width: 1440px) {
   /* .coaSubjectWidth td.ant-table-cell {
