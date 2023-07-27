@@ -201,7 +201,7 @@ const MyGoal = () => {
                   value={proffession}
                   onChange={(e) => setProffession(e.target.value)}
                   name="input"
-                  placeholder=" EG: Accountant or Save the planet"
+                  placeholder=" EG: Accountant or save the planet"
                   className="inputCarrer sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
                 />
               </div>
@@ -239,7 +239,7 @@ const MyGoal = () => {
               </div>
               <div className="inputContainer">
                 <h style={{ color: "#111928" }}>
-                  2 actions to achieve the above:
+                  2 Actions to achieve the above:
                 </h>
               </div>
               <div className="w-[100%] h-[100px] pl-4 ">

@@ -541,10 +541,6 @@ const CaoCalculator = () => {
                   }}
                 >
                   <div className="textStyle18">Subjects</div>
-                  <div onClick={handleAdd} style={{ cursor: "pointer" }}>
-                    {/* <img src={add} alt="" /> */}
-                    <span>Add more row</span>
-                  </div>
                 </div>
                 <Table
                   dataSource={tableData}
@@ -552,6 +548,10 @@ const CaoCalculator = () => {
                   rowClassName={() => "backgroundF4F6F8"}
                   pagination={false}
                 />
+                <div onClick={handleAdd} style={{ cursor: "pointer", display: "flex", justifyContent: "end" }}>
+                  {/* <img src={add} alt="" /> */}
+                  <span>Add more row</span>
+                </div>
               </div>
               <div className="coaPointsWidth coaPointsWidth">
                 <div

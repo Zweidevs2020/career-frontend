@@ -45,7 +45,7 @@ const Steps = ({ current, setCurrent }) => {
           "Work Experience",
           "Skill's",
           "Interests",
-          "Refernces",
+          "References",
         ].map((item, index) => {
           return (
             <div

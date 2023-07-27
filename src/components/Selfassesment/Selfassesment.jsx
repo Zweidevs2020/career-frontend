@@ -19,16 +19,19 @@ const Selfassesment = () => {
   useEffect(() => {
     getPsychometricTest();
   }, []);
+  console.log("====goatttttttt unicorn", psychometricTest);
   const options = {
     plotOptions: {
       bar: {
         horizontal: true,
         columnWidth: "20", // Adjust the width as per your requirement
         colors: {
-          backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#1984FF"],
+          // backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#1984FF"],
+          backgroundBarColors: ["white"],
         },
       },
     },
+    colors: ["#8BBDDB"],
     chart: {
       id: "basic-bar",
       toolbar: {

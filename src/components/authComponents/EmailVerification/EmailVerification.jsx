@@ -82,7 +82,7 @@ const EmailVerification = () => {
           </div>
         </div>
         <span className="allRights">
-          © 2023 My Career Guidance. All Rights Reserved
+          © 2023 My Guidance. All Rights Reserved
         </span>
       </div>
       <div className="rightImageStyle">

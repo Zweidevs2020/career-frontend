@@ -90,7 +90,7 @@ const MyStudy = () => {
 
   const startTime = new Date("2000-01-01T06:00:00");
   const endTime = new Date("2000-01-02T00:00:00");
-  const interval = 15 * 60 * 1000;
+  const interval = 30 * 60 * 1000;
   for (
     let time = startTime;
     time < endTime;

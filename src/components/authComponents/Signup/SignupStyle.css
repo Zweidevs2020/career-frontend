@@ -66,7 +66,9 @@ img.ant-image-img.ant-input-password-icon {
 .ant-select-show-search:where(.css-dev-only-do-not-override-ed5zg0).ant-select:not(.ant-select-customize-input) .ant-select-selector{
   cursor: pointer;
 }
-
+button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary.eduButtonBack{
+  color: white;
+}
 
 @media only screen and (min-width: 0px) and (max-width: 650px) {
   .signInButtonStyle {
