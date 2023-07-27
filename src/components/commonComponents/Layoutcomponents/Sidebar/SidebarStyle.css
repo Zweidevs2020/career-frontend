@@ -122,7 +122,9 @@
   background-color: rgba(0, 0, 0, 0.04);
 }
 :where(.css-dev-only-do-not-override-ed5zg0).ant-menu-inline.ant-menu-root .ant-menu-item>.ant-menu-title-content,
-:where(.css-dev-only-do-not-override-ed5zg0).ant-menu-inline.ant-menu-root .ant-menu-submenu-title>.ant-menu-title-content{
+:where(.css-dev-only-do-not-override-ed5zg0).ant-menu-inline.ant-menu-root .ant-menu-submenu-title>.ant-menu-title-content,
+:where(.css-ed5zg0).ant-menu-inline.ant-menu-root .ant-menu-item>.ant-menu-title-content,
+:where(.css-ed5zg0).ant-menu-inline.ant-menu-root .ant-menu-submenu-title>.ant-menu-title-content{
   text-overflow: unset;
   overflow: unset;
 }
