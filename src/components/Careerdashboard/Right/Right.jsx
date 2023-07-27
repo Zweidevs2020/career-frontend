@@ -56,7 +56,8 @@ const Right = () => {
     },
     plotOptions: {
       bar: {
-        columnWidth: 20,
+        columnWidth: "20%",
+        barHeight: "50%", // Set the fixed height for the bars (adjust the value as needed)
         colors: {
           backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#1984FF"], // Set the background color of the bars
         },
