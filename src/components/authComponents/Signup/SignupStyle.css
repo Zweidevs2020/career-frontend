@@ -48,6 +48,7 @@ button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary,:where(.css-e
   background: #1476b7;
   /* width: 25%; */
   height: 45px;
+  color: white;
 }
 button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-default {
   border: 1px solid #1476b7;
