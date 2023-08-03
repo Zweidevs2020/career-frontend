@@ -23,6 +23,7 @@ import {
   createFormDataObject,
   convertBase64,
 } from "../../../utils/helper";
+import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "antd";
 import countyImg from "../../../assets/county.png";
@@ -36,6 +37,15 @@ const Signup = () => {
   const [newSchools, setNewSchools] = useState("");
   const [dobSave, setDobSave] = useState({});
   const [open, setOpen] = useState(false);
+  const currentYear = moment().year();
+  const disabledDate = (current) => {
+    return current.year() > currentYear;
+  };
+  // console.log("===yearrr beforeee", dobSave);
+
+  const onChangeYearInternal = (date) => {
+    onChangeYear(date?.year());
+  };
 
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
@@ -69,18 +79,24 @@ const Signup = () => {
     setData({ ...data, school: schoolName[0].label });
   };
 
-  const handleSelectMonth = (m) => {
-    setDobSave({ ...dobSave, month: m });
-  };
+  // const handleSelectMonth = (m) => {
+  //   setDobSave({ ...dobSave, month: m });
+  // };
 
-  console.log("===dateofbirth", dobSave.month);
 
   const handleSelectDay = (d) => {
+    console.log("====dayyyy", d);
     setDobSave({ ...dobSave, day: d });
   };
 
+  useEffect(() => {
+    console.log("===dob", dobSave);
+  }, [dobSave]);
+
   const onChangeYear = (date) => {
-    setDobSave({ ...dobSave, year: date?.$y });
+    console.log("======yearrr", date);
+    setDobSave({ ...dobSave, year: date });
+    // setDobSave({ ...dobSave, year: date?.$y });
   };
 
   useEffect(() => {
@@ -108,7 +124,25 @@ const Signup = () => {
       setLoading(false);
     }
   };
+  const handleSelectMonth = (m) => {
+    // Update the selected month
+    setDobSave({ ...dobSave, month: m });
 
+    // Clear the day value if it's not valid for the selected month
+    if (dobSave.day) {
+      const isValidDayForMonth =
+        (m === "02" && dobSave.day >= 1 && dobSave.day <= 28) ||
+        (["04", "06", "09", "11"].includes(m) &&
+          dobSave.day >= 1 &&
+          dobSave.day <= 30) ||
+        (["01", "03", "05", "07", "08", "10", "12"].includes(m) &&
+          dobSave.day >= 1 &&
+          dobSave.day <= 31);
+      if (!isValidDayForMonth) {
+        setDobSave((prevDobSave) => ({ ...prevDobSave, day: "" }));
+      }
+    }
+  };
   return (
     <div className="mainDiv">
       <div className="leftDiv">
@@ -324,11 +358,24 @@ const Signup = () => {
                 name="year"
                 rules={[{ required: true, message: "Please Select Year!" }]}
               >
-                <DatePicker
+                {/* <DatePicker
                   picker="year"
                   placeholder="Year"
                   className="inputSelectFieldStyle"
                   onChange={onChangeYear}
+                  suffixIcon={
+                    <Image
+                      preview={false}
+                      src={dropdownIcon}
+                      width={15}
+                      style={{ marginRight: 10 }}
+                    /> */}
+                <DatePicker
+                  picker="year"
+                  placeholder="Year"
+                  className="inputSelectFieldStyle"
+                  onChange={onChangeYearInternal}
+                  disabledDate={disabledDate}
                   suffixIcon={
                     <Image
                       preview={false}
