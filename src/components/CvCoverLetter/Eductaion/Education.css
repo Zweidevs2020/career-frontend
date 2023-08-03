@@ -124,3 +124,16 @@ border-radius: 10px !important;
     display:  flex;
     align-items: center;
 }
+.deleteSubject
+{
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    
+}
+.mainContainerDelete
+{
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}

@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Spin } from "antd";
 import { API_URL } from "../../utils/constants";
-import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
+import { getApiWithAuth } from "../../utils/api";
 import { MyCareerGuidanceButton } from "../../components/commonComponents";
 import bookImage from "../../assets/bookImage.png";
 import winningCup from "../../assets/winningCup.svg";
 import homeModal from "../../assets/homeModal.svg";
 import crossIconModal from "../../assets/crossIconModal.svg";
-
 import "./EducationalGuidance.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   buildStyles,
   CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
+
+// Import the color library
+import Color from "color";
+
 const EducationalGuidance = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,15 +26,16 @@ const EducationalGuidance = () => {
   const [loading, setLoading] = useState(false);
   const [quizz, setQuizz] = useState([]);
   const [singlequizData, setSinglequizData] = useState({});
-  const [open, setOpen] = useState(false);
   const [testId, setTestId] = useState({});
   const [openPieChart, setOpenPieChart] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (data !== undefined) {
       setOpenPieChart(true);
     }
   }, [data]);
+
   useEffect(() => {
     getQuiz();
   }, []);
@@ -39,12 +43,9 @@ const EducationalGuidance = () => {
   const getQuiz = async () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETGOALS);
-    console.log("==========response", response);
+    setLoading(false);
     if (response?.data.status === 200) {
       setQuizz(response.data.data);
-      setLoading(false);
-    } else {
-      setLoading(false);
     }
   };
 
@@ -52,9 +53,18 @@ const EducationalGuidance = () => {
     setSinglequizData(scoreView);
     setIsModalOpen(true);
   };
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
+  // Helper function to calculate the progress color based on the score
+  const calculateProgressColor = (score) => {
+    const hue = (score / singlequizData.total_score) * 120;
+    const progressColor = Color.hsl(hue, 100, 50);
+    return progressColor.hex();
+  };
+
   return (
     <>
       <div className="educationalGuidanceMainDiv">
@@ -65,32 +75,48 @@ const EducationalGuidance = () => {
           ) : quizz.length === 0 ? (
             <div className="quizDetailsStyle">No Data Found</div>
           ) : (
-            quizz.map((item) => {
-              return (
-                <div className="quizStyle" key={item.id}>
-                  <div className="width90">
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <img src={bookImage} alt="" />
-                      <div style={{ marginLeft: 20 }}>
-                        <div className="quizHeadingStyle">{item.name}</div>
-                        <div className="quizDetailsStyle">
-                          {item.description}
-                        </div>
-                      </div>
+            quizz.map((item) => (
+              <div className="quizStyle" key={item.id}>
+                <div className="width90">
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <img src={bookImage} alt="" />
+                    <div style={{ marginLeft: 20 }}>
+                      <div className="quizHeadingStyle">{item.name}</div>
+                      <div className="quizDetailsStyle">{item.description}</div>
                     </div>
-                    {!item.complete ? (
+                  </div>
+                  {!item.complete ? (
+                    <MyCareerGuidanceButton
+                      label="Take Test"
+                      className="takebutton"
+                      type="button"
+                      htmlType="button"
+                      onClick={() => {
+                        if (item.youtube_link?.length !== 0) {
+                          setTestId(
+                            `https://www.youtube.com/embed/${item.youtube_link}`
+                          );
+                          navigate("/video", {
+                            state: {
+                              data: item,
+                              videoId: `https://www.youtube.com/embed/${item.youtube_link}`,
+                            },
+                          });
+                        } else {
+                          navigate("/educational-guidance-test", {
+                            state: { data: item },
+                          });
+                        }
+                      }}
+                    />
+                  ) : (
+                    <div>
                       <MyCareerGuidanceButton
-                        label="Take Test"
+                        label="Retake"
                         className="takebutton"
                         type="button"
                         htmlType="button"
-                        // onClick={() =>
-                        //   navigate("/educational-guidance-test", {
-                        //     state: { data: item },
-                        //   })
-                        // }
                         onClick={() => {
-                          console.log("=====>item", item.youtube_link.length);
                           if (item.youtube_link?.length !== 0) {
                             setTestId(
                               `https://www.youtube.com/embed/${item.youtube_link}`
@@ -108,90 +134,30 @@ const EducationalGuidance = () => {
                           }
                         }}
                       />
-                    ) : (
-                      <div>
-                        <MyCareerGuidanceButton
-                          label="Retake"
-                          className="takebutton"
-                          type="button"
-                          htmlType="button"
-                          onClick={() => {
-                            if (item.youtube_link?.length !== 0) {
-                              setTestId(
-                                `https://www.youtube.com/embed/${item.youtube_link}`
-                              );
-                              navigate("/video", {
-                                state: {
-                                  data: item,
-                                  videoId: `https://www.youtube.com/embed/${item.youtube_link}`,
-                                },
-                              });
-                            } else {
-                              navigate("/educational-guidance-test", {
-                                state: { data: item },
-                              });
-                            }
-                          }}
-                        />
-                        <MyCareerGuidanceButton
-                          label="View Results"
-                          className="viewResultButton"
-                          type="button"
-                          htmlType="button"
-                          onClick={() => showModal(item)}
-                        />
-                      </div>
-                    )}
-                  </div>
+                      <MyCareerGuidanceButton
+                        label="View Results"
+                        className="viewResultButton"
+                        type="button"
+                        htmlType="button"
+                        onClick={() => showModal(item)}
+                      />
+                    </div>
+                  )}
                 </div>
-              );
-            })
+              </div>
+            ))
           )}
         </div>
       </div>
-      {/* <Modal
-        className="modalStyleClass"
-        bodyStyle={{
-          background: "none",
-          display: "flex",
-          justifyContent: "center",
-        }}
-        open={isModalOpen}
-        onCancel={handleCancel}
-        footer={[]}
-      >
-        <div className="modalInnerStyle">
-          <div style={{ alignSelf: "center", textAlign: "center" }}>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <img src={winningCup} alt="winning Cup" />
-            </div>
-            <div className="mt-4 totalScoreHadding">Total scrores</div>
-            <div className="mt-2">
-              Lorem ipsum is a placeholder text commonly used to demonstrate the
-              visual form of a document.
-            </div>
-            <div className="mt-3">
-              <MyCareerGuidanceButton
-                label={`${singlequizData.score ? singlequizData.score : 0}/${
-                  singlequizData.total_score ? singlequizData.total_score : 0
-                }`}
-                className="resultDataButton"
-                type="button"
-                htmlType="button"
-                onClick={handleCancel}
-                //   loading={loading}
-              />
-            </div>
-          </div>
-        </div>
-      </Modal> */}
 
+      {/* Modal for quiz results */}
       <Modal
         centered
         width={700}
         open={isModalOpen}
         footer={[]}
         closable={true}
+        onCancel={handleCancel}
       >
         <div
           style={{
@@ -219,24 +185,26 @@ const EducationalGuidance = () => {
           }}
         >
           <div className="quizHeadingStyle">{singlequizData?.name}</div>
-          <div className="circularBarMainDiv">
+          <div className="">
             <div style={{ width: 130 }}>
               <CircularProgressbarWithChildren
                 value={singlequizData?.score}
                 minValue={0}
                 maxValue={singlequizData?.total_score}
                 styles={buildStyles({
+                  // Use the dynamically calculated progress color
+                  pathColor: calculateProgressColor(singlequizData?.score),
+                  pathColor: "#1476b7",
                   rotation: 0.99,
                   strokeLinecap: "dashboard",
                   textSize: "19px",
                   pathTransitionDuration: 0.5,
-                  pathColor: "#1476B7",
                   textColor: "#263238",
                   trailColor: "#d6d6d6",
                 })}
               >
                 <div className="welcomeHaddingText">
-                  {singlequizData?.total_score}
+                  {singlequizData?.score} /{singlequizData?.total_score}
                 </div>
                 <div className="cao2ndText">
                   <strong>Points</strong>
@@ -246,6 +214,8 @@ const EducationalGuidance = () => {
           </div>
         </div>
       </Modal>
+
+      {/* Modal for YouTube video */}
       <Modal
         title="Youtube Video"
         centered
@@ -279,6 +249,7 @@ const EducationalGuidance = () => {
         </div>
       </Modal>
 
+      {/* Modal for pie chart */}
       <Modal
         centered
         width={700}
@@ -319,11 +290,13 @@ const EducationalGuidance = () => {
                 minValue={0}
                 maxValue={data?.total_score}
                 styles={buildStyles({
+                  // Use the dynamically calculated progress color
+                  pathColor: calculateProgressColor(data?.obtained_score),
+                  pathColor: "#1476b7",
                   rotation: 0.99,
                   strokeLinecap: "dashboard",
                   textSize: "19px",
                   pathTransitionDuration: 0.5,
-                  pathColor: "#1476B7",
                   textColor: "#263238",
                   trailColor: "#d6d6d6",
                 })}

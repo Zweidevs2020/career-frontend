@@ -3,9 +3,10 @@ import { Form, Button, DatePicker, Checkbox, Select, message } from "antd";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import "./Education.css";
-import { postApiWithAuth, getApiWithAuth } from "../../../utils/api";
-import { API_URL } from "../../../utils/constants";
+import { postApiWithAuth, getApiWithAuth,deleteApiWithAuth } from "../../../utils/api";
+import Delete from "../../../assets/delete.png";
 import dayjs from "dayjs";
+import { API_URL } from "../../../utils/constants";
 
 const Education = ({ setCurrent, current }) => {
   const [data, setData] = useState(null);
@@ -15,6 +16,7 @@ const Education = ({ setCurrent, current }) => {
   const [resultArrayData, setResultArrayData] = useState([]);
   const [isCheck, setIsCheck] = useState(true);
   const [isCurrentCheck, setIsCurrentCheck] = useState(false);
+  const [index,setIndex]=useState();
 
   const { Option } = Select;
 
@@ -40,6 +42,7 @@ const Education = ({ setCurrent, current }) => {
             return {
               index: indexx,
               dataValue: item,
+              setIndex:indexx
             };
           })
         );
@@ -172,7 +175,7 @@ const Education = ({ setCurrent, current }) => {
     // let data = createArrayData(referArray);
 
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
-    console.log("================res get", respose);
+    console.log("================res get", respose.data.data);
     if (respose.data.status === 201) {
       // setCurrent(current + 1);
     } else {
@@ -198,7 +201,7 @@ const Education = ({ setCurrent, current }) => {
   }, [educationArray]);
 
   const educationItems = (item, index) => {
-    console.log('===============item',item)
+    console.log("======>>",item)
     return (
       <>
         <div className="eduFormDouble" key={index} style={{ marginTop: "3%" }}>
@@ -299,35 +302,59 @@ const Education = ({ setCurrent, current }) => {
               />
             </Form.Item>
             <div>
-              <Checkbox
-                className="expCheckBox"
-                name="present"
-                inputValue={item?.dataValue?.present}
-                onChange={(e) => {
-                  setEducationArray(
-                    educationArray.map((item) => {
-                      return item.index === index
-                        ? {
-                            ...item,
-                            dataValue: {
-                              ...item.dataValue,
-                              present: e.target.checked,
-                            },
-                          }
-                        : item;
-                    })
-                  );
-                  setIsCurrentCheck(!isCurrentCheck);
-                }}
-              >
-               I'm still studing here
-              </Checkbox>
+            <Checkbox
+            className="expCheckBox"
+            name="present"
+            inputValue={item?.dataValue?.present}
+            onChange={(e) => {
+              setEducationArray((prevArray) =>
+                prevArray.map((educationItem) =>
+                  educationItem.index === item.index
+                    ? {
+                        ...educationItem,
+                        dataValue: {
+                          ...educationItem.dataValue,
+                          present: e.target.checked,
+                        },
+                      }
+                    : educationItem
+                )
+              );
+              setIsCurrentCheck(!isCurrentCheck);
+            }}
+          >
+            I'm still studying here
+          </Checkbox>
+          <div className="mainContainerDelete">
+            <img
+              className="deleteSubject"
+              src={Delete}
+              onClick={() => handleDeleteEducation(item.dataValue.id)}
+            />
+          </div>
             </div>
           </div>
         </div>
       </>
     );
   };
+
+  const handleDeleteEducation = async (id) => {
+  try {
+    const response = await deleteApiWithAuth(`${API_URL.DELETE}/${id}/`);
+    console.log('Delete response:', response);
+    if (response.data.status === 203) {
+      setEducationArray((prevArray) =>
+        prevArray.filter((item) => item.dataValue.id !== id)
+      );
+    } else {
+    }
+  } catch (error) {
+    console.error("Error deleting the education entry:", error);
+    message.error("An error occurred while deleting the education entry.");
+  }
+};
+
 
   const educationResult = (item, index) => {
     return (
