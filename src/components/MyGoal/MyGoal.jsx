@@ -9,7 +9,7 @@ import { API_URL } from "../../utils/constants";
 import "./MyGoalStyle.css";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import moment from "moment";
-import { PDFDocument } from 'pdf-lib';
+import { PDFDocument } from "pdf-lib";
 
 const MyGoal = () => {
   const reportTemplateRef = useRef(null);
@@ -119,21 +119,23 @@ const MyGoal = () => {
 
       const data = res.data.data; // Assuming res.data.data contains the file data
 
-      const pdfBytes = Uint8Array.from([...data].map((char) => char.charCodeAt(0)));
+      const pdfBytes = Uint8Array.from(
+        [...data].map((char) => char.charCodeAt(0))
+      );
 
       // Create a new PDF document
       const pdfDoc = await PDFDocument.load(pdfBytes);
-    
+
       // Generate a new blob containing the PDF file
       const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
-    
+
       // Create a temporary link element
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = pdfDataUri;
-      link.download = 'file.pdf';
-    
+      link.download = "file.pdf";
+
       // Simulate a click event to trigger the file download
-      link.dispatchEvent(new MouseEvent('click'));
+      link.dispatchEvent(new MouseEvent("click"));
       setLoading3(false);
     } else {
       setLoading3(false);
