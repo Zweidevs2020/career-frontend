@@ -16,7 +16,6 @@ const Education = ({ setCurrent, current }) => {
   const [resultArrayData, setResultArrayData] = useState([]);
   const [isCheck, setIsCheck] = useState(true);
   const [isCurrentCheck, setIsCurrentCheck] = useState(false);
-  const [index,setIndex]=useState();
 
   const { Option } = Select;
 
@@ -110,6 +109,7 @@ const Education = ({ setCurrent, current }) => {
       ? (sendDaata = { education_data: data, junior_data: [] })
       : (sendDaata = { education_data: data, junior_data: resData });
     const respose = await postApiWithAuth(API_URL.POSTEDUCATION, sendDaata);
+    console.log("hellllllllllllllllloooooooo",respose)
     if (respose.data.status === 201) {
       setCurrent(current + 1);
     } else {
@@ -172,7 +172,6 @@ const Education = ({ setCurrent, current }) => {
   };
 
   const SavePdf = async () => {
-    // let data = createArrayData(referArray);
 
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
     console.log("================res get", respose.data.data);
@@ -325,6 +324,7 @@ const Education = ({ setCurrent, current }) => {
           >
             I'm still studying here
           </Checkbox>
+
           <div className="mainContainerDelete">
             <img
               className="deleteSubject"
@@ -338,22 +338,51 @@ const Education = ({ setCurrent, current }) => {
       </>
     );
   };
-
   const handleDeleteEducation = async (id) => {
-  try {
-    const response = await deleteApiWithAuth(`${API_URL.DELETE}/${id}/`);
-    console.log('Delete response:', response);
-    if (response.data.status === 203) {
+    try {
       setEducationArray((prevArray) =>
         prevArray.filter((item) => item.dataValue.id !== id)
       );
-    } else {
+  
+      const response = await deleteApiWithAuth(`${API_URL.DELETE}/${id}/`);
+      console.log('Delete response:', response);
+  
+      if (response.data.status === 204) {
+        message.success("Education entry deleted successfully.");
+      } else {
+        message.error("Failed to delete the education entry.");
+        setEducationArray((prevArray) => [...prevArray, educationArray.find(item => item.dataValue.id === id)]);
+      }
+    } catch (error) {
+      console.error("Error deleting the education entry:", error);
+      message.error("An error occurred while deleting the education entry.");
+      setEducationArray((prevArray) => [...prevArray, educationArray.find(item => item.dataValue.id === id)]);
     }
-  } catch (error) {
-    console.error("Error deleting the education entry:", error);
-    message.error("An error occurred while deleting the education entry.");
-  }
-};
+  };
+  
+
+  const handleDeleteJuniorCert = async (id) => {
+    try {
+      setResultArrayData((prevArray) =>
+        prevArray.filter((item) => item.dataValue.id !== id)
+      );
+  
+      const response = await deleteApiWithAuth(`${API_URL.DELETE_RESULT}/${id}/`);
+      console.log('Delete response:', response);
+  
+      if (response.data.status === 204) {
+        message.success("Junior Cert entry deleted successfully.");
+      } else {
+        message.error("Failed to delete the Junior Cert entry.");
+        setResultArrayData((prevArray) => [...prevArray, resultArrayData.find(item => item.dataValue.id === id)]);
+      }
+    } catch (error) {
+      console.error("Error deleting the Junior Cert entry:", error);
+      message.error("An error occurred while deleting the Junior Cert entry.");
+      setResultArrayData((prevArray) => [...prevArray, resultArrayData.find(item => item.dataValue.id === id)]);
+    }
+  };
+  
 
 
   const educationResult = (item, index) => {
@@ -383,17 +412,17 @@ const Education = ({ setCurrent, current }) => {
             </Form.Item>
           </div>
           <div className="expFormDoubleItem">
-            <Form.Item
-              label="Level"
-              name={`level ${index}`}
-              className="skillItemLable"
-              rules={[
-                {
-                  required: item?.dataValue.level ? false : true,
-                  message: "Please Select 1 Option",
-                },
-              ]}
-            >
+          <Form.Item
+          label="Result"
+          name={`result ${index}`}
+          className="skillItemLable"
+          rules={[
+            {
+              required: item?.dataValue.result ? false : true,
+              message: "Please Select 1 Option",
+            },
+          ]}
+        >
               <Select
                 placeholder="Select"
                 onChange={(event) => handleChange(event, "level", index)}
@@ -416,6 +445,13 @@ const Education = ({ setCurrent, current }) => {
             </Form.Item>
           </div>
         </div>
+        <div className="mainContainerDelete">
+    <img
+      className="deleteSubject"
+      src={Delete}
+      onClick={() => handleDeleteJuniorCert(item.dataValue.id)}
+    />
+  </div>
 
         <div className="expFormDoubleItem">
           <Form.Item

@@ -110,37 +110,59 @@ const EducationalGuidance = () => {
                       }}
                     />
                   ) : (
-                    <div>
-                      <MyCareerGuidanceButton
-                        label="Retake"
-                        className="takebutton"
-                        type="button"
-                        htmlType="button"
-                        onClick={() => {
-                          if (item.youtube_link?.length !== 0) {
-                            setTestId(
-                              `https://www.youtube.com/embed/${item.youtube_link}`
-                            );
-                            navigate("/video", {
-                              state: {
-                                data: item,
-                                videoId: `https://www.youtube.com/embed/${item.youtube_link}`,
-                              },
-                            });
-                          } else {
-                            navigate("/educational-guidance-test", {
-                              state: { data: item },
-                            });
-                          }
-                        }}
-                      />
-                      <MyCareerGuidanceButton
-                        label="View Results"
-                        className="viewResultButton"
-                        type="button"
-                        htmlType="button"
-                        onClick={() => showModal(item)}
-                      />
+                    <div className="retakeChart">
+                      <div className="quizBoard">
+                        <CircularProgressbarWithChildren
+                          value={data?.obtained_score}
+                          minValue={0}
+                          maxValue={data?.total_score}
+                          styles={buildStyles({
+                            // Use the dynamically calculated progress color
+                            pathColor: calculateProgressColor(
+                              data?.obtained_score
+                            ),
+                            pathColor: "#1476b7",
+                            rotation: 0.99,
+                            strokeLinecap: "dashboard",
+                            textSize: "19px",
+                            pathTransitionDuration: 0.5,
+                            textColor: "#263238",
+                            trailColor: "#d6d6d6",
+                          })}
+                        >
+                          <div className="welcomeHaddingText">
+                            {data?.obtained_score}/{data?.total_score}
+                          </div>
+                          <div className="cao2ndText">
+                            <strong>Points</strong>
+                          </div>
+                        </CircularProgressbarWithChildren>
+                      </div>
+                      <div className="retake">
+                        <MyCareerGuidanceButton
+                          label="Retake"
+                          className="takebutton"
+                          type="button"
+                          htmlType="button"
+                          onClick={() => {
+                            if (item.youtube_link?.length !== 0) {
+                              setTestId(
+                                `https://www.youtube.com/embed/${item.youtube_link}`
+                              );
+                              navigate("/video", {
+                                state: {
+                                  data: item,
+                                  videoId: `https://www.youtube.com/embed/${item.youtube_link}`,
+                                },
+                              });
+                            } else {
+                              navigate("/educational-guidance-test", {
+                                state: { data: item },
+                              });
+                            }
+                          }}
+                        />
+                      </div>
                     </div>
                   )}
                 </div>
@@ -171,7 +193,7 @@ const EducationalGuidance = () => {
           <div onClick={() => navigate("/dashboard")}>
             <img src={homeModal} alt="homeModal" />
           </div>
-          <div onClick={() => setIsModalOpen(false)}>
+          <div className="crossContainer" onClick={() => setIsModalOpen(false)}>
             <img src={crossIconModal} alt="crossIconModal" />
           </div>
         </div>
@@ -185,31 +207,31 @@ const EducationalGuidance = () => {
           }}
         >
           <div className="quizHeadingStyle">{singlequizData?.name}</div>
-          <div className="">
+          <div className="retakeButton">
             <div style={{ width: 130 }}>
-              <CircularProgressbarWithChildren
-                value={singlequizData?.score}
-                minValue={0}
-                maxValue={singlequizData?.total_score}
-                styles={buildStyles({
-                  // Use the dynamically calculated progress color
-                  pathColor: calculateProgressColor(singlequizData?.score),
-                  pathColor: "#1476b7",
-                  rotation: 0.99,
-                  strokeLinecap: "dashboard",
-                  textSize: "19px",
-                  pathTransitionDuration: 0.5,
-                  textColor: "#263238",
-                  trailColor: "#d6d6d6",
-                })}
-              >
-                <div className="welcomeHaddingText">
-                  {singlequizData?.score} /{singlequizData?.total_score}
-                </div>
-                <div className="cao2ndText">
-                  <strong>Points</strong>
-                </div>
-              </CircularProgressbarWithChildren>
+            <CircularProgressbarWithChildren
+    value={singlequizData?.score}
+    minValue={0}
+    maxValue={singlequizData?.total_score}
+    styles={buildStyles({
+      // Use the dynamically calculated progress color
+      pathColor: calculateProgressColor(singlequizData?.score),
+      pathColor: "#1476b7",
+      rotation: 0.99,
+      strokeLinecap: "dashboard",
+      textSize: "19px",
+      pathTransitionDuration: 0.5,
+      textColor: "#263238",
+      trailColor: "#d6d6d6",
+    })}
+  >
+    <div className="welcomeHaddingText">
+      {singlequizData?.score} /{singlequizData?.total_score}
+    </div>
+    <div className="cao2ndText">
+      <strong>Points</strong>
+    </div>
+  </CircularProgressbarWithChildren>
             </div>
           </div>
         </div>
@@ -269,7 +291,10 @@ const EducationalGuidance = () => {
           <div onClick={() => navigate("/dashboard")}>
             <img src={homeModal} alt="homeModal" />
           </div>
-          <div onClick={() => setOpenPieChart(false)}>
+          <div
+            className="crossContainer"
+            onClick={() => setOpenPieChart(false)}
+          >
             <img src={crossIconModal} alt="crossIconModal" />
           </div>
         </div>
@@ -301,7 +326,9 @@ const EducationalGuidance = () => {
                   trailColor: "#d6d6d6",
                 })}
               >
-                <div className="welcomeHaddingText">{data?.total_score}</div>
+                <div className="welcomeHaddingText">
+                  {data?.obtained_score}/{data?.total_score}
+                </div>
                 <div className="cao2ndText">
                   <strong>Points</strong>
                 </div>

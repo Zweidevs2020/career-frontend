@@ -137,3 +137,8 @@ border-radius: 10px !important;
     display: flex;
     justify-content: end;
 }
+.hrStyle
+{
+    width: 100%  !important;
+    padding-top: 30px;
+}
