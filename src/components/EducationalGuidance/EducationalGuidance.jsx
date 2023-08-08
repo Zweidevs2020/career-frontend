@@ -14,7 +14,6 @@ import {
   CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
 
-// Import the color library
 import Color from "color";
 
 const EducationalGuidance = () => {
@@ -58,7 +57,6 @@ const EducationalGuidance = () => {
     setIsModalOpen(false);
   };
 
-  // Helper function to calculate the progress color based on the score
   const calculateProgressColor = (score) => {
     const hue = (score / singlequizData.total_score) * 120;
     const progressColor = Color.hsl(hue, 100, 50);
