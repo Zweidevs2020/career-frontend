@@ -171,16 +171,15 @@ const MyChoicesEdit = () => {
 
     let updatedData = data.map((item) => {
       if (item.rowNo === rowData.rowNo) {
-        rowRef.current = { ...rowRef.current, id: item.id, [name]: value }
-        console.log("=============row Rf data==", rowRef.current)
+        rowRef.current = { ...rowRef.current, id: item.id, dataId: item.dataId, [name]: value }
+       
         return rowRef.current;
       } else {
         return item;
       }
     });
-    dataRef.current = { ...updatedData };
+    dataRef.current = [...updatedData ];
   }
-
 
   const eidtThisRow = (record) => {
 
@@ -195,32 +194,32 @@ const MyChoicesEdit = () => {
     setData(updatedData);
   };
 
-
   const handleUpdate = async (record) => {
 
-    console.log("entered in handleupdate", record)
-    const checkNullValue = (record, key) => {
+   
+    const row = dataRef.current.filter((item) => item.id === record.id);
+    const checkNullValue = (row, key) => {
 
-      if (record[key] === null || record[key] === "") {
+      if (row[key] === null || row[key] === "") {
         return key;
       }
       return null;
     };
 
     const nullKeys = columns
-      .map((column) => checkNullValue(record, column))
+      .map((column) => checkNullValue(row, column))
       .filter(Boolean);
 
 
     if (nullKeys.length > 0) {
       message.error(`Please enter the ${nullKeys[0]} of the Row`);
     } else {
-      console.log("================Entered update row==============", row)
-      const row = dataRef.current.filter((item) => item.id === record.id);
-      console.log("================after update row==============", row)
+     
+      // const row = dataRef.current.filter((item) => item.id === record.id);
+     
       const respose = await patchApiWithAuth(
         `choices/update-${dataa.id}/${record.rowNo}/`,
-        row[0]
+      row
       );
 
       if (respose.data.status === 200) {
@@ -253,8 +252,8 @@ const MyChoicesEdit = () => {
 
 
   const handleAddRow = async (record) => {
-    // console.log("==========add ROW FUN===========",record)
-    const row = dataRef.current.filter((item) => item.id === record.id);
+    const row = dataRef.current.filter((item) => item.dataId === record.dataId);
+   
 
     const checkNullValue = (record, key) => {
 
@@ -265,7 +264,7 @@ const MyChoicesEdit = () => {
     };
 
     const nullKeys = columns
-      .map((column) => checkNullValue(record, column))
+      .map((column) => checkNullValue(row[0], column))
       .filter(Boolean);
 
     if (nullKeys.length > 0) {
@@ -320,7 +319,7 @@ const MyChoicesEdit = () => {
           zIndex: 9999,
         }
         : {}),
-
+       
     };
     return <tr {...props} ref={setNodeRef} style={style} {...attributes}  {...listeners} />;
   };
