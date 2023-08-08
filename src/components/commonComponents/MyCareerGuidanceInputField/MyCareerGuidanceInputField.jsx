@@ -65,6 +65,7 @@ const MyCareerGuidanceInputField = (props) => {
           suffix={props.suffix}
           onKeyDown={props.onKeyDown}
           disabled={props.disabled}
+          name={props.name}
           prefix={
             props.prefix ? (
               <div style={{ color: "#D3D3D3" }}>
@@ -78,6 +79,7 @@ const MyCareerGuidanceInputField = (props) => {
               </div>
             ) : null
           }
+        
           
         />
       ) : (
