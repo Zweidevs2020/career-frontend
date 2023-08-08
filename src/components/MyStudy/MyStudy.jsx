@@ -237,24 +237,24 @@ const MyStudy = () => {
     setSelectedTime(dayjs(selectInfo.start).locale("en").format("hh:mm A"));
     // setSelectedEndTime(dayjs(selectInfo.end));
     setSelectedEndTime(dayjs(selectInfo.end).locale("en").format("hh:mm A"));
-    console.log("-============>")
+    console.log("========>hello", setSelectedTime);
 
     handleOpenBooking();
   };
 
   const createNewEvent = async () => {
     setLoadingBooking(true);
-  
+
     let startTime = dayjs(selectedTime, "hh:mm A").format("HH:mm:ss");
     let endTime = dayjs(selectedEndTime, "hh:mm A").format("HH:mm:ss");
-  
+
     const response = await postApiWithAuth(API_URL.ADDSLOTTABLE, {
       timeslot: startTime,
       endslot: endTime,
       day: weekDay,
       title: title,
     });
-  
+
     if (response.data.status === 201) {
       message.success("Booking Added");
       setSelectedTime("");
@@ -271,7 +271,8 @@ const MyStudy = () => {
       message.error(response.data.message[0]);
     }
   };
-  
+  const isMobile = window.innerWidth <= 768;
+
 
   const handleDelete = async () => {
     setDeleteHandler(true);
@@ -388,41 +389,39 @@ const MyStudy = () => {
         </div>
         {loading ? (
           <Spin className="spinStyle" />
-        ) : ( 
+        ) : (
           <FullCalendar
-  plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-  headerToolbar={{
-    left: "",
-    center: "",
-    right: "",
-  }}
-  initialView={isMobile ? "timeGridWeek" : "timeGridWeek"} 
-  events={calenderData}
-  eventContent={renderEventContent}
-  eventClick={handleEventClick}
-  select=
-  {(arg) => {
-    handleDateSelect(arg.start, arg.end);
-     // Call handleDateSelect with selected start and end times
-  }}
-  selectable={true}
-  editable={true}
-  weekends={true}
-  eventDrop={handleEventDrop}
-  eventResize={handleEventResize}
-  allDaySlot={false}
-  height="100vh"
-  dayMaxEventRows={isMobile ? 1 : 5}
-  dayHeaderContent={(args) => {
-    const date = args.date;
-    const dayOfWeek = date.toLocaleString("default", {
-      weekday: "long",
-    });
-    return `${dayOfWeek}`;
-  }}
-  slotMinTime="06:00:00"
-/>
-
+            plugins={[timeGridPlugin, interactionPlugin]}
+            headerToolbar={{
+              left: "",
+              center: "",
+              right: "",
+            }}
+            initialView={"timeGridWeek"}
+            events={calenderData}
+            eventContent={renderEventContent}
+            eventClick={handleDateSelect}
+            longPressDelay={1}
+            select={(arg) => {
+              handleDateSelect(arg.start, arg.end);
+            }}
+            selectable={true}
+            editable={true}
+            weekends={true}
+            eventDrop={handleEventDrop}
+            eventResize={handleEventResize}
+            allDaySlot={false}
+            height="100vh"
+            dayMaxEventRows={isMobile ? 1 : 5}
+            dayHeaderContent={(args) => {
+              const date = args.date;
+              const dayOfWeek = date.toLocaleString("default", {
+                weekday: "long",
+              });
+              return `${dayOfWeek}`;
+            }}
+            slotMinTime="06:00:00"
+          />
         )}
       </div>
 

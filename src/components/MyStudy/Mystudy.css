@@ -46,3 +46,22 @@ button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-button.viewResultButt
 button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-button.takebutton.deleteBtn {
     background: red;
 }
+fc-scrollgrid-sync-inner
+{
+    width: 200px !important;
+}
+fc-col-header-cell-cushion
+{
+    font-size: 2px !important;
+}
+
+@media screen and (max-width: 768px) {
+
+    .fc-col-header-cell-cushion
+    {
+        font-size: 5px !important;
+    }
+
+    
+    
+  }
