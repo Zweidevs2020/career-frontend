@@ -1,0 +1,9 @@
+.tableHeadingStyle{
+    color:#1476b7 !important;
+    font-weight: bold !important;
+    font-size: 16px;
+    font-family: 'poppins';
+}
+.checked{
+    background: blue !important;
+}

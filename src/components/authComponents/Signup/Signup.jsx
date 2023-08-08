@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import sideAuthImage from "../../../assets/kid-front-page-min.png";
+import sideAuthImage from "../../../assets/kid-front-page (1).jpg";
 import myCareerGuidanceIcon from "../../../assets/my-guidance-logo.png";
 import usernameIcon from "../../../assets/usernameIcon.svg";
 import nameIcon from "../../../assets/nameIcon.svg";
@@ -22,6 +22,8 @@ import {
   monthArray,
   createFormDataObject,
   convertBase64,
+  monthArray31Days,
+  monthArray30Days,
 } from "../../../utils/helper";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
@@ -30,6 +32,7 @@ import countyImg from "../../../assets/county.png";
 import schoolImg from "../../../assets/schoolimg.png";
 
 const Signup = () => {
+  
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
@@ -38,10 +41,11 @@ const Signup = () => {
   const [dobSave, setDobSave] = useState({});
   const [open, setOpen] = useState(false);
   const currentYear = moment().year();
+
   const disabledDate = (current) => {
     return current.year() > currentYear;
   };
-  // console.log("===yearrr beforeee", dobSave);
+  
 
   const onChangeYearInternal = (date) => {
     onChangeYear(date?.year());
@@ -54,9 +58,11 @@ const Signup = () => {
   const handlerSaveSubmit = async () => {
     setLoading(true);
     const response = await postApiWithoutAuth(API_URL.SINGUPUSER, {
+   
       ...data,
       dob: `${dobSave.year}-${dobSave.month}-${dobSave.day}`,
     });
+    
     if (response.status === 200) {
       message.success("User is Created Successfully, You can now Login");
       navigate("/");
@@ -79,22 +85,18 @@ const Signup = () => {
     setData({ ...data, school: schoolName[0].label });
   };
 
-  // const handleSelectMonth = (m) => {
-  //   setDobSave({ ...dobSave, month: m });
-  // };
-
 
   const handleSelectDay = (d) => {
-    console.log("====dayyyy", d);
+   
     setDobSave({ ...dobSave, day: d });
   };
 
   useEffect(() => {
-    console.log("===dob", dobSave);
+
   }, [dobSave]);
 
   const onChangeYear = (date) => {
-    console.log("======yearrr", date);
+  
     setDobSave({ ...dobSave, year: date });
     // setDobSave({ ...dobSave, year: date?.$y });
   };
@@ -110,12 +112,14 @@ const Signup = () => {
 
   const getSchools = async () => {
     const response = await getApiWithoutAuth(API_URL.GETUSERSCHOOL);
+  
 
     if (response?.data?.success) {
       const school = response.data.data?.map((item) => {
         return {
           value: item.pk,
           label: item.school,
+          county:item.county
         };
       });
       setSchools(school);
@@ -125,24 +129,23 @@ const Signup = () => {
     }
   };
   const handleSelectMonth = (m) => {
-    // Update the selected month
+  
     setDobSave({ ...dobSave, month: m });
-
-    // Clear the day value if it's not valid for the selected month
     if (dobSave.day) {
       const isValidDayForMonth =
-        (m === "02" && dobSave.day >= 1 && dobSave.day <= 28) ||
+        (m === "02" && dobSave.day >= '01' && dobSave.day <= '28') ||
         (["04", "06", "09", "11"].includes(m) &&
-          dobSave.day >= 1 &&
-          dobSave.day <= 30) ||
+          dobSave.day >= '01' &&
+          dobSave.day <= '30') ||
         (["01", "03", "05", "07", "08", "10", "12"].includes(m) &&
-          dobSave.day >= 1 &&
-          dobSave.day <= 31);
+          dobSave.day >= '01' &&
+          dobSave.day <= '31');
       if (!isValidDayForMonth) {
         setDobSave((prevDobSave) => ({ ...prevDobSave, day: "" }));
       }
     }
   };
+
   return (
     <div className="mainDiv">
       <div className="leftDiv">
@@ -183,7 +186,7 @@ const Signup = () => {
           <Form.Item
             name="password"
             rules={[
-              // { required: true, message: "Please input your Password!" },
+            
               {
                 required: true,
                 pattern: new RegExp(
@@ -204,19 +207,19 @@ const Signup = () => {
             />
           </Form.Item>
           <Form.Item
-            // name="school"
+          
             rules={[{ required: true, message: "Please select a school!" }]}
             style={{ marginBottom: "12px" }}
           >
             <Select
-              showSearch // Enable search functionality
+              showSearch 
               placeholder="School"
               name="school"
               value={data?.school}
-              optionFilterProp="children" // Search filter based on option children
+              optionFilterProp="children" 
               filterOption={(input, option) =>
                 option.children.toLowerCase().startsWith(input.toLowerCase())
-              } // Filter options based on user input (show options that start with the input)
+              } 
               className="inputSelectFieldStyle"
               onChange={handleSelect}
               bordered={false}
@@ -230,8 +233,9 @@ const Signup = () => {
               }
             >
               {schools.map((school) => (
+               
                 <Select.Option key={school.value} value={school.value}>
-                  {school.label}
+                  {`${school.label}, ${school.county}`}
                 </Select.Option>
               ))}
             </Select>
@@ -338,7 +342,7 @@ const Signup = () => {
                 <Select
                   placeholder="Month"
                   name="month"
-                  options={monthArray}
+                  options={dobSave.day==='31' ? monthArray31Days:dobSave.day==='30' ? monthArray30Days:monthArray}
                   className="inputSelectFieldStyle"
                   onSelect={handleSelectMonth}
                   bordered={false}
@@ -358,18 +362,6 @@ const Signup = () => {
                 name="year"
                 rules={[{ required: true, message: "Please Select Year!" }]}
               >
-                {/* <DatePicker
-                  picker="year"
-                  placeholder="Year"
-                  className="inputSelectFieldStyle"
-                  onChange={onChangeYear}
-                  suffixIcon={
-                    <Image
-                      preview={false}
-                      src={dropdownIcon}
-                      width={15}
-                      style={{ marginRight: 10 }}
-                    /> */}
                 <DatePicker
                   picker="year"
                   placeholder="Year"
@@ -390,7 +382,7 @@ const Signup = () => {
           </div>
           <Form.Item
             name="profile_image"
-            // rules={[{ required: true, message: "Please Add Picture!" }]}
+          
           >
             <Upload
               beforeUpload={() => false}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import sideAuthImage from "../../../assets/kid-front-page-min.png";
+import sideAuthImage from "../../../assets/kid-front-page (1).jpg";
 import myCareerGuidanceIcon from "../../../assets/my-guidance-logo.png";
 import usernameIcon from "../../../assets/usernameIcon.svg";
 import lockIcon from "../../../assets/lockIcon.svg";
@@ -29,6 +29,7 @@ const Login = () => {
     console.log("===in");
     setLoading(true);
     const response = await postApiWithoutAuth(API_URL.SIGNIN, data);
+    console.log("data of login===========",response)
     if (response?.status === 200) {
       message.success("Login Successfully");
       setLoading(false);
@@ -139,7 +140,7 @@ const Login = () => {
         </span>
       </div>
       <div className="rightImageStyle">
-        <Image
+      <Image  
           preview={false}
           src={sideAuthImage}
           width={"100%"}

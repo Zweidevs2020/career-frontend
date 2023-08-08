@@ -39,7 +39,7 @@ const EducationalGuidance = () => {
   const getQuiz = async () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETGOALS);
-    console.log("==========response", response);
+
     if (response?.data.status === 200) {
       setQuizz(response.data.data);
       setLoading(false);
@@ -84,13 +84,9 @@ const EducationalGuidance = () => {
                         className="takebutton"
                         type="button"
                         htmlType="button"
-                        // onClick={() =>
-                        //   navigate("/educational-guidance-test", {
-                        //     state: { data: item },
-                        //   })
-                        // }
+                       
                         onClick={() => {
-                          console.log("=====>item", item.youtube_link.length);
+                        
                           if (item.youtube_link?.length !== 0) {
                             setTestId(
                               `https://www.youtube.com/embed/${item.youtube_link}`
@@ -122,6 +118,7 @@ const EducationalGuidance = () => {
                               );
                               navigate("/video", {
                                 state: {
+                                  
                                   data: item,
                                   videoId: `https://www.youtube.com/embed/${item.youtube_link}`,
                                 },
@@ -149,42 +146,7 @@ const EducationalGuidance = () => {
           )}
         </div>
       </div>
-      {/* <Modal
-        className="modalStyleClass"
-        bodyStyle={{
-          background: "none",
-          display: "flex",
-          justifyContent: "center",
-        }}
-        open={isModalOpen}
-        onCancel={handleCancel}
-        footer={[]}
-      >
-        <div className="modalInnerStyle">
-          <div style={{ alignSelf: "center", textAlign: "center" }}>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <img src={winningCup} alt="winning Cup" />
-            </div>
-            <div className="mt-4 totalScoreHadding">Total scrores</div>
-            <div className="mt-2">
-              Lorem ipsum is a placeholder text commonly used to demonstrate the
-              visual form of a document.
-            </div>
-            <div className="mt-3">
-              <MyCareerGuidanceButton
-                label={`${singlequizData.score ? singlequizData.score : 0}/${
-                  singlequizData.total_score ? singlequizData.total_score : 0
-                }`}
-                className="resultDataButton"
-                type="button"
-                htmlType="button"
-                onClick={handleCancel}
-                //   loading={loading}
-              />
-            </div>
-          </div>
-        </div>
-      </Modal> */}
+     
 
       <Modal
         centered

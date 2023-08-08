@@ -178,14 +178,7 @@ const MyChoices = () => {
                         >
                           Edit
                         </Button>
-                        {/* <Button
-                          className="removeChoicesButton me-3 "
-                          type="primary"
-                          htmlType="b"
-                          onClick={() => removeChoices(item)}
-                        >
-                          Remove
-                        </Button> */}
+                       
                       </div>
                     </div>
                   </div>
@@ -193,70 +186,6 @@ const MyChoices = () => {
               })
             )}
           </div>
-          {/* <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: 15,
-            }}
-          >
-            <div className="welcomeHaddingText pt-3">No Selected Choices!</div>
-            <Button
-              className="addChoicesButton me-3 "
-              type="primary"
-              htmlType="b"
-              onClick={addChoices}
-            >
-              Add Choice
-            </Button>
-          </div>
-          {choicesData
-            .filter(
-              (choice) =>
-                !userGetChoices.some(
-                  (userChoice) => userChoice.id === choice.id
-                )
-            )
-            .map((item, index) => {
-              return (
-                <div
-                  className={
-                    choices.some((selectedItem) => selectedItem.id === item.id)
-                      ? "choicesWithBorder"
-                      : "choicesWithoutBorder"
-                  }
-                  key={index}
-                  onClick={() => selectedChoices(item)}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      height: "95px",
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <img
-                        src={item.icon}
-                        alt="cyberLegendLogo"
-                        className="ps-4"
-                      />
-                      <div className="ps-4 quizHeadingStyle">{item.name}</div>
-                    </div>
-                    {choices.some(
-                      (selectedItem) => selectedItem.id === item.id
-                    ) ? (
-                      <img
-                        src={tickIcon}
-                        alt="cyberLegendLogo"
-                        className="pe-4"
-                      />
-                    ) : null}
-                  </div>
-                </div>
-              );
-            })} */}
         </div>
       </div>
     </>

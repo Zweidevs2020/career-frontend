@@ -18,6 +18,7 @@ export const getApiWithoutAuth = async (url) => {
 };
 
 export const getApiWithAuth = async (url) => {
+ 
   await setApiHeader();
   try {
     const res = await baseInstance.get(url);
@@ -41,6 +42,7 @@ export const patchApiWithAuth = async (url, body) => {
   }
 };
 export const patchApiWithOutAuth = async (url, body) => {
+
   try {
     const res = await baseInstance.patch(url, body);
     return {
@@ -52,6 +54,7 @@ export const patchApiWithOutAuth = async (url, body) => {
 };
 
 export const putApiWithAuth = async (url, body) => {
+ 
   await setApiHeader();
   try {
     const res = await baseInstance.put(url, body);
@@ -79,6 +82,7 @@ export const postApiWithAuth = async (url, body) => {
   await setApiHeader();
   try {
     const res = await baseInstance.post(url, body);
+    console.log("apiiii==========API=========",body)
     return {
       data: res,
     };

@@ -69,12 +69,11 @@ const Sidebar = ({ children, flags }) => {
 
     window.addEventListener("resize", handleResize);
 
-    // Cleanup the event listener on unmount
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-  // console.log("===screen size",screenSize.width)
+ 
   const { Title } = Typography;
 
   const handleEditClick = () => {
@@ -138,7 +137,7 @@ const Sidebar = ({ children, flags }) => {
   const handleUpdate = async () => {
     setLoading2(true);
     const response = await patchApiWithAuth(API_URL.GETUSER2, updateData);
-    console.log("====================goals levels", response);
+  
 
     if (response.data.status === 200) {
       setIsModalOpen(false);
@@ -203,20 +202,12 @@ const Sidebar = ({ children, flags }) => {
       location.pathname === "/my-choice-edit"
     ) {
       setSelectedMenuItem("MyChoices");
-    } else {
-      setSelectedMenuItem("MyStudy");
-    }
+    } 
+  
   }, [location]);
 
-  // useEffect(() => {
-  // console.log("====hggg", screenSize.width);
-  //   if (screenSize.width === "425") {
-  //     console.log("====hggg");
-  //   }
-  // }, [screenSize]);
-
   const logoutUser = async () => {
-    console.log("===in logouttt");
+  
     removeToken();
     navigate("/");
   };

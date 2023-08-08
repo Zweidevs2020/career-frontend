@@ -44,68 +44,18 @@ const Occupational = () => {
       setLoading(false);
     }
   };
-  console.log("===========edddd", educationGuidance);
+ 
 
-  // Custom sorting function to sort the data in ascending order based on 'score'
-  // const sortByScore = (a, b) => a.score - b.score;
-
-  // Sort the data based on the 'score' field in ascending order
-  // const sortedData = educationGuidance.slice().sort(sortByScore);
-  // console.log("=====22222", sortedData);
-
-  // const options = {
-  //   chart: {
-  //     id: "bar",
-  //     toolbar: {
-  //       show: false,
-  //     },
-  //     height: 350,
-  //   },
-  //   plotOptions: {
-  //     bar: {
-  //       horizontal: true,
-  //       columnWidth: "50%",
-  //       colors: {
-  //         backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#8BBDDB"], // Set the background color of the bars
-  //       },
-  //     },
-  //   },
-  //   dataLabels: {
-  //     enabled: false,
-  //   },
-  //   // xaxis: {
-  //   //   categories: educationGuidance.map((item) => item.question_type).flat(),
-  //   // },
-  //   xaxis: {
-  //     categories: sortedData.map((item) => item.question_type),
-  //   },
-  //   colors: ["#8BBDDB"],
-  //   series: [
-  //     {
-  //       data: sortedData.map((item) => item.score),
-  //     },
-  //   ],
-  //   title: {
-  //     text: educationGuidance[0]?.test_name,
-  //     align: "center",
-  //   },
-  //   tooltip: {
-  //     y: {
-  //       formatter: (value) => value, // Show the exact value in the tooltip
-  //     },
-  //   },
-  // };
-  // Custom sorting function to sort the data in descending order based on 'score'
   const sortByScoreDescending = (a, b) => b.score - a.score;
 
-  // Sort the data based on the 'score' field in descending order
+ 
   const sortedData = educationGuidance.slice().sort(sortByScoreDescending);
 
-  // Extract scores and question types separately from the sortedData
+ 
   const scores = sortedData.map((item) => item.score);
   const questionTypes = sortedData.map((item) => item.question_type);
 
-  // Now you can use the sorted data directly in the ApexCharts series data
+ 
   const series = [
     {
       data: scores,
@@ -125,7 +75,7 @@ const Occupational = () => {
         horizontal: true,
         columnWidth: "50%",
         colors: {
-          // backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#8BBDDB"],
+      
           backgroundBarColors: ["white"],
         },
       },
@@ -161,7 +111,7 @@ const Occupational = () => {
           <div className="quizDetailsStyle">No Data Found</div>
         ) : (
           <>
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <div style={{ display: "flex", justifyContent: "flex-start" }}>
               <Button
                 className="viewResultButton"
                 type="primary"
@@ -175,7 +125,7 @@ const Occupational = () => {
               {educationGuidance[0]?.test_name}
             </div>
             <div className="textStyle18 pt-1 pb-3">
-              Lorem ipsum is a placeholder text commonly used to demonstrate
+            {educationGuidance[0]?.description}
             </div>
 
             <div className="educationalGuidanceSecondDiv">

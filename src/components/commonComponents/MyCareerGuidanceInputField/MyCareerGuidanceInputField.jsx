@@ -4,10 +4,12 @@ import hidePassword from "../../../assets/hidePassword.svg";
 import showPassword from "../../../assets/showPassword.svg";
 import "./MyCareerGuidanceInputFieldStyle.css";
 const MyCareerGuidanceInputField = (props) => {
+  const isPassword = props.type === "password";
   return (
     <>
+
       <label>{props.label}</label>
-      {props.type === "password" ? (
+      {isPassword ? (
         <Input.Password
           placeholder={props.placeholder}
           value={props.passwordValue}
@@ -59,7 +61,7 @@ const MyCareerGuidanceInputField = (props) => {
           className={"inputFieldStyle"}
           onChange={props.onChange}
           onBlur={props.onBlur}
-          name={props.name}
+          name={props.name} 
           required={props.required}
           suffix={props.suffix}
           onKeyDown={props.onKeyDown}
@@ -77,6 +79,7 @@ const MyCareerGuidanceInputField = (props) => {
               </div>
             ) : null
           }
+          {...props}
         />
       ) : (
         <Input
@@ -86,11 +89,14 @@ const MyCareerGuidanceInputField = (props) => {
           autoComplete={props.autoComplete}
           className={"inputFieldStyle"}
           onChange={props.onChange}
+          onBlur={props.onBlur}
+          autoFocus={props.inputValue}
           name={props.name}
           required={props.required}
           suffix={props.suffix}
           onKeyDown={props.onKeyDown}
           disabled={props.disabled}
+          {...props}
         />
       )}
     </>
