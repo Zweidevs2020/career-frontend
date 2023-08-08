@@ -82,7 +82,7 @@ export const postApiWithAuth = async (url, body) => {
   await setApiHeader();
   try {
     const res = await baseInstance.post(url, body);
-    console.log("apiiii==========API=========",body)
+  
     return {
       data: res,
     };

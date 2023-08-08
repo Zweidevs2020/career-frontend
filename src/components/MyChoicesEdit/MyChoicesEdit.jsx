@@ -8,7 +8,6 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-
 import { Input, Modal } from "antd";
 import { useLocation } from "react-router-dom";
 import { Space, Table, Col, message, Form } from "antd";
@@ -70,7 +69,7 @@ const MyChoicesEdit = () => {
     const response = await getApiWithAuth(
       `choices/column-names/?choice=${dataa.id}`
     );
-  
+
     if (response.data.status === 200) {
       const columnsData = response.data.data.data;
       const columnsWithoutOrderNumber = columnsData.slice(0, columnsData.length - 1);
@@ -84,9 +83,9 @@ const MyChoicesEdit = () => {
   }
 
   const getTableRecord = async () => {
-    
+
     const response = await getApiWithAuth(`choices/${dataa.id}/`);
-   
+
     if (response.data.status === 200) {
       setOldData(response.data.data);
       setLoadingFirst(false);
@@ -95,7 +94,7 @@ const MyChoicesEdit = () => {
     }
   };
   useEffect(() => {
-    
+
   }, [data]);
 
   useEffect(() => {
@@ -126,10 +125,10 @@ const MyChoicesEdit = () => {
   }, [showRowsData, oldData]);
 
   useEffect(() => {
-    
+
     if (showRows !== null) {
       const newData = Array.from({ length: showRows }, () => {
-        const rowData = { id: uuid4()};
+        const rowData = { dataId: uuid4(), id: null };
         columns.forEach((column) => {
           rowData[column] = null;
         });
@@ -164,30 +163,29 @@ const MyChoicesEdit = () => {
     setAddDataRow({ ...addDataRow, [name]: value });
   };
 
-  const handleChangeTable = (e, rowData) => {
-    
-    const { name, value } = e.target;
-    
 
-    
+
+  const handleChangeTable = (e, rowData) => {
+
+    const { name, value } = e.target;
+
     let updatedData = data.map((item) => {
       if (item.rowNo === rowData.rowNo) {
         rowRef.current = { ...rowRef.current, id: item.id, [name]: value }
-        return  rowRef.current ;
+        console.log("=============row Rf data==", rowRef.current)
+        return rowRef.current;
       } else {
         return item;
       }
     });
-  
-  
-    dataRef.current = {...updatedData};
-  
-   
+    dataRef.current = { ...updatedData };
   }
+
+
   const eidtThisRow = (record) => {
-  
+
     const updatedData = data.map((item) => {
-    
+
       if (item.rowNo === record.rowNo) {
         return { ...item, editable: true };
       } else {
@@ -196,11 +194,13 @@ const MyChoicesEdit = () => {
     });
     setData(updatedData);
   };
-  const handleUpdate = async (record) => {
-          
 
+
+  const handleUpdate = async (record) => {
+
+    console.log("entered in handleupdate", record)
     const checkNullValue = (record, key) => {
-     
+
       if (record[key] === null || record[key] === "") {
         return key;
       }
@@ -211,40 +211,35 @@ const MyChoicesEdit = () => {
       .map((column) => checkNullValue(record, column))
       .filter(Boolean);
 
-  
+
     if (nullKeys.length > 0) {
       message.error(`Please enter the ${nullKeys[0]} of the Row`);
     } else {
-
-      const row = dataRef.current.filter( (item) => item.id === record.id );
-
+      console.log("================Entered update row==============", row)
+      const row = dataRef.current.filter((item) => item.id === record.id);
+      console.log("================after update row==============", row)
       const respose = await patchApiWithAuth(
         `choices/update-${dataa.id}/${record.rowNo}/`,
         row[0]
       );
 
-
       if (respose.data.status === 200) {
         message.success("Row update succesfully");
-       
         setShowRows(null)
         getChoiceRecord();
         setSelectedRowId(record.id);
         getTableRecord();
-      
       } else {
         message.error(respose.data.message);
       }
     }
-
   };
 
-
+  
   const handleDelete = async (item) => {
     const respose = await deleteApiWithAuth(
       `choices/delete-${dataa.id}/${item.id}/`
     );
-   
 
     if (respose.data.status === 204) {
       message.success("Row delete succesfully");
@@ -254,9 +249,15 @@ const MyChoicesEdit = () => {
       message.error(respose.data.message);
     }
   };
+
+
+
   const handleAddRow = async (record) => {
+    // console.log("==========add ROW FUN===========",record)
+    const row = dataRef.current.filter((item) => item.id === record.id);
+
     const checkNullValue = (record, key) => {
-   
+
       if (record[key] === null || record[key] === "") {
         return key;
       }
@@ -266,13 +267,13 @@ const MyChoicesEdit = () => {
     const nullKeys = columns
       .map((column) => checkNullValue(record, column))
       .filter(Boolean);
-   
+
     if (nullKeys.length > 0) {
 
       message.error(`Please enter the ${nullKeys[0]} of the Row`);
     } else {
 
-      const respose = await postApiWithAuth(`choices/${dataa.id}/`, record);
+      const respose = await postApiWithAuth(`choices/${dataa.id}/`, row);
 
       if (respose.data.status === 200) {
         message.success("Row add succesfully");
@@ -280,7 +281,7 @@ const MyChoicesEdit = () => {
         getChoiceRecord();
 
         getTableRecord();
-     
+
         setSelectedRowId(record.id);
 
       } else {
@@ -319,7 +320,7 @@ const MyChoicesEdit = () => {
           zIndex: 9999,
         }
         : {}),
-    
+
     };
     return <tr {...props} ref={setNodeRef} style={style} {...attributes}  {...listeners} />;
   };
@@ -333,9 +334,8 @@ const MyChoicesEdit = () => {
   const onDragEnd = ({ active, over }) => {
     if (active.id !== over?.id) {
       setData((prev) => {
-        const activeIndex = prev.findIndex((i) => i.id === active.id);
-        const overIndex = prev.findIndex((i) => i.id === over?.id);
-
+        const activeIndex = prev.findIndex((i) => i.dataId === active.id);
+        const overIndex = prev.findIndex((i) => i.dataId === over?.id);
         return arrayMove(prev, activeIndex, overIndex);
       });
     }
@@ -357,16 +357,15 @@ const MyChoicesEdit = () => {
               <div className="w-100">
                 <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
                   <SortableContext
-                    items={data.map((i) => i.id)}
+                    items={data.map((i) => i.dataId)}
                     strategy={verticalListSortingStrategy}
                   >
-                    <Table pagination={false} dataSource={data} rowKey={"id"} components={{
+                    <Table pagination={false} dataSource={data} rowKey={"dataId"} components={{
                       body: {
                         row: Row,
                       }
                     }}
                     >
-
                       {columns.map((item) => {
 
                         return (
@@ -383,7 +382,7 @@ const MyChoicesEdit = () => {
                                   type="input"
                                   name={item}
                                   defaultValue={text}
-                                  onChange={(e) => handleChangeTable(e, record)}     
+                                  onChange={(e) => handleChangeTable(e, record)}
                                   isPrefix={false}
                                   disabled={!record.editable}
                                 />

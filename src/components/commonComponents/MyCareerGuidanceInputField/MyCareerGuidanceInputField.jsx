@@ -61,7 +61,6 @@ const MyCareerGuidanceInputField = (props) => {
           className={"inputFieldStyle"}
           onChange={props.onChange}
           onBlur={props.onBlur}
-          name={props.name} 
           required={props.required}
           suffix={props.suffix}
           onKeyDown={props.onKeyDown}
@@ -79,7 +78,7 @@ const MyCareerGuidanceInputField = (props) => {
               </div>
             ) : null
           }
-          {...props}
+          
         />
       ) : (
         <Input
@@ -89,7 +88,6 @@ const MyCareerGuidanceInputField = (props) => {
           autoComplete={props.autoComplete}
           className={"inputFieldStyle"}
           onChange={props.onChange}
-          onBlur={props.onBlur}
           autoFocus={props.inputValue}
           name={props.name}
           required={props.required}

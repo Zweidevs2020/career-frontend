@@ -26,10 +26,10 @@ const Login = () => {
   };
 
   const handlerSubmit = async () => {
-    console.log("===in");
+   
     setLoading(true);
     const response = await postApiWithoutAuth(API_URL.SIGNIN, data);
-    console.log("data of login===========",response)
+   
     if (response?.status === 200) {
       message.success("Login Successfully");
       setLoading(false);
