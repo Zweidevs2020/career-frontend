@@ -427,18 +427,21 @@ const CaoCalculator = () => {
                     display: "flex",
                     justifyContent: "space-between",
                   }}
-                >
-                  <div className="textStyle18">Subjects</div>
-                </div>
+                ></div>
                 <Table
                   dataSource={tableData}
                   columns={columns}
                   rowClassName={() => "backgroundF4F6F8"}
                   pagination={false}
                 />
-                <div onClick={handleAdd} style={{ cursor: "pointer", display: "flex", justifyContent: "end" }}>
-              
-                  <span>Add more row</span>
+                <div style={{display:"flex",justifyContent:"end"}}>
+                  <MyCareerGuidanceButton
+                    label="Add Subject"
+                    className="clearAllButton"
+                    type="primary"
+                    htmlType="button"
+                    onClick={handleAdd}
+                  />
                 </div>
               </div>
               <div className="coaPointsWidth coaPointsWidth">
@@ -621,7 +624,6 @@ const CaoCalculator = () => {
                 >
                   <div className="textStyle18">Subjects</div>
                   <div onClick={handleAdd} style={{ cursor: "pointer" }}>
-                 
                     <span>Add more row</span>
                   </div>
                 </div>

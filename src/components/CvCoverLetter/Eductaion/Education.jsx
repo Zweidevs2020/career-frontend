@@ -3,9 +3,10 @@ import { Form, Button, DatePicker, Checkbox, Select, message } from "antd";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import "./Education.css";
-import { postApiWithAuth, getApiWithAuth } from "../../../utils/api";
-import { API_URL } from "../../../utils/constants";
+import { postApiWithAuth, getApiWithAuth,deleteApiWithAuth } from "../../../utils/api";
+import Delete from "../../../assets/delete.png";
 import dayjs from "dayjs";
+import { API_URL } from "../../../utils/constants";
 
 const Education = ({ setCurrent, current }) => {
   const [data, setData] = useState(null);
@@ -40,6 +41,7 @@ const Education = ({ setCurrent, current }) => {
             return {
               index: indexx,
               dataValue: item,
+              setIndex:indexx
             };
           })
         );
@@ -107,6 +109,7 @@ const Education = ({ setCurrent, current }) => {
       ? (sendDaata = { education_data: data, junior_data: [] })
       : (sendDaata = { education_data: data, junior_data: resData });
     const respose = await postApiWithAuth(API_URL.POSTEDUCATION, sendDaata);
+    console.log("hellllllllllllllllloooooooo",respose)
     if (respose.data.status === 201) {
       setCurrent(current + 1);
     } else {
@@ -169,10 +172,8 @@ const Education = ({ setCurrent, current }) => {
   };
 
   const SavePdf = async () => {
-    // let data = createArrayData(referArray);
 
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
-   
     if (respose.data.status === 201) {
       // setCurrent(current + 1);
     } else {
@@ -198,7 +199,6 @@ const Education = ({ setCurrent, current }) => {
   }, [educationArray]);
 
   const educationItems = (item, index) => {
-
     return (
       <>
         <div className="eduFormDouble" key={index} style={{ marginTop: "3%" }}>
@@ -299,35 +299,89 @@ const Education = ({ setCurrent, current }) => {
               />
             </Form.Item>
             <div>
-              <Checkbox
-                className="expCheckBox"
-                name="present"
-                inputValue={item?.dataValue?.present}
-                onChange={(e) => {
-                  setEducationArray(
-                    educationArray.map((item) => {
-                      return item.index === index
-                        ? {
-                            ...item,
-                            dataValue: {
-                              ...item.dataValue,
-                              present: e.target.checked,
-                            },
-                          }
-                        : item;
-                    })
-                  );
-                  setIsCurrentCheck(!isCurrentCheck);
-                }}
-              >
-               I'm still studing here
-              </Checkbox>
+            <Checkbox
+            className="expCheckBox"
+            name="present"
+            inputValue={item?.dataValue?.present}
+            onChange={(e) => {
+              setEducationArray((prevArray) =>
+                prevArray.map((educationItem) =>
+                  educationItem.index === item.index
+                    ? {
+                        ...educationItem,
+                        dataValue: {
+                          ...educationItem.dataValue,
+                          present: e.target.checked,
+                        },
+                      }
+                    : educationItem
+                )
+              );
+              setIsCurrentCheck(!isCurrentCheck);
+            }}
+          >
+            I'm still studying here
+          </Checkbox>
+
+          <div className="mainContainerDelete">
+            <img
+              className="deleteSubject"
+              src={Delete}
+              onClick={() => handleDeleteEducation(item.dataValue.id)}
+            />
+          </div>
             </div>
           </div>
         </div>
       </>
     );
   };
+  const handleDeleteEducation = async (id) => {
+    try {
+      setEducationArray((prevArray) =>
+        prevArray.filter((item) => item.dataValue.id !== id)
+      );
+  
+      const response = await deleteApiWithAuth(`${API_URL.DELETE}/${id}/`);
+      console.log('Delete response:', response);
+  
+      if (response.data.status === 204) {
+        message.success("Education entry deleted successfully.");
+      } else {
+        message.error("Failed to delete the education entry.");
+        setEducationArray((prevArray) => [...prevArray, educationArray.find(item => item.dataValue.id === id)]);
+      }
+    } catch (error) {
+      console.error("Error deleting the education entry:", error);
+      message.error("An error occurred while deleting the education entry.");
+      setEducationArray((prevArray) => [...prevArray, educationArray.find(item => item.dataValue.id === id)]);
+    }
+  };
+  
+
+  const handleDeleteJuniorCert = async (id) => {
+    try {
+      setResultArrayData((prevArray) =>
+        prevArray.filter((item) => item.dataValue.id !== id)
+      );
+  
+      const response = await deleteApiWithAuth(`${API_URL.DELETE_RESULT}/${id}/`);
+      console.log('Delete response:', response);
+  
+      if (response.data.status === 204) {
+        message.success("Junior Cert entry deleted successfully.");
+      } else {
+        message.error("Failed to delete the Junior Cert entry.");
+        setResultArrayData((prevArray) => [...prevArray, resultArrayData.find(item => item.dataValue.id === id)]);
+      }
+    } catch (error) {
+      console.error("Error deleting the Junior Cert entry:", error);
+      message.error("An error occurred while deleting the Junior Cert entry.");
+      setResultArrayData((prevArray) => [...prevArray, resultArrayData.find(item => item.dataValue.id === id)]);
+    }
+  };
+  
+
 
   const educationResult = (item, index) => {
     return (
@@ -356,17 +410,17 @@ const Education = ({ setCurrent, current }) => {
             </Form.Item>
           </div>
           <div className="expFormDoubleItem">
-            <Form.Item
-              label="Level"
-              name={`level ${index}`}
-              className="skillItemLable"
-              rules={[
-                {
-                  required: item?.dataValue.level ? false : true,
-                  message: "Please Select 1 Option",
-                },
-              ]}
-            >
+          <Form.Item
+          label="Result"
+          name={`result ${index}`}
+          className="skillItemLable"
+          rules={[
+            {
+              required: item?.dataValue.result ? false : true,
+              message: "Please Select 1 Option",
+            },
+          ]}
+        >
               <Select
                 placeholder="Select"
                 onChange={(event) => handleChange(event, "level", index)}
@@ -389,6 +443,13 @@ const Education = ({ setCurrent, current }) => {
             </Form.Item>
           </div>
         </div>
+        <div className="mainContainerDelete">
+    <img
+      className="deleteSubject"
+      src={Delete}
+      onClick={() => handleDeleteJuniorCert(item.dataValue.id)}
+    />
+  </div>
 
         <div className="expFormDoubleItem">
           <Form.Item

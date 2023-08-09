@@ -48,44 +48,6 @@ const MyStudy = () => {
   const handleOpenViewBooking = () => setOpenViewBooking(true);
   const handleCloseViewBooking = () => setOpenViewBooking(false);
 
-  // const optionArray = [
-  //   { label: "06:00 AM", value: "06:00 AM" },
-  //   { label: "06:30 AM", value: "06:30 AM" },
-  //   { label: "07:00 AM", value: "07:00 AM" },
-  //   { label: "07:30 AM", value: "07:30 AM" },
-  //   { label: "08:00 AM", value: "08:00 AM" },
-  //   { label: "08:30 AM", value: "08:30 AM" },
-  //   { label: "09:00 AM", value: "09:00 AM" },
-  //   { label: "09:30 AM", value: "09:30 AM" },
-  //   { label: "10:00 AM", value: "10:00 AM" },
-  //   { label: "10:30 AM", value: "10:30 AM" },
-  //   { label: "11:00 AM", value: "11:00 AM" },
-  //   { label: "11:30 AM", value: "11:30 AM" },
-  //   { label: "12:00 PM", value: "12:00 PM" },
-  //   { label: "12:30 PM", value: "12:30 PM" },
-  //   { label: "01:00 PM", value: "01:00 PM" },
-  //   { label: "01:30 PM", value: "01:30 PM" },
-  //   { label: "02:00 PM", value: "02:00 PM" },
-  //   { label: "02:30 PM", value: "02:30 PM" },
-  //   { label: "03:00 PM", value: "03:00 PM" },
-  //   { label: "03:30 PM", value: "03:30 PM" },
-  //   { label: "04:00 PM", value: "04:00 PM" },
-  //   { label: "04:30 PM", value: "04:30 PM" },
-  //   { label: "05:00 PM", value: "05:00 PM" },
-  //   { label: "05:30 PM", value: "05:30 PM" },
-  //   { label: "06:00 PM", value: "06:00 PM" },
-  //   { label: "06:30 PM", value: "06:30 PM" },
-  //   { label: "07:00 PM", value: "07:00 PM" },
-  //   { label: "07:30 PM", value: "07:30 PM" },
-  //   { label: "08:00 PM", value: "08:00 PM" },
-  //   { label: "08:30 PM", value: "08:30 PM" },
-  //   { label: "09:00 PM", value: "09:00 PM" },
-  //   { label: "09:30 PM", value: "09:30 PM" },
-  //   { label: "10:00 PM", value: "10:00 PM" },
-  //   { label: "10:30 PM", value: "10:30 PM" },
-  //   { label: "11:00 PM", value: "11:00 PM" },
-  //   { label: "11:30 PM", value: "11:30 PM" },
-  // ];
   const optionArray = [];
 
   const startTime = new Date("2000-01-01T06:00:00");
@@ -275,15 +237,17 @@ const MyStudy = () => {
     setSelectedTime(dayjs(selectInfo.start).locale("en").format("hh:mm A"));
     // setSelectedEndTime(dayjs(selectInfo.end));
     setSelectedEndTime(dayjs(selectInfo.end).locale("en").format("hh:mm A"));
+    console.log("========>hello", setSelectedTime);
 
     handleOpenBooking();
   };
+
   const createNewEvent = async () => {
     setLoadingBooking(true);
-    // let startTime = dayjs(selectedTime.$d).format("HH:mm:ss");
-    // let endTime = dayjs(selectedEndTime.$d).format("HH:mm:ss");
-    let startTime = dayjs(selectedTime, "hh:mm A").format("hh:mm:ss");
-    let endTime = dayjs(selectedEndTime, "hh:mm A").format("hh:mm:ss");
+
+    let startTime = dayjs(selectedTime, "hh:mm A").format("HH:mm:ss");
+    let endTime = dayjs(selectedEndTime, "hh:mm A").format("HH:mm:ss");
+
     const response = await postApiWithAuth(API_URL.ADDSLOTTABLE, {
       timeslot: startTime,
       endslot: endTime,
@@ -307,6 +271,9 @@ const MyStudy = () => {
       message.error(response.data.message[0]);
     }
   };
+  const isMobile = window.innerWidth <= 768;
+
+
   const handleDelete = async () => {
     setDeleteHandler(true);
     const respose = await deleteApiWithAuth(`timetable/reset-timeslot/`);
@@ -424,19 +391,23 @@ const MyStudy = () => {
           <Spin className="spinStyle" />
         ) : (
           <FullCalendar
-            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            plugins={[timeGridPlugin, interactionPlugin]}
             headerToolbar={{
               left: "",
               center: "",
               right: "",
             }}
-            initialView={isMobile ? "timeGridDay" : "timeGridWeek"}
+            initialView={"timeGridWeek"}
             events={calenderData}
             eventContent={renderEventContent}
-            eventClick={handleEventClick}
-            select={handleDateSelect}
+            eventClick={handleDateSelect}
+            longPressDelay={1}
+            select={(arg) => {
+              handleDateSelect(arg.start, arg.end);
+            }}
             selectable={true}
             editable={true}
+            weekends={true}
             eventDrop={handleEventDrop}
             eventResize={handleEventResize}
             allDaySlot={false}
@@ -615,10 +586,6 @@ const MyStudy = () => {
           >
             <Select
               placeholder="Select time"
-              // onChange={(value) => {
-              //   setBtnDisabled(false);
-              //   setViewData({ ...viewData, start: value });
-              // }}
               onChange={(value) => {
                 setBtnDisabled(false);
                 const selectedTime = dayjs(value, "hh:mm A");
@@ -661,24 +628,6 @@ const MyStudy = () => {
                 </Option>
               ))}
             </Select>
-            {/* <TimePicker
-              value={dayjs(viewData.start)}
-              use12Hours={true}
-              minuteStep={15}
-              format="h:mm a"
-              style={{ width: 200 }}
-              className="inputFieldStyle"
-              onChange={(e, s) => handleChangeStartTime(e, s)}
-            />
-            <TimePicker
-              value={dayjs(viewData.end)}
-              use12Hours={true}
-              minuteStep={15}
-              format="h:mm a"
-              className="inputFieldStyle"
-              style={{ width: 200 }}
-              onChange={(e, d) => handleChangeEndTime(e, d)}
-            /> */}
           </div>
           <div
             className="mt-3"

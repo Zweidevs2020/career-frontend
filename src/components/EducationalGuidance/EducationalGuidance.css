@@ -150,3 +150,31 @@
     }
   
   }
+  .crossContainer
+  {
+    cursor: pointer;
+  }
+  .quizBoard
+  {
+    width: 100px;
+    height: 100px;
+  }
+  .retakeChart
+  {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width:250px;
+  }
+  .retakeButton
+  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .retake
+  {
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+  }

@@ -33,5 +33,7 @@ export const API_URL = {
   DASHBOARDTESTTYPES:'psychometric/testType/',
   GETCHOICES:'choices/selected/',
   REMOVECHOICES:'choices/selected/',
-  GETMYGOALPDF:'goals/goalPdf/'
+  GETMYGOALPDF:'goals/goalPdf/',
+  DELETE:'/cv/delete-education',
+  DELETE_RESULT:'/cv/delete-junior-cert'
 };

@@ -9,7 +9,7 @@ import { API_URL } from "../../utils/constants";
 import "./MyGoalStyle.css";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import moment from "moment";
-import { PDFDocument } from 'pdf-lib';
+import { PDFDocument } from "pdf-lib";
 
 const MyGoal = () => {
   const reportTemplateRef = useRef(null);
@@ -99,7 +99,6 @@ const MyGoal = () => {
   }
 
   const DownloadBtn = async () => {
-  
 
     setLoading3(true);
     const res = await getApiWithAuth(API_URL.GETMYGOALPDF);
@@ -109,20 +108,23 @@ const MyGoal = () => {
 
       const data = res.data.data; 
 
-      const pdfBytes = Uint8Array.from([...data].map((char) => char.charCodeAt(0)));
+      const pdfBytes = Uint8Array.from(
+        [...data].map((char) => char.charCodeAt(0))
+      );
 
     
       const pdfDoc = await PDFDocument.load(pdfBytes);
-    
-      
+
+      // Generate a new blob containing the PDF file
       const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
-  
-      const link = document.createElement('a');
+
+      // Create a temporary link element
+      const link = document.createElement("a");
       link.href = pdfDataUri;
-      link.download = 'file.pdf';
-    
-     
-      link.dispatchEvent(new MouseEvent('click'));
+      link.download = "file.pdf";
+
+      // Simulate a click event to trigger the file download
+      link.dispatchEvent(new MouseEvent("click"));
       setLoading3(false);
     } else {
       setLoading3(false);
@@ -173,7 +175,6 @@ const MyGoal = () => {
           </div>
           <div className="lowerContainer2">
             <div className="lowerContainer">
-             
               <div className="inputContainer">
                 <h style={{ color: "#111928" }}>What I want to:</h>
               </div>
@@ -192,8 +193,7 @@ const MyGoal = () => {
                 <h style={{ color: "#111928" }}>
                   Specific goal for week/month/term/year:
                 </h>
-              </div>
-             
+              </div>            
               <div className="inputGoal">
                 <div className="mt-3">
                   <Radio.Group
@@ -235,8 +235,8 @@ const MyGoal = () => {
                   onChange={(e) => {
                     onChangeHandle(e);
                   }}
-                />
-               
+                />  
+        
               </div>
               <div className="inputContainer">
                 <h style={{ color: "#111928" }}>Is this realistic ?</h>
@@ -275,8 +275,7 @@ const MyGoal = () => {
                     value={dayjs(countdown3, "DD-MM-YYYY")}
                     onChange={handleDateChange}
                     format="DD-MM-YYYY"
-                  
-                  />
+                    />
                 </Space>
               </div>
               <div className="timer">
