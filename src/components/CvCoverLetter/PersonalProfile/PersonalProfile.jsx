@@ -34,7 +34,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
 
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETPROFILE);
-
+    console.log("res=======>",response)
     if (response.data?.status === 200 && response.data.data.length>0) {
       setProfileObject(response.data.data[0]);
       form.setFieldsValue({
@@ -204,7 +204,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   ]}
                 >
                   <MyCareerGuidanceInputField
-                    placeholder="e.g Cebu City, Cebu"
+                    placeholder="EG:Kildare"
                     type="input"
                     name="city"
                     onChange={onChangeHandle}
@@ -226,7 +226,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   ]}
                 >
                   <MyCareerGuidanceInputField
-                    placeholder="e.g Cebu City, Cebu"
+                    placeholder="DXX XXXX"
                     type="input"
                     name="eircode"
                     onChange={onChangeHandle}
