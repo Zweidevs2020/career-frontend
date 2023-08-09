@@ -22,6 +22,7 @@ const Experenice = ({ setCurrent, current }) => {
   const [downloadBtn, setDownloadBtn] = useState(false);
   const [expereniceArray, setExpereniceArray] = useState([]);
   const [isCurrentCheck, setIsCurrentCheck] = useState(false);
+  const [isInputDisabled, setIsInputDisabled] = useState(true);
   const getExperiance = async () => {
     const response = await getApiWithAuth(API_URL.GETEXPERIANCE);
     if (response.data?.status === 200) {
@@ -81,6 +82,11 @@ const Experenice = ({ setCurrent, current }) => {
     }
   };
 
+  const edit=()=>
+{
+  setIsInputDisabled(false)
+}
+
   const createArrayData = (data) => {
     let array = [];
     data.map((item) => {
@@ -113,12 +119,19 @@ const Experenice = ({ setCurrent, current }) => {
     );
   };
   const onChangeDate = (name, date, arrayIndex) => {
-    if (name === 'enddate') {
-      if (dayjs(date, 'DD-MM-YYYY').isAfter(dayjs())) {
-        message.error('End date cannot be in the future.');
-        return;
-      }
+    console.log('Selected Date:', date);
+  console.log('Parsed Date:', dayjs(date, 'DD-MM-YYYY'));
+  console.log('Current Date:', dayjs());
+
+
+  if (name === 'enddate') {
+    if (dayjs(date, 'DD-MM-YYYY').isAfter(dayjs())) {
+      console.log('End date is in the future.');
+      message.error('End date cannot be in the future.');
+      return;
     }
+  }
+
     setExpereniceArray(
       expereniceArray.map((item) => {
         return item.index === arrayIndex
@@ -142,6 +155,11 @@ const Experenice = ({ setCurrent, current }) => {
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
     if (response.data.status === 200) {
+      if (response.data.data.current_step !== 3) {
+        setIsInputDisabled(true);
+      } else {
+        setIsInputDisabled(false); 
+      }
       if (response.data.data.cv_completed === true) {
         setDownloadBtn(true);
       }
@@ -188,6 +206,7 @@ const Experenice = ({ setCurrent, current }) => {
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue?.job_title}
                           isPrefix={false}
+                          disabled={isInputDisabled}
                         />
                       </Form.Item>
 
@@ -244,6 +263,7 @@ const Experenice = ({ setCurrent, current }) => {
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue?.company}
                           isPrefix={false}
+                          disabled={isInputDisabled}
                         />
                       </Form.Item>
                     </div>
@@ -269,6 +289,7 @@ const Experenice = ({ setCurrent, current }) => {
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue.city}
                           isPrefix={false}
+                          disabled={isInputDisabled}
                         />
                       </Form.Item>
                     </div>
@@ -291,6 +312,7 @@ const Experenice = ({ setCurrent, current }) => {
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue?.country}
                           isPrefix={false}
+                          disabled={isInputDisabled}
                         />
                       </Form.Item>
                     </div>
@@ -310,17 +332,15 @@ const Experenice = ({ setCurrent, current }) => {
                         ]}
                       >
                         <DatePicker
-                          onChange={(date, dateString) =>
-                            onChangeDate("startdate", dateString, index)
-                          }
-                          className="expDateInputFieldStyle"
-                          format={"DD-MM-YYYY"}
-                          value={dayjs(item?.dataValue.startdate, "DD-MM-YYYY")}
-                          defaultValue={dayjs(
-                            item?.dataValue.startdate,
-                            "DD-MM-YYYY"
-                          )}
-                        />
+  onChange={(date, dateString) =>
+    onChangeDate("startdate", dateString, index)
+  }
+  className="expDateInputFieldStyle"
+  disabled={isInputDisabled}
+  format="DD-MM-YYYY" // Format the selected date
+  value={dayjs(item?.dataValue.startdate, "DD-MM-YYYY")}
+  defaultValue={dayjs(item?.dataValue.startdate, "DD-MM-YYYY")}
+/>
                       </Form.Item>
                     </div>
                     <div className="expFormDoubleItem">
@@ -336,18 +356,17 @@ const Experenice = ({ setCurrent, current }) => {
                         ]}
                       >
                         <DatePicker
-                          onChange={(date, dateString) =>
-                            onChangeDate("enddate", date, dateString)
-                          }
-                          format={"DD-MM-YYYY"}
-                          value={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
-                          defaultValue={dayjs(
-                            item?.dataValue.enddate,
-                            "DD-MM-YYYY"
-                          )}
-                          disabled={item?.dataValue.is_current_work}
-                          className="expDateInputFieldStyle"
-                        />
+  onChange={(date, dateString) =>
+    onChangeDate("enddate", dateString, index)
+  }
+  
+  format="DD-MM-YYYY" // Format the selected date
+  value={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
+  defaultValue={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
+  disabled={item?.dataValue.is_current_work||isInputDisabled}
+  className="expDateInputFieldStyle"
+/>
+
                       </Form.Item>
                       <div>
                         <Checkbox
@@ -396,6 +415,7 @@ const Experenice = ({ setCurrent, current }) => {
                         className="inputFieldStyle"
                         defaultValue={item?.dataValue?.description}
                         onChange={(event) => onChangeHandle(event, index)}
+                        disabled={isInputDisabled}
                       />
                     </Form.Item>
                   </div>
@@ -452,18 +472,17 @@ const Experenice = ({ setCurrent, current }) => {
               <Form.Item>
                 <Button
                   className={
-                    downloadBtn === false
+                    downloadBtn === true
                       ? "disabledBtn me-3"
                       : "skillsButton me-3 "
                   }
                   type="primary"
-                  htmlType="submit"
-                  onClick={SavePdf}
+                  onClick={edit}
                 >
-                  Download CV
+                  Edit
                 </Button>
                 <Button className="expButton" type="primary" htmlType="submit">
-                  Next
+                  Save
                 </Button>
               </Form.Item>
             </div>

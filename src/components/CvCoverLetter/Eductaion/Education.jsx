@@ -190,13 +190,16 @@ const Education = ({ setCurrent, current }) => {
         setDownloadBtn(true);
       }
     }
-    if (response.data.data.current_step !== 1) {
+    if (response.data.data.current_step !== 2) {
       setIsInputDisabled(true);
     } else {
       setIsInputDisabled(false); 
     }
   };
-
+  const edit=()=>
+  {
+    setIsInputDisabled(false)
+  }
   useEffect(() => {
     getUserData();
   }, []);
@@ -256,6 +259,7 @@ const Education = ({ setCurrent, current }) => {
                 value={dayjs(item?.dataValue.year, "MM/YYYY")}
                 defaultValue={dayjs(item?.dataValue.year, "MM/YYYY")}
                 className="expDateInputFieldStyle"
+                disabled={isInputDisabled}
               />
             </Form.Item>
           </div>
@@ -303,10 +307,12 @@ const Education = ({ setCurrent, current }) => {
                   onChangeDate("enddate", dateString, index)
 
                 }
+              
+              
                 format={"DD-MM-YYYY"}
                 value={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
                 defaultValue={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
-                disabled={item?.dataValue.present}
+                disabled={item?.dataValue.present||isInputDisabled}
                 className="expDateInputFieldStyle"
               />
             </Form.Item>
@@ -441,6 +447,7 @@ const Education = ({ setCurrent, current }) => {
                 optionLabelProp="label"
                 className="eduSelect eduSelectItem"
                 defaultValue={item?.dataValue?.level}
+                disabled={isInputDisabled}
               >
                 {levelArray.map((item) => {
                   return (
@@ -483,6 +490,7 @@ const Education = ({ setCurrent, current }) => {
               optionLabelProp="label"
               className="eduSelect eduSelectItem"
               defaultValue={item?.dataValue?.result}
+              disabled={isInputDisabled}
             >
               {resultArray.map((item) => {
                 return (
@@ -635,18 +643,17 @@ const Education = ({ setCurrent, current }) => {
               <Form.Item>
                 <Button
                   className={
-                    downloadBtn === false
+                    downloadBtn === true
                       ? "disabledBtn me-3"
                       : "skillsButton me-3 "
                   }
                   type="primary"
-                  htmlType="submit"
-                  onClick={SavePdf}
+                  onClick={edit}
                 >
-                  Download CV
+                  Edit
                 </Button>
                 <Button className="eduButton" type="primary" htmlType="submit">
-                  NEXT
+                  Save
                 </Button>
               </Form.Item>
             </div>

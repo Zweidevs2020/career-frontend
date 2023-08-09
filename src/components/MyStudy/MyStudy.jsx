@@ -126,10 +126,12 @@ const MyStudy = () => {
     }
   };
 
+
   const handleEditCalender = async (id, viewData) => {
     setUpdateLoading(true);
     const startTime = moment(viewData.start).format("hh:mm:ss");
     const endTime = dayjs(viewData.end).format("hh:mm:ss");
+
 
     try {
       const response = await putApiWithAuth(`timetable/update-timeslot/${id}`, {

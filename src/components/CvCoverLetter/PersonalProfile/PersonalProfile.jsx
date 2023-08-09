@@ -77,6 +77,10 @@ const PersonalProfile = ({ setCurrent, current }) => {
       setIsInputDisabled(false); 
     }
   }
+  const edit=()=>
+  {
+    setIsInputDisabled(false)
+  }
 
   useEffect(() => {
     handleGetApi();
@@ -281,19 +285,18 @@ const PersonalProfile = ({ setCurrent, current }) => {
             <div className="profileItemButton">
               <Form.Item>
               <Button
-                  className={downloadBtn === false ? "disabledBtn me-3": "skillsButton me-3 "}
+                  className={downloadBtn === true ? "disabledBtn me-3": "skillsButton me-3 "}
                   type="primary"
-                  htmlType="submit"
-                  onClick={SavePdf}
+                  onClick={edit}
                 >
-                  Download CV
+                  Edit
                 </Button>
                 <Button
                   className="profileButton mr-2"
                   type="primary"
                   htmlType="submit"
                 >
-                  Next
+                  Save
                 </Button>
               </Form.Item>
             </div>
