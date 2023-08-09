@@ -13,6 +13,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
 
   const [profileObject, setProfileObject] = useState({ id: null });
   const [downloadBtn, setDownloadBtn]=useState(false);
+  const [isInputDisabled, setIsInputDisabled] = useState(true);
 
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
@@ -64,10 +65,16 @@ const PersonalProfile = ({ setCurrent, current }) => {
 
   const getUserData = async() => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
+      console.log("=====meApi",response)
     if(response.data.status === 200){
      if(response.data.data.cv_completed===true){
       setDownloadBtn(true);
      }
+    }
+    if (response.data.data.current_step !== 1) {
+      setIsInputDisabled(true);
+    } else {
+      setIsInputDisabled(false); 
     }
   }
 
@@ -106,6 +113,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     onChange={onChangeHandle}
                     inputValue={profileObject?.full_name}
                     isPrefix={false}
+                    disabled={isInputDisabled}
                   />
                 </Form.Item>
               </div>
@@ -125,6 +133,8 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     onChange={onChangeHandle}
                     inputValue={profileObject?.email}
                     isPrefix={false}
+                    disabled={isInputDisabled}
+
                   />
                 </Form.Item>
               </div>
@@ -148,6 +158,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   onChange={onChangeHandle}
                   inputValue={profileObject?.address}
                   isPrefix={false}
+                  disabled={isInputDisabled}
                 />
               </Form.Item>
             </div>
@@ -170,6 +181,8 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   onChange={onChangeHandle}
                   inputValue={profileObject?.address2}
                   isPrefix={false}
+                  disabled={isInputDisabled}
+
                 />
               </Form.Item>
             </div>
@@ -191,6 +204,8 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     onChange={onChangeHandle}
                     inputValue={profileObject?.town}
                     isPrefix={false}
+                    disabled={isInputDisabled}
+
                   />
                 </Form.Item>
               </div>
@@ -210,6 +225,8 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     onChange={onChangeHandle}
                     inputValue={profileObject?.city}
                     isPrefix={false}
+                    disabled={isInputDisabled}
+
                   />
                 </Form.Item>
               </div>
@@ -232,6 +249,8 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     onChange={onChangeHandle}
                     inputValue={profileObject?.eircode}
                     isPrefix={false}
+                    disabled={isInputDisabled}
+
                   />
                 </Form.Item>
               </div>
@@ -253,6 +272,8 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   inputValue={profileObject?.objective}
                   name="objective"
                   onChange={onChangeHandle}
+                  disabled={isInputDisabled}
+
                 />
               </Form.Item>
             </div>

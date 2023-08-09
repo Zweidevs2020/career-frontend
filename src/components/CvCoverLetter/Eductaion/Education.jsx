@@ -16,6 +16,7 @@ const Education = ({ setCurrent, current }) => {
   const [resultArrayData, setResultArrayData] = useState([]);
   const [isCheck, setIsCheck] = useState(true);
   const [isCurrentCheck, setIsCurrentCheck] = useState(false);
+  const [isInputDisabled, setIsInputDisabled] = useState(true);
 
   const { Option } = Select;
 
@@ -189,6 +190,11 @@ const Education = ({ setCurrent, current }) => {
         setDownloadBtn(true);
       }
     }
+    if (response.data.data.current_step !== 1) {
+      setIsInputDisabled(true);
+    } else {
+      setIsInputDisabled(false); 
+    }
   };
 
   useEffect(() => {
@@ -223,6 +229,8 @@ const Education = ({ setCurrent, current }) => {
                 onChange={(event) => onChangeHandle(event, index, 1)}
                 inputValue={item?.dataValue.school}
                 isPrefix={false}
+                disabled={isInputDisabled}
+
               />
             </Form.Item>
           </div>
@@ -273,6 +281,8 @@ const Education = ({ setCurrent, current }) => {
                 onChange={(event) => onChangeHandle(event, index, 1)}
                 inputValue={item?.dataValue.examtaken}
                 isPrefix={false}
+                disabled={isInputDisabled}
+
               />
             </Form.Item>
           </div>
@@ -408,6 +418,8 @@ const Education = ({ setCurrent, current }) => {
                 onChange={(event) => onChangeHandle(event, index, 2)}
                 inputValue={item?.dataValue?.subject}
                 isPrefix={false}
+                disabled={isInputDisabled}
+
               />
             </Form.Item>
           </div>

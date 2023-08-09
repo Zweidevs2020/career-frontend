@@ -113,6 +113,12 @@ const Experenice = ({ setCurrent, current }) => {
     );
   };
   const onChangeDate = (name, date, arrayIndex) => {
+    if (name === 'enddate') {
+      if (dayjs(date, 'DD-MM-YYYY').isAfter(dayjs())) {
+        message.error('End date cannot be in the future.');
+        return;
+      }
+    }
     setExpereniceArray(
       expereniceArray.map((item) => {
         return item.index === arrayIndex
@@ -123,7 +129,6 @@ const Experenice = ({ setCurrent, current }) => {
   };
 
   const SavePdf = async () => {
-    // let data = createArrayData(referArray);
 
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
     console.log("================res get", respose);
