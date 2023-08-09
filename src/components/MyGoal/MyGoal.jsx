@@ -99,40 +99,29 @@ const MyGoal = () => {
   }
 
   const DownloadBtn = async () => {
-    // const doc = new jsPDF({
-    //   format: "a4",
-    //   unit: "px",
-    // });
-
-    // doc.html(reportTemplateRef.current, {
-    //   async callback(doc) {
-    //     await doc.save("Download");
-    //   },
-    //   html2canvas: { scale: 0.67 },
-    // });
+  
 
     setLoading3(true);
     const res = await getApiWithAuth(API_URL.GETMYGOALPDF);
-    console.log("===========res", res);
+  
     if (res.data.status === 200) {
-      console.log("===========res 2", res.data.data);
+    
 
-      const data = res.data.data; // Assuming res.data.data contains the file data
+      const data = res.data.data; 
 
       const pdfBytes = Uint8Array.from([...data].map((char) => char.charCodeAt(0)));
 
-      // Create a new PDF document
+    
       const pdfDoc = await PDFDocument.load(pdfBytes);
     
-      // Generate a new blob containing the PDF file
+      
       const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
-    
-      // Create a temporary link element
+  
       const link = document.createElement('a');
       link.href = pdfDataUri;
       link.download = 'file.pdf';
     
-      // Simulate a click event to trigger the file download
+     
       link.dispatchEvent(new MouseEvent('click'));
       setLoading3(false);
     } else {
@@ -184,14 +173,7 @@ const MyGoal = () => {
           </div>
           <div className="lowerContainer2">
             <div className="lowerContainer">
-              {/* <div className="employeGoal">
-                <h className="employersContact">
-                  What’s the best way for employers to contact you?
-                </h>
-              </div>
-              <div className="secondContainer">
-                <h>What’s the best way for employers to contact you?</h>
-              </div> */}
+             
               <div className="inputContainer">
                 <h style={{ color: "#111928" }}>What I want to:</h>
               </div>
@@ -211,16 +193,7 @@ const MyGoal = () => {
                   Specific goal for week/month/term/year:
                 </h>
               </div>
-              {/* <div className="inputGoal">
-                <input
-                  type="text"
-                  value={goal}
-                  onChange={(e) => setGoal(e.target.value)}
-                  name="input"
-                  placeholder="eg Accountant"
-                  className="inputCarrer  sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
-                />
-              </div> */}
+             
               <div className="inputGoal">
                 <div className="mt-3">
                   <Radio.Group
@@ -263,36 +236,7 @@ const MyGoal = () => {
                     onChangeHandle(e);
                   }}
                 />
-                {/* <input
-                  type="text"
-                  name="action3"
-                  value={actions.action3}
-                  placeholder="Work on your mindset"
-                  className=" sm:text-[8px] md:text-[8px] px-2 xl:text-[11px] h-[50px] sm:h-[35px] w-[19%] md:h-[38px] sm:w-[30%] rounded-md border-solid border-2 border-gray-400 outline-none "
-                  onChange={(e) => {
-                    onChangeHandle(e);
-                  }}
-                />
-                <input
-                  type="text"
-                  name="action4"
-                  value={actions.action4}
-                  placeholder="Develop your skillset"
-                  className=" sm:text-[8px] md:text-[8px] px-2 xl:text-[11px] h-[50px] sm:h-[35px] w-[19%] md:h-[38px] sm:w-[30%] rounded-md border-solid border-2 border-gray-400 outline-none "
-                  onChange={(e) => {
-                    onChangeHandle(e);
-                  }}
-                />
-                <input
-                  type="text"
-                  name="action5"
-                  value={actions.action5}
-                  placeholder="Reward yourself"
-                  className=" px-2 sm:text-[8px] md:text-[8px] h-[50px] xl:text-[11px] w-[19%] sm:h-[35px] sm:w-[30%] md:h-[38px]  rounded-md border-solid border-2 border-gray-400 outline-none "
-                  onChange={(e) => {
-                    onChangeHandle(e);
-                  }}
-                /> */}
+               
               </div>
               <div className="inputContainer">
                 <h style={{ color: "#111928" }}>Is this realistic ?</h>
@@ -331,7 +275,7 @@ const MyGoal = () => {
                     value={dayjs(countdown3, "DD-MM-YYYY")}
                     onChange={handleDateChange}
                     format="DD-MM-YYYY"
-                    // defaultValue={dayjs("01/01/2015", "DD-MM-YYYY")}
+                  
                   />
                 </Space>
               </div>
