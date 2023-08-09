@@ -7,6 +7,7 @@ import bookImage from "../../assets/bookImage.png";
 import winningCup from "../../assets/winningCup.svg";
 import { useNavigate } from "react-router-dom";
 import Chart from "react-apexcharts";
+import './Selfassesment.css'
 
 const Selfassesment = () => {
   const navigate = useNavigate();
@@ -19,15 +20,15 @@ const Selfassesment = () => {
   useEffect(() => {
     getPsychometricTest();
   }, []);
-  console.log("====goatttttttt unicorn", psychometricTest);
+
   const options = {
     plotOptions: {
       bar: {
         horizontal: true,
-        columnWidth: 20, // Adjust the width as per your requirement
-        barHeight: "50%", // Set the fixed height for the bars (adjust the value as needed)
+        columnWidth: 20, 
+        barHeight: "50%",
         colors: {
-          // backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#1984FF"],
+         
           backgroundBarColors: ["white"],
         },
       },
@@ -42,20 +43,30 @@ const Selfassesment = () => {
     dataLabels: {
       enabled: false,
     },
-    // Rest of your options and data
+  
   };
 
   const getPsychometricTest = async () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETPSYCHOMETRICTEST);
-    console.log("=======================", response);
+
     if (response?.data?.status === 200) {
-      setPsychometricTest(response.data.data);
+      const psychometricTestData = response.data.data;
+      psychometricTestData.forEach((testData) => {
+        if (testData?.test_results?.length > 0) {
+          testData.test_results[0].question_scores.sort(
+            (a, b) => b.score - a.score
+          );
+        }
+      });
+  
+      setPsychometricTest(psychometricTestData);
       setLoading(false);
     } else {
       setLoading(false);
     }
   };
+  
 
   const showModal = (scoreView) => {
     setSinglequizData(scoreView);
@@ -68,11 +79,10 @@ const Selfassesment = () => {
     <>
       <div className="educationalGuidanceMainDiv">
         <div className="welcomeHaddingText ">Self Assessment Results</div>
-        {/* <div className="textStyle18 pt-1 pb-3">
-          Lorem ipsum is a placeholder text commonly used to demonstrate
-        </div> */}
-        <div style={{ display: "flex", flexWrap: "wrap", margin: 10 }}>
+
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
           {psychometricTest?.map((mapData, index) => {
+        
             let chartOptions;
             if (mapData?.test_results?.length > 0) {
               const labels = mapData?.test_results[0]?.question_scores?.map(
@@ -98,31 +108,23 @@ const Selfassesment = () => {
             }
             return (
               <>
-                <div key={mapData.id} className="ms-3 mt-5">
-                  <Chart
-                    options={chartOptions}
-                    series={chartOptions.series}
-                    type="bar"
-                    width={450}
-                    height={320}
-                  />
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    {!mapData.complete ? (
-                      <MyCareerGuidanceButton
-                        label="Take Test"
-                        className="takebutton"
-                        type="button"
-                        htmlType="button"
-                        onClick={() =>
-                          navigate("/self-assesment-test", {
-                            state: { data: mapData },
-                          })
-                        }
-                      />
-                    ) : (
-                      <div>
+                <div key={mapData.id} className={`ms-3 mt-5`}>
+                  <div
+                    className={`${!mapData.complete ? 'grayed-out-container' : ''
+                      }`}
+                  >
+                    <Chart
+                      options={chartOptions}
+                      series={chartOptions.series}
+                      type="bar"
+                      width={450}
+                      height={320}
+                    />
+                      </div>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      {!mapData.complete ? (
                         <MyCareerGuidanceButton
-                          label="Retake"
+                          label="Take Test"
                           className="takebutton"
                           type="button"
                           htmlType="button"
@@ -132,62 +134,76 @@ const Selfassesment = () => {
                             })
                           }
                         />
-                        <MyCareerGuidanceButton
-                          label="View Results"
-                          className="viewResultButton"
-                          type="button ms-3"
-                          htmlType="button"
-                          onClick={() =>
-                            navigate("/occupation", {
-                              state: { data: mapData },
-                            })
-                          }
-                        />
-                      </div>
-                    )}
+                      ) : (
+                        <div>
+                          <MyCareerGuidanceButton
+                            label="Retake"
+                            className="takebutton"
+                            type="button"
+                            htmlType="button"
+                            onClick={() =>
+                              navigate("/self-assesment-test", {
+                                state: { data: mapData },
+                              })
+                            }
+                          />
+                          <MyCareerGuidanceButton
+                            label="View Results"
+                            className="viewResultButton"
+                            type="button ms-3"
+                            htmlType="button"
+                            onClick={() =>
+                              navigate("/occupation", {
+                                state: { data: mapData },
+                              })
+                            }
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </>
-            );
-          })}
+                </>
+                );
+            })}
+              </div >
         </div>
-      </div>
-      <Modal
-        className="modalStyleClass"
-        bodyStyle={{
-          background: "none",
-          display: "flex",
-          justifyContent: "center",
-        }}
-        open={isModalOpen}
-        onCancel={handleCancel}
-        footer={[]}
-      >
-        <div className="modalInnerStyle">
-          <div style={{ alignSelf: "center", textAlign: "center" }}>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <img src={winningCup} alt="winning Cup" />
-            </div>
-            <div className="mt-4 totalScoreHadding">Total scrores</div>
-            <div className="mt-2">
-              Lorem ipsum is a placeholder text commonly used to demonstrate the
-              visual form of a document.
-            </div>
-            <div className="mt-3">
-              <MyCareerGuidanceButton
-                label={`${singlequizData.score ? singlequizData.score : 0}`}
-                className="resultDataButton"
-                type="button"
-                htmlType="button"
-                onClick={handleCancel}
-                //   loading={loading}
-              />
+
+        <Modal
+          className="modalStyleClass"
+          bodyStyle={{
+            background: "none",
+            display: "flex",
+            justifyContent: "center",
+          }}
+          open={isModalOpen}
+          onCancel={handleCancel}
+          footer={[]}
+        >
+          <div className="modalInnerStyle">
+            <div style={{ alignSelf: "center", textAlign: "center" }}>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <img src={winningCup} alt="winning Cup" />
+              </div>
+              <div className="mt-4 totalScoreHadding">Total scrores</div>
+              <div className="mt-2">
+                Lorem ipsum is a placeholder text commonly used to demonstrate the
+                visual form of a document.
+              </div>
+              <div className="mt-3">
+                <MyCareerGuidanceButton
+                  label={`${singlequizData.score ? singlequizData.score : 0}`}
+                  className="resultDataButton"
+                  type="button"
+                  htmlType="button"
+                  onClick={handleCancel}
+               
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </Modal>
-    </>
-  );
+        </Modal>
+      </>
+      );
 };
 
-export default Selfassesment;
+      export default Selfassesment;

@@ -49,6 +49,86 @@ export const monthArray = [
   },
 ];
 
+export const monthArray31Days = [
+  {
+    value: "01",
+    label: "Jan",
+  },
+  
+  {
+    value: "02",
+    label: "Mar",
+  },
+  {
+    value: "03",
+    label: "May",
+  },
+  {
+    value: "04",
+    label: "Jul",
+  },
+  {
+    value: "05",
+    label: "Aug",
+  },
+ 
+  {
+    value: "06",
+    label: "Oct",
+  },
+  {
+    value: "07",
+    label: "Dec",
+  },
+];
+
+export const monthArray30Days = [
+  {
+    value: "01",
+    label: "Jan",
+  },
+  
+  {
+    value: "02",
+    label: "Mar",
+  },
+  {
+    value: "03",
+    label: "Apr",
+  },
+  {
+    value: "04",
+    label: "May",
+  },
+  {
+    value: "05",
+    label: "Jun",
+  },
+  {
+    value: "06",
+    label: "Jul",
+  },
+  {
+    value: "07",
+    label: "Aug",
+  },
+  {
+    value: "08",
+    label: "Sep",
+  },
+  {
+    value: "09",
+    label: "Oct",
+  },
+  {
+    value: "10",
+    label: "Nov",
+  },
+  {
+    value: "11",
+    label: "Dec",
+  },
+];
 export const dayArray31 = [
   {
     value: "01",

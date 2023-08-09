@@ -149,6 +149,7 @@ const EducationalGuidance = () => {
                               );
                               navigate("/video", {
                                 state: {
+                                  
                                   data: item,
                                   videoId: `https://www.youtube.com/embed/${item.youtube_link}`,
                                 },

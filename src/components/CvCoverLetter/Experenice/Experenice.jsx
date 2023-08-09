@@ -123,12 +123,12 @@ const Experenice = ({ setCurrent, current }) => {
   };
 
   const SavePdf = async () => {
-    // let data = createArrayData(referArray);
+  
 
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
-    console.log("================res get", respose);
+   
     if (respose.data.status === 201) {
-      // setCurrent(current + 1);
+   
     } else {
       message.error(respose.data.message);
     }
@@ -185,40 +185,6 @@ const Experenice = ({ setCurrent, current }) => {
                           isPrefix={false}
                         />
                       </Form.Item>
-
-                      {/* <Form.Item
-                        label="Job Title"
-                        name={`job_title ${index}`}
-                        className="skillItemLable"
-                        rules={[
-                          {
-                            required: item?.dataValue.job_title ? false : true,
-                            message: "Please Select 1 Option",
-                          },
-                        ]}
-                      >
-                        <Select
-                          placeholder="Select"
-                          onChange={(event) =>
-                            handleChange(event, "job_title", index)
-                          }
-                          optionLabelProp="label"
-                          className="eduSelect eduSelectItem"
-                          defaultValue={item?.dataValue?.job_title}
-                        >
-                          {titleArray.map((item) => {
-                            return (
-                              <Option
-                                value={item.value}
-                                key={item.value}
-                                label={item.label}
-                              >
-                                {item.label}
-                              </Option>
-                            );
-                          })}
-                        </Select>
-                      </Form.Item> */}
                     </div>
                     <div className="expFormDoubleItem">
                       <Form.Item
