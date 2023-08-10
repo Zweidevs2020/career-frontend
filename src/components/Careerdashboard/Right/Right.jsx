@@ -11,7 +11,7 @@ const Right = () => {
   const [loading, setLoading] = useState(false);
   const [educationGuidance, setEducationGuidance] = useState([]);
   const [psychometricTestName, setPsychometricTestName] = useState([]);
-  // const [psychometricTestId, setPsychometricTestId] = useState([]);
+ 
 
   useEffect(() => {
     getducationGuidance();
@@ -21,7 +21,7 @@ const Right = () => {
   const getducationGuidance = async () => {
     setLoading(true);
     const response = await getApiWithAuth("psychometric/calculate/");
-    console.log("========================res", response);
+   
     if (response?.data?.status === 200) {
       setEducationGuidance(response.data.data);
       setLoading(false);
@@ -31,23 +31,18 @@ const Right = () => {
   };
   const getPsychometricTestNames = async () => {
     const response = await getApiWithAuth(API_URL.GETPSYCHOMETRICTEST);
-    console.log("===res get names", response);
+ 
     if (response?.data?.status === 200) {
       const filterSCore = response.data.data.filter(
         (item) => item.score === null
       );
-      // console.log("===filterScore", filterSCore);
+   
       setPsychometricTestName(filterSCore);
-      // const filterId = response.data.data.filter((item) => item.score !== null);
-      // setPsychometricTestId(filterId);
+     
     }
   };
   const options = {
-    // plotOptions: {
-    //   bar: {
-    //     horizontal: true
-    //   }
-    // },
+ 
     chart: {
       id: "basic-bar",
       toolbar: {
@@ -57,9 +52,9 @@ const Right = () => {
     plotOptions: {
       bar: {
         columnWidth: "20%",
-        barHeight: "50%", // Set the fixed height for the bars (adjust the value as needed)
+        barHeight: "50%", 
         colors: {
-          backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#1984FF"], // Set the background color of the bars
+          backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#1984FF"], 
         },
       },
     },
@@ -79,39 +74,19 @@ const Right = () => {
     ],
   };
   useEffect(() => {
-    console.log("===educationl guidencee", educationGuidance);
+   
   }, [educationGuidance]);
 
   useEffect(() => {
-    console.log("====psy name", psychometricTestName);
+  
   }, [psychometricTestName]);
 
-  // const rightSideDashBoardGraphTakeTest = async () => {
-  //   // setSpinnerLoading(true);
-  //   const response = await postApiWithAuth(`/psychometric/take-test/`, {
-  //     // test: data.id,
-  //     // answers: quizResult,
-  //   });
-  //   if (response.data.status === 200) {
-  //     message.success("Quiz taken successfully");
-  //     navigate("/occupation", {
-  //       state: { data: response.data.data.test_id },
-  //     });
-
-  //     // setSpinnerLoading(false);
-  //   } else {
-  //     // setSpinnerLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   console.log("====iddddd", psychometricTestId);
-  // }, [psychometricTestId]);
+ 
   return (
     <>
       <div
         className="h-[100%] w-[100%]  flex flex-col rightContainerStyle"
-        // className="rightContainerStyle"
+       
       >
         <div className="w-[90%]">
           <div className="dashboardRightDivv">
@@ -155,8 +130,9 @@ const Right = () => {
                       horizontal: true,
                     },
                   },
+                  
                 };
-                console.log("====itemmmmm", item);
+              
                 return (
                   <div key={index} className="ms-3">
                     <div className="h-[30px] flex justify-between items-center mt-5 chartHeadingwBtn">
@@ -175,6 +151,7 @@ const Right = () => {
                         </button>
                       </div>
                     </div>
+                   <div key={index} className="chart-container">
                     <Chart
                       options={chartOptions}
                       series={chartOptions.series}
@@ -182,6 +159,7 @@ const Right = () => {
                       width="100%"
                       height={320}
                     />
+                    </div>
                     <hr />
                   </div>
                 );

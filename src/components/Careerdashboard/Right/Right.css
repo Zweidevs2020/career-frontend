@@ -43,6 +43,7 @@ font-family: Poppins;
 font-size: 24px;
 font-style: normal;
 font-weight: 600;
+margin-left: .8rem;
 line-height: normal;
 }
 .rightGraphBtn {
@@ -98,6 +99,7 @@ line-height: normal;
     height: 7vh;
   }
   .dashboardRightHeadingDiv {
+    margin-left: .8rem;
     font-size: 14px;
   }
   .parentRightDashboardDiv {
@@ -162,3 +164,4 @@ line-height: normal;
       width: 120px;
   }
 }
+

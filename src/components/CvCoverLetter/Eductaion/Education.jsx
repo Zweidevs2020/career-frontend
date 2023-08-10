@@ -22,7 +22,7 @@ const Education = ({ setCurrent, current }) => {
 
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETEDUCATION);
-    console.log("================res get", response);
+   
     if (response.data?.status === 200) {
       setData(response.data.data);
     } else {
@@ -102,7 +102,7 @@ const Education = ({ setCurrent, current }) => {
 
   const onsubmit = async () => {
     let sendDaata = {};
-    console.log('===================sendDaata',sendDaata,educationArray,resultArrayData)
+   
 
     let data = createArrayData(educationArray);
     let resData = createArrayData(resultArrayData);
@@ -152,7 +152,7 @@ const Education = ({ setCurrent, current }) => {
     }
   };
   const onChangeDate = (name, date, arrayIndex) => {
-    console.log('==================================educationArray',educationArray,name,date,arrayIndex)
+
     setEducationArray(
       educationArray.map((item) => {
         return item.index === arrayIndex
@@ -175,7 +175,6 @@ const Education = ({ setCurrent, current }) => {
   const SavePdf = async () => {
 
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
-    console.log("================res get", respose.data.data);
     if (respose.data.status === 201) {
       // setCurrent(current + 1);
     } else {
@@ -205,11 +204,10 @@ const Education = ({ setCurrent, current }) => {
   }, []);
 
   useEffect(() => {
-    console.log('===============educationArray',educationArray)
+   
   }, [educationArray]);
 
   const educationItems = (item, index) => {
-    console.log("======>>",item)
     return (
       <>
         <div className="eduFormDouble" key={index} style={{ marginTop: "3%" }}>

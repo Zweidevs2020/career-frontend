@@ -41,7 +41,7 @@ const TakeTest = () => {
       quiz: data.id,
       answers: quizResult,
     });
-    console.log("============res", response);
+   
     if (response.data.status === 200) {
       message.success("Quiz taken successfully");
       navigate("/educational-guidance", {

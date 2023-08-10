@@ -39,12 +39,10 @@ const Interest = ({ setCurrent, current }) => {
   };
 
   const SavePdf = async () => {
-    // let data = createArrayData(referArray);
-
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
-    console.log("================res get", respose);
+   
     if (respose.data.status === 201) {
-      // setCurrent(current + 1);
+    
     } else {
       message.error(respose.data.message);
     }

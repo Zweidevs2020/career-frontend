@@ -122,7 +122,7 @@ const Skill = ({ setCurrent, current }) => {
 
   const getSkills = async () => {
     const response = await getApiWithAuth(API_URL.GETSKILLS);
-    console.log("================res get", response);
+   
     if (response.data?.status === 200) {
       let array = [];
       let array2 = [];
@@ -147,13 +147,6 @@ const Skill = ({ setCurrent, current }) => {
   };
 
   useEffect(() => {
-    console.log(
-      "=============================res",
-      selectOption,
-      selectOption2,
-      userSkillData,
-      userQualityData
-    );
   }, [selectOption, selectOption2, userSkillData, userQualityData]);
   useEffect(() => {
     getSkills();
@@ -161,11 +154,7 @@ const Skill = ({ setCurrent, current }) => {
 
   const onsubmit = async () => {
     const result = [];
-    console.log(
-      "=============================ress",
-      selectOption,
-      userSkillData
-    );
+    
     const result2 = [];
 
     selectOption.forEach((value) => {
@@ -186,7 +175,7 @@ const Skill = ({ setCurrent, current }) => {
         result2.push({ id: null, quality_dropdown: value });
       }
     });
-    console.log("=============================res", result, result2);
+    
     const respose = await postApiWithAuth(API_URL.POSTSKILLS, {
       skill_data: result,
       quality_data: result2,
@@ -212,7 +201,7 @@ const Skill = ({ setCurrent, current }) => {
     // let data = createArrayData(referArray);
 
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
-    console.log("================res get", respose);
+
     if (respose.data.status === 201) {
       // setCurrent(current + 1);
     } else {

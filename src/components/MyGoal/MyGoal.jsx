@@ -102,17 +102,17 @@ const MyGoal = () => {
 
     setLoading3(true);
     const res = await getApiWithAuth(API_URL.GETMYGOALPDF);
-    console.log("===========res", res);
+  
     if (res.data.status === 200) {
-      console.log("===========res 2", res.data.data);
+    
 
-      const data = res.data.data; // Assuming res.data.data contains the file data
+      const data = res.data.data; 
 
       const pdfBytes = Uint8Array.from(
         [...data].map((char) => char.charCodeAt(0))
       );
 
-      // Create a new PDF document
+    
       const pdfDoc = await PDFDocument.load(pdfBytes);
 
       // Generate a new blob containing the PDF file
