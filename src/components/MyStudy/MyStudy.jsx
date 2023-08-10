@@ -126,10 +126,12 @@ const MyStudy = () => {
     }
   };
 
+
   const handleEditCalender = async (id, viewData) => {
     setUpdateLoading(true);
     const startTime = moment(viewData.start).format("hh:mm:ss");
     const endTime = dayjs(viewData.end).format("hh:mm:ss");
+
 
     try {
       const response = await putApiWithAuth(`timetable/update-timeslot/${id}`, {
@@ -391,13 +393,13 @@ const MyStudy = () => {
           <Spin className="spinStyle" />
         ) : (
           <FullCalendar
-            plugins={[timeGridPlugin, interactionPlugin]}
+            plugins={[dayGridPlugin,timeGridPlugin, interactionPlugin]}
             headerToolbar={{
               left: "",
               center: "",
               right: "",
             }}
-            initialView={"timeGridWeek"}
+            initialView={isMobile ? "timeGridDay" : "timeGridWeek"}
             events={calenderData}
             eventContent={renderEventContent}
             eventClick={handleDateSelect}
@@ -407,7 +409,7 @@ const MyStudy = () => {
             }}
             selectable={true}
             editable={true}
-            weekends={true}
+           weekends={true}
             eventDrop={handleEventDrop}
             eventResize={handleEventResize}
             allDaySlot={false}
@@ -419,7 +421,7 @@ const MyStudy = () => {
                 weekday: "long",
               });
               return `${dayOfWeek}`;
-            }}
+              }}
             slotMinTime="06:00:00"
           />
         )}

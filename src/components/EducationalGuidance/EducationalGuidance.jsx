@@ -63,6 +63,12 @@ const EducationalGuidance = () => {
     return progressColor.hex();
   };
 
+  useEffect(() => {
+    if (data?.obtained_score !== undefined) {
+      localStorage.setItem("obtained_score", data.obtained_score);
+    }
+  }, [data?.obtained_score]);
+
   return (
     <>
       <div className="educationalGuidanceMainDiv">
@@ -111,13 +117,12 @@ const EducationalGuidance = () => {
                     <div className="retakeChart">
                       <div className="quizBoard">
                         <CircularProgressbarWithChildren
-                          value={data?.obtained_score}
+                          value={singlequizData?.score}
                           minValue={0}
                           maxValue={data?.total_score}
                           styles={buildStyles({
-                            // Use the dynamically calculated progress color
                             pathColor: calculateProgressColor(
-                              data?.obtained_score
+                              localStorage.getItem("obtained_score") || 0
                             ),
                             pathColor: "#1476b7",
                             rotation: 0.99,
@@ -129,7 +134,7 @@ const EducationalGuidance = () => {
                           })}
                         >
                           <div className="welcomeHaddingText">
-                            {data?.obtained_score}/{data?.total_score}
+                            {localStorage.getItem("obtained_score") || 0}/10
                           </div>
                           <div className="cao2ndText">
                             <strong>Points</strong>

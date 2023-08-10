@@ -9,6 +9,7 @@ const Skill = ({ setCurrent, current }) => {
   const [userSkillData, setUserSkillsData] = useState([]);
   const [userQualityData, setUserQualityData] = useState([]);
   const [downloadBtn, setDownloadBtn] = useState(false);
+  const [isInputDisabled, setIsInputDisabled] = useState(true);
 
   const { Option } = Select;
 
@@ -210,6 +211,13 @@ const Skill = ({ setCurrent, current }) => {
 
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
+    console.log("me==>",response)
+    if (response.data.data.current_step !== 4) {
+      setIsInputDisabled(true);
+    } else {
+      setIsInputDisabled(false); 
+    }
+
     if (response.data.status === 200) {
       if (response.data.data.cv_completed === true) {
         setDownloadBtn(true);
@@ -220,6 +228,11 @@ const Skill = ({ setCurrent, current }) => {
   useEffect(() => {
     getUserData();
   }, []);
+
+  const edit=()=>
+{
+  setIsInputDisabled(false)
+}
 
   return (
     <>
@@ -245,6 +258,7 @@ const Skill = ({ setCurrent, current }) => {
                   onChange={handleChange}
                   optionLabelProp="label"
                   value={selectOption}
+                  disabled={isInputDisabled}
                 >
                   {optionArray.map((item) => {
                     return (
@@ -274,6 +288,7 @@ const Skill = ({ setCurrent, current }) => {
                   onChange={handleChange2}
                   optionLabelProp="label"
                   value={selectOption2}
+                  disabled={isInputDisabled}
                 >
                   {optionArrayQualities.map((item) => {
                     return (
@@ -303,22 +318,21 @@ const Skill = ({ setCurrent, current }) => {
               <Form.Item>
                 <Button
                   className={
-                    downloadBtn === false
+                    downloadBtn === true
                       ? "disabledBtn me-3"
                       : "skillsButton me-3 "
                   }
                   type="primary"
-                  htmlType="submit"
-                  onClick={SavePdf}
+                  onClick={edit}
                 >
-                  Download CV
+                  Edit
                 </Button>
                 <Button
                   className="skillsButton"
                   type="primary"
                   htmlType="submit"
                 >
-                  NEXT
+                  Save
                 </Button>
               </Form.Item>
             </div>

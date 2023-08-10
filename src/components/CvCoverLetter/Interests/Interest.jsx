@@ -8,6 +8,8 @@ const Interest = ({ setCurrent, current }) => {
   const [downloadBtn, setDownloadBtn]=useState(false);
   const { TextArea } = Input;
   const [textData, setTextData] = useState({ id: null });
+  const [isInputDisabled, setIsInputDisabled] = useState(true);
+
 
   const onsubmit = async () => {
     const respose = await postApiWithAuth(API_URL.POSTINTREST, [textData]);
@@ -48,11 +50,21 @@ const Interest = ({ setCurrent, current }) => {
 
   const getUserData = async() => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
+    if (response.data.data.current_step !== 4) {
+      setIsInputDisabled(true);
+    } else {
+      setIsInputDisabled(false); 
+    }
     if(response.data.status === 200){
      if(response.data.data.cv_completed===true){
       setDownloadBtn(true);
      }
     }
+  }
+
+  const edit=()=>
+  {
+    setIsInputDisabled(false)
   }
   
   useEffect(() => {
@@ -84,6 +96,7 @@ const Interest = ({ setCurrent, current }) => {
                   value={textData.interest}
                   name="interest"
                   onChange={handleChange}
+                  disabled={isInputDisabled}
                 />
               </Form.Item>
             </div>
@@ -101,19 +114,18 @@ const Interest = ({ setCurrent, current }) => {
 
               <Form.Item>
               <Button
-                  className={downloadBtn === false ? "disabledBtn me-3": "skillsButton me-3 "}
+                  className={downloadBtn === true ? "disabledBtn me-3": "skillsButton me-3 "}
                   type="primary"
-                  htmlType="submit"
-                  onClick={SavePdf}
+                  onClick={edit}
                 >
-                  Download CV
+                  Edit
                 </Button>
                 <Button
                   className="interestButton"
                   type="primary"
                   htmlType="submit"
                 >
-                  NEXT
+                  Save
                 </Button>
               </Form.Item>
             </div>
