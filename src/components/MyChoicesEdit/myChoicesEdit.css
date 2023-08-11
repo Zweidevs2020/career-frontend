@@ -41,7 +41,7 @@
 }
 
 
-:where(.css-dev-only-do-not-override-ed5zg0).ant-empty-normal {
+.ant-empty-normal {
 
   display: none;
 }
