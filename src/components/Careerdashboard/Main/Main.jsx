@@ -55,16 +55,7 @@ const Main = () => {
             Career Guidance
           </h1>
         </div>
-        {/* <div className="sm:flex sm:justify-center">
-          <div className="h-[40px] w-[45%]  sm:w-[22%] mr-2 flex items-center justify-around sm:w-[100%] sm:mr-1 md:mr-1 md:h-[40px] md:w-[30%] lg:h-[40px] lg:w-[35%] ">
-            <img src={searchicon} className="sm:h-[16px] md:h-[18px]" />
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-[75%] sm:w-[70%] border-none outline-none"
-            />
-          </div>
-        </div> */}
+     
       </div>
       <div className="grid grid-cols-12 gap-4 px-3 careerGuidenceGrid">
         <div
@@ -133,7 +124,7 @@ const Main = () => {
           />
         </div>
         <div
-          // className="col-span-sm-12 col-span-6  rounded-xl"
+      
           className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto m-auto"
           onClick={() => {
             navigate("/my-choices");
@@ -146,7 +137,7 @@ const Main = () => {
           />
         </div>
         <div
-          // className="col-span-sm-12 col-span-6  rounded-xl"
+        
           className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto m-auto"
           onClick={() => {
             navigate("/educational-guidance");
@@ -159,62 +150,7 @@ const Main = () => {
           />
         </div>
       </div>
-      {/* <div className="h-[30px] w-[100%] flex items-center justify-start ">
-        <div className="h-[40px] w-[53%] mt-3 ml-3 flex items-center sm:h-[30px] sm:w-[90%] md:w-[90%] lg:w-[90%] custom-heading">
-          <h1 className="text-[18px] sm:text-[15px] text-[#474749]  font-bold ml-1 sm:text-center sm:w-[100%]">
-            My Educational Guidance
-          </h1>
-        </div>
-      </div>
-      <div className="w-[100%] grid sm:grid-cols-1 lg:grid-cols-1 md:grid-cols-1 grid-cols-2 gap-2">
-        {loading ? (
-          <Spin className="spinStyle" />
-        ) : educationGuidance.length === 0 ? (
-          <div className="quizDetailsStyle">No Data Found</div>
-        ) : (
-          educationGuidance.map((item) => {
-            return (
-              <div
-                key={item.id}
-                className="h-[60px] w-[90%] mt-3 bg-[#F7F7F7] sm:ms-4 rounded-lg flex items-center justify-around sm:h-[50px] lg:h-[60px] px-2 "
-              >
-                <img src={bookImage} className="h-[70%] " />
-                <div className="h-[45px] w-[50%]  flex flex-col items-start sm:h-[30px]  md:h-[35px] lg:h-[35px]">
-                  <p className="text-[#303030] sm:text-[12px] md:text-[15px]  lg:text-[13px] font-bold">
-                    {item.name}
-                  </p>
-                  <p className=" garage-title text-[#BDBDBD] text-[12px]">
-                    {item.description}
-                  </p>
-                </div>
-                {!item.complete ? (
-                  <div className="h-[45px] w-[25%]  flex items-center justify-center">
-                    <button
-                      onClick={() =>
-                        navigate("/educational-guidance-test", {
-                          state: { data: item },
-                        })
-                      }
-                      className="h-[31px] w-[100%] rounded-lg bg-[#1476B7] text-[#fff] text-[10px]"
-                    >
-                      Take Test
-                    </button>
-                  </div>
-                ) : (
-                  <div className="h-[45px] w-[25%]  flex items-center justify-center ">
-                    <button
-                      onClick={() => showModal(item)}
-                      className="h-[31px] w-[100%] rounded-lg bg-[#1476B7] text-[#fff] text-[10px]  "
-                    >
-                      View Result
-                    </button>
-                  </div>
-                )}
-              </div>
-            );
-          })
-        )}
-      </div> */}
+     
       <Modal
         className="modalStyleClass"
         bodyStyle={{
