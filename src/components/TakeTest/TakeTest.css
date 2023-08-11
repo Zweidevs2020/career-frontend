@@ -6,3 +6,13 @@
   height: 215px;
   padding: 20px;
 }
+
+.questionStyling {
+  color: rgb(20, 118, 183);
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.submitTest {
+  cursor: pointer;
+}

@@ -11,7 +11,7 @@ const Right = () => {
   const [loading, setLoading] = useState(false);
   const [educationGuidance, setEducationGuidance] = useState([]);
   const [psychometricTestName, setPsychometricTestName] = useState([]);
- 
+
 
   useEffect(() => {
     getducationGuidance();
@@ -21,9 +21,10 @@ const Right = () => {
   const getducationGuidance = async () => {
     setLoading(true);
     const response = await getApiWithAuth("psychometric/calculate/");
-   
+
     if (response?.data?.status === 200) {
       setEducationGuidance(response.data.data);
+     
       setLoading(false);
     } else {
       setLoading(false);
@@ -31,18 +32,19 @@ const Right = () => {
   };
   const getPsychometricTestNames = async () => {
     const response = await getApiWithAuth(API_URL.GETPSYCHOMETRICTEST);
- 
+
     if (response?.data?.status === 200) {
       const filterSCore = response.data.data.filter(
         (item) => item.score === null
       );
-   
+
       setPsychometricTestName(filterSCore);
-     
+
     }
   };
+
+
   const options = {
- 
     chart: {
       id: "basic-bar",
       toolbar: {
@@ -52,17 +54,16 @@ const Right = () => {
     plotOptions: {
       bar: {
         columnWidth: "20%",
-        barHeight: "50%", 
+        barHeight: "50%",
         colors: {
-          backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#1984FF"], 
+          backgroundBarColors: ["rgba(0, 0, 0, 0.1)", "#1984FF"],
         },
       },
     },
     dataLabels: {
       enabled: false,
     },
-    labels: educationGuidance
-      .map((item) => item.scores.map((score) => score.name))
+    labels: educationGuidance.map((item) => item.scores.map((score) => score.name))
       .flat(),
     colors: ["#8BBDDB"],
     series: [
@@ -74,19 +75,19 @@ const Right = () => {
     ],
   };
   useEffect(() => {
-   
+
   }, [educationGuidance]);
 
   useEffect(() => {
-  
+   
   }, [psychometricTestName]);
 
- 
+
   return (
     <>
       <div
         className="h-[100%] w-[100%]  flex flex-col rightContainerStyle"
-       
+
       >
         <div className="w-[90%]">
           <div className="dashboardRightDivv">
@@ -118,23 +119,23 @@ const Right = () => {
           ) : (
             <div>
               {educationGuidance.map((item, index) => {
-                const labels = item.scores.map((score) => score.name);
+                const labels = item.scores.map((score) => score.name.split("/"));
                 const series = item.scores.map((score) => score.score);
 
                 const chartOptions = {
                   ...options,
-                  labels,
+                labels,
                   series: [{ data: series }],
                   plotOptions: {
                     bar: {
                       horizontal: true,
                     },
                   },
-                  
+
                 };
-              
+
                 return (
-                  <div key={index} className="ms-3">
+                  <div key={index} className="ms-3 chart-labels-container">
                     <div className="h-[30px] flex justify-between items-center mt-5 chartHeadingwBtn">
                       <p className="text-[#474749] mt-3 sm:text-[15px text-[16px] font-bold chartHeading">
                         {item.test_name}
@@ -151,14 +152,14 @@ const Right = () => {
                         </button>
                       </div>
                     </div>
-                   <div key={index} className="chart-container">
-                    <Chart
-                      options={chartOptions}
-                      series={chartOptions.series}
-                      type="bar"
-                      width="100%"
-                      height={320}
-                    />
+                    <div key={index} className="chart-container">
+                      <Chart
+                        options={chartOptions}
+                        series={chartOptions.series}
+                        type="bar"
+                        width="100%"
+                        height={320}
+                      />
                     </div>
                     <hr />
                   </div>

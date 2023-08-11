@@ -1,9 +1,47 @@
-.tableHeadingStyle{
-    color:#1476b7 !important;
-    font-weight: bold !important;
-    font-size: 16px;
-    font-family: 'poppins';
+.tableHeadingStyle {
+  color: #1476b7 !important;
+  font-weight: bold !important;
+  font-size: 16px;
+  font-family: 'poppins';
 }
-.checked{
-    background: blue !important;
+.checked {
+  background: blue !important;
+}
+
+.old-data input {
+  color: #2b2a2a !important;
+}
+
+.inputFieldStyle {
+
+  color: #2b2a2a;
+}
+
+.new-data:hover {
+  background-color: white;
+}
+
+.caoMainDiv {
+  background: #F8FAFC;
+}
+
+.coaInnerf8fafcDiv {
+  height: 100%;
+}
+
+.emptyTable thead {
+  width: 60px !important;
+  font-size: 40px;
+  display: none;
+}
+
+.nonEmptyTable thead {
+  font-size: 12px;
+  width: 60px !important;
+}
+
+
+:where(.css-dev-only-do-not-override-ed5zg0).ant-empty-normal {
+
+  display: none;
 }
