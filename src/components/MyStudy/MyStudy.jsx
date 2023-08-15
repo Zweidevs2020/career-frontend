@@ -41,6 +41,7 @@ const MyStudy = () => {
   const [openViewBooking, setOpenViewBooking] = useState(false);
   const [viewData, setViewData] = useState({});
   const [btnDisabled, setBtnDisabled] = useState(true);
+  const [endTimeOptions, setEndTimeOptions] = useState([]);
   const handleOpenBooking = () => setOpenBooking(true);
   const handleCloseBooking = () => setOpenBooking(false);
   const handleCloseBooking2 = () => setDeleteBooking(false);
@@ -364,6 +365,17 @@ const MyStudy = () => {
   };
   function handleChange(value) {
     setSelectedTime(value);
+    const startTimeIndex = optionArray.findIndex(option => option.value === value);
+    if (startTimeIndex !== -1) {
+      const availableEndTimeOptions = optionArray.slice(startTimeIndex + 1);
+      // Add an option for midnight (12:00 AM) if it's not already in the available end times
+      const midnightOption = { label: "12:00 AM", value: "12:00 AM" };
+      if (!availableEndTimeOptions.some(option => option.value === midnightOption.value)) {
+        availableEndTimeOptions.push(midnightOption);
+      }
+      setEndTimeOptions(availableEndTimeOptions);
+      setSelectedEndTime(availableEndTimeOptions[0].value);
+    }
   }
 
   function handleChange2(value) {
