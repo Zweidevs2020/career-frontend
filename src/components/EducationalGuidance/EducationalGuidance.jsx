@@ -154,7 +154,7 @@ const EducationalGuidance = () => {
                               );
                               navigate("/video", {
                                 state: {
-                                  
+
                                   data: item,
                                   videoId: `https://www.youtube.com/embed/${item.youtube_link}`,
                                 },
@@ -213,29 +213,29 @@ const EducationalGuidance = () => {
           <div className="quizHeadingStyle">{singlequizData?.name}</div>
           <div className="retakeButton">
             <div style={{ width: 130 }}>
-            <CircularProgressbarWithChildren
-    value={singlequizData?.score}
-    minValue={0}
-    maxValue={singlequizData?.total_score}
-    styles={buildStyles({
-      // Use the dynamically calculated progress color
-      pathColor: calculateProgressColor(singlequizData?.score),
-      pathColor: "#1476b7",
-      rotation: 0.99,
-      strokeLinecap: "dashboard",
-      textSize: "19px",
-      pathTransitionDuration: 0.5,
-      textColor: "#263238",
-      trailColor: "#d6d6d6",
-    })}
-  >
-    <div className="welcomeHaddingText">
-      {singlequizData?.score} /{singlequizData?.total_score}
-    </div>
-    <div className="cao2ndText">
-      <strong>Points</strong>
-    </div>
-  </CircularProgressbarWithChildren>
+              <CircularProgressbarWithChildren
+                value={singlequizData?.score}
+                minValue={0}
+                maxValue={singlequizData?.total_score}
+                styles={buildStyles({
+                  // Use the dynamically calculated progress color
+                  pathColor: calculateProgressColor(singlequizData?.score),
+                  pathColor: "#1476b7",
+                  rotation: 0.99,
+                  strokeLinecap: "dashboard",
+                  textSize: "19px",
+                  pathTransitionDuration: 0.5,
+                  textColor: "#263238",
+                  trailColor: "#d6d6d6",
+                })}
+              >
+                <div className="welcomeHaddingText">
+                  {singlequizData?.score} /{singlequizData?.total_score}
+                </div>
+                <div className="cao2ndText">
+                  <strong>Points</strong>
+                </div>
+              </CircularProgressbarWithChildren>
             </div>
           </div>
         </div>

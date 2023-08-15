@@ -3,7 +3,7 @@ import { Form, Button, DatePicker, Checkbox, Select, message } from "antd";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import "./Education.css";
-import { postApiWithAuth, getApiWithAuth,deleteApiWithAuth } from "../../../utils/api";
+import { postApiWithAuth, getApiWithAuth, deleteApiWithAuth } from "../../../utils/api";
 import Delete from "../../../assets/delete.png";
 import dayjs from "dayjs";
 import { API_URL } from "../../../utils/constants";
@@ -22,7 +22,7 @@ const Education = ({ setCurrent, current }) => {
 
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETEDUCATION);
-   
+
     if (response.data?.status === 200) {
       setData(response.data.data);
     } else {
@@ -42,7 +42,7 @@ const Education = ({ setCurrent, current }) => {
             return {
               index: indexx,
               dataValue: item,
-              setIndex:indexx
+              setIndex: indexx
             };
           })
         );
@@ -102,7 +102,7 @@ const Education = ({ setCurrent, current }) => {
 
   const onsubmit = async () => {
     let sendDaata = {};
-   
+
 
     let data = createArrayData(educationArray);
     let resData = createArrayData(resultArrayData);
@@ -110,7 +110,6 @@ const Education = ({ setCurrent, current }) => {
       ? (sendDaata = { education_data: data, junior_data: [] })
       : (sendDaata = { education_data: data, junior_data: resData });
     const respose = await postApiWithAuth(API_URL.POSTEDUCATION, sendDaata);
-    console.log("hellllllllllllllllloooooooo",respose)
     if (respose.data.status === 201) {
       setCurrent(current + 1);
     } else {
@@ -192,11 +191,10 @@ const Education = ({ setCurrent, current }) => {
     if (response.data.data.current_step !== 2) {
       setIsInputDisabled(true);
     } else {
-      setIsInputDisabled(false); 
+      setIsInputDisabled(false);
     }
   };
-  const edit=()=>
-  {
+  const edit = () => {
     setIsInputDisabled(false)
   }
   useEffect(() => {
@@ -204,7 +202,7 @@ const Education = ({ setCurrent, current }) => {
   }, []);
 
   useEffect(() => {
-   
+
   }, [educationArray]);
 
   const educationItems = (item, index) => {
@@ -305,47 +303,47 @@ const Education = ({ setCurrent, current }) => {
                   onChangeDate("enddate", dateString, index)
 
                 }
-              
-              
+
+
                 format={"DD-MM-YYYY"}
                 value={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
                 defaultValue={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
-                disabled={item?.dataValue.present||isInputDisabled}
+                disabled={item?.dataValue.present || isInputDisabled}
                 className="expDateInputFieldStyle"
               />
             </Form.Item>
             <div>
-            <Checkbox
-            className="expCheckBox"
-            name="present"
-            inputValue={item?.dataValue?.present}
-            onChange={(e) => {
-              setEducationArray((prevArray) =>
-                prevArray.map((educationItem) =>
-                  educationItem.index === item.index
-                    ? {
-                        ...educationItem,
-                        dataValue: {
-                          ...educationItem.dataValue,
-                          present: e.target.checked,
-                        },
-                      }
-                    : educationItem
-                )
-              );
-              setIsCurrentCheck(!isCurrentCheck);
-            }}
-          >
-            I'm still studying here
-          </Checkbox>
+              <Checkbox
+                className="expCheckBox"
+                name="present"
+                inputValue={item?.dataValue?.present}
+                onChange={(e) => {
+                  setEducationArray((prevArray) =>
+                    prevArray.map((educationItem) =>
+                      educationItem.index === item.index
+                        ? {
+                          ...educationItem,
+                          dataValue: {
+                            ...educationItem.dataValue,
+                            present: e.target.checked,
+                          },
+                        }
+                        : educationItem
+                    )
+                  );
+                  setIsCurrentCheck(!isCurrentCheck);
+                }}
+              >
+                I'm still studying here
+              </Checkbox>
 
-          <div className="mainContainerDelete">
-            <img
-              className="deleteSubject"
-              src={Delete}
-              onClick={() => handleDeleteEducation(item.dataValue.id)}
-            />
-          </div>
+              <div className="mainContainerDelete">
+                <img
+                  className="deleteSubject"
+                  src={Delete}
+                  onClick={() => handleDeleteEducation(item.dataValue.id)}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -357,10 +355,10 @@ const Education = ({ setCurrent, current }) => {
       setEducationArray((prevArray) =>
         prevArray.filter((item) => item.dataValue.id !== id)
       );
-  
+
       const response = await deleteApiWithAuth(`${API_URL.DELETE}/${id}/`);
-      console.log('Delete response:', response);
-  
+
+
       if (response.data.status === 204) {
         message.success("Education entry deleted successfully.");
       } else {
@@ -373,17 +371,17 @@ const Education = ({ setCurrent, current }) => {
       setEducationArray((prevArray) => [...prevArray, educationArray.find(item => item.dataValue.id === id)]);
     }
   };
-  
+
 
   const handleDeleteJuniorCert = async (id) => {
     try {
       setResultArrayData((prevArray) =>
         prevArray.filter((item) => item.dataValue.id !== id)
       );
-  
+
       const response = await deleteApiWithAuth(`${API_URL.DELETE_RESULT}/${id}/`);
-      console.log('Delete response:', response);
-  
+
+
       if (response.data.status === 204) {
         message.success("Junior Cert entry deleted successfully.");
       } else {
@@ -396,7 +394,7 @@ const Education = ({ setCurrent, current }) => {
       setResultArrayData((prevArray) => [...prevArray, resultArrayData.find(item => item.dataValue.id === id)]);
     }
   };
-  
+
 
 
   const educationResult = (item, index) => {
@@ -428,17 +426,17 @@ const Education = ({ setCurrent, current }) => {
             </Form.Item>
           </div>
           <div className="expFormDoubleItem">
-          <Form.Item
-          label="Result"
-          name={`result ${index}`}
-          className="skillItemLable"
-          rules={[
-            {
-              required: item?.dataValue.result ? false : true,
-              message: "Please Select 1 Option",
-            },
-          ]}
-        >
+            <Form.Item
+              label="Result"
+              name={`result ${index}`}
+              className="skillItemLable"
+              rules={[
+                {
+                  required: item?.dataValue.result ? false : true,
+                  message: "Please Select 1 Option",
+                },
+              ]}
+            >
               <Select
                 placeholder="Select"
                 onChange={(event) => handleChange(event, "level", index)}
@@ -463,12 +461,12 @@ const Education = ({ setCurrent, current }) => {
           </div>
         </div>
         <div className="mainContainerDelete">
-    <img
-      className="deleteSubject"
-      src={Delete}
-      onClick={() => handleDeleteJuniorCert(item.dataValue.id)}
-    />
-  </div>
+          <img
+            className="deleteSubject"
+            src={Delete}
+            onClick={() => handleDeleteJuniorCert(item.dataValue.id)}
+          />
+        </div>
 
         <div className="expFormDoubleItem">
           <Form.Item
@@ -521,8 +519,8 @@ const Education = ({ setCurrent, current }) => {
           <Form layout="vertical" onFinish={onsubmit}>
             {educationArray.length > 0
               ? educationArray.map((item, index) => {
-                  return educationItems(item, index);
-                })
+                return educationItems(item, index);
+              })
               : ""}
 
             <div>

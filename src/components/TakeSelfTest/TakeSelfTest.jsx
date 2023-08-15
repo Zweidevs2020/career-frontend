@@ -3,16 +3,15 @@ import { Spin, message, Radio, Space } from "antd";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import { MyCareerGuidanceButton } from "../commonComponents";
 import { useNavigate, useLocation } from "react-router-dom";
+import './TakeSelfTest.css'
 
 const TakeSelfTest = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [quizResult, setQuizResult] = useState([]);
-  const [quizData, setQuizData] = useState({});
-  
+  const [quizData, setQuizData] = useState({}); 
   const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
-
   const { data } = location.state || {};
   const [spinnerLoading, setSpinnerLoading] = useState(false);
   
@@ -93,6 +92,7 @@ const TakeSelfTest = () => {
     <>
       <div className="educationalGuidanceMainDiv">
         <div className="welcomeHaddingText pb-4">{quizData.name}</div>
+        <div className="textDescription pb-4">{quizData.intro}</div>
         <div className="educationalGuidanceSecondDiv">
           {loading ? (
             <Spin className="spinStyle" />

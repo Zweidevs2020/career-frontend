@@ -25,10 +25,10 @@ const Selfassesment = () => {
     plotOptions: {
       bar: {
         horizontal: true,
-        columnWidth: 20, 
+        columnWidth: 20,
         barHeight: "50%",
         colors: {
-         
+
           backgroundBarColors: ["white"],
         },
       },
@@ -43,7 +43,7 @@ const Selfassesment = () => {
     dataLabels: {
       enabled: false,
     },
-  
+
   };
 
   const getPsychometricTest = async () => {
@@ -52,6 +52,7 @@ const Selfassesment = () => {
 
     if (response?.data?.status === 200) {
       const psychometricTestData = response.data.data;
+
       psychometricTestData.forEach((testData) => {
         if (testData?.test_results?.length > 0) {
           testData.test_results[0].question_scores.sort(
@@ -59,14 +60,14 @@ const Selfassesment = () => {
           );
         }
       });
-  
+
       setPsychometricTest(psychometricTestData);
       setLoading(false);
     } else {
       setLoading(false);
     }
   };
-  
+
 
   const showModal = (scoreView) => {
     setSinglequizData(scoreView);
@@ -82,7 +83,7 @@ const Selfassesment = () => {
 
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {psychometricTest?.map((mapData, index) => {
-        
+
             let chartOptions;
             if (mapData?.test_results?.length > 0) {
               const labels = mapData?.test_results[0]?.question_scores?.map(
@@ -120,11 +121,24 @@ const Selfassesment = () => {
                       width={450}
                       height={320}
                     />
-                      </div>
-                    <div style={{ display: "flex", justifyContent: "center" }}>
-                      {!mapData.complete ? (
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    {!mapData.complete ? (
+                      <MyCareerGuidanceButton
+                        label="Take Test"
+                        className="takebutton"
+                        type="button"
+                        htmlType="button"
+                        onClick={() =>
+                          navigate("/self-assesment-test", {
+                            state: { data: mapData },
+                          })
+                        }
+                      />
+                    ) : (
+                      <div>
                         <MyCareerGuidanceButton
-                          label="Take Test"
+                          label="Retake"
                           className="takebutton"
                           type="button"
                           htmlType="button"
@@ -134,76 +148,63 @@ const Selfassesment = () => {
                             })
                           }
                         />
-                      ) : (
-                        <div>
-                          <MyCareerGuidanceButton
-                            label="Retake"
-                            className="takebutton"
-                            type="button"
-                            htmlType="button"
-                            onClick={() =>
-                              navigate("/self-assesment-test", {
-                                state: { data: mapData },
-                              })
-                            }
-                          />
-                          <MyCareerGuidanceButton
-                            label="View Results"
-                            className="viewResultButton"
-                            type="button ms-3"
-                            htmlType="button"
-                            onClick={() =>
-                              navigate("/occupation", {
-                                state: { data: mapData },
-                              })
-                            }
-                          />
-                        </div>
-                      )}
-                    </div>
+                        <MyCareerGuidanceButton
+                          label="View Results"
+                          className="viewResultButton"
+                          type="button ms-3"
+                          htmlType="button"
+                          onClick={() =>
+                            navigate("/occupation", {
+                              state: { data: mapData },
+                            })
+                          }
+                        />
+                      </div>
+                    )}
                   </div>
-                </>
-                );
-            })}
-              </div >
-        </div>
+                </div>
+              </>
+            );
+          })}
+        </div >
+      </div>
 
-        <Modal
-          className="modalStyleClass"
-          bodyStyle={{
-            background: "none",
-            display: "flex",
-            justifyContent: "center",
-          }}
-          open={isModalOpen}
-          onCancel={handleCancel}
-          footer={[]}
-        >
-          <div className="modalInnerStyle">
-            <div style={{ alignSelf: "center", textAlign: "center" }}>
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <img src={winningCup} alt="winning Cup" />
-              </div>
-              <div className="mt-4 totalScoreHadding">Total scrores</div>
-              <div className="mt-2">
-                Lorem ipsum is a placeholder text commonly used to demonstrate the
-                visual form of a document.
-              </div>
-              <div className="mt-3">
-                <MyCareerGuidanceButton
-                  label={`${singlequizData.score ? singlequizData.score : 0}`}
-                  className="resultDataButton"
-                  type="button"
-                  htmlType="button"
-                  onClick={handleCancel}
-               
-                />
-              </div>
+      <Modal
+        className="modalStyleClass"
+        bodyStyle={{
+          background: "none",
+          display: "flex",
+          justifyContent: "center",
+        }}
+        open={isModalOpen}
+        onCancel={handleCancel}
+        footer={[]}
+      >
+        <div className="modalInnerStyle">
+          <div style={{ alignSelf: "center", textAlign: "center" }}>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <img src={winningCup} alt="winning Cup" />
+            </div>
+            <div className="mt-4 totalScoreHadding">Total scrores</div>
+            <div className="mt-2">
+              Lorem ipsum is a placeholder text commonly used to demonstrate the
+              visual form of a document.
+            </div>
+            <div className="mt-3">
+              <MyCareerGuidanceButton
+                label={`${singlequizData.score ? singlequizData.score : 0}`}
+                className="resultDataButton"
+                type="button"
+                htmlType="button"
+                onClick={handleCancel}
+
+              />
             </div>
           </div>
-        </Modal>
-      </>
-      );
+        </div>
+      </Modal>
+    </>
+  );
 };
 
-      export default Selfassesment;
+export default Selfassesment;

@@ -239,7 +239,7 @@ const MyStudy = () => {
     setSelectedTime(dayjs(selectInfo.start).locale("en").format("hh:mm A"));
     // setSelectedEndTime(dayjs(selectInfo.end));
     setSelectedEndTime(dayjs(selectInfo.end).locale("en").format("hh:mm A"));
-    console.log("========>hello", setSelectedTime);
+  
 
     handleOpenBooking();
   };
