@@ -12,7 +12,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
   const [form] = Form.useForm();
 
   const [profileObject, setProfileObject] = useState({ id: null });
-  const [downloadBtn, setDownloadBtn]=useState(false);
+  const [downloadBtn, setDownloadBtn] = useState(false);
   const [isInputDisabled, setIsInputDisabled] = useState(true);
 
   const onChangeHandle = (e) => {
@@ -35,8 +35,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
 
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETPROFILE);
-    console.log("res=======>",response)
-    if (response.data?.status === 200 && response.data.data.length>0) {
+    if (response.data?.status === 200 && response.data.data.length > 0) {
       setProfileObject(response.data.data[0]);
       form.setFieldsValue({
         full_name: response.data.data[0].full_name,
@@ -52,33 +51,31 @@ const PersonalProfile = ({ setCurrent, current }) => {
   };
 
   const SavePdf = async () => {
-  
+
 
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
-   
+
     if (respose.data.status === 201) {
-      
+
     } else {
       message.error(respose.data.message);
     }
   };
 
-  const getUserData = async() => {
+  const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
-      console.log("=====meApi",response)
-    if(response.data.status === 200){
-     if(response.data.data.cv_completed===true){
-      setDownloadBtn(true);
-     }
+    if (response.data.status === 200) {
+      if (response.data.data.cv_completed === true) {
+        setDownloadBtn(true);
+      }
     }
     if (response.data.data.current_step !== 1) {
       setIsInputDisabled(true);
     } else {
-      setIsInputDisabled(false); 
+      setIsInputDisabled(false);
     }
   }
-  const edit=()=>
-  {
+  const edit = () => {
     setIsInputDisabled(false)
   }
 
@@ -284,8 +281,8 @@ const PersonalProfile = ({ setCurrent, current }) => {
 
             <div className="profileItemButton">
               <Form.Item>
-              <Button
-                  className={downloadBtn === true ? "disabledBtn me-3": "skillsButton me-3 "}
+                <Button
+                  className={downloadBtn === true ? "disabledBtn me-3" : "skillsButton me-3 "}
                   type="primary"
                   onClick={edit}
                 >

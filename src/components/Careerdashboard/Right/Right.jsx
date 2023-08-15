@@ -23,8 +23,19 @@ const Right = () => {
     const response = await getApiWithAuth("psychometric/calculate/");
 
     if (response?.data?.status === 200) {
+      const testScore = response.data.data
+
+      testScore.forEach((testData) => {
+        if (testData?.scores?.length > 0) {
+          testData.scores.sort(
+            (a, b) => b.score - a.score
+          );
+        }
+      });
+
       setEducationGuidance(response.data.data);
-     
+
+
       setLoading(false);
     } else {
       setLoading(false);
@@ -36,8 +47,8 @@ const Right = () => {
     if (response?.data?.status === 200) {
       const filterSCore = response.data.data.filter(
         (item) => item.score === null
-      );
 
+      );
       setPsychometricTestName(filterSCore);
 
     }
@@ -79,7 +90,7 @@ const Right = () => {
   }, [educationGuidance]);
 
   useEffect(() => {
-   
+
   }, [psychometricTestName]);
 
 
@@ -92,6 +103,9 @@ const Right = () => {
         <div className="w-[90%]">
           <div className="dashboardRightDivv">
             <h1 className="dashboardRightHeadingDiv">Psychometric Tests</h1>
+          </div>
+          <div className="psychometricTestDes">
+            <p>3 self assessment tests to help you discover your strengths. </p>
           </div>
           {loading ? (
             <Spin className="spinStyle" />
@@ -124,7 +138,7 @@ const Right = () => {
 
                 const chartOptions = {
                   ...options,
-                labels,
+                  labels,
                   series: [{ data: series }],
                   plotOptions: {
                     bar: {

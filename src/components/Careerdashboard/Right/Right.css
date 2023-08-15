@@ -51,6 +51,17 @@
   line-height: normal;
 }
 
+.psychometricTestDes{
+  color: #737373;
+  font-family: Poppins;
+  font-size: 12px;
+  /* font-style: normal;
+  font-weight: 400; */
+  margin-left: .7rem;
+  margin-top: .2rem;
+  /* line-height: normal; */
+}
+
 .rightGraphBtn {
   border: 1px solid #1476b7;
   border-radius: 5px;

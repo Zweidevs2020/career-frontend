@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Select, Table } from "antd";
+import { Button, Select, Table } from "antd";
 import add from "../../assets/add.svg";
 import {
   buildStyles,
@@ -10,6 +10,7 @@ import "react-circular-progressbar/dist/styles.css";
 import "./CaoCalculator.css";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import { API_URL } from "../../utils/constants";
+import { PlusCircleFilled, PlusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
@@ -437,10 +438,10 @@ const CaoCalculator = () => {
                 <div style={{display:"flex",justifyContent:"end"}}>
                   <MyCareerGuidanceButton
                     label="Add Subject"
-                    className="clearAllButton"
-                    type="primary"
+                    className="addSubjectButton"
                     htmlType="button"
                     onClick={handleAdd}
+                    icon={<PlusOutlined/>}
                   />
                 </div>
               </div>

@@ -122,7 +122,7 @@ const Skill = ({ setCurrent, current }) => {
 
   const getSkills = async () => {
     const response = await getApiWithAuth(API_URL.GETSKILLS);
-   
+
     if (response.data?.status === 200) {
       let array = [];
       let array2 = [];
@@ -154,7 +154,7 @@ const Skill = ({ setCurrent, current }) => {
 
   const onsubmit = async () => {
     const result = [];
-    
+
     const result2 = [];
 
     selectOption.forEach((value) => {
@@ -175,7 +175,7 @@ const Skill = ({ setCurrent, current }) => {
         result2.push({ id: null, quality_dropdown: value });
       }
     });
-    
+
     const respose = await postApiWithAuth(API_URL.POSTSKILLS, {
       skill_data: result,
       quality_data: result2,
@@ -198,12 +198,9 @@ const Skill = ({ setCurrent, current }) => {
   };
 
   const SavePdf = async () => {
-    // let data = createArrayData(referArray);
-
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
 
     if (respose.data.status === 201) {
-      // setCurrent(current + 1);
     } else {
       message.error(respose.data.message);
     }
@@ -211,11 +208,10 @@ const Skill = ({ setCurrent, current }) => {
 
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
-    console.log("me==>",response)
     if (response.data.data.current_step !== 4) {
       setIsInputDisabled(true);
     } else {
-      setIsInputDisabled(false); 
+      setIsInputDisabled(false);
     }
 
     if (response.data.status === 200) {
@@ -229,10 +225,9 @@ const Skill = ({ setCurrent, current }) => {
     getUserData();
   }, []);
 
-  const edit=()=>
-{
-  setIsInputDisabled(false)
-}
+  const edit = () => {
+    setIsInputDisabled(false)
+  }
 
   return (
     <>
