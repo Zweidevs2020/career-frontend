@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { DatePicker, Space, Spin, message, Radio } from "antd";
+import TextArea from "antd/es/input/TextArea";
 import dayjs from "dayjs";
 import jsPDF from "jspdf";
 import { MyCareerGuidanceButton } from "../commonComponents";
@@ -22,6 +23,7 @@ const MyGoal = () => {
   const [goal, setGoal] = useState("");
   const [realistic, setRealistic] = useState(false);
   const [countdown, setCountdown] = useState("");
+  const [description, setDescription] = useState("");
   const [countdown3, setCountdown3] = useState(dayjs().format("DD-MM-YYYY"));
   const [countdown2, setCountdown2] = useState({
     days: 0,
@@ -70,10 +72,13 @@ const MyGoal = () => {
   const getUserGoals = async () => {
     setLoading(true);
     const res = await getApiWithAuth(API_URL.GETUSERGOAL);
+    console.log("=====>ahad",res)
     if (res.data.data) {
       setGoal(res.data.data.goal);
+      setGoal(res.data.data.description);
       seActions(res.data.data.action);
       setProffession(res.data.data.proffession);
+      setDescription(res.data.data.description);
       setRealistic(res.data.data.realistic);
       setCountdown(
         res.data.data.countdown === null
@@ -136,6 +141,7 @@ const MyGoal = () => {
     const data = {
       proffession: proffession,
       goal: goal,
+      description:description,
       actions: actions,
       realistic: realistic,
       date: dayjs(countdown).format("DD-MM-YYYY"),
@@ -208,6 +214,15 @@ const MyGoal = () => {
                       <Radio value={"year"}>Year</Radio>
                     </Space>
                   </Radio.Group>
+                </div>
+                <div className="textAreaMyGoal">
+                <TextArea
+                value={description} 
+                style={{border:"2px solid grey"}} 
+                placeholder="hello"
+                onChange={(e) => setDescription(e.target.value)}
+                >
+                </TextArea>
                 </div>
               </div>
               <div className="inputContainer">
@@ -324,6 +339,7 @@ const MyGoal = () => {
                     proffession={proffession}
                     actions={actions}
                     countdown2={countdown2}
+                    description={description}
                   />
                 </div>
               </div>
