@@ -66,6 +66,7 @@ const EducationalGuidance = () => {
   useEffect(() => {
     if (data?.obtained_score !== undefined) {
       localStorage.setItem("obtained_score", data.obtained_score);
+
     }
   }, [data?.obtained_score]);
 
@@ -134,7 +135,8 @@ const EducationalGuidance = () => {
                           })}
                         >
                           <div className="welcomeHaddingText">
-                            {localStorage.getItem("obtained_score") || 0}/10
+                            {item.score || 0}/10
+                           
                           </div>
                           <div className="cao2ndText">
                             <strong>Points</strong>
