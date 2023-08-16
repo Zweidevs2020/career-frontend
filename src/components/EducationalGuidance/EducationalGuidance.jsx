@@ -20,7 +20,6 @@ const EducationalGuidance = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { data } = location.state || {};
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [quizz, setQuizz] = useState([]);
@@ -135,7 +134,7 @@ const EducationalGuidance = () => {
                           })}
                         >
                           <div className="welcomeHaddingText">
-                            {item.score || 0}/10
+                            {item.score || 0}/{item.total_score}
                            
                           </div>
                           <div className="cao2ndText">
