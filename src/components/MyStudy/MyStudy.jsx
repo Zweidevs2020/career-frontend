@@ -41,9 +41,12 @@ const MyStudy = () => {
   const [openViewBooking, setOpenViewBooking] = useState(false);
   const [viewData, setViewData] = useState({});
   const [btnDisabled, setBtnDisabled] = useState(true);
+  const [disableCreateButton, setDisableCreateButton] = useState(false);
+  const [endTimeOptions, setEndTimeOptions] = useState([]);
   const handleOpenBooking = () => setOpenBooking(true);
   const handleCloseBooking = () => setOpenBooking(false);
   const handleCloseBooking2 = () => setDeleteBooking(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleOpenViewBooking = () => setOpenViewBooking(true);
   const handleCloseViewBooking = () => setOpenViewBooking(false);
@@ -362,12 +365,34 @@ const MyStudy = () => {
       message.error(response.data.message);
     }
   };
+
+
+  const handleTimeChange = (start, end) => {
+    if (start && end) {
+      const startTime = dayjs(start, "hh:mm A");
+      const endTime = dayjs(end, "hh:mm A");
+      const isDisabled = startTime.isAfter(endTime);
+      setDisableCreateButton(isDisabled);
+      if (isDisabled) {
+        setErrorMessage("Start time cannot be greater than end time.");
+      } else {
+        setErrorMessage("");
+      }
+    } else {
+      setDisableCreateButton(false);
+      setErrorMessage("");
+    }
+  };
+
+
   function handleChange(value) {
     setSelectedTime(value);
+    handleTimeChange(value, selectedEndTime);
   }
-
+  
   function handleChange2(value) {
     setSelectedEndTime(value);
+    handleTimeChange(selectedTime, value);
   }
   return (
     <>
@@ -496,8 +521,8 @@ const MyStudy = () => {
               ))}
             </Select>
           </div>
+          <div className="errorTime" >{errorMessage}</div>
           <div
-            className="mt-3"
             style={{
               width: "100%",
               display: "flex",
@@ -511,6 +536,7 @@ const MyStudy = () => {
               htmlType="button"
               onClick={createNewEvent}
               loading={loadingBooking}
+              disabled={disableCreateButton}
             />
           </div>
         </div>

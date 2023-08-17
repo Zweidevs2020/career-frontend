@@ -55,3 +55,11 @@ fc-col-header-cell-cushion
     font-size: 2px !important;
 }
 
+.errorTime
+{
+    color: red;
+    margin-top: 5px;
+    width:100%;
+    display: flex;
+    justify-content: end;
+}
