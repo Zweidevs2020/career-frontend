@@ -237,14 +237,16 @@ const MyStudy = () => {
   }
 
   const handleDateSelect = (selectInfo) => {
-    setWeekDay(dayjs(selectInfo.start).format("d"));
-    // setSelectedTime(dayjs(selectInfo.start));
-    setSelectedTime(dayjs(selectInfo.start).locale("en").format("hh:mm A"));
-    // setSelectedEndTime(dayjs(selectInfo.end));
-    setSelectedEndTime(dayjs(selectInfo.end).locale("en").format("hh:mm A"));
-  
+  const selectedStart = new Date(selectInfo);
 
-    handleOpenBooking();
+  setWeekDay(selectedStart.getDay().toString());
+  setSelectedTime(selectedStart.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }));
+
+  const selectedEnd = new Date(selectedStart.getTime() + 30 * 60 * 1000); 
+  setSelectedEndTime(selectedEnd.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }));
+
+  handleOpenBooking();
+
   };
 
   const createNewEvent = async () => {
