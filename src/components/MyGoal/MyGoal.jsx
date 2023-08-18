@@ -75,7 +75,7 @@ const MyGoal = () => {
     console.log("=====>ahad",res)
     if (res.data.data) {
       setGoal(res.data.data.goal);
-      setGoal(res.data.data.description);
+      setDescription(res.data.data.description);
       seActions(res.data.data.action);
       setProffession(res.data.data.proffession);
       setDescription(res.data.data.description);
