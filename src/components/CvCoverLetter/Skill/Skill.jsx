@@ -331,6 +331,7 @@ const Skill = ({ setCurrent, current }) => {
                   className="skillsButton"
                   type="primary"
                   htmlType="submit"
+                  disabled={isInputDisabled}
                 >
                   Save
                 </Button>

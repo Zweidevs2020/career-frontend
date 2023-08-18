@@ -298,6 +298,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   className="profileButton mr-2"
                   type="primary"
                   htmlType="submit"
+                  disabled={isInputDisabled}
                 >
                   Save
                 </Button>

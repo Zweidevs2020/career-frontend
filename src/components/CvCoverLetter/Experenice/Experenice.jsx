@@ -82,10 +82,9 @@ const Experenice = ({ setCurrent, current }) => {
     }
   };
 
-  const edit=()=>
-{
-  setIsInputDisabled(false)
-}
+  const edit = () => {
+    setIsInputDisabled(false);
+  };
 
   const createArrayData = (data) => {
     let array = [];
@@ -119,18 +118,17 @@ const Experenice = ({ setCurrent, current }) => {
     );
   };
   const onChangeDate = (name, date, arrayIndex) => {
-    console.log('Selected Date:', date);
-  console.log('Parsed Date:', dayjs(date, 'DD-MM-YYYY'));
-  console.log('Current Date:', dayjs());
+    console.log("Selected Date:", date);
+    console.log("Parsed Date:", dayjs(date, "DD-MM-YYYY"));
+    console.log("Current Date:", dayjs());
 
-
-  if (name === 'enddate') {
-    if (dayjs(date, 'DD-MM-YYYY').isAfter(dayjs())) {
-      console.log('End date is in the future.');
-      message.error('End date cannot be in the future.');
-      return;
+    if (name === "enddate") {
+      if (dayjs(date, "DD-MM-YYYY").isAfter(dayjs())) {
+        console.log("End date is in the future.");
+        message.error("End date cannot be in the future.");
+        return;
+      }
     }
-  }
 
     setExpereniceArray(
       expereniceArray.map((item) => {
@@ -142,12 +140,9 @@ const Experenice = ({ setCurrent, current }) => {
   };
 
   const SavePdf = async () => {
-  
-
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
-   
+
     if (respose.data.status === 201) {
-   
     } else {
       message.error(respose.data.message);
     }
@@ -159,7 +154,7 @@ const Experenice = ({ setCurrent, current }) => {
       if (response.data.data.current_step !== 3) {
         setIsInputDisabled(true);
       } else {
-        setIsInputDisabled(false); 
+        setIsInputDisabled(false);
       }
       if (response.data.data.cv_completed === true) {
         setDownloadBtn(true);
@@ -299,15 +294,18 @@ const Experenice = ({ setCurrent, current }) => {
                         ]}
                       >
                         <DatePicker
-  onChange={(date, dateString) =>
-    onChangeDate("startdate", dateString, index)
-  }
-  className="expDateInputFieldStyle"
-  disabled={isInputDisabled}
-  format="DD-MM-YYYY" // Format the selected date
-  value={dayjs(item?.dataValue.startdate, "DD-MM-YYYY")}
-  defaultValue={dayjs(item?.dataValue.startdate, "DD-MM-YYYY")}
-/>
+                          onChange={(date, dateString) =>
+                            onChangeDate("startdate", dateString, index)
+                          }
+                          className="expDateInputFieldStyle"
+                          disabled={isInputDisabled}
+                          format="DD-MM-YYYY" // Format the selected date
+                          value={dayjs(item?.dataValue.startdate, "DD-MM-YYYY")}
+                          defaultValue={dayjs(
+                            item?.dataValue.startdate,
+                            "DD-MM-YYYY"
+                          )}
+                        />
                       </Form.Item>
                     </div>
                     <div className="expFormDoubleItem">
@@ -323,17 +321,20 @@ const Experenice = ({ setCurrent, current }) => {
                         ]}
                       >
                         <DatePicker
-  onChange={(date, dateString) =>
-    onChangeDate("enddate", dateString, index)
-  }
-  
-  format="DD-MM-YYYY" // Format the selected date
-  value={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
-  defaultValue={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
-  disabled={item?.dataValue.is_current_work||isInputDisabled}
-  className="expDateInputFieldStyle"
-/>
-
+                          onChange={(date, dateString) =>
+                            onChangeDate("enddate", dateString, index)
+                          }
+                          format="DD-MM-YYYY" // Format the selected date
+                          value={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
+                          defaultValue={dayjs(
+                            item?.dataValue.enddate,
+                            "DD-MM-YYYY"
+                          )}
+                          disabled={
+                            item?.dataValue.is_current_work || isInputDisabled
+                          }
+                          className="expDateInputFieldStyle"
+                        />
                       </Form.Item>
                       <div>
                         <Checkbox
@@ -448,7 +449,12 @@ const Experenice = ({ setCurrent, current }) => {
                 >
                   Edit
                 </Button>
-                <Button className="expButton" type="primary" htmlType="submit">
+                <Button
+                  className="expButton"
+                  type="primary"
+                  htmlType="submit"
+                  disabled={isInputDisabled}
+                >
                   Save
                 </Button>
               </Form.Item>

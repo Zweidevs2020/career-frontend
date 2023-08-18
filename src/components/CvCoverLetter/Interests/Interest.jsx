@@ -124,6 +124,8 @@ const Interest = ({ setCurrent, current }) => {
                   className="interestButton"
                   type="primary"
                   htmlType="submit"
+                  disabled={isInputDisabled}
+
                 >
                   Save
                 </Button>

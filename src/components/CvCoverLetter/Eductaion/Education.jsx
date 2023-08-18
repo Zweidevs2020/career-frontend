@@ -3,7 +3,11 @@ import { Form, Button, DatePicker, Checkbox, Select, message } from "antd";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import "./Education.css";
-import { postApiWithAuth, getApiWithAuth,deleteApiWithAuth } from "../../../utils/api";
+import {
+  postApiWithAuth,
+  getApiWithAuth,
+  deleteApiWithAuth,
+} from "../../../utils/api";
 import Delete from "../../../assets/delete.png";
 import dayjs from "dayjs";
 import { API_URL } from "../../../utils/constants";
@@ -22,7 +26,7 @@ const Education = ({ setCurrent, current }) => {
 
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETEDUCATION);
-   
+
     if (response.data?.status === 200) {
       setData(response.data.data);
     } else {
@@ -42,7 +46,7 @@ const Education = ({ setCurrent, current }) => {
             return {
               index: indexx,
               dataValue: item,
-              setIndex:indexx
+              setIndex: indexx,
             };
           })
         );
@@ -102,7 +106,6 @@ const Education = ({ setCurrent, current }) => {
 
   const onsubmit = async () => {
     let sendDaata = {};
-   
 
     let data = createArrayData(educationArray);
     let resData = createArrayData(resultArrayData);
@@ -110,7 +113,7 @@ const Education = ({ setCurrent, current }) => {
       ? (sendDaata = { education_data: data, junior_data: [] })
       : (sendDaata = { education_data: data, junior_data: resData });
     const respose = await postApiWithAuth(API_URL.POSTEDUCATION, sendDaata);
-    console.log("hellllllllllllllllloooooooo",respose)
+    console.log("hellllllllllllllllloooooooo", respose);
     if (respose.data.status === 201) {
       setCurrent(current + 1);
     } else {
@@ -152,7 +155,6 @@ const Education = ({ setCurrent, current }) => {
     }
   };
   const onChangeDate = (name, date, arrayIndex) => {
-
     setEducationArray(
       educationArray.map((item) => {
         return item.index === arrayIndex
@@ -173,7 +175,6 @@ const Education = ({ setCurrent, current }) => {
   };
 
   const SavePdf = async () => {
-
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
     if (respose.data.status === 201) {
       // setCurrent(current + 1);
@@ -192,20 +193,17 @@ const Education = ({ setCurrent, current }) => {
     if (response.data.data.current_step !== 2) {
       setIsInputDisabled(true);
     } else {
-      setIsInputDisabled(false); 
+      setIsInputDisabled(false);
     }
   };
-  const edit=()=>
-  {
-    setIsInputDisabled(false)
-  }
+  const edit = () => {
+    setIsInputDisabled(false);
+  };
   useEffect(() => {
     getUserData();
   }, []);
 
-  useEffect(() => {
-   
-  }, [educationArray]);
+  useEffect(() => {}, [educationArray]);
 
   const educationItems = (item, index) => {
     return (
@@ -231,7 +229,6 @@ const Education = ({ setCurrent, current }) => {
                 inputValue={item?.dataValue.school}
                 isPrefix={false}
                 disabled={isInputDisabled}
-
               />
             </Form.Item>
           </div>
@@ -284,7 +281,6 @@ const Education = ({ setCurrent, current }) => {
                 inputValue={item?.dataValue.examtaken}
                 isPrefix={false}
                 disabled={isInputDisabled}
-
               />
             </Form.Item>
           </div>
@@ -303,51 +299,47 @@ const Education = ({ setCurrent, current }) => {
               <DatePicker
                 onChange={(date, dateString) =>
                   onChangeDate("enddate", dateString, index)
-
                 }
-              
-              
                 format={"DD-MM-YYYY"}
                 value={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
                 defaultValue={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
-                disabled={item?.dataValue.present||isInputDisabled}
+                disabled={item?.dataValue.present || isInputDisabled}
                 className="expDateInputFieldStyle"
               />
             </Form.Item>
             <div>
-            <Checkbox
-            className="expCheckBox"
-            name="present"
-            inputValue={item?.dataValue?.present}
-            disabled={isInputDisabled}
-            onChange={(e) => {
-              setEducationArray((prevArray) =>
-                prevArray.map((educationItem) =>
-                  educationItem.index === item.index
-                    ? {
-                        ...educationItem,
-                        dataValue: {
-                          ...educationItem.dataValue,
-                          present: e.target.checked,
-                        },
-                      }
-                    : educationItem
-                )
-              );
-              setIsCurrentCheck(!isCurrentCheck);
-              
-            }}
-          >
-            I'm still studying here
-          </Checkbox>
+              <Checkbox
+                className="expCheckBox"
+                name="present"
+                inputValue={item?.dataValue?.present}
+                disabled={isInputDisabled}
+                onChange={(e) => {
+                  setEducationArray((prevArray) =>
+                    prevArray.map((educationItem) =>
+                      educationItem.index === item.index
+                        ? {
+                            ...educationItem,
+                            dataValue: {
+                              ...educationItem.dataValue,
+                              present: e.target.checked,
+                            },
+                          }
+                        : educationItem
+                    )
+                  );
+                  setIsCurrentCheck(!isCurrentCheck);
+                }}
+              >
+                I'm still studying here
+              </Checkbox>
 
-          <div className="mainContainerDelete">
-            <img
-              className="deleteSubject"
-              src={Delete}
-              onClick={() => handleDeleteEducation(item.dataValue.id)}
-            />
-          </div>
+              <div className="mainContainerDelete">
+                <img
+                  className="deleteSubject"
+                  src={Delete}
+                  onClick={() => handleDeleteEducation(item.dataValue.id)}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -359,47 +351,58 @@ const Education = ({ setCurrent, current }) => {
       setEducationArray((prevArray) =>
         prevArray.filter((item) => item.dataValue.id !== id)
       );
-  
+
       const response = await deleteApiWithAuth(`${API_URL.DELETE}/${id}/`);
-      console.log('Delete response:', response);
-  
+      console.log("Delete response:", response);
+
       if (response.data.status === 204) {
         message.success("Education entry deleted successfully.");
       } else {
         message.error("Failed to delete the education entry.");
-        setEducationArray((prevArray) => [...prevArray, educationArray.find(item => item.dataValue.id === id)]);
+        setEducationArray((prevArray) => [
+          ...prevArray,
+          educationArray.find((item) => item.dataValue.id === id),
+        ]);
       }
     } catch (error) {
       console.error("Error deleting the education entry:", error);
       message.error("An error occurred while deleting the education entry.");
-      setEducationArray((prevArray) => [...prevArray, educationArray.find(item => item.dataValue.id === id)]);
+      setEducationArray((prevArray) => [
+        ...prevArray,
+        educationArray.find((item) => item.dataValue.id === id),
+      ]);
     }
   };
-  
 
   const handleDeleteJuniorCert = async (id) => {
     try {
       setResultArrayData((prevArray) =>
         prevArray.filter((item) => item.dataValue.id !== id)
       );
-  
-      const response = await deleteApiWithAuth(`${API_URL.DELETE_RESULT}/${id}/`);
-      console.log('Delete response:', response);
-  
+
+      const response = await deleteApiWithAuth(
+        `${API_URL.DELETE_RESULT}/${id}/`
+      );
+      console.log("Delete response:", response);
+
       if (response.data.status === 204) {
         message.success("Junior Cert entry deleted successfully.");
       } else {
         message.error("Failed to delete the Junior Cert entry.");
-        setResultArrayData((prevArray) => [...prevArray, resultArrayData.find(item => item.dataValue.id === id)]);
+        setResultArrayData((prevArray) => [
+          ...prevArray,
+          resultArrayData.find((item) => item.dataValue.id === id),
+        ]);
       }
     } catch (error) {
       console.error("Error deleting the Junior Cert entry:", error);
       message.error("An error occurred while deleting the Junior Cert entry.");
-      setResultArrayData((prevArray) => [...prevArray, resultArrayData.find(item => item.dataValue.id === id)]);
+      setResultArrayData((prevArray) => [
+        ...prevArray,
+        resultArrayData.find((item) => item.dataValue.id === id),
+      ]);
     }
   };
-  
-
 
   const educationResult = (item, index) => {
     return (
@@ -425,22 +428,21 @@ const Education = ({ setCurrent, current }) => {
                 inputValue={item?.dataValue?.subject}
                 isPrefix={false}
                 disabled={isInputDisabled}
-
               />
             </Form.Item>
           </div>
           <div className="expFormDoubleItem">
-          <Form.Item
-          label="Result"
-          name={`result ${index}`}
-          className="skillItemLable"
-          rules={[
-            {
-              required: item?.dataValue.result ? false : true,
-              message: "Please Select 1 Option",
-            },
-          ]}
-        >
+            <Form.Item
+              label="Result"
+              name={`result ${index}`}
+              className="skillItemLable"
+              rules={[
+                {
+                  required: item?.dataValue.result ? false : true,
+                  message: "Please Select 1 Option",
+                },
+              ]}
+            >
               <Select
                 placeholder="Select"
                 onChange={(event) => handleChange(event, "level", index)}
@@ -464,15 +466,15 @@ const Education = ({ setCurrent, current }) => {
             </Form.Item>
           </div>
         </div>
-  <div className="mainContainerDelete">
-  {!isInputDisabled && (
-    <img
-      className="deleteSubject"
-      src={Delete}
-      onClick={() => handleDeleteJuniorCert(item.dataValue.id)}
-    />
-  )}
-</div>
+        <div className="mainContainerDelete">
+          {!isInputDisabled && (
+            <img
+              className="deleteSubject"
+              src={Delete}
+              onClick={() => handleDeleteJuniorCert(item.dataValue.id)}
+            />
+          )}
+        </div>
         <div className="expFormDoubleItem">
           <Form.Item
             label="Result"
@@ -637,10 +639,10 @@ const Education = ({ setCurrent, current }) => {
             )}
 
             <div className="eduItemButton">
-                <Button className="eduButtonBack" type="primary" onClick={prev}>
-                  BACK
-                </Button>
-                <div className="buttonEducation">
+              <Button className="eduButtonBack" type="primary" onClick={prev}>
+                BACK
+              </Button>
+              <div className="buttonEducation">
                 <Button
                   className={
                     downloadBtn === true
@@ -652,10 +654,15 @@ const Education = ({ setCurrent, current }) => {
                 >
                   Edit
                 </Button>
-                <Button className="eduButton" type="primary" htmlType="submit">
+                <Button
+                  className="eduButton"
+                  type="primary"
+                  htmlType="submit"
+                  disabled={isInputDisabled}
+                >
                   Save
                 </Button>
-                </div>
+              </div>
             </div>
           </Form>
         </div>
