@@ -319,6 +319,7 @@ const Education = ({ setCurrent, current }) => {
             className="expCheckBox"
             name="present"
             inputValue={item?.dataValue?.present}
+            disabled={isInputDisabled}
             onChange={(e) => {
               setEducationArray((prevArray) =>
                 prevArray.map((educationItem) =>
@@ -334,6 +335,7 @@ const Education = ({ setCurrent, current }) => {
                 )
               );
               setIsCurrentCheck(!isCurrentCheck);
+              
             }}
           >
             I'm still studying here
@@ -462,14 +464,15 @@ const Education = ({ setCurrent, current }) => {
             </Form.Item>
           </div>
         </div>
-        <div className="mainContainerDelete">
+  <div className="mainContainerDelete">
+  {!isInputDisabled && (
     <img
       className="deleteSubject"
       src={Delete}
       onClick={() => handleDeleteJuniorCert(item.dataValue.id)}
     />
-  </div>
-
+  )}
+</div>
         <div className="expFormDoubleItem">
           <Form.Item
             label="Result"
@@ -568,6 +571,7 @@ const Education = ({ setCurrent, current }) => {
               <Form.Item>
                 <Checkbox
                   className="eduJunCheckBox"
+                  disabled={isInputDisabled}
                   checked={isCheck}
                   onChange={() => {
                     setIsCheck(!isCheck);
@@ -579,6 +583,7 @@ const Education = ({ setCurrent, current }) => {
               <Form.Item>
                 <Checkbox
                   className="eduJunCheckBox"
+                  disabled={isInputDisabled}
                   checked={!isCheck}
                   onChange={() => {
                     setIsCheck(!isCheck);
@@ -632,17 +637,14 @@ const Education = ({ setCurrent, current }) => {
             )}
 
             <div className="eduItemButton">
-              <Form.Item>
                 <Button className="eduButtonBack" type="primary" onClick={prev}>
                   BACK
                 </Button>
-              </Form.Item>
-
-              <Form.Item>
+                <div className="buttonEducation">
                 <Button
                   className={
                     downloadBtn === true
-                      ? "disabledBtn me-3"
+                      ? "skillsButton me-3"
                       : "skillsButton me-3 "
                   }
                   type="primary"
@@ -653,7 +655,7 @@ const Education = ({ setCurrent, current }) => {
                 <Button className="eduButton" type="primary" htmlType="submit">
                   Save
                 </Button>
-              </Form.Item>
+                </div>
             </div>
           </Form>
         </div>

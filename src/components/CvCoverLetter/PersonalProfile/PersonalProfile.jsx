@@ -283,14 +283,17 @@ const PersonalProfile = ({ setCurrent, current }) => {
             </div>
 
             <div className="profileItemButton">
-              <Form.Item>
+            <div  style={{paddingRight:"10px"}}>
               <Button
-                  className={downloadBtn === true ? "disabledBtn me-3": "skillsButton me-3 "}
+                  className={downloadBtn === true ?"skillsButton": "skillsButton me-3 "}
                   type="primary"
                   onClick={edit}
                 >
                   Edit
                 </Button>
+</div>
+
+              <div>
                 <Button
                   className="profileButton mr-2"
                   type="primary"
@@ -298,7 +301,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                 >
                   Save
                 </Button>
-              </Form.Item>
+                </div>
             </div>
           </Form>
         </div>

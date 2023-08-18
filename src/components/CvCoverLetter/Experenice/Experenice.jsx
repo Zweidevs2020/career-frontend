@@ -201,7 +201,7 @@ const Experenice = ({ setCurrent, current }) => {
                         ]}
                       >
                         <MyCareerGuidanceInputField
-                          placeholder=""
+                          placeholder="e.g Retail Sales Associate"
                           type="input"
                           name="job_title"
                           onChange={(event) => onChangeHandle(event, index)}
@@ -440,7 +440,7 @@ const Experenice = ({ setCurrent, current }) => {
                 <Button
                   className={
                     downloadBtn === true
-                      ? "disabledBtn me-3"
+                      ? "skillsButton me-3"
                       : "skillsButton me-3 "
                   }
                   type="primary"

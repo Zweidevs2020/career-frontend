@@ -319,7 +319,7 @@ const Skill = ({ setCurrent, current }) => {
                 <Button
                   className={
                     downloadBtn === true
-                      ? "disabledBtn me-3"
+                      ? "skillsButton me-3"
                       : "skillsButton me-3 "
                   }
                   type="primary"

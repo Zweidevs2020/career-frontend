@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { DatePicker, Space, Spin, message, Radio } from "antd";
+import { DatePicker, Space, Spin, message, Radio, Button } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import dayjs from "dayjs";
 import jsPDF from "jspdf";
@@ -161,6 +161,13 @@ const MyGoal = () => {
     const { name, value } = e.target;
     seActions({ ...actions, [name]: value });
   };
+
+  const disabledDate = current => {
+    const today = dayjs().startOf('day');
+    
+    return current < today;
+  };
+
   return (
     <>
       {loading ? (
@@ -236,6 +243,7 @@ const MyGoal = () => {
                   placeholder="Action 1"
                   name="action1"
                   value={actions.action1}
+                  style={{width:"97%"}}
                   className=" sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 mt-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[100%] rounded-md border-solid border-2 border-gray-400 outline-none "
                   onChange={(e) => {
                     onChangeHandle(e);
@@ -246,6 +254,7 @@ const MyGoal = () => {
                   placeholder="Action 2"
                   name="action2"
                   value={actions.action2}
+                  style={{width:"97%"}}
                   className=" px-2 sm:text-[8px] md:text-[8px] mt-2 h-[50px] xl:text-[11px] w-[100%] sm:w-[30%] sm:h-[35px] md:h-[38px] rounded-md border-solid border-2 border-gray-400 outline-none "
                   onChange={(e) => {
                     onChangeHandle(e);
@@ -260,6 +269,7 @@ const MyGoal = () => {
                 <div className="h-[40px] w-[50%] flex items-center justify-around ">
                   <input
                     type="checkbox"
+                    style={{cursor:"pointer"}}
                     checked={realistic ? true : false}
                     onChange={() => setRealistic(true)}
                     className="h-[24px] w-[24px] border-none text-[#fff] bg-[#1476B7] "
@@ -271,6 +281,7 @@ const MyGoal = () => {
                 <div className="h-[40px] w-[50%]  flex items-center justify-around ">
                   <input
                     type="checkbox"
+                    style={{cursor:"pointer"}}
                     checked={!realistic ? true : false}
                     onChange={() => setRealistic(false)}
                     className="h-[24px] w-[24px] border-none text-[#F4F6F8] bg[#F4F6F8] "
@@ -289,6 +300,7 @@ const MyGoal = () => {
                     className="dateLibr"
                     value={dayjs(countdown3, "DD-MM-YYYY")}
                     onChange={handleDateChange}
+                    disabledDate={disabledDate} 
                     format="DD-MM-YYYY"
                     />
                 </Space>
@@ -344,18 +356,18 @@ const MyGoal = () => {
                 </div>
               </div>
               <div className="buttonGoal">
-                <MyCareerGuidanceButton
-                  label=" Download PDF"
+                <Button
                   loading={loading3}
-                  className="buttonGoalPage"
+                  className="download"
                   onClick={() => DownloadBtn()}
-                />
-                <MyCareerGuidanceButton
-                  label=" Save Data"
-                  loading={loading2}
-                  className="buttonGoalPage"
-                  onClick={() => SaveInput()}
-                />
+                >
+                  Dowload PDF
+                </Button>
+                <Button
+                loading={loading2}
+                className="saveData"
+                onClick={() => SaveInput()}
+                > Save Data</Button>
               </div>
               <br />
             </div>

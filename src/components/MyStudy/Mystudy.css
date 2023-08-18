@@ -63,3 +63,20 @@ fc-col-header-cell-cushion
     display: flex;
     justify-content: end;
 }
+.saveData
+{
+    background-color: #1476B7;
+    color: white !important;
+    width: 150px;
+    height: 45px;
+    border-radius: 10px;
+}
+
+.download
+{
+    background-color: #1476B7;
+    color: white !important;
+    width: 200px;   
+    height: 45px;
+    border-radius: 10px;
+}

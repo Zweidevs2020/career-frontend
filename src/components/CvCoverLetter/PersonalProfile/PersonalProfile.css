@@ -63,7 +63,8 @@ margin-bottom: -2%;
 
   .profileItemButton{
     display: flex;
-    justify-content: end;
+justify-content: end;
+    
     flex-direction: row !important;
     width: 100%;
   }

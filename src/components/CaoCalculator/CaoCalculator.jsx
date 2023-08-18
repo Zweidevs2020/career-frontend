@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Select, Table } from "antd";
+import { Select, Spin, Table } from "antd";
 import add from "../../assets/add.svg";
 import {
   buildStyles,
@@ -56,6 +56,7 @@ const CaoCalculator = () => {
   const [thirdDropdownOptions, setThirdDropdownOptions] = useState([]);
   const [tableKey, setTableKey] = useState(0);
   const [btnDisabled, setBtnDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentState, setCurrectState] = useState(-1);
   const [tableData, setTableData] = useState([
     {
@@ -412,10 +413,33 @@ const CaoCalculator = () => {
    
   }, [screenSize]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await getApiWithAuth(API_URL.SUBJECTLIST);
+        if (response?.data?.status === 200) {
+          setData(response.data.data);
+        }
+      } catch (error) {
+        // Handle error
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
+
   return (
     <div className="caoMainDiv">
       <div style={{ background: "white" }}>
-      
+      {isLoading ? (
+         <div className="spinner-container">
+         <Spin/>
+       </div>
+     ) : (
         <div className="coaInnerf8fafcDiv">
           <div className="welcomeHaddingText">My CAO Points: </div>
         
@@ -637,6 +661,7 @@ const CaoCalculator = () => {
             </div>
           )}
         </div>
+          )}
       </div>
     </div>
   );
