@@ -48,7 +48,7 @@ const CaoCalculator = () => {
   const [gradeId, setGradeId] = useState([]);
   const [gradeIdApi, setGradeIdApi] = useState([]);
   const [gradeId1, setGradeId1] = useState([{}, {}]);
-
+const [dropdownData, setDropdownData] = useState([]);
   const [grades, setGrades] = useState([]);
   const [subjects, setSubjects] = useState("");
   const [level, setLevel] = useState("");
@@ -218,25 +218,24 @@ const CaoCalculator = () => {
       align: "center",
       render: (_, record) => (
         <>
-          
           <Select
-            placeholder="Select Subject"
-            value={tableData[record?.No]?.name}
-            onChange={(e) => handleFirstDropdownChange(e, record)}
-            className="selectFieldStyle"
-            loading={loadingFirst}
-            key={record}
-            showSearch
-            filterOption={(input, option) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
-          >
-            {data?.map((item) => (
-              <Option key={item.name} value={item.name}>
-                {item.name}
-              </Option>
-            ))}
-          </Select>
+  placeholder="Select Subject"
+  value={tableData[record?.No]?.name}
+  onChange={(e) => handleFirstDropdownChange(e, record)}
+  className="selectFieldStyle"
+  loading={loadingFirst}
+  key={record}
+  showSearch
+  filterOption={(input, option) =>
+    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+  }
+>
+  {dropdownData?.map((item) => (
+    <Option key={item.name} value={item.name}>
+      {item.name}
+    </Option>
+  ))}
+</Select>
         </>
       ),
     },
@@ -296,15 +295,17 @@ const CaoCalculator = () => {
     },
   ];
 
+
   const clearAllData = () => {
-    const completeTableData = tableData.map((item) => {
-      item.name = null;
-      item.grades = null;
-      item.level = null;
-    });
+    const completeTableData = tableData.map((item) => ({
+      ...item,
+      name: null,    // Reset Subject
+      level: null,   // Reset Level
+      grades: null,  // Reset Expected_Grades
+    }));
     setTableData(completeTableData);
   };
-
+  
   const calCulateData = async () => {
     setLoading(true);
     const response = await postApiWithAuth(API_URL.CALCULATEDATA, gradeId);
@@ -332,6 +333,7 @@ const CaoCalculator = () => {
     const response = await getApiWithAuth(API_URL.SUBJECTLIST);
     if (response?.data?.status === 200) {
       setData(response.data.data);
+       setDropdownData(response.data.data);
       setLoadingFirst(false);
     } else {
       setLoadingFirst(false);
@@ -665,6 +667,7 @@ const CaoCalculator = () => {
       </div>
     </div>
   );
+            
 };
 
 export default CaoCalculator;
