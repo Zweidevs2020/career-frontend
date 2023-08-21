@@ -184,7 +184,7 @@ const Skill = ({ setCurrent, current }) => {
       quality_data: result2,
     });
     if (respose.data.status === 201 || respose.data.status === 200) {
-      console.log("res",respose)
+    
       setCurrent(current + 1);
     } else {
       message.error(respose.data.message);
@@ -286,7 +286,7 @@ const Skill = ({ setCurrent, current }) => {
                   placeholder="Select Option"
                   onChange={handleChange2}
                   optionLabelProp="label"
-                  {...console.log("zzzzzzzzzzzz",selectOption2)}
+               
                   value={selectOption2}
                   disabled={isInputDisabled}
                 >
@@ -296,7 +296,7 @@ const Skill = ({ setCurrent, current }) => {
                     return (
                       <Option value={item.value} label={item.label}>
                      <div>
-                      {console.log("ssssss",item)}
+                  
                           <div>{item.label}</div>
                           <div>{item.description}</div>
                         </div>

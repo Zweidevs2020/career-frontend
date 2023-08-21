@@ -72,7 +72,7 @@ const MyGoal = () => {
   const getUserGoals = async () => {
     setLoading(true);
     const res = await getApiWithAuth(API_URL.GETUSERGOAL);
-    console.log("=====>ahad", res)
+  
     if (res.data.data) {
       setGoal(res.data.data.goal);
       setGoal(res.data.data.description);
@@ -106,7 +106,7 @@ const MyGoal = () => {
   const DownloadBtn = async () => {
     setLoading3(true);
     const res = await getApiWithAuth(API_URL.GETMYGOALPDF);
-    console.log("PDF RES", res)
+ 
     if (res.data.status === 200) {
       const data = res.data.data;
 
@@ -115,15 +115,6 @@ const MyGoal = () => {
       const pdfDoc = await PDFDocument.load(pdfBytes);
       const pages = pdfDoc.getPages();
      
-   
-
-      // for (const page of pages) {
-      //   const textObjects = page.getTextObjects();
-      //   for (const textObject of textObjects) {
-      //     textObject.setFontSize(12);  // Adjust font size as needed
-      //     textObject.setTextColor(rgb(0, 0, 255)); // Adjust color as needed
-      //   }
-      // }
       const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
 
       // Create a temporary link element

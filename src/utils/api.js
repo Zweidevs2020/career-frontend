@@ -22,7 +22,7 @@ export const getApiWithAuth = async (url) => {
   await setApiHeader();
   try {
     const res = await baseInstance.get(url);
-    console.log("helllo gee",res.data)
+
     return {
       data: res,
     };
@@ -71,11 +71,11 @@ export const putApiWithAuth = async (url, body) => {
 };
 
 export const deleteApiWithAuth = async (url) => {
-  console.log("URL IS",url)
+
   await setApiHeader();
   try {
     const res = await baseInstance.delete(url);
-    console.log("api delete",res,url)
+  
     return {
       data: res,
     };
@@ -88,7 +88,7 @@ export const postApiWithAuth = async (url, body) => {
   await setApiHeader();
   try {
     const res = await baseInstance.post(url, body);
-    console.log("ressssffffffffffff",res,url,body)
+
     return {
       data: res,
     };

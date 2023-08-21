@@ -78,7 +78,7 @@ const Experenice = ({ setCurrent, current }) => {
   const onSubmit = async () => {
     let data = createArrayData(expereniceArray);
     const respose = await postApiWithAuth(API_URL.POSTEXPERIANCE, data);
-    console.log("responseess", respose)
+ 
     if (respose.data.status === 201) {
       setCurrent(current + 1);
     } else {

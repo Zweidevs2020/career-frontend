@@ -12,9 +12,9 @@ const Interest = ({ setCurrent, current }) => {
 
 
   const onsubmit = async () => {
-    console.log("textdata",textData)
+  
     const respose = await postApiWithAuth(API_URL.POSTINTREST, [textData]);
-    console.log("response is",respose)
+  
     if (respose.data.status === 201) {
       setCurrent(current + 1);
     } else {
@@ -33,7 +33,7 @@ const Interest = ({ setCurrent, current }) => {
 
   const getIntrest = async () => {
     const response = await getApiWithAuth(API_URL.GETINTREST);
-    console.log("ddddddddd",response)
+   
     if (response.data?.status === 200) {
       if (response.data.data.length > 0) {
         setTextData(response.data.data[0]);

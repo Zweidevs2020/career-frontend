@@ -41,7 +41,7 @@ const TakeSelfTest = () => {
     const response = await getApiWithAuth(
       `/psychometric/psychometric/${data.id}/`
     );
-  console.log("testquestion",response.data.data)
+ 
     if (response?.data?.status === 200) {
       setQuizData(response.data.data);
       setLoading(false);
@@ -129,7 +129,7 @@ const TakeSelfTest = () => {
                                   value={options.answer_id}
                                   key={options.answer_id}
                                 >
-                                  {console.log("answer",options.answer,index,options.answer_id)}
+                                
                                   {options.answer}
                                 </Radio>
                               ))}

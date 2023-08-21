@@ -21,7 +21,6 @@ const Occupational = () => {
     }
   }, [data]);
 
-  console.log("occupation",data)
 
   const getViewResult = async () => {
     setLoading(true);

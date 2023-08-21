@@ -38,11 +38,11 @@ const Education = ({ setCurrent, current }) => {
 
   useEffect(() => {
     if (data !== null) {
-      console.log("GETDATA",data.education_data.length)
+     
       if (data.education_data.length > 0) {
         setEducationArray(
           data.education_data.map((item, indexx) => {
-            console.log("ddddddddddd",item,indexx,)
+           
             return {
               index: indexx,
               dataValue: item,  
@@ -424,7 +424,7 @@ const Education = ({ setCurrent, current }) => {
                 placeholder= "e.g. Subject"
                 type="input"
                 name="subject"
-                {...console.log("values of input",item?.dataValue?.subject)}
+          
                 onChange={(event) => onChangeHandle(event, index, 2)}
                 inputValue={item?.dataValue?.subject}
                 isPrefix={true}

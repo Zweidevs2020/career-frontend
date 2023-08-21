@@ -33,7 +33,7 @@ const Selfassesment = () => {
         },
       },
     },
-    colors: ["#8BBDDB"],
+  
     chart: {
       id: "basic-bar",
       toolbar: {
@@ -49,7 +49,7 @@ const Selfassesment = () => {
   const getPsychometricTest = async () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETPSYCHOMETRICTEST);
-console.log("dddddddddd",response)
+
     if (response?.data?.status === 200) {
       const psychometricTestData = response.data.data;
 
@@ -76,6 +76,7 @@ console.log("dddddddddd",response)
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  const chartColors = ["#b9bab8", "#36bf34", "#8663e0"];
   return (
     <>
       <div className="educationalGuidanceMainDiv">
@@ -83,7 +84,8 @@ console.log("dddddddddd",response)
 
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {psychometricTest?.map((mapData, index) => {
-
+  const colorIndex = index % chartColors.length;
+  const chartColor = chartColors[colorIndex];
             let chartOptions;
             if (mapData?.test_results?.length > 0) {
               const labels = mapData?.test_results[0]?.question_scores?.map(
@@ -98,6 +100,7 @@ console.log("dddddddddd",response)
                 labels,
                 series: [{ data: series }],
                 title: { text: title },
+                colors: [chartColor], 
               };
             } else {
               chartOptions = {
