@@ -70,9 +70,10 @@ const TakeTest = () => {
                     <div style={{ display: "flex" }}>
                       <div style={{ marginRight: 15 }}>{index + 1}</div>
                       <div>
-                        <div
+                        <div className="questionStyling"
                           dangerouslySetInnerHTML={{
                             __html: item.question,
+                          
                           }}
                         ></div>
                         <div className="mt-3">
@@ -91,6 +92,7 @@ const TakeTest = () => {
                               })}
                             </Space>
                           </Radio.Group>
+                         
                         </div>
                       </div>
                     </div>
@@ -100,7 +102,7 @@ const TakeTest = () => {
               <div className="mt-3">
                 <MyCareerGuidanceButton
                   label="Submit"
-                  className="takebutton"
+                  className="takebutton submitTest"
                   type="button"
                   htmlType="button"
                   disabled={quizResult.length !== quizData.questions?.length}

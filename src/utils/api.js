@@ -32,7 +32,6 @@ export const getApiWithAuth = async (url) => {
 
 export const patchApiWithAuth = async (url, body) => {
   await setApiHeader();
-
   try {
     const res = await baseInstance.patch(url, body);
     return {

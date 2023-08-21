@@ -124,9 +124,7 @@ const Occupational = () => {
             <div className="welcomeHaddingText ">
               {educationGuidance[0]?.test_name}
             </div>
-            <div className="textStyle18 pt-1 pb-3">
-            {educationGuidance[0]?.description}
-            </div>
+          
 
             <div className="educationalGuidanceSecondDiv">
               <div

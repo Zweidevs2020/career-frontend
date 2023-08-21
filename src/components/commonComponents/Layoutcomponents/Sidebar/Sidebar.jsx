@@ -444,9 +444,9 @@ const Sidebar = ({ children, flags }) => {
                 justifyContent: "center",
               }}
               open={isModalOpen}
-              // onCancel={handleCancel}
+             
               footer={[]}
-              // closeIcon={<img onClick={() => alert('asd')} src={edit} alt="" />}
+             
               title={
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <Title
@@ -674,12 +674,7 @@ const Sidebar = ({ children, flags }) => {
                     />
                   }
                 >
-                  {/* <span className="textStyling">
-                    Overview{" "}
-                    {selectedMenuItem === "Overview" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span> */}
+                 
                 </Menu.Item>
                 <Menu.Item
                   key="CAOCalculator"
@@ -693,12 +688,7 @@ const Sidebar = ({ children, flags }) => {
                     />
                   }
                 >
-                  {/* <span className="textStyling">
-                    CAO Calculator{" "}
-                    {selectedMenuItem === "CAOCalculator" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span> */}
+                 
                 </Menu.Item>
                 <Menu.Item
                   key="MyGoals"
@@ -710,12 +700,7 @@ const Sidebar = ({ children, flags }) => {
                     />
                   }
                 >
-                  {/* <span className="textStyling">
-                    My Goals{" "}
-                    {selectedMenuItem === "MyGoals" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span> */}
+                  
                 </Menu.Item>
                 <Menu.Item
                   key="CoverLater"
@@ -729,12 +714,7 @@ const Sidebar = ({ children, flags }) => {
                     />
                   }
                 >
-                  {/* <span className="textStyling">
-                    CV/Cover Later{" "}
-                    {selectedMenuItem === "CoverLater" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span> */}
+                
                 </Menu.Item>
                 <Menu.Item
                   key="SelfAssessment"
@@ -748,12 +728,7 @@ const Sidebar = ({ children, flags }) => {
                     />
                   }
                 >
-                  {/* <span className="textStyling">
-                    Self Assessment{" "}
-                    {selectedMenuItem === "SelfAssessment" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span> */}
+                 
                 </Menu.Item>
                 <Menu.Item
                   key="MyStudy"
@@ -765,12 +740,7 @@ const Sidebar = ({ children, flags }) => {
                     />
                   }
                 >
-                  {/* <span className="textStyling">
-                    My Study{" "}
-                    {selectedMenuItem === "MyStudy" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span> */}
+                  
                 </Menu.Item>
                 <Menu.Item
                   key="MyChoices"
@@ -782,12 +752,7 @@ const Sidebar = ({ children, flags }) => {
                     />
                   }
                 >
-                  {/* <span className="textStyling">
-                    My Choices{" "}
-                    {selectedMenuItem === "MyChoices" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span> */}
+                
                 </Menu.Item>
                 <Menu.Item
                   key="EducationalGuidance"
@@ -801,12 +766,7 @@ const Sidebar = ({ children, flags }) => {
                     />
                   }
                 >
-                  {/* <span className="textStyling">
-                    Educational Guidance
-                    {selectedMenuItem === "EducationalGuidance" ? (
-                      <span> &nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span> */}
+                  
                 </Menu.Item>
               </Menu>
               <div
@@ -818,7 +778,7 @@ const Sidebar = ({ children, flags }) => {
                 className="careerBtnDiv"
               >
                 <MyCareerGuidanceButton
-                  // label="Logout"
+                 
                   className="mobLogoutBtn"
                   type="primary"
                   htmlType="button"
@@ -866,9 +826,9 @@ const Sidebar = ({ children, flags }) => {
                 justifyContent: "center",
               }}
               open={isModalOpen}
-              // onCancel={handleCancel}
+            
               footer={[]}
-              // closeIcon={<img onClick={() => alert('asd')} src={edit} alt="" />}
+            
               title={
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <Title

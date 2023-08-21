@@ -1,6 +1,5 @@
-.dashboardRightDiv, .dashboardRightDivv {
-  /* margin-left: 10px;
-  margin-right: 10px; */
+.dashboardRightDiv,
+.dashboardRightDivv {
   margin-top: 10px;
 }
 
@@ -15,13 +14,16 @@
   margin-bottom: 5px;
   border: 1px solid #e0e0e059;
 }
+
 .parentRightDashboardDivTextDiv {
   width: 65%;
 }
+
 .parentRightDashboardDivTextDiv h1 {
   font-size: 16px;
   font-weight: 500;
 }
+
 .parentRightDashboardDivBtnDiv {
   height: 4vh;
   background: #1476b7;
@@ -33,19 +35,33 @@
   justify-content: center;
   width: 25%;
 }
+
 .parentRightDashboardDivBtnDiv button {
   font-size: 14px;
   font-weight: 500;
 }
+
 .dashboardRightHeadingDiv {
   color: #474749;
-font-family: Poppins;
-font-size: 24px;
-font-style: normal;
-font-weight: 600;
-margin-left: .8rem;
-line-height: normal;
+  font-family: Poppins;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  margin-left: .7rem;
+  line-height: normal;
 }
+
+.psychometricTestDes{
+  color: #737373;
+  font-family: Poppins;
+  font-size: 12px;
+  /* font-style: normal;
+  font-weight: 400; */
+  margin-left: .7rem;
+  margin-top: .2rem;
+  /* line-height: normal; */
+}
+
 .rightGraphBtn {
   border: 1px solid #1476b7;
   border-radius: 5px;
@@ -56,112 +72,119 @@ line-height: normal;
   justify-content: center;
   color: #1476b7;
 }
-.rightGraphBtn button{
-    font-size: 12px;
+
+.rightGraphBtn button {
+  font-size: 12px;
 }
-.rightContainerStyle{
+
+.rightContainerStyle {
   width: 100%;
   display: flex;
-  /* justify-content: center; */
+
   height: 100%;
   overflow: auto;
 }
-.chartHeadingwBtn{
+
+.chartHeadingwBtn {
   margin: 0 12 0 12;
 }
+
 @media (max-width: 1440px) {
   .parentRightDashboardDivBtnDiv button {
     font-size: 12px;
   }
-  .rightGraphBtn,.parentRightDashboardDivBtnDiv{
+
+  .rightGraphBtn,
+  .parentRightDashboardDivBtnDiv {
     width: 30%;
+  }
 }
-}
+
 @media (max-width: 1024px) {
   .parentRightDashboardDivTextDiv h1 {
     font-size: 12px;
   }
-  /* .parentRightDashboardDivBtnDiv {
-    width: 35%;
-  } */
-/* =======
-  .parentRightDashboardDivBtnDiv {
-    width: 120px;
-  }
-  .rightGraphBtn{
-    height: 3vh;
-  }
->>>>>>> 77aa82dcd37b015004c2e84a0d4e584f88f4d98e */
+
 }
+
 @media (max-width: 768px) {
   .parentRightDashboardDiv {
     display: block;
     height: 7vh;
   }
+
   .dashboardRightHeadingDiv {
     margin-left: .8rem;
     font-size: 14px;
   }
+
   .parentRightDashboardDiv {
     padding-left: 3px;
     padding-right: 3px;
     margin-bottom: 10px;
   }
-  .dashboardRightDiv, .dashboardRightDivv {
-    /* margin-left: 6px;
-    margin-right: 6px; */
-  }
+
   .parentRightDashboardDivBtnDiv {
     width: 60%;
     margin: auto;
   }
+
   .parentRightDashboardDivTextDiv h1 {
     line-height: 16px;
     text-align: center;
     padding-bottom: 8px;
   }
-  /* .parentRightDashboardDivBtnDiv {
-    height: 32px;
-  } */
+
   .parentRightDashboardDivTextDiv {
     width: 100%;
   }
-  .chartHeadingwBtn{
+
+  .chartHeadingwBtn {
     display: block;
     height: 60px;
     margin-top: 10px;
-   
+
   }
-  .chartHeading{
+
+  .chartHeading {
     margin-top: 15px;
   }
+
   .rightGraphBtn {
-      width: 120px
+    width: 120px
   }
-  .rightGraphBtn,.parentRightDashboardDivBtnDiv {
-      height: 3vh;
+
+  .rightGraphBtn,
+  .parentRightDashboardDivBtnDiv {
+    height: 3vh;
   }
 }
+
 @media (max-width: 425px) {
   .parentRightDashboardDiv {
     display: flex;
   }
+
   .parentRightDashboardDivBtnDiv {
     width: 50%;
   }
+
   .parentRightDashboardDiv {
     height: 5vh;
     padding-left: 10px;
     padding-right: 10px;
   }
+
   .parentRightDashboardDivTextDiv h1 {
     text-align: start;
   }
-  .chartHeadingwBtn{
+
+  .chartHeadingwBtn {
     display: flex;
   }
+
   .rightGraphBtn {
-      width: 120px;
+    width: 120px;
   }
 }
 

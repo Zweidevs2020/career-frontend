@@ -10,6 +10,7 @@ import "react-circular-progressbar/dist/styles.css";
 import "./CaoCalculator.css";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import { API_URL } from "../../utils/constants";
+import { PlusCircleFilled, PlusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
@@ -411,7 +412,7 @@ const CaoCalculator = () => {
   }, []);
 
   return (
-    <div className="caoMainDiv">
+<div className="caoMainDiv">
       <div style={{ background: "white" }}>
         {isLoading ? (
           <div className="spinner-container">
