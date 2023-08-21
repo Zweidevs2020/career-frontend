@@ -6,7 +6,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import "./MyGoalStyle.css";
 
 
-const DownloadPage = ({goal, proffession, countdown2, actions, countdown3, realistic, setRealistic}) => {
+const DownloadPage = ({goal,description, proffession, countdown2, actions, countdown3, realistic, setRealistic}) => {
 
   const styles = {
     goalHeading:{
@@ -160,6 +160,18 @@ const DownloadPage = ({goal, proffession, countdown2, actions, countdown3, reali
               Lorem ipsum is a placeholder text commonly used to demonstrate
             </h>
           </div>
+        </div>
+        <div style={styles.inputContainer}>
+          <h style={{ color: "#111928" }}>Description:</h>
+        </div>
+        <div style={styles.inputGoal}>
+          <textarea
+            style={styles.inputCarrer}
+            value={description}
+            placeholder="Enter description"
+            className="sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
+            readOnly
+          />
         </div>
         <div style={styles.lowerContainer2}>
           <div style={styles.lowerContainer}>

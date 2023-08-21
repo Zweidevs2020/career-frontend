@@ -215,10 +215,6 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   .coaInnerf8fafcDiv {
     padding: 10px;
   }
-  .selectFieldStyle {
-    /* width: 120px; */
-    /* min-width: 25px; */
-  }
   .coaPointsWidth {
     width: 100%;
   }
@@ -326,10 +322,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   /* .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
       width: 120px !important;
     } */
-  .coaSubjectWidth
-    .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
-    /* width: 160px !important; */
-  }
+  
   .coaSubjectWidth td.ant-table-cell {
     max-width: 195px !important;
   }
@@ -369,4 +362,50 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow {
     width: 160px;
   }
+}
+.spinner-container
+{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobileColumn
+{
+  padding-bottom: 10px;
+}
+.tableHeading
+{
+  background-color:
+  #FAFAFA;
+  width: 376px;
+  height: 47.6383056640625px;
+  top: 561.6248779296875px;
+  padding-top: 10px;
+
+}
+.styleTableHeading
+{
+  display: flex;
+  align-items: center;
+}
+
+.styleTableHeading
+{
+width: 71px;
+height: 24px;
+top: 581.13232421875px;
+left: 20px;
+color:#474749;
+font-weight: 600;
+width: 100%;
+}
+@media only screen and (max-width: 600px) 
+{
+  .ant-layout-sider-children
+{
+height: 1900px !important;
+}  
 }

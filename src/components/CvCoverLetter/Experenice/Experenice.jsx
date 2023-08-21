@@ -87,8 +87,8 @@ const Experenice = ({ setCurrent, current }) => {
   };
 
   const edit = () => {
-    setIsInputDisabled(false)
-  }
+    setIsInputDisabled(false);
+  };
 
   const createArrayData = (data) => {
     let array = [];
@@ -122,10 +122,14 @@ const Experenice = ({ setCurrent, current }) => {
     );
   };
   const onChangeDate = (name, date, arrayIndex) => {
+    console.log("Selected Date:", date);
+    console.log("Parsed Date:", dayjs(date, "DD-MM-YYYY"));
+    console.log("Current Date:", dayjs());
 
-    if (name === 'enddate') {
-      if (dayjs(date, 'DD-MM-YYYY').isAfter(dayjs())) {
-        message.error('End date cannot be in the future.');
+    if (name === "enddate") {
+      if (dayjs(date, "DD-MM-YYYY").isAfter(dayjs())) {
+        console.log("End date is in the future.");
+        message.error("End date cannot be in the future.");
         return;
       }
     }
@@ -140,12 +144,9 @@ const Experenice = ({ setCurrent, current }) => {
   };
 
   const SavePdf = async () => {
-
-
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
 
     if (respose.data.status === 201) {
-
     } else {
       message.error(respose.data.message);
     }
@@ -220,7 +221,7 @@ const Experenice = ({ setCurrent, current }) => {
                         ]}
                       >
                         <MyCareerGuidanceInputField
-                          placeholder={item?.dataValue?.job_title || "e.g. Job Title"}
+                          placeholder={item?.dataValue?.job_title || "e.g Retail Sales Associate"}
                           type="input"
                           name="job_title"
                           onChange={(event) => onChangeHandle(event, index)}
@@ -325,7 +326,10 @@ const Experenice = ({ setCurrent, current }) => {
                           disabled={isInputDisabled}
                           format="DD-MM-YYYY" // Format the selected date
                           value={dayjs(item?.dataValue.startdate, "DD-MM-YYYY")}
-                          defaultValue={dayjs(item?.dataValue.startdate, "DD-MM-YYYY")}
+                          defaultValue={dayjs(
+                            item?.dataValue.startdate,
+                            "DD-MM-YYYY"
+                          )}
                         />
                       </Form.Item>
                     </div>
@@ -345,14 +349,17 @@ const Experenice = ({ setCurrent, current }) => {
                           onChange={(date, dateString) =>
                             onChangeDate("enddate", dateString, index)
                           }
-
                           format="DD-MM-YYYY" // Format the selected date
                           value={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
-                          defaultValue={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
-                          disabled={item?.dataValue.is_current_work || isInputDisabled}
+                          defaultValue={dayjs(
+                            item?.dataValue.enddate,
+                            "DD-MM-YYYY"
+                          )}
+                          disabled={
+                            item?.dataValue.is_current_work || isInputDisabled
+                          }
                           className="expDateInputFieldStyle"
                         />
-
                       </Form.Item>
                       <div>
                         <Checkbox
@@ -364,12 +371,12 @@ const Experenice = ({ setCurrent, current }) => {
                               expereniceArray.map((item) => {
                                 return item.index === index
                                   ? {
-                                    ...item,
-                                    dataValue: {
-                                      ...item.dataValue,
-                                      is_current_work: e.target.checked,
-                                    },
-                                  }
+                                      ...item,
+                                      dataValue: {
+                                        ...item.dataValue,
+                                        is_current_work: e.target.checked,
+                                      },
+                                    }
                                   : item;
                               })
                             );
@@ -467,7 +474,7 @@ const Experenice = ({ setCurrent, current }) => {
                 <Button
                   className={
                     downloadBtn === true
-                      ? "disabledBtn me-3"
+                      ? "skillsButton me-3"
                       : "skillsButton me-3 "
                   }
                   type="primary"
@@ -475,7 +482,12 @@ const Experenice = ({ setCurrent, current }) => {
                 >
                   Edit
                 </Button>
-                <Button className="expButton" type="primary" htmlType="submit">
+                <Button
+                  className="expButton"
+                  type="primary"
+                  htmlType="submit"
+                  disabled={isInputDisabled}
+                >
                   Save
                 </Button>
               </Form.Item>
