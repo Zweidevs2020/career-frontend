@@ -93,7 +93,7 @@ const Right = () => {
 
   }, [psychometricTestName]);
 
-  const chartColors = ["#b9bab8", "#8663e0", "#36bf34"];
+  const chartColors = ["#b9bab8", "#87aded", "#a4eba9"];
   return (
     <>
       <div

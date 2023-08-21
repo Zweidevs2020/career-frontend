@@ -79,7 +79,7 @@ const Main = () => {
           }}
         >
           <img
-            src={imgcard2}
+            src={imgcard4}
             className=" bg-cover"
             style={{ cursor: "pointer",borderRadius:'10px' }}
           />
@@ -92,7 +92,7 @@ const Main = () => {
           }}
         >
           <img
-            src={imgcard3}
+            src={imgcard2}
             className=" bg-cover"
             style={{ cursor: "pointer" ,borderRadius:'10px'}}
           />
@@ -105,7 +105,7 @@ const Main = () => {
           }}
         >
           <img
-            src={imgcard4}
+            src={imgcard5}
             className=" bg-cover"
             style={{ cursor: "pointer" ,borderRadius:'10px'}}
           />
@@ -118,7 +118,7 @@ const Main = () => {
           }}
         >
           <img
-            src={imgcard5}
+            src={imgcard3}
             className=" bg-cover"
             style={{ cursor: "pointer",borderRadius:'10px' }}
           />
@@ -131,7 +131,7 @@ const Main = () => {
           }}
         >
           <img
-            src={imgcard6}
+            src={imgcard7}
             className=" bg-cover"
             style={{ cursor: "pointer" ,borderRadius:'10px'}}
           />
@@ -144,7 +144,7 @@ const Main = () => {
           }}
         >
           <img
-            src={imgcard7}
+            src={imgcard6}
             className=" bg-cover"
             style={{ cursor: "pointer" ,borderRadius:'10px'}}
           />

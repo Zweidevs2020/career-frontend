@@ -33,7 +33,7 @@ const Selfassesment = () => {
         },
       },
     },
-  
+
     chart: {
       id: "basic-bar",
       toolbar: {
@@ -76,7 +76,7 @@ const Selfassesment = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const chartColors = ["#b9bab8", "#36bf34", "#8663e0"];
+  const chartColors = ["#b9bab8", "#a4eba9", "#87aded"];
   return (
     <>
       <div className="educationalGuidanceMainDiv">
@@ -84,8 +84,8 @@ const Selfassesment = () => {
 
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {psychometricTest?.map((mapData, index) => {
-  const colorIndex = index % chartColors.length;
-  const chartColor = chartColors[colorIndex];
+            const colorIndex = index % chartColors.length;
+            const chartColor = chartColors[colorIndex];
             let chartOptions;
             if (mapData?.test_results?.length > 0) {
               const labels = mapData?.test_results[0]?.question_scores?.map(
@@ -100,7 +100,7 @@ const Selfassesment = () => {
                 labels,
                 series: [{ data: series }],
                 title: { text: title },
-                colors: [chartColor], 
+                colors: [chartColor],
               };
             } else {
               chartOptions = {
