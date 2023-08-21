@@ -424,7 +424,7 @@ const MyStudy = () => {
               center: "",
               right: "",
             }}
-            initialView={isMobile ? "timeGridDay" : "timeGridWeek"}
+            initialView={isMobile ? "timeGridWeek" : "timeGridWeek"}
             events={calenderData}
             eventContent={renderEventContent}
             eventClick={handleDateSelect}

@@ -116,13 +116,17 @@
 .eduSelect .ant-select-selector{
  height: 52px !important;
 background: #FFFFFF !important;
+display: flex !important;
+align-items: center !important;
+
 border: 1px solid #D1D5DB !important;
 border-radius: 10px !important;
 }
 
 .eduSelectItem .ant-select-single .ant-select-selector .ant-select-selection-item:after{
-    display:  flex;
-    align-items: center;
+    display:  flex !important;
+    align-items: center !important;
+flex-direction: column;
 }
 .deleteSubject
 {
@@ -142,3 +146,4 @@ border-radius: 10px !important;
     width: 100%  !important;
     padding-top: 30px;
 }
+

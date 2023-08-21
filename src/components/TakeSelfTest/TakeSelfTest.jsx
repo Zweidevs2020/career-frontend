@@ -41,7 +41,7 @@ const TakeSelfTest = () => {
     const response = await getApiWithAuth(
       `/psychometric/psychometric/${data.id}/`
     );
-  
+ 
     if (response?.data?.status === 200) {
       setQuizData(response.data.data);
       setLoading(false);
@@ -121,7 +121,7 @@ const TakeSelfTest = () => {
                           <Radio.Group
                             onChange={onChange}
                             name={item.question_id}
-                           
+                            buttonStyle="solid" size="large"
                           >
                             <Space direction="vertical">
                               {item.answers?.map((options) => (
@@ -129,6 +129,7 @@ const TakeSelfTest = () => {
                                   value={options.answer_id}
                                   key={options.answer_id}
                                 >
+                                
                                   {options.answer}
                                 </Radio>
                               ))}

@@ -54,7 +54,7 @@ const MyCareerGuidanceInputField = (props) => {
         />
       ) : props.isPrefix == undefined || props.isPrefix ? (
         <Input
-          placeholder={props.placeholder}
+          placeholder={props.placeholder} 
           value={props.inputValue}
           type={props.type}
           autoComplete={props.autoComplete}
@@ -79,12 +79,12 @@ const MyCareerGuidanceInputField = (props) => {
               </div>
             ) : null
           }
-        
-          
+
+
         />
       ) : (
         <Input
-          placeholder={props.placeholder}
+          placeholder={props.placeholder} 
           value={props.inputValue}
           type={props.type}
           autoComplete={props.autoComplete}
@@ -96,7 +96,7 @@ const MyCareerGuidanceInputField = (props) => {
           suffix={props.suffix}
           onKeyDown={props.onKeyDown}
           disabled={props.disabled}
-          {...props}
+        {...props}
         />
       )}
     </>

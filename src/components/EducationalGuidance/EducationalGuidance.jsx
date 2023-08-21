@@ -135,7 +135,7 @@ const EducationalGuidance = () => {
                           })}
                         >
                           <div className="welcomeHaddingText">
-                            {item.score || 0}/10
+                            {item.score || 0}/{item.total_score}
                            
                           </div>
                           <div className="cao2ndText">
