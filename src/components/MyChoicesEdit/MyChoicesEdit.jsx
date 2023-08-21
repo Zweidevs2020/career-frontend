@@ -319,17 +319,16 @@ const MyChoicesEdit = () => {
   );
 
   const onDragEnd = async ({ active, over }) => {
-    console.log("active ID",active.id)
-    console.log("over ID",over.id)
+  
     if (active?.id && over?.id) {
       if (active?.id !== over?.id) {
         setData((prev) => {
           const activeIndex = prev.findIndex((i) => i.dataId === active?.id);
-          console.log("active Index",activeIndex,oldData[activeIndex])
+        
           const overIndex = prev.findIndex((i) => i.dataId === over?.id);
-          console.log("over Index",activeIndex,oldData[overIndex])
+         
           const orderUpdate1 = { "order_number": oldData[overIndex]?.order_number }
-          console.log("over Index",activeIndex,oldData[overIndex])
+        
           const orderUpdate2 = { "order_number": oldData[activeIndex]?.order_number }
           const updateOrder1 = async () => {
             setLoadingFirst(true);

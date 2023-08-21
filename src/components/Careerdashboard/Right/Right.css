@@ -77,6 +77,22 @@
   font-size: 12px;
 }
 
+.leftGraphBtn {
+  /* border: 1px solid #1476b7; */
+  border-radius: 5px;
+  height: 4vh;
+  width: 20%;
+  background: #1476b7;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  color: white;
+}
+
+.leftGraphBtn button {
+  font-size: 12px;
+}
+
 .rightContainerStyle {
   width: 100%;
   display: flex;

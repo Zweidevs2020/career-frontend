@@ -10,8 +10,13 @@ import Education from "./Eductaion/Education";
 import Experenice from "./Experenice/Experenice";
 
 const CvCoverLetter = () => {
-  const [current, setCurrent] = useState(1);
+  const initialStep = localStorage.getItem("currentStep") || 1;
+  const [current, setCurrent] = useState(parseInt(initialStep));
 
+  
+  useEffect(() => {
+    localStorage.setItem("currentStep", current);
+  }, [current]);
   return (
     <>
       <div class="h-[100%] w-[100%] bg-white mt-3">

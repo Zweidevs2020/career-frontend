@@ -21,11 +21,13 @@ const Occupational = () => {
     }
   }, [data]);
 
+
   const getViewResult = async () => {
     setLoading(true);
     const response = await getApiWithAuth(
       `/psychometric/result?name=${data.name}`
     );
+  
     if (response.data.status === 200) {
       setEducationGuidance(response.data.data);
       setLoading(false);
@@ -37,6 +39,7 @@ const Occupational = () => {
   const getQuizData = async () => {
     setLoading(true);
     const response = await getApiWithAuth(`/psychometric/result/${data}/`);
+   
     if (response.data.status === 200) {
       setEducationGuidance(response.data.data);
       setLoading(false);

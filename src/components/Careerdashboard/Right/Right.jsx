@@ -76,7 +76,7 @@ const Right = () => {
     },
     labels: educationGuidance.map((item) => item.scores.map((score) => score.name))
       .flat(),
-    colors: ["#8BBDDB"],
+    // colors: ["#440542", "#592422"],
     series: [
       {
         data: educationGuidance
@@ -93,7 +93,7 @@ const Right = () => {
 
   }, [psychometricTestName]);
 
-
+  const chartColors = ["#b9bab8", "#87aded", "#a4eba9"];
   return (
     <>
       <div
@@ -135,7 +135,8 @@ const Right = () => {
               {educationGuidance.map((item, index) => {
                 const labels = item.scores.map((score) => score.name.split("/"));
                 const series = item.scores.map((score) => score.score);
-
+                const colorIndex = index % chartColors.length;
+                const chartColor = chartColors[colorIndex];
                 const chartOptions = {
                   ...options,
                   labels,
@@ -145,12 +146,23 @@ const Right = () => {
                       horizontal: true,
                     },
                   },
-
+                  colors: [chartColor], 
                 };
 
                 return (
                   <div key={index} className="ms-3 chart-labels-container">
                     <div className="h-[30px] flex justify-between items-center mt-5 chartHeadingwBtn">
+                    <div className="leftGraphBtn">
+                        <button
+                          onClick={() =>
+                            navigate("/self-assesment-test", {
+                              state: { data: item },
+                            })
+                          }
+                        >
+                          View Result
+                        </button>
+                      </div>
                       <p className="text-[#474749] mt-3 sm:text-[15px text-[16px] font-bold chartHeading">
                         {item.test_name}
                       </p>

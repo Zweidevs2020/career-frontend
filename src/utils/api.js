@@ -22,6 +22,7 @@ export const getApiWithAuth = async (url) => {
   await setApiHeader();
   try {
     const res = await baseInstance.get(url);
+
     return {
       data: res,
     };
@@ -29,6 +30,8 @@ export const getApiWithAuth = async (url) => {
     return err.response;
   }
 };
+
+
 
 export const patchApiWithAuth = async (url, body) => {
   await setApiHeader();
@@ -58,6 +61,7 @@ export const putApiWithAuth = async (url, body) => {
   await setApiHeader();
   try {
     const res = await baseInstance.put(url, body);
+   
     return {
       data: res.data,
     };
@@ -67,9 +71,11 @@ export const putApiWithAuth = async (url, body) => {
 };
 
 export const deleteApiWithAuth = async (url) => {
+
   await setApiHeader();
   try {
     const res = await baseInstance.delete(url);
+  
     return {
       data: res,
     };
@@ -82,7 +88,7 @@ export const postApiWithAuth = async (url, body) => {
   await setApiHeader();
   try {
     const res = await baseInstance.post(url, body);
-  
+
     return {
       data: res,
     };
