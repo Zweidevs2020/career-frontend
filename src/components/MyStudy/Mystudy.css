@@ -1,13 +1,14 @@
-.showDateData{
+.showDateData {
     color: white;
     background-color: #1476B7;
     border-radius: 5px;
     height: 100%;
 }
-.showDateData2{
-    display:flex;
-    justify-content:center;
-    align-items:center
+
+.showDateData2 {
+    display: flex;
+    justify-content: center;
+    align-items: center
 }
 
 .garage-title {
@@ -18,7 +19,8 @@
     white-space: nowrap;
     width: 85%
 }
-.disabledBtnStyle{
+
+.disabledBtnStyle {
     background-color: gray;
     cursor: not-allowed;
     margin-top: 10px;
@@ -34,32 +36,46 @@
     text-align: center;
     color: white;
 }
+
 button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-button.viewResultButton.editBtn {
     background-color: #1476B7;
     color: white;
 }
-.warnText{
+
+.warnText {
     text-align: center;
     font-size: 18px;
     display: block;
 }
+
 button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-button.takebutton.deleteBtn {
     background: red;
 }
-fc-scrollgrid-sync-inner
-{
+
+fc-scrollgrid-sync-inner {
     width: 200px !important;
 }
-fc-col-header-cell-cushion
-{
+
+fc-col-header-cell-cushion {
     font-size: 2px !important;
 }
 
-.errorTime
-{
+@media (max-width: 499px) {
+    .fc .fc-col-header-cell-cushion {
+        font-size: 8px !important;
+    }
+}
+
+@media (min-width: 500px) and (max-width: 767px) {
+    .fc .fc-col-header-cell-cushion {
+        font-size: 10px !important;
+    }
+}
+
+.errorTime {
     color: red;
     margin-top: 5px;
-    width:100%;
+    width: 100%;
     display: flex;
     justify-content: end;
 }

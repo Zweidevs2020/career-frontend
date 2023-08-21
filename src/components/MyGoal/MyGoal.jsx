@@ -10,7 +10,7 @@ import { API_URL } from "../../utils/constants";
 import "./MyGoalStyle.css";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import moment from "moment";
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument, rgb } from "pdf-lib";
 
 const MyGoal = () => {
   const reportTemplateRef = useRef(null);
@@ -72,7 +72,7 @@ const MyGoal = () => {
   const getUserGoals = async () => {
     setLoading(true);
     const res = await getApiWithAuth(API_URL.GETUSERGOAL);
-    console.log("=====>ahad",res)
+    console.log("=====>ahad", res)
     if (res.data.data) {
       setGoal(res.data.data.goal);
       setGoal(res.data.data.description);
@@ -104,23 +104,26 @@ const MyGoal = () => {
   }
 
   const DownloadBtn = async () => {
-
     setLoading3(true);
     const res = await getApiWithAuth(API_URL.GETMYGOALPDF);
-  
+    console.log("PDF RES", res)
     if (res.data.status === 200) {
-    
+      const data = res.data.data;
 
-      const data = res.data.data; 
+      const pdfBytes = Uint8Array.from([...data].map((char) => char.charCodeAt(0)));
 
-      const pdfBytes = Uint8Array.from(
-        [...data].map((char) => char.charCodeAt(0))
-      );
-
-    
       const pdfDoc = await PDFDocument.load(pdfBytes);
+      const pages = pdfDoc.getPages();
+     
+   
 
-      // Generate a new blob containing the PDF file
+      // for (const page of pages) {
+      //   const textObjects = page.getTextObjects();
+      //   for (const textObject of textObjects) {
+      //     textObject.setFontSize(12);  // Adjust font size as needed
+      //     textObject.setTextColor(rgb(0, 0, 255)); // Adjust color as needed
+      //   }
+      // }
       const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
 
       // Create a temporary link element
@@ -136,12 +139,13 @@ const MyGoal = () => {
     }
   };
 
+
   const SaveInput = async () => {
     setLoading2(true);
     const data = {
       proffession: proffession,
       goal: goal,
-      description:description,
+      description: description,
       actions: actions,
       realistic: realistic,
       date: dayjs(countdown).format("DD-MM-YYYY"),
@@ -199,7 +203,7 @@ const MyGoal = () => {
                 <h style={{ color: "#111928" }}>
                   Specific goal for week/month/term/year:
                 </h>
-              </div>            
+              </div>
               <div className="inputGoal">
                 <div className="mt-3">
                   <Radio.Group
@@ -216,13 +220,13 @@ const MyGoal = () => {
                   </Radio.Group>
                 </div>
                 <div className="textAreaMyGoal">
-                <TextArea
-                value={description} 
-                style={{border:"2px solid grey"}} 
-                placeholder="hello"
-                onChange={(e) => setDescription(e.target.value)}
-                >
-                </TextArea>
+                  <TextArea
+                    value={description}
+                    style={{ border: "2px solid grey" }}
+                    placeholder="hello"
+                    onChange={(e) => setDescription(e.target.value)}
+                  >
+                  </TextArea>
                 </div>
               </div>
               <div className="inputContainer">
@@ -250,8 +254,8 @@ const MyGoal = () => {
                   onChange={(e) => {
                     onChangeHandle(e);
                   }}
-                />  
-        
+                />
+
               </div>
               <div className="inputContainer">
                 <h style={{ color: "#111928" }}>Is this realistic ?</h>
@@ -290,7 +294,7 @@ const MyGoal = () => {
                     value={dayjs(countdown3, "DD-MM-YYYY")}
                     onChange={handleDateChange}
                     format="DD-MM-YYYY"
-                    />
+                  />
                 </Space>
               </div>
               <div className="timer">

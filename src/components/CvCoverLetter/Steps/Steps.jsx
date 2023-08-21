@@ -2,88 +2,54 @@ import React from "react";
 import "./Steps.css";
 
 const Steps = ({ current, setCurrent }) => {
+  const stepTitles = [
+    "Personal Profile",
+    "Education",
+    "Work Experience",
+    "Skill's",
+    "Interests",
+    "References",
+  ];
+
   return (
     <>
       <div className="steps">
-        <div
-          className="step-item"
-          key={1}
-          onClick={() => {
-            setCurrent(1);
-          }}
-        >
-          <div
-            className={
-              current >= 1
-                ? "step-icon-style step-icon-style-active"
-                : "step-icon-style step-icon-style-nonActive"
-            }
-          >
-            <span
-              className={
-                current >= 1
-                  ? "step-icon-text step-icon-text-active"
-                  : "step-icon-text step-icon-text-nonActive"
-              }
-            >
-              01
-            </span>
-          </div>
-          <div
-            className={
-              current >= 1
-                ? "step-item-content step-item-content-active"
-                : "step-item-content step-item-content-nonActive"
-            }
-          >
-            Personal Profile
-          </div>
-        </div>
-
-        {[
-          "Education",
-          "Work Experience",
-          "Skill's",
-          "Interests",
-          "References",
-        ].map((item, index) => {
+        {stepTitles.map((item, index) => {
           return (
             <div
               className="step-item"
-              key={index + 2}
+              key={index + 1}
               onClick={() => {
-                if (current > index + 2) {
-                  setCurrent(index + 2);
-                }
+                setCurrent(index + 1);
               }}
             >
               <div
                 className={
-                  current >= index + 2
+                  current >= index + 1
                     ? "step-item-line  step-item-line-active"
                     : "step-item-line  step-item-line-nonActive"
                 }
               />
               <div
                 className={
-                  current >= index + 2
+                  current >= index + 1
                     ? "step-icon-style step-icon-style-active"
                     : "step-icon-style step-icon-style-nonActive"
                 }
               >
                 <span
                   className={
-                    current >= index + 2
+                    current >= index + 1
                       ? "step-icon-text step-icon-text-active"
                       : "step-icon-text step-icon-text-nonActive"
                   }
                 >
-                  {`0${index + 2}`}
+                  {`0${index + 1}`}
                 </span>
               </div>
               <div
                 className={
-                  current >= index + 2
+                  current >= index + 1
                     ? "step-item-content step-item-content-active"
                     : "step-item-content step-item-content-nonActive"
                 }
@@ -99,3 +65,4 @@ const Steps = ({ current, setCurrent }) => {
 };
 
 export default Steps;
+

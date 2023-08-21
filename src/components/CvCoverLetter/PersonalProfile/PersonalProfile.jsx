@@ -191,11 +191,11 @@ const PersonalProfile = ({ setCurrent, current }) => {
             <div className="profileFormEmail profileFormItem">
               <div style={{ width: "48%" }}>
                 <Form.Item
-                  label="Town"
+                  label="Town/Area"
                   name="town"
                   className="profileItemLable"
                   rules={[
-                    { required: true, message: "Please input your Town!" },
+                    { required: true, message: "Please input your Town/Area!" },
                   ]}
                 >
                   <MyCareerGuidanceInputField

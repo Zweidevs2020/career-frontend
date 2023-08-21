@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import searchicon from "../../../assets/searchicon.svg";
-import imgcard from "../../../assets/imgcard.svg";
-import imgcard2 from "../../../assets/imgcard3.svg";
-import imgcard3 from "../../../assets/imgcard4.svg";
-import imgcard4 from "../../../assets/self-assesment-test.svg";
-import imgcard5 from "../../../assets/imgcard2.svg";
-import imgcard6 from "../../../assets/myChoiceCard.svg";
-import imgcard7 from "../../../assets/educational-guidance-test.svg";
+import imgcard from "../../../assets/1.png";
+import imgcard2 from "../../../assets/2.png";
+import imgcard3 from "../../../assets/3.png";
+import imgcard4 from "../../../assets/4.png";
+import imgcard5 from "../../../assets/5.png";
+import imgcard6 from "../../../assets/6.png";
+import imgcard7 from "../../../assets/7.png";
 import winningCup from "../../../assets/winningCup.svg";
 import { MyCareerGuidanceButton } from "../../../components/commonComponents";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -67,8 +67,8 @@ const Main = () => {
         >
           <img
             src={imgcard}
-            className=" bg-cover"
-            style={{ cursor: "pointer" }}
+            className=" bg-cover "
+            style={{ cursor: "pointer", borderRadius:'10px'}}
           />
         </div>
         <div
@@ -81,7 +81,7 @@ const Main = () => {
           <img
             src={imgcard2}
             className=" bg-cover"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer",borderRadius:'10px' }}
           />
         </div>
         <div
@@ -94,7 +94,7 @@ const Main = () => {
           <img
             src={imgcard3}
             className=" bg-cover"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer" ,borderRadius:'10px'}}
           />
         </div>
         <div
@@ -107,7 +107,7 @@ const Main = () => {
           <img
             src={imgcard4}
             className=" bg-cover"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer" ,borderRadius:'10px'}}
           />
         </div>
         <div
@@ -120,7 +120,7 @@ const Main = () => {
           <img
             src={imgcard5}
             className=" bg-cover"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer",borderRadius:'10px' }}
           />
         </div>
         <div
@@ -133,7 +133,7 @@ const Main = () => {
           <img
             src={imgcard6}
             className=" bg-cover"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer" ,borderRadius:'10px'}}
           />
         </div>
         <div
@@ -146,7 +146,7 @@ const Main = () => {
           <img
             src={imgcard7}
             className=" bg-cover"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer" ,borderRadius:'10px'}}
           />
         </div>
       </div>

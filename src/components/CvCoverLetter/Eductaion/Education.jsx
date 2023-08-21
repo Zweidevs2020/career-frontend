@@ -15,8 +15,10 @@ const Education = ({ setCurrent, current }) => {
   const [educationArray, setEducationArray] = useState([]);
   const [resultArrayData, setResultArrayData] = useState([]);
   const [isCheck, setIsCheck] = useState(true);
-  const [isCurrentCheck, setIsCurrentCheck] = useState(false);
+  const [isCurrentCheck, setIsCurrentCheck] = useState(1);
   const [isInputDisabled, setIsInputDisabled] = useState(true);
+  const [educationData, setEducationData] = useState([]);
+  const [resultData, setResultData] = useState([]);
 
   const { Option } = Select;
 
@@ -36,14 +38,18 @@ const Education = ({ setCurrent, current }) => {
 
   useEffect(() => {
     if (data !== null) {
+      console.log("GETDATA",data.education_data.length)
       if (data.education_data.length > 0) {
         setEducationArray(
           data.education_data.map((item, indexx) => {
+            console.log("ddddddddddd",item,indexx,)
             return {
               index: indexx,
-              dataValue: item,
+              dataValue: item,  
               setIndex: indexx
             };
+        
+          
           })
         );
       } else {
@@ -158,6 +164,7 @@ const Education = ({ setCurrent, current }) => {
           ? { ...item, dataValue: { ...item.dataValue, [name]: date } }
           : item;
       })
+
     );
   };
 
@@ -222,12 +229,12 @@ const Education = ({ setCurrent, current }) => {
               ]}
             >
               <MyCareerGuidanceInputField
-                placeholder="e.g School Name"
+                defaultValue="e.g. School Name"
                 type="input"
                 name="school"
                 onChange={(event) => onChangeHandle(event, index, 1)}
                 inputValue={item?.dataValue.school}
-                isPrefix={false}
+                isPrefix={true}
                 disabled={isInputDisabled}
 
               />
@@ -275,12 +282,12 @@ const Education = ({ setCurrent, current }) => {
               ]}
             >
               <MyCareerGuidanceInputField
-                placeholder="Exam Taken"
+                defaultValue="Exam Taken"
                 type="input"
                 name="examtaken"
                 onChange={(event) => onChangeHandle(event, index, 1)}
                 inputValue={item?.dataValue.examtaken}
-                isPrefix={false}
+                isPrefix={true}
                 disabled={isInputDisabled}
 
               />
@@ -414,20 +421,21 @@ const Education = ({ setCurrent, current }) => {
               ]}
             >
               <MyCareerGuidanceInputField
-                placeholder="e.g. Subject"
+                placeholder= "e.g. Subject"
                 type="input"
                 name="subject"
+                {...console.log("values of input",item?.dataValue?.subject)}
                 onChange={(event) => onChangeHandle(event, index, 2)}
                 inputValue={item?.dataValue?.subject}
-                isPrefix={false}
+                isPrefix={true}
                 disabled={isInputDisabled}
 
               />
             </Form.Item>
           </div>
-          <div className="expFormDoubleItem">
+          <div className="expFormDoubleItem mt-3">
             <Form.Item
-              label="Result"
+              label="Level"
               name={`result ${index}`}
               className="skillItemLable"
               rules={[
@@ -460,13 +468,7 @@ const Education = ({ setCurrent, current }) => {
             </Form.Item>
           </div>
         </div>
-        <div className="mainContainerDelete">
-          <img
-            className="deleteSubject"
-            src={Delete}
-            onClick={() => handleDeleteJuniorCert(item.dataValue.id)}
-          />
-        </div>
+       
 
         <div className="expFormDoubleItem">
           <Form.Item
@@ -501,6 +503,13 @@ const Education = ({ setCurrent, current }) => {
               })}
             </Select>
           </Form.Item>
+        </div>
+        <div className="mainContainerDelete">
+          <img
+            className="deleteSubject"
+            src={Delete}
+            onClick={() => handleDeleteJuniorCert(item.dataValue.id)}
+          />
         </div>
       </>
     );
@@ -631,8 +640,8 @@ const Education = ({ setCurrent, current }) => {
 
             <div className="eduItemButton">
               <Form.Item>
-                <Button className="eduButtonBack" type="primary" onClick={prev}>
-                  BACK
+                <Button className="eduButton" type="primary" onClick={prev}>
+                  Back
                 </Button>
               </Form.Item>
 

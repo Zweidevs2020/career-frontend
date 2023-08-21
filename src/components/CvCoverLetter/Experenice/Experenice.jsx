@@ -10,9 +10,10 @@ import {
 } from "antd";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
 import "./Experenice.css";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { DeleteColumnOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
-import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
+import { deleteApiWithAuth, getApiWithAuth, postApiWithAuth } from "../../../utils/api";
+import Delete from "../../../assets/delete.png";
 import { API_URL } from "../../../utils/constants";
 const { TextArea } = Input;
 const { Option } = Select;
@@ -35,6 +36,8 @@ const Experenice = ({ setCurrent, current }) => {
   useEffect(() => {
     getExperiance();
   }, []);
+
+
   const titleArray = [
     { label: "Assistant", value: "1" },
     { label: "Work Shadow", value: "2" },
@@ -75,6 +78,7 @@ const Experenice = ({ setCurrent, current }) => {
   const onSubmit = async () => {
     let data = createArrayData(expereniceArray);
     const respose = await postApiWithAuth(API_URL.POSTEXPERIANCE, data);
+    console.log("responseess", respose)
     if (respose.data.status === 201) {
       setCurrent(current + 1);
     } else {
@@ -164,7 +168,28 @@ const Experenice = ({ setCurrent, current }) => {
   useEffect(() => {
     getUserData();
   }, []);
+  const handleDeleteExperience = async (id) => {
+   
+    try {
+      setExpereniceArray((prevArray) =>
+        prevArray.filter((item) => item.dataValue.id !== id)
+      );
 
+      const response = await deleteApiWithAuth(`${API_URL.DELETE_EXPERIENCE}/${id}/`);
+      console.log("delete expericne", response,id,response.data.status)
+
+      if (response.data.status === 204) {
+        message.success("Experience entry deleted successfully.");
+      } else {
+        message.error("Failed to delete the experience entry.");
+        setExpereniceArray((prevArray) => [...prevArray, expereniceArray.find(item => item.dataValue.id === id)]);
+      }
+    } catch (error) {
+      console.error("Error deleting the experience entry:", error);
+      message.error("An error occurred while deleting the experience entry.");
+      setExpereniceArray((prevArray) => [...prevArray, expereniceArray.find(item => item.dataValue.id === id)]);
+    }
+  }
   return (
     <>
       <div className="flex flex-col justify-center">
@@ -195,12 +220,12 @@ const Experenice = ({ setCurrent, current }) => {
                         ]}
                       >
                         <MyCareerGuidanceInputField
-                          placeholder=""
+                          placeholder={item?.dataValue?.job_title || "e.g. Job Title"}
                           type="input"
                           name="job_title"
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue?.job_title}
-                          isPrefix={false}
+                          isPrefix={true}
                           disabled={isInputDisabled}
                         />
                       </Form.Item>
@@ -218,12 +243,12 @@ const Experenice = ({ setCurrent, current }) => {
                         ]}
                       >
                         <MyCareerGuidanceInputField
-                          placeholder="e.g H&M"
+                          placeholder={item?.dataValue?.company || "e.g H&M"}
                           type="input"
                           name="company"
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue?.company}
-                          isPrefix={false}
+                          isPrefix={true}
                           disabled={isInputDisabled}
                         />
                       </Form.Item>
@@ -233,7 +258,7 @@ const Experenice = ({ setCurrent, current }) => {
                   <div className="expFormDouble">
                     <div className="expFormDoubleItem">
                       <Form.Item
-                        label="City"
+                        label="Town/Area"
                         name={`city ${index}`}
                         className="expItemLable"
                         rules={[
@@ -249,14 +274,14 @@ const Experenice = ({ setCurrent, current }) => {
                           name="city"
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue.city}
-                          isPrefix={false}
+                          isPrefix={true}
                           disabled={isInputDisabled}
                         />
                       </Form.Item>
                     </div>
                     <div className="expFormDoubleItem">
                       <Form.Item
-                        label="Country"
+                        label="County"
                         name={`country ${index}`}
                         className="expItemLable"
                         rules={[
@@ -272,7 +297,7 @@ const Experenice = ({ setCurrent, current }) => {
                           name="country"
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue?.country}
-                          isPrefix={false}
+                          isPrefix={true}
                           disabled={isInputDisabled}
                         />
                       </Form.Item>
@@ -379,7 +404,15 @@ const Experenice = ({ setCurrent, current }) => {
                         disabled={isInputDisabled}
                       />
                     </Form.Item>
+                    <div className="mainContainerDelete">
+                      <img
+                        className="deleteSubject"
+                        src={Delete}
+                        onClick={() => handleDeleteExperience(item.dataValue.id)}
+                      />
+                    </div>
                   </div>
+
                 </>
               );
             })}
@@ -426,7 +459,7 @@ const Experenice = ({ setCurrent, current }) => {
             </div>
             <div className="expItemButton">
               <Form.Item>
-                <Button className="expButtonBack" type="primary" onClick={prev}>
+                <Button className="expButton" type="primary" onClick={prev}>
                   Back
                 </Button>
               </Form.Item>

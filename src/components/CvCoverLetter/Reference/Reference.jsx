@@ -54,13 +54,14 @@ const Reference = ({ setCurrent, current }) => {
     }
   }, [data]);
 
-  const onsubmit = async () => {
+  const onsubmit = async (e) => {
+    e.preventDefault(); 
     let data = createArrayData(referArray);
 
     const respose = await postApiWithAuth(API_URL.POSTREFERNACE, data);
    
     if (respose.data.status === 201) {
-      setCurrent(1);
+      // setCurrent(1);
       message.success("Cv Save Successfully");
       navigate("/cover-letter");
     } else {
@@ -68,7 +69,8 @@ const Reference = ({ setCurrent, current }) => {
     }
   };
 
-  const SavePdf = async () => {
+  const SavePdf = async (e) => {
+    e.preventDefault(); 
     let data = createArrayData(referArray);
 
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
@@ -140,7 +142,7 @@ const Reference = ({ setCurrent, current }) => {
                   name="name"
                   onChange={(e) => onChangeHandleInput(e, index)}
                   inputValue={item?.dataValue?.name}
-                  isPrefix={false}
+                  isPrefix={true}
                 />
               </Form.Item>
             </div>
@@ -158,7 +160,7 @@ const Reference = ({ setCurrent, current }) => {
                   name="position"
                   onChange={(e) => onChangeHandleInput(e, index)}
                   inputValue={item?.dataValue?.position}
-                  isPrefix={false}
+                  isPrefix={true}
                 />
               </Form.Item>
             </div>
@@ -172,12 +174,12 @@ const Reference = ({ setCurrent, current }) => {
                 rules={[{ required: item?.dataValue.contact_number ? false : true, message: "Please input Contact!" }]}
               >
                 <MyCareerGuidanceInputField
-                  placeholder="+xx-xxx-xxx-xxxx"
+                  placeholder= "+xx-xxx-xxx-xxxx"
                   type="input"
                   name="contact_number"
                   onChange={(e) => onChangeHandleInput(e, index)}
                   inputValue={item?.dataValue?.contact_number}
-                  isPrefix={false}
+                  isPrefix={true}
                 />
               </Form.Item>
             </div>
@@ -197,7 +199,7 @@ const Reference = ({ setCurrent, current }) => {
                   name="email"
                   onChange={(e) => onChangeHandleInput(e, index)}
                   inputValue={item?.dataValue?.email}
-                  isPrefix={false}
+                  isPrefix={true}
                 />
               </Form.Item>
             </div>
@@ -279,7 +281,7 @@ const Reference = ({ setCurrent, current }) => {
                   type="primary"
                   onClick={prev}
                 >
-                  BACK
+                  Back
                 </Button>
               </Form.Item>
 
@@ -288,7 +290,7 @@ const Reference = ({ setCurrent, current }) => {
                   className={downloadBtn === false ? "disabledBtn me-3": "skillsButton me-3 "}
                   type="primary"
                   htmlType="submit"
-                  onClick={SavePdf}
+                  onClick={(e) => SavePdf(e)}  
                 >
                   Download CV
                 </Button>
@@ -296,6 +298,7 @@ const Reference = ({ setCurrent, current }) => {
                   className="skillsButton"
                   type="primary"
                   htmlType="submit"
+                  onClick={(e) => onsubmit(e)}  
                 >
                   Save
                 </Button>

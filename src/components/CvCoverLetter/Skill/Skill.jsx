@@ -122,35 +122,38 @@ const Skill = ({ setCurrent, current }) => {
 
   const getSkills = async () => {
     const response = await getApiWithAuth(API_URL.GETSKILLS);
-
+  
     if (response.data?.status === 200) {
       let array = [];
       let array2 = [];
       let array3 = [];
       let array4 = [];
-      response.data.data.skill_data.map((item, index) => {
+  
+      response.data.data.skill_data.forEach((item) => {
         array.push(item.skill_dropdown);
         array2.push({ id: item.id, skill_dropdown: item.skill_dropdown });
       });
+  
+      response.data.data.quality_data.forEach((item) => {
+        if (item.quality_dropdown) {
+          array3.push(item.quality_dropdown);
+          array4.push({ id: item.id, quality_dropdown: item.quality_dropdown });
+        }
+      });
+  
       setSelectOption(array);
       setUserSkillsData(array2);
-
-      response.data.data.quality_data.map((item, index) => {
-        array3.push(item.quality_dropdown);
-        array4.push({ id: item.id, quality_dropdown: item.quality_dropdown });
-      });
       setSelectOption2(array3);
       setUserQualityData(array4);
     } else {
       message.error("Fail to load Data");
     }
   };
-
-  useEffect(() => {
-  }, [selectOption, selectOption2, userSkillData, userQualityData]);
+  
   useEffect(() => {
     getSkills();
   }, []);
+  
 
   const onsubmit = async () => {
     const result = [];
@@ -181,6 +184,7 @@ const Skill = ({ setCurrent, current }) => {
       quality_data: result2,
     });
     if (respose.data.status === 201 || respose.data.status === 200) {
+      console.log("res",respose)
       setCurrent(current + 1);
     } else {
       message.error(respose.data.message);
@@ -282,13 +286,17 @@ const Skill = ({ setCurrent, current }) => {
                   placeholder="Select Option"
                   onChange={handleChange2}
                   optionLabelProp="label"
+                  {...console.log("zzzzzzzzzzzz",selectOption2)}
                   value={selectOption2}
                   disabled={isInputDisabled}
                 >
+                  
                   {optionArrayQualities.map((item) => {
+                  
                     return (
                       <Option value={item.value} label={item.label}>
-                        <div>
+                     <div>
+                      {console.log("ssssss",item)}
                           <div>{item.label}</div>
                           <div>{item.description}</div>
                         </div>
@@ -306,7 +314,7 @@ const Skill = ({ setCurrent, current }) => {
                   type="primary"
                   onClick={prev}
                 >
-                  BACK
+                  Back
                 </Button>
               </Form.Item>
 
