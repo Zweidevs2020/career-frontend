@@ -121,7 +121,7 @@ const Occupational = () => {
                 onClick={() => navigate("/self-assesment")}
                 style={{ color: "white" }}
               >
-                BACK
+                Back
               </Button>
             </div>
             <div className="welcomeHaddingText ">

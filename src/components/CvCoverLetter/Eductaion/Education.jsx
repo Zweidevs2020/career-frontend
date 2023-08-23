@@ -182,7 +182,7 @@ const Education = ({ setCurrent, current }) => {
 
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
     if (respose.data.status === 201) {
-      // setCurrent(current + 1);
+     
     } else {
       message.error(respose.data.message);
     }
@@ -308,10 +308,7 @@ const Education = ({ setCurrent, current }) => {
               <DatePicker
                 onChange={(date, dateString) =>
                   onChangeDate("enddate", dateString, index)
-
                 }
-
-
                 format={"DD-MM-YYYY"}
                 value={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
                 defaultValue={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
@@ -362,10 +359,7 @@ const Education = ({ setCurrent, current }) => {
       setEducationArray((prevArray) =>
         prevArray.filter((item) => item.dataValue.id !== id)
       );
-
       const response = await deleteApiWithAuth(`${API_URL.DELETE}/${id}/`);
-
-
       if (response.data.status === 204) {
         message.success("Education entry deleted successfully.");
       } else {
@@ -421,15 +415,13 @@ const Education = ({ setCurrent, current }) => {
               ]}
             >
               <MyCareerGuidanceInputField
-                placeholder= "e.g. Subject"
+                placeholder="e.g. Subject"
                 type="input"
                 name="subject"
-          
                 onChange={(event) => onChangeHandle(event, index, 2)}
                 inputValue={item?.dataValue?.subject}
                 isPrefix={true}
                 disabled={isInputDisabled}
-
               />
             </Form.Item>
           </div>

@@ -1,90 +1,91 @@
-.profileHead{
-font-family: 'Poppins';
-font-style: normal;
-font-weight: 600;
-font-size: 16px;
-line-height: 24px;
-color: #474749;
-margin-left: 1.6%;
-margin-top: 2%;
+.profileHead {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #474749;
+  margin-left: 1.6%;
+  margin-top: 2%;
 }
 
-.profileSubHeading{
-font-family: 'Poppins';
-font-style: normal;
-font-weight: 400;
-font-size: 12px;
-line-height: 18px;
-color: #737373;
-margin-left: 1.6%;
-margin-top: 0.5%;
+.profileSubHeading {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #737373;
+  margin-left: 1.6%;
+  margin-top: 0.5%;
 }
 
-.profileForm{
-padding: 0px 20px 0px 20px;
-margin-top: 5%;
+.profileForm {
+  padding: 0px 20px 0px 20px;
+  margin-top: 5%;
 }
 
-.profileFormEmail{
-display: flex;
-width: 100%;
-justify-content: space-between;
-margin-bottom: -2%;
+.profileFormEmail {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: -2%;
 }
 
-.profileFormEmailItem{
-    width: 49%
+.profileFormEmailItem {
+  width: 49%
 }
 
-.profileItemLable .ant-form-item-label{
-    text-align: start !important;
-    font-weight: 600 !important;
-    font-size: 14px !important;
-    font-family: 'Inter' !important;
-    font-style: normal !important;
+.profileItemLable .ant-form-item-label {
+  text-align: start !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  font-family: 'Inter' !important;
+  font-style: normal !important;
 }
 
-.profileFormItem{
-    margin-top: 24px;
+.profileFormItem {
+  margin-top: 24px;
 }
 
 .inputFieldStyle {
-    border: 1px solid #d3d3d3;
-    border-radius: 12px;
-    height: 50px;
-    width: "100%";
-    font-family: "Poppins";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-    color: #9d9c9d;
-  }
+  border: 1px solid #d3d3d3;
+  border-radius: 12px;
+  height: 50px;
+  width: "100%";
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #9d9c9d;
+}
 
-  .profileItemButton{
-    display: flex;
-    justify-content: end;
-    flex-direction: row !important;
-    width: 100%;
-  }
+.profileItemButton {
+  display: flex;
+  justify-content: end;
+  flex-direction: row !important;
+  width: 100%;
+  margin-bottom: 2rem;
+}
 
-  .profileButton{
-    border: 1px solid grey;
-    width: 144px;
-    height: 52px;
-    background: #1476B7;
-    font-size: 14px;
-    border-radius: 12px;
-  }
-  .disabledBtn, .profileItemButton .disabledBtn:hover{
-    background-color: gray;
-    cursor: not-allowed;
-    border: 1px solid grey;
-    width: 144px;
-    height: 52px;
-    font-size: 14px;
-    border-radius: 12px;
+.profileButton {
+  border: 1px solid grey;
+  width: 144px;
+  height: 52px;
+  background: #1476B7;
+  font-size: 14px;
+  border-radius: 12px;
+}
 
-  }
+.disabledBtn,
+.profileItemButton .disabledBtn:hover {
+  background-color: gray;
+  cursor: not-allowed;
+  border: 1px solid grey;
+  width: 144px;
+  height: 52px;
+  font-size: 14px;
+  border-radius: 12px;
 
-
+}

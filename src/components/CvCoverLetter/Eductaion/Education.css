@@ -1,4 +1,4 @@
-.eduHead{
+.eduHead {
     font-family: 'Poppins';
     font-style: normal;
     font-weight: 600;
@@ -9,7 +9,7 @@
     margin-top: 2%;
 }
 
-.eduSubHeading{
+.eduSubHeading {
     font-family: 'Poppins';
     font-style: normal;
     font-weight: 400;
@@ -20,41 +20,42 @@
     margin-top: 0.5%;
 }
 
-.eduForm{
+.eduForm {
     padding: 0px 20px 0px 20px;
 }
 
 
-.eduFormDouble{
+.eduFormDouble {
     display: flex;
     width: 100%;
     justify-content: space-between;
-    }
-    
- .eduFormDoubleItem{
-  width: 49%;
- }
-    
-.eduItemLable .ant-form-item-label{
+}
+
+.eduFormDoubleItem {
+    width: 49%;
+}
+
+.eduItemLable .ant-form-item-label {
     text-align: start !important;
     font-weight: 600 !important;
     font-size: 14px !important;
     font-family: 'Inter' !important;
     font-style: normal !important;
 }
-    
-.eduFormItem{
+
+.eduFormItem {
     margin-top: 24px;
 }
 
 
-.eduItemButton{
+.eduItemButton {
     margin-top: 3%;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 2rem;
 }
 
-.eduButton{
+.eduButton {
     border: 1px solid grey;
     width: 144px;
     height: 52px;
@@ -63,16 +64,16 @@
     border-radius: 12px;
 }
 
-.eduButtonBack{
+.eduButtonBack {
     border: 1px solid #1476B7;
     width: 144px;
     height: 52px;
     font-size: 14px;
     border-radius: 12px;
-    color: #1476B7; 
+    color: #1476B7;
 }
 
-.eduAddButton{
+.eduAddButton {
     box-sizing: border-box;
     background: #FFFFFF;
     border: 1px solid #1984FF;
@@ -88,9 +89,9 @@
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
-    }
+}
 
-.eduJunDiv{
+.eduJunDiv {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 600;
@@ -99,51 +100,50 @@
     color: #111928;
 }
 
-.eduJunCheckDiv{
+.eduJunCheckDiv {
     display: flex;
     width: 14%;
     justify-content: space-between;
     margin-left: 0.25%;
 }
 
-.eduJunCheckBox .ant-checkbox .ant-checkbox-inner{
+.eduJunCheckBox .ant-checkbox .ant-checkbox-inner {
     border: 1px solid #D1D5DB !important;
     border-radius: 2.52632px !important;
     width: 18px !important;
     height: 18px !important;
 }
 
-.eduSelect .ant-select-selector{
- height: 52px !important;
-background: #FFFFFF !important;
-display: flex !important;
-align-items: center !important;
-
-border: 1px solid #D1D5DB !important;
-border-radius: 10px !important;
-}
-
-.eduSelectItem .ant-select-single .ant-select-selector .ant-select-selection-item:after{
-    display:  flex !important;
+.eduSelect .ant-select-selector {
+    height: 50px !important;
+    background: #FFFFFF !important;
+    display: flex !important;
     align-items: center !important;
-flex-direction: column;
+
+    border: 1px solid #D1D5DB !important;
+    border-radius: 10px !important;
 }
-.deleteSubject
-{
+
+.eduSelectItem .ant-select-single .ant-select-selector .ant-select-selection-item:after {
+    display: flex !important;
+    align-items: center !important;
+    flex-direction: column;
+}
+
+.deleteSubject {
     width: 30px;
     height: 30px;
     cursor: pointer;
-    
+
 }
-.mainContainerDelete
-{
+
+.mainContainerDelete {
     width: 100%;
     display: flex;
     justify-content: end;
 }
-.hrStyle
-{
-    width: 100%  !important;
+
+.hrStyle {
+    width: 100% !important;
     padding-top: 30px;
 }
-

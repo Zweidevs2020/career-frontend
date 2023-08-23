@@ -375,7 +375,7 @@ const MyChoicesEdit = () => {
             <div className="coaInnerf8fafcDiv">
               <div class="h-[40px] w-[10%] bg-[#1476B7] rounded-lg flex items-center justify-evenly">
                 <button class="text-[#fff] flex items-center" onClick={() => { navigate("/my-choices") }}>
-                  <LeftOutlined class="h-4" />
+                  {/* <LeftOutlined class="h-4" /> */}
                   <span class="ml-1">Back</span>
                 </button>
               </div>
