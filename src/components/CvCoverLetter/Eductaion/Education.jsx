@@ -15,10 +15,8 @@ const Education = ({ setCurrent, current }) => {
   const [educationArray, setEducationArray] = useState([]);
   const [resultArrayData, setResultArrayData] = useState([]);
   const [isCheck, setIsCheck] = useState(true);
-  const [isCurrentCheck, setIsCurrentCheck] = useState(1);
+  const [isCurrentCheck, setIsCurrentCheck] = useState(false);
   const [isInputDisabled, setIsInputDisabled] = useState(true);
-  const [educationData, setEducationData] = useState([]);
-  const [resultData, setResultData] = useState([]);
 
   const { Option } = Select;
 
@@ -38,18 +36,14 @@ const Education = ({ setCurrent, current }) => {
 
   useEffect(() => {
     if (data !== null) {
-     
       if (data.education_data.length > 0) {
         setEducationArray(
           data.education_data.map((item, indexx) => {
-           
             return {
               index: indexx,
-              dataValue: item,  
+              dataValue: item,
               setIndex: indexx
             };
-        
-          
           })
         );
       } else {
@@ -108,8 +102,6 @@ const Education = ({ setCurrent, current }) => {
 
   const onsubmit = async () => {
     let sendDaata = {};
-
-
     let data = createArrayData(educationArray);
     let resData = createArrayData(resultArrayData);
     !isCheck
@@ -157,14 +149,12 @@ const Education = ({ setCurrent, current }) => {
     }
   };
   const onChangeDate = (name, date, arrayIndex) => {
-
     setEducationArray(
       educationArray.map((item) => {
         return item.index === arrayIndex
           ? { ...item, dataValue: { ...item.dataValue, [name]: date } }
           : item;
       })
-
     );
   };
 
@@ -179,7 +169,6 @@ const Education = ({ setCurrent, current }) => {
   };
 
   const SavePdf = async () => {
-
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
     if (respose.data.status === 201) {
      
@@ -202,14 +191,14 @@ const Education = ({ setCurrent, current }) => {
     }
   };
   const edit = () => {
-    setIsInputDisabled(false)
-  }
+    setIsInputDisabled(false);
+  };
+
   useEffect(() => {
     getUserData();
   }, []);
 
   useEffect(() => {
-
   }, [educationArray]);
 
   const educationItems = (item, index) => {
@@ -229,14 +218,13 @@ const Education = ({ setCurrent, current }) => {
               ]}
             >
               <MyCareerGuidanceInputField
-                defaultValue="e.g. School Name"
+                placeholder="e.g School Name"
                 type="input"
                 name="school"
                 onChange={(event) => onChangeHandle(event, index, 1)}
                 inputValue={item?.dataValue.school}
-                isPrefix={true}
+                isPrefix={false}
                 disabled={isInputDisabled}
-
               />
             </Form.Item>
           </div>
@@ -282,14 +270,13 @@ const Education = ({ setCurrent, current }) => {
               ]}
             >
               <MyCareerGuidanceInputField
-                defaultValue="Exam Taken"
+                placeholder="Exam Taken"
                 type="input"
                 name="examtaken"
                 onChange={(event) => onChangeHandle(event, index, 1)}
                 inputValue={item?.dataValue.examtaken}
-                isPrefix={true}
+                isPrefix={false}
                 disabled={isInputDisabled}
-
               />
             </Form.Item>
           </div>
@@ -321,6 +308,7 @@ const Education = ({ setCurrent, current }) => {
                 className="expCheckBox"
                 name="present"
                 inputValue={item?.dataValue?.present}
+                disabled={isInputDisabled}
                 onChange={(e) => {
                   setEducationArray((prevArray) =>
                     prevArray.map((educationItem) =>
@@ -364,15 +352,20 @@ const Education = ({ setCurrent, current }) => {
         message.success("Education entry deleted successfully.");
       } else {
         message.error("Failed to delete the education entry.");
-        setEducationArray((prevArray) => [...prevArray, educationArray.find(item => item.dataValue.id === id)]);
+        setEducationArray((prevArray) => [
+          ...prevArray,
+          educationArray.find((item) => item.dataValue.id === id),
+        ]);
       }
     } catch (error) {
       console.error("Error deleting the education entry:", error);
       message.error("An error occurred while deleting the education entry.");
-      setEducationArray((prevArray) => [...prevArray, educationArray.find(item => item.dataValue.id === id)]);
+      setEducationArray((prevArray) => [
+        ...prevArray,
+        educationArray.find((item) => item.dataValue.id === id),
+      ]);
     }
   };
-
 
   const handleDeleteJuniorCert = async (id) => {
     try {
@@ -380,23 +373,28 @@ const Education = ({ setCurrent, current }) => {
         prevArray.filter((item) => item.dataValue.id !== id)
       );
 
-      const response = await deleteApiWithAuth(`${API_URL.DELETE_RESULT}/${id}/`);
-
+      const response = await deleteApiWithAuth(
+        `${API_URL.DELETE_RESULT}/${id}/`
+      );
 
       if (response.data.status === 204) {
         message.success("Junior Cert entry deleted successfully.");
       } else {
         message.error("Failed to delete the Junior Cert entry.");
-        setResultArrayData((prevArray) => [...prevArray, resultArrayData.find(item => item.dataValue.id === id)]);
+        setResultArrayData((prevArray) => [
+          ...prevArray,
+          resultArrayData.find((item) => item.dataValue.id === id),
+        ]);
       }
     } catch (error) {
       console.error("Error deleting the Junior Cert entry:", error);
       message.error("An error occurred while deleting the Junior Cert entry.");
-      setResultArrayData((prevArray) => [...prevArray, resultArrayData.find(item => item.dataValue.id === id)]);
+      setResultArrayData((prevArray) => [
+        ...prevArray,
+        resultArrayData.find((item) => item.dataValue.id === id),
+      ]);
     }
   };
-
-
 
   const educationResult = (item, index) => {
     return (
@@ -420,7 +418,7 @@ const Education = ({ setCurrent, current }) => {
                 name="subject"
                 onChange={(event) => onChangeHandle(event, index, 2)}
                 inputValue={item?.dataValue?.subject}
-                isPrefix={true}
+                isPrefix={false}
                 disabled={isInputDisabled}
               />
             </Form.Item>
@@ -460,8 +458,15 @@ const Education = ({ setCurrent, current }) => {
             </Form.Item>
           </div>
         </div>
-       
-
+        <div className="mainContainerDelete">
+          {!isInputDisabled && (
+            <img
+              className="deleteSubject"
+              src={Delete}
+              onClick={() => handleDeleteJuniorCert(item.dataValue.id)}
+            />
+          )}
+        </div>
         <div className="expFormDoubleItem">
           <Form.Item
             label="Result"
@@ -495,13 +500,6 @@ const Education = ({ setCurrent, current }) => {
               })}
             </Select>
           </Form.Item>
-        </div>
-        <div className="mainContainerDelete">
-          <img
-            className="deleteSubject"
-            src={Delete}
-            onClick={() => handleDeleteJuniorCert(item.dataValue.id)}
-          />
         </div>
       </>
     );
@@ -567,6 +565,7 @@ const Education = ({ setCurrent, current }) => {
               <Form.Item>
                 <Checkbox
                   className="eduJunCheckBox"
+                  disabled={isInputDisabled}
                   checked={isCheck}
                   onChange={() => {
                     setIsCheck(!isCheck);
@@ -578,6 +577,7 @@ const Education = ({ setCurrent, current }) => {
               <Form.Item>
                 <Checkbox
                   className="eduJunCheckBox"
+                  disabled={isInputDisabled}
                   checked={!isCheck}
                   onChange={() => {
                     setIsCheck(!isCheck);
@@ -631,17 +631,14 @@ const Education = ({ setCurrent, current }) => {
             )}
 
             <div className="eduItemButton">
-              <Form.Item>
-                <Button className="eduButton" type="primary" onClick={prev}>
-                  Back
-                </Button>
-              </Form.Item>
-
-              <Form.Item>
+              <Button className="eduButtonBack" type="primary" onClick={prev}>
+                Back
+              </Button>
+              <div className="buttonEducation">
                 <Button
                   className={
                     downloadBtn === true
-                      ? "disabledBtn me-3"
+                      ? "skillsButton me-3"
                       : "skillsButton me-3 "
                   }
                   type="primary"
@@ -649,10 +646,15 @@ const Education = ({ setCurrent, current }) => {
                 >
                   Edit
                 </Button>
-                <Button className="eduButton" type="primary" htmlType="submit">
+                <Button
+                  className="eduButton"
+                  type="primary"
+                  htmlType="submit"
+                  disabled={isInputDisabled}
+                >
                   Save
                 </Button>
-              </Form.Item>
+              </div>
             </div>
           </Form>
         </div>

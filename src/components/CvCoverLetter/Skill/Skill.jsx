@@ -322,7 +322,7 @@ const Skill = ({ setCurrent, current }) => {
                 <Button
                   className={
                     downloadBtn === true
-                      ? "disabledBtn me-3"
+                      ? "skillsButton me-3"
                       : "skillsButton me-3 "
                   }
                   type="primary"
@@ -334,6 +334,7 @@ const Skill = ({ setCurrent, current }) => {
                   className="skillsButton"
                   type="primary"
                   htmlType="submit"
+                  disabled={isInputDisabled}
                 >
                   Save
                 </Button>

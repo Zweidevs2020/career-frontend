@@ -107,7 +107,7 @@ const Interest = ({ setCurrent, current }) => {
             <div className="interestItemButton">
               <Form.Item>
                 <Button
-                  className="interestButtonBack"
+                  className="skillsButton"
                   type="primary"
                   onClick={prev}
                 >
@@ -117,7 +117,7 @@ const Interest = ({ setCurrent, current }) => {
 
               <Form.Item>
               <Button
-                  className={downloadBtn === true ? "disabledBtn me-3": "skillsButton me-3 "}
+                  className={downloadBtn === true ? "skillsButton me-3": "skillsButton me-3 "}
                   type="primary"
                   onClick={edit}
                 >
@@ -127,6 +127,8 @@ const Interest = ({ setCurrent, current }) => {
                   className="interestButton"
                   type="primary"
                   htmlType="submit"
+                  disabled={isInputDisabled}
+
                 >
                   Save
                 </Button>
