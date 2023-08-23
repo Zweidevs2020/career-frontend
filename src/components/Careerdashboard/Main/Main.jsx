@@ -146,7 +146,7 @@ const Main = () => {
           <img
             src={imgcard6}
             className=" bg-cover"
-            style={{ cursor: "pointer" ,borderRadius:'10px'}}
+            style={{ cursor: "pointer" ,borderRadius:'10px',marginBottom:'2rem'}}
           />
         </div>
       </div>

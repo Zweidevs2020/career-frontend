@@ -171,7 +171,7 @@ const Education = ({ setCurrent, current }) => {
   const SavePdf = async () => {
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
     if (respose.data.status === 201) {
-      // setCurrent(current + 1);
+     
     } else {
       message.error(respose.data.message);
     }
@@ -347,7 +347,6 @@ const Education = ({ setCurrent, current }) => {
       setEducationArray((prevArray) =>
         prevArray.filter((item) => item.dataValue.id !== id)
       );
-
       const response = await deleteApiWithAuth(`${API_URL.DELETE}/${id}/`);
       if (response.data.status === 204) {
         message.success("Education entry deleted successfully.");
@@ -424,9 +423,9 @@ const Education = ({ setCurrent, current }) => {
               />
             </Form.Item>
           </div>
-          <div className="expFormDoubleItem">
+          <div className="expFormDoubleItem mt-3">
             <Form.Item
-              label="Result"
+              label="Level"
               name={`result ${index}`}
               className="skillItemLable"
               rules={[
@@ -633,7 +632,7 @@ const Education = ({ setCurrent, current }) => {
 
             <div className="eduItemButton">
               <Button className="eduButtonBack" type="primary" onClick={prev}>
-                BACK
+                Back
               </Button>
               <div className="buttonEducation">
                 <Button

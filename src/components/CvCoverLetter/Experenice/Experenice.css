@@ -1,4 +1,4 @@
-.expHead{
+.expHead {
     font-family: 'Poppins';
     font-style: normal;
     font-weight: 600;
@@ -9,7 +9,7 @@
     margin-top: 2%;
 }
 
-.expSubHeading{
+.expSubHeading {
     font-family: 'Poppins';
     font-style: normal;
     font-weight: 400;
@@ -20,30 +20,30 @@
     margin-top: 0.5%;
 }
 
-.expForm{
+.expForm {
     padding: 0px 20px 0px 20px;
 }
 
 
-.expFormDouble{
+.expFormDouble {
     display: flex;
     width: 100%;
     justify-content: space-between;
-    }
-    
- .expFormDoubleItem{
-  width: 49%;
- }
-    
-.expItemLable .ant-form-item-label{
+}
+
+.expFormDoubleItem {
+    width: 49%;
+}
+
+.expItemLable .ant-form-item-label {
     text-align: start !important;
     font-weight: 600 !important;
     font-size: 14px !important;
     font-family: 'Inter' !important;
     font-style: normal !important;
 }
-    
-.expFormItem{
+
+.expFormItem {
     margin-top: 24px;
 }
 
@@ -58,17 +58,18 @@
     font-size: 16px;
     line-height: 24px;
     color: #9d9c9d;
-  }
-  
+}
 
 
-.expItemButton{
+
+.expItemButton {
     margin-top: 3%;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 2rem;
 }
 
-.expButton{
+.expButton {
     border: 1px solid grey;
     width: 144px;
     height: 52px;
@@ -77,40 +78,40 @@
     border-radius: 12px;
 }
 
-.expButtonBack{
+.expButtonBack {
     border: 1px solid #1476B7;
     width: 144px;
     height: 52px;
     font-size: 14px;
     border-radius: 12px;
-    color: #1476B7; 
+    color: #1476B7;
 }
 
-.expAddButton{
-box-sizing: border-box;
-background: #FFFFFF;
-border: 1px solid #1984FF;
-border-radius: 8px;
-color: #1984FF;
-height: 52px;
-display: flex;
-justify-content: center;
-align-items: center;
-width: 100%;
-margin-top: 3%;
-font-family: 'Inter';
-font-style: normal;
-font-weight: 500;
-font-size: 14px;
+.expAddButton {
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border: 1px solid #1984FF;
+    border-radius: 8px;
+    color: #1984FF;
+    height: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 3%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
 }
 
-.expCheckBox{
-font-family: 'Inter';
-font-style: normal;
-font-weight: 400;
-font-size: 14px;
-color: #6B7280;
-margin-left: 2px;
+.expCheckBox {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: #6B7280;
+    margin-left: 2px;
 
 
 }

@@ -10,7 +10,7 @@ import { PlusCircleOutlined } from "@ant-design/icons";
 const Reference = ({ setCurrent, current }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
-  const [downloadBtn, setDownloadBtn]=useState(false);
+  const [downloadBtn, setDownloadBtn] = useState(false);
   const [referArray, setReferArray] = useState([]);
   const { Option } = Select;
 
@@ -55,11 +55,11 @@ const Reference = ({ setCurrent, current }) => {
   }, [data]);
 
   const onsubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     let data = createArrayData(referArray);
 
     const respose = await postApiWithAuth(API_URL.POSTREFERNACE, data);
-   
+
     if (respose.data.status === 201) {
       // setCurrent(1);
       message.success("Cv Save Successfully");
@@ -70,24 +70,25 @@ const Reference = ({ setCurrent, current }) => {
   };
 
   const SavePdf = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     let data = createArrayData(referArray);
 
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
   
     if (respose.data.status === 201) {
-     
+
     } else {
       message.error(respose.data.message);
     }
   };
 
   const createArrayData = (data) => {
+ 
     let array = [];
     data.map((item) => {
       array.push(item.dataValue);
     });
-
+   
     return array;
   };
 
@@ -122,6 +123,7 @@ const Reference = ({ setCurrent, current }) => {
           : item;
       })
     );
+  
   };
 
   const referenceItems = (item, index) => {
@@ -174,7 +176,7 @@ const Reference = ({ setCurrent, current }) => {
                 rules={[{ required: item?.dataValue.contact_number ? false : true, message: "Please input Contact!" }]}
               >
                 <MyCareerGuidanceInputField
-                  placeholder= "+xx-xxx-xxx-xxxx"
+                  placeholder="+xx-xxx-xxx-xxxx"
                   type="input"
                   name="contact_number"
                   onChange={(e) => onChangeHandleInput(e, index)}
@@ -209,18 +211,18 @@ const Reference = ({ setCurrent, current }) => {
     );
   };
 
-  const getUserData = async() => {
+  const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
-    if(response.data.status === 200){
-     if(response.data.data.cv_completed===true){
-      setDownloadBtn(true);
-     }
+    if (response.data.status === 200) {
+      if (response.data.data.cv_completed === true) {
+        setDownloadBtn(true);
+      }
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getUserData();
-  },[])
+  }, [])
 
   return (
     <>
@@ -287,10 +289,10 @@ const Reference = ({ setCurrent, current }) => {
 
               <Form.Item>
                 <Button
-                  className={downloadBtn === false ? "disabledBtn me-3": "skillsButton me-3 "}
+                  className={downloadBtn === false ? "disabledBtn me-3" : "skillsButton me-3 "}
                   type="primary"
                   htmlType="submit"
-                  onClick={(e) => SavePdf(e)}  
+                  onClick={(e) => SavePdf(e)}
                 >
                   Download CV
                 </Button>
@@ -298,7 +300,7 @@ const Reference = ({ setCurrent, current }) => {
                   className="skillsButton"
                   type="primary"
                   htmlType="submit"
-                  onClick={(e) => onsubmit(e)}  
+                  onClick={(e) => onsubmit(e)}
                 >
                   Save
                 </Button>

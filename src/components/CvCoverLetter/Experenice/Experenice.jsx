@@ -24,6 +24,7 @@ const Experenice = ({ setCurrent, current }) => {
   const [expereniceArray, setExpereniceArray] = useState([]);
   const [isCurrentCheck, setIsCurrentCheck] = useState(false);
   const [isInputDisabled, setIsInputDisabled] = useState(true);
+  
   const getExperiance = async () => {
     const response = await getApiWithAuth(API_URL.GETEXPERIANCE);
     if (response.data?.status === 200) {
@@ -36,7 +37,6 @@ const Experenice = ({ setCurrent, current }) => {
   useEffect(() => {
     getExperiance();
   }, []);
-
 
   const titleArray = [
     { label: "Assistant", value: "1" },
@@ -175,10 +175,8 @@ const Experenice = ({ setCurrent, current }) => {
       setExpereniceArray((prevArray) =>
         prevArray.filter((item) => item.dataValue.id !== id)
       );
-
       const response = await deleteApiWithAuth(`${API_URL.DELETE_EXPERIENCE}/${id}/`);
-      console.log("delete expericne", response,id,response.data.status)
-
+   
       if (response.data.status === 204) {
         message.success("Experience entry deleted successfully.");
       } else {
@@ -244,7 +242,7 @@ const Experenice = ({ setCurrent, current }) => {
                         ]}
                       >
                         <MyCareerGuidanceInputField
-                          placeholder={item?.dataValue?.company || "e.g H&M"}
+                          placeholder={"e.g H&M"}
                           type="input"
                           name="company"
                           onChange={(event) => onChangeHandle(event, index)}
