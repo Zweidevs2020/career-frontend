@@ -8,15 +8,20 @@ import Interest from "./Interests/Interest";
 import Reference from "./Reference/Reference";
 import Education from "./Eductaion/Education";
 import Experenice from "./Experenice/Experenice";
+import { useLocation } from "react-router-dom";
 
 const CvCoverLetter = () => {
-  const initialStep = localStorage.getItem("currentStep") || 1;
+  const location = useLocation(); // React Router's location object
+  const initialStep = new URLSearchParams(location.search).get("step") || 1;
   const [current, setCurrent] = useState(parseInt(initialStep));
 
-  
   useEffect(() => {
-    localStorage.setItem("currentStep", current);
-  }, [current]);
+    // Update URL parameter when current step changes
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set("step", current);
+    window.history.replaceState(null, "", `${location.pathname}?${searchParams}`);
+  }, [current, location]);
+
   return (
     <>
       <div class="h-[100%] w-[100%] bg-white mt-3">
@@ -37,17 +42,17 @@ const CvCoverLetter = () => {
           <div className="ml-2">
             <Steps current={current} setCurrent={setCurrent} />
           </div>
-          {current == 1 ? (
+          {current === 1 ? (
             <PersonalProfile setCurrent={setCurrent} current={current} />
-          ) : current == 2 ? (
+          ) : current === 2 ? (
             <Education setCurrent={setCurrent} current={current} />
-          ) : current == 3 ? (
+          ) : current === 3 ? (
             <Experenice setCurrent={setCurrent} current={current} />
-          ) : current == 4 ? (
+          ) : current === 4 ? (
             <Skill setCurrent={setCurrent} current={current} />
-          ) : current == 5 ? (
+          ) : current === 5 ? (
             <Interest setCurrent={setCurrent} current={current} />
-          ) : current == 6 ? (
+          ) : current === 6 ? (
             <Reference setCurrent={setCurrent} current={current} />
           ) : (
             ""
@@ -58,3 +63,4 @@ const CvCoverLetter = () => {
   );
 };
 export default CvCoverLetter;
+

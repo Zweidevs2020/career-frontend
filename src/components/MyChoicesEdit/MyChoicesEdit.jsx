@@ -45,6 +45,8 @@ const MyChoicesEdit = () => {
   const dataRef = useRef([]);
   const rowRef = useRef(null);
 
+
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -61,6 +63,7 @@ const MyChoicesEdit = () => {
     if (response.data.status === 200) {
       const columnsData = response.data.data.data;
       const columnsWithoutOrderNumber = columnsData.slice(0, columnsData.length - 1);
+      // const columnsWithNumber = ["No.", ...columnsWithoutOrderNumber];
 
       setColums(columnsWithoutOrderNumber);
       setShowRows(response.data.data.rows);
@@ -306,6 +309,7 @@ const MyChoicesEdit = () => {
 
     return (
       <><tr {...props} ref={setNodeRef} className={isIdNotNull ? 'old-data' : 'new-data'} style={style} {...attributes} {...listeners} >
+
       </tr></>
     );
 
@@ -319,16 +323,16 @@ const MyChoicesEdit = () => {
   );
 
   const onDragEnd = async ({ active, over }) => {
-  
+
     if (active?.id && over?.id) {
       if (active?.id !== over?.id) {
         setData((prev) => {
           const activeIndex = prev.findIndex((i) => i.dataId === active?.id);
-        
+
           const overIndex = prev.findIndex((i) => i.dataId === over?.id);
-         
+
           const orderUpdate1 = { "order_number": oldData[overIndex]?.order_number }
-        
+
           const orderUpdate2 = { "order_number": oldData[activeIndex]?.order_number }
           const updateOrder1 = async () => {
             setLoadingFirst(true);
@@ -417,19 +421,26 @@ const MyChoicesEdit = () => {
                             />
                           )}
                         />
-
+                        <Column
+                          title="No."
+                          dataIndex="rowNo"
+                          key="rowNo"
+                          className="tableHeadingStyle"
+                          render={(text) => <span>{text + 1}</span>}
+                        />
                         {columns.map((item) => {
 
                           return (
                             <>
+
                               <Column
                                 title={capitalizeWords(item)}
                                 dataIndex={item}
                                 key={item}
-
                                 className="tableHeadingStyle"
                                 render={(text, record) => (
                                   <>
+
                                     <MyCareerGuidanceInputField
                                       ref={inputRef}
                                       placeholder={item}
@@ -490,7 +501,13 @@ const MyChoicesEdit = () => {
                         />
                       )}
                     />
-
+                    <Column
+                      title="No."
+                      dataIndex="rowNo"
+                      key="rowNo"
+                      className="tableHeadingStyle"
+                      render={(text) => <span>{text + 1}</span>}
+                    />
                     {columns.map((item) => {
 
                       return (
