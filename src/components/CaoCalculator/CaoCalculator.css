@@ -39,10 +39,11 @@
   font-weight: 500;
 }
 .addSubjectButton{
-  color: #1476b7;
-  border-radius: 8px solid #1476b7;
-  background: #ffffff;
-  border: 0.770492px solid #1476b7;
+  color: white;
+  border: none;
+  /* border-radius: 8px solid #1476b7; */
+  background: #1476b7;
+  /* border: 0.770492px solid #1476b7; */
   width: 130px;
   height: 36px;
   margin-top: 10px;
@@ -50,10 +51,10 @@
 }
 
 .addSubjectButton:hover{
-  color: #1476b7;
-  border-radius: 8px solid #1476b7;
-  background: #ffffff;
-  border: 0.770492px solid #1476b7;
+  color: white;
+ 
+  background: #1476b7;
+  border: none;
 }
 
 .calculateButton {
@@ -149,8 +150,8 @@
   border-color: white;
   box-shadow: none;
 }
-button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary.clearAllButton,
-button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary.calculateButton {
+button.ant-btn.ant-btn-primary.clearAllButton,
+button.ant-btn.ant-btn-primary.calculateButton {
   color: white !important;
 }
 button.ant-btn.css-ed5zg0.ant-btn-primary.clearAllButton,
@@ -161,15 +162,15 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   max-width: 163px !important;
 } */
 .coaSubjectWidth
-  .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search,
+  .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow.ant-select-show-search,
 .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
-  width: 290px !important;
+  width: 290px ;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin: auto;
 }
-.ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow,
+.ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow,
 .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow {
   width: 290px;
   margin: auto;
@@ -353,6 +354,13 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
       
       .mobileTableHeader {
         font-weight: bold;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        margin-left: 1rem;
+        border: 1px solid #737373 ;
+        border: #737373;
+        color: #474749;
+        background: white;
         /* margin-right: 20px; */
       }
       
@@ -367,8 +375,13 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
         font-weight: 700;
       }
 
-      .clearAllButton,.calculateButton,.addSubjectButton{
+      .clearAllButton,.calculateButton{
         width: 100%;
+      }
+      .addSubjectButton {
+        margin-top: 2rem;
+        width: 60%;
+     align-items: center;
       }
   .coaSubjectWidth td.ant-table-cell {
     max-width: 100% !important;
@@ -404,12 +417,12 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   .coaSubjectWidth
     .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow.ant-select-show-search,
   .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
-    width: 100% !important;
+    width: 90% !important;
   }
 
   .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow,
   .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow {
-    width: 100% !important;
+    width: 90% !important;
   }
 }
 .spinner-container

@@ -657,10 +657,13 @@ const CaoCalculator = () => {
                     <span>Add more row</span>
                   </div> */}
                   <div className="mobileTable">
-                    <div className="mobileTableRow">
-                      <div className="mobileTableHeader mt-2">Subject</div>
-                      {tableData.map((item, index) => (
-                        <div className="mobileTableCell" key={index}>
+
+
+                    {tableData.map((item, index) => (
+                      <div className="mobileTableRow " key={index}>
+                        <div className="mobileTableHeader mt-2">Subject {index + 1}</div>
+                        <div className="py-2" style={{background:' #F4F6F8'}}>
+                        <div className="mobileTableCell">
                           <Select
                             placeholder="Select Subject"
                             value={item.name}
@@ -671,28 +674,33 @@ const CaoCalculator = () => {
                             filterOption={(input, option) =>
                               option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }
-                          />
+                          > {data?.map((item) => (
+                            <Option key={item.name} value={item.name}>
+                              {item.name}
+                            </Option>
+                          ))}
+                          </Select>
                         </div>
-                      ))}
-                    </div>
-                    <div className="mobileTableRow">
-                      <div className="mobileTableHeader mt-4">Level</div>
-                      {tableData.map((item, index) => (
-                        <div className="mobileTableCell" key={index}>
+                        <div className="mobileTableCell">
                           <Select
                             placeholder="Select Level"
                             value={item.level}
                             onChange={(value) => handleSecondDropdownChange(value, item)}
                             className="selectFieldStyle"
-                            key={item}
-                          />
+                          >
+                            {data
+                              .find((subject) => subject.name === item.name)
+                              ?.level?.map((level) => (
+                                <Option
+                                  key={level?.level__id}
+                                  value={level?.level__subjectlevel}
+                                >
+                                  {level?.level__subjectlevel}
+                                </Option>
+                              ))}
+                          </Select>
                         </div>
-                      ))}
-                    </div>
-                    <div className="mobileTableRow">
-                      <div className="mobileTableHeader mt-4">Grades</div>
-                      {tableData.map((item, index) => (
-                        <div className="mobileTableCell" key={index}>
+                        <div className="mobileTableCell">
                           <Select
                             placeholder="Select Grade"
                             value={item.grades}
@@ -700,11 +708,20 @@ const CaoCalculator = () => {
                             onClick={() => handleThridDropDownApi(index)}
                             className="selectFieldStyle"
                             loading={index === currentState}
-                          />
+                          >{ thirdDropdownOptions.map((option) => (
+
+                            <Option key={option.id} value={option.value}>
+                              {option.label}
+                            </Option>
+                          ))}
+                          </Select>
                         </div>
-                      ))}
-                    </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
+
+
 
                 </div>
 
@@ -717,10 +734,10 @@ const CaoCalculator = () => {
                     pagination={false}
                   />
                  */}
-                <div >
+                <div style={{display:'flex',justifyContent:'center'}}>
                   <MyCareerGuidanceButton
                     label="Add Subject"
-                    className="addSubjectButton"
+                    className="addSubjectButton mt-2"
                     htmlType="button"
                     onClick={handleAdd}
                     icon={<PlusOutlined />}
@@ -732,7 +749,7 @@ const CaoCalculator = () => {
           )}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

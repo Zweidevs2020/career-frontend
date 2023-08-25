@@ -122,13 +122,11 @@ const Experenice = ({ setCurrent, current }) => {
     );
   };
   const onChangeDate = (name, date, arrayIndex) => {
-    console.log("Selected Date:", date);
-    console.log("Parsed Date:", dayjs(date, "DD-MM-YYYY"));
-    console.log("Current Date:", dayjs());
+  
 
     if (name === "enddate") {
       if (dayjs(date, "DD-MM-YYYY").isAfter(dayjs())) {
-        console.log("End date is in the future.");
+      
         message.error("End date cannot be in the future.");
         return;
       }
