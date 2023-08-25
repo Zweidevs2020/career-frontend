@@ -45,16 +45,15 @@
   background: #1476b7;
   /* border: 0.770492px solid #1476b7; */
   width: 130px;
-  height: 36px;
+  height: 50px !important;
   margin-top: 10px;
   font-weight: 500;
 }
 
 .addSubjectButton:hover{
-  color: white;
- 
-  background: #1476b7;
-  border: none;
+  color: white !important;
+  background: #1476b7 !important;
+  border: none !important;
 }
 
 .calculateButton {
@@ -121,13 +120,13 @@
   height: 158px;
   border-radius: 50%;
 }
-:where(.css-dev-only-do-not-override-ed5zg0).ant-select:not(
+.ant-select:not(
     .ant-select-customize-input
   )
   .ant-select-selector {
   border: none;
 }
-.ant-select-focused:where(.css-dev-only-do-not-override-ed5zg0).ant-select:not(
+.ant-select-focused.ant-select:not(
     .ant-select-disabled
   ):not(.ant-select-customize-input):not(.ant-pagination-size-changer)
   .ant-select-selector {
@@ -268,7 +267,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
     width: 100% !important;
   }
-  .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow,
+  .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow,
   .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow {
     width: 180px;
   }

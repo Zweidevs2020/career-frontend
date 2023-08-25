@@ -271,12 +271,20 @@ const MyStudy = () => {
       setWeekDay(selectedStart.getDay().toString());
       setTitle(selectInfo?.event?._def?.extendedProps.title)
       const startTime = selectInfo?.event?._def?.extendedProps.start;
-      const startTimeString = moment(startTime).format("HH:mm");
-      setSelectedTime(startTimeString);
+      console.log('=============================start',startTime)
+      const originalDateStart = moment(startTime, "ddd MMM D YYYY HH:mm:ss ZZ");
+
+      // Convert to 12-hour format with "pm" notation
+      const formattedDateStart = originalDateStart.format("hh:mm A");
+
+      // const startTimeString = moment(startTime, ["h:mm A"]).format("HH:mm");
+      setSelectedTime(formattedDateStart);
 
       const endTime = selectInfo?.event?._def?.extendedProps.end;
-      const endTimeString = moment(endTime).format("HH:mm");
-      setSelectedEndTime(endTimeString);
+      const originalDateEnd = moment(endTime, "ddd MMM D YYYY HH:mm:ss ZZ");
+      const formattedDateEnd = originalDateEnd.format("hh:mm A");
+      // const endTimeString = moment(formattedDateEnd).format("HH:mm");
+      setSelectedEndTime(formattedDateEnd);
       // const selectedEnd = new Date(selectedStart.getTime() + 30 * 60 * 1000); // Add 30 minutes
       // setSelectedEndTime(selectedEnd.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }));
 
