@@ -622,7 +622,7 @@ const Sidebar = ({ children, flags }) => {
                     </Col>
                   </Row>
 
-                  <div className="mt-5" style={{ display: "flex" }}>
+                  <div className="mt-5" style={{ display: "flex" ,justifyContent:'center' }}>
                     <MyCareerGuidanceButton
                       label="Update"
                       className="takebutton"

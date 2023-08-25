@@ -72,7 +72,7 @@
 .profileButton {
   border: 1px solid grey;
   width: 144px;
-  height: 52px;
+  height: 50px;
   background: #1476B7;
   font-size: 14px;
   border-radius: 12px;
@@ -84,7 +84,7 @@
   cursor: not-allowed;
   border: 1px solid grey;
   width: 144px;
-  height: 52px;
+  height: 50px;
   font-size: 14px;
   border-radius: 12px;
 

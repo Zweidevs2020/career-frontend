@@ -34,12 +34,6 @@ const MyStudy = () => {
   const [selectedEndTime, setSelectedEndTime] = useState("");
   const [weekDay, setWeekDay] = useState("");
   const [title, setTitle] = useState("");
-  const [events, setEvents] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [editingEvent, setEditingEvent] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
   const [loadingBooking, setLoadingBooking] = useState(false);
   const [openBooking, setOpenBooking] = useState(false);
   const [deleteBooking, setDeleteBooking] = useState(false);
@@ -57,15 +51,12 @@ const MyStudy = () => {
   const handleOpenViewBooking = () => setOpenViewBooking(true);
   const handleCloseViewBooking = () => setOpenViewBooking(false);
 
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
-  
-
-  // const [selectedEvent, setSelectedEvent] = useState(null);
-  
   const optionArray = [];
 
-  // const startTime = new Date("2000-01-01T06:00:00");
-  // const endTime = new Date("2000-01-02T00:00:00");
+  const startTime = new Date("2000-01-01T06:00:00");
+  const endTime = new Date("2000-01-02T00:00:00");
   const interval = 30 * 60 * 1000;
   for (
     let time = startTime;
@@ -113,10 +104,10 @@ const MyStudy = () => {
           event.event._def.extendedProps.selectID,
           viewData
         );
-        event.event.setProp("start", start); // Manually update event start
-       
-        event.event.setProp("end", end); // Manually update event end
-     
+        event.event.setProp("start", start);
+
+        event.event.setProp("end", end);
+
       } catch (error) {
         // Handle error
       }
@@ -125,7 +116,6 @@ const MyStudy = () => {
 
   const handleEventResize = async (event) => {
     const { id, start, end } = event.event;
-    // setViewData(clickInfo.event._def.extendedProps);
 
     if (start && end) {
       const viewData = {
@@ -144,7 +134,7 @@ const MyStudy = () => {
 
 
   const handleEditCalender = async (id, viewData) => {
-  
+
     setUpdateLoading(true);
     const startTime = moment(viewData.start).format("hh:mm:ss");
     const endTime = dayjs(viewData.end).format("hh:mm:ss");
@@ -227,11 +217,11 @@ const MyStudy = () => {
   const getCalanderData = async () => {
     setLoading(true);
     const response = await getApiWithAuth(`timetable/list-timeslot/`);
-   
+
     if (response?.data.status === 200) {
-    
+
       setData(response.data.data);
-    
+
       setLoading(false);
     } else {
       setLoading(false);
@@ -254,38 +244,47 @@ const MyStudy = () => {
     );
   }
 
-  // const handleDateSelect = (selectInfo) => {
-  //   setWeekDay(dayjs(selectInfo.start).format("d"));
-  //   // setSelectedTime(dayjs(selectInfo.start));
-  //   setSelectedTime(dayjs(selectInfo.start).locale("en").format("hh:mm A"));
-  //   // setSelectedEndTime(dayjs(selectInfo.end));
-  //   setSelectedEndTime(dayjs(selectInfo.end).locale("en").format("hh:mm A"));
-  //   handleOpenBooking();
-  // };
-  
 
-  const handleDateSelect = (selectInfo) => {
-    const selectedStart = new Date(selectInfo); 
-   
-    setWeekDay(selectedStart.getDay().toString());
-    setSelectedTime(selectedStart.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }));
-    // console.log("hello main set kar dea",selectInfo.event._def.extendedProps.start)
-    const selectedEnd = new Date(selectedStart.getTime() + 30 * 60 * 1000); 
-    setSelectedEndTime(selectedEnd.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }));
- 
-    // const startTime = selectInfo?.event?._def?.extendedProps.start;
-    // const startTimeString = moment(startTime).format("HH:mm"); 
-    // const endTime = selectInfo?.event?._def?.extendedProps.end;
-    // const endTimeString = moment(endTime).format("HH:mm"); 
-    // console.log("Check karo",startTimeString); 
-    // setTitle(selectInfo?.event?._def?.title)
-    // setSelectedTime(startTimeString);
-    // setSelectedEndTime(selectInfo?.event?._def?.title);
-  
-    
-    handleOpenBooking();
+
+
+  const handleDateSelect = (selectInfo, b) => {
+    if (b !== undefined) {
+
+
+      const selectedStart = new Date(selectInfo);
+
+      setWeekDay(selectedStart.getDay().toString());
+      setSelectedTime(selectedStart.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }));
+
+      setSelectedEndTime(selectedTime);
+      setTitle('')
+      const selectedEnd = new Date(selectedStart.getTime() + 30 * 60 * 1000); // Add 30 minutes
+      setSelectedEndTime(selectedEnd.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }));
+
+      handleOpenBooking();
+    }
+    else {
+
+
+      const selectedStart = new Date(selectInfo.el.fcSeg.start);
+
+      setWeekDay(selectedStart.getDay().toString());
+      setTitle(selectInfo?.event?._def?.extendedProps.title)
+      const startTime = selectInfo?.event?._def?.extendedProps.start;
+      const startTimeString = moment(startTime).format("HH:mm");
+      setSelectedTime(startTimeString);
+
+      const endTime = selectInfo?.event?._def?.extendedProps.end;
+      const endTimeString = moment(endTime).format("HH:mm");
+      setSelectedEndTime(endTimeString);
+      // const selectedEnd = new Date(selectedStart.getTime() + 30 * 60 * 1000); // Add 30 minutes
+      // setSelectedEndTime(selectedEnd.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }));
+
+      handleOpenBooking();
+    }
+
   };
-  
+
 
   const createNewEvent = async () => {
     setLoadingBooking(true);
@@ -361,16 +360,16 @@ const MyStudy = () => {
   // };
 
 
-  // const handleEventClick = (clickInfo) => {
-  //   const eventData = clickInfo.event._def.extendedProps;
-  //   setSelectedEvent({
-  //     id: eventData.selectID,
-  //     title: eventData.title,
-  //     start: new Date(eventData.start),
-  //     end: new Date(eventData.end),
-  //   });
-  //   handleOpenViewBooking();
-  // };
+  const handleEventClick = (clickInfo) => {
+    const eventData = clickInfo.event._def.extendedProps;
+    setSelectedEvent({
+      id: eventData.selectID,
+      title: eventData.title,
+      start: new Date(eventData.start),
+      end: new Date(eventData.end),
+    });
+    handleOpenViewBooking();
+  };
   const deleteCurrent = async (id) => {
     setDeleteHandler(true);
     const respose = await deleteApiWithAuth(`timetable/delete-timeslot/${id}`);
@@ -408,9 +407,15 @@ const MyStudy = () => {
 
   const handleEdit = async (id) => {
     setUpdateLoading(true);
-  
+    console.log("viedata", viewData)
     let startTime = moment(viewData.start).format("hh:mm:ss");
     let endTime = dayjs(viewData.end).format("hh:mm:ss");
+
+    console.log("hello start time", startTime, endTime)
+    // let dataarr = []
+    // data.map((e,i)=>(
+    //   dataarr.push(e.day)
+    // ))
     setBtnDisabled(true);
     const response = await putApiWithAuth(`timetable/update-timeslot/${id}`, {
       timeslot: startTime,
@@ -431,7 +436,7 @@ const MyStudy = () => {
 
 
   const handleTimeChange = (start, end) => {
-    
+
     if (start && end) {
       const startTime = dayjs(start, "hh:mm A");
       const endTime = dayjs(end, "hh:mm A");
@@ -448,39 +453,13 @@ const MyStudy = () => {
     }
   };
 
-  const handleEventClick = (event) => {
-    setSelectedEvent(event);
-    setModalVisible(true);
-    setTitle(event.title);
-    setStartTime(event.start);
-    setEndTime(event.end);
-  };
 
-  const handleEditEvent = () => {
-    if (editingEvent) {
-      // Update the event with the new values
-      const updatedEvent = {
-        ...editingEvent,
-        title: title,
-        start: startTime,
-        end: endTime,
-      };
-      // Update the event in the events array
-      const updatedEvents = events.map((event) =>
-        event.id === updatedEvent.id ? updatedEvent : event
-      );
-      setEvents(updatedEvents);
-      setSelectedEvent(updatedEvent);
-      setEditingEvent(null);
-      setModalVisible(false);
-    }
-  };
   function handleChange(value) {
-   
+
     setSelectedTime(value);
     handleTimeChange(value, selectedEndTime);
   }
-  
+
   function handleChange2(value) {
     setSelectedEndTime(value);
     handleTimeChange(selectedTime, value);
@@ -509,7 +488,7 @@ const MyStudy = () => {
           <Spin className="spinStyle" />
         ) : (
           <FullCalendar
-            plugins={[dayGridPlugin,timeGridPlugin, interactionPlugin]}
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             headerToolbar={{
               left: "",
               center: "",
@@ -525,7 +504,7 @@ const MyStudy = () => {
             }}
             selectable={true}
             editable={true}
-           weekends={true}
+            weekends={true}
             eventDrop={handleEventDrop}
             eventResize={handleEventResize}
             allDaySlot={false}
@@ -537,7 +516,7 @@ const MyStudy = () => {
                 weekday: "long",
               });
               return `${dayOfWeek}`;
-              }}
+            }}
             slotMinTime="06:00:00"
           />
         )}
@@ -552,7 +531,6 @@ const MyStudy = () => {
         open={openBooking}
         onCancel={handleCloseBooking}
         footer={[]}
-        onOk={handleEditEvent}
       >
         <div className="mt-5 pt-5 ps-2">
           <MyCareerGuidanceInputField
@@ -572,9 +550,8 @@ const MyStudy = () => {
             <Select
               placeholder="Select time"
               onChange={handleChange}
-              
-             value={selectedTime }
-     
+              value={selectedTime}
+              {...console.log("dsdsdsdddddddddddddd")}
               className="inputFieldStyleSelect"
             >
               {optionArray.map((option) => (
@@ -583,7 +560,7 @@ const MyStudy = () => {
                 </Option>
               ))}
             </Select>
-           
+
 
             <Select
               placeholder="Select end Time"
