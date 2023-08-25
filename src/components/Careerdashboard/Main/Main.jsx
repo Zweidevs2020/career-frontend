@@ -55,7 +55,7 @@ const Main = () => {
             Career Guidance
           </h1>
         </div>
-     
+
       </div>
       <div className="grid grid-cols-12 gap-3 px-3 careerGuidenceGrid">
         <div
@@ -69,8 +69,8 @@ const Main = () => {
           <img
             src={imgcard}
             className=" bg-cover "
-            style={{ width: "100%", height: "200px",cursor: "pointer", borderRadius:'10px' }}
-          
+            style={{ width: "100%", height: "200px", cursor: "pointer", borderRadius: '10px' }}
+
           />
         </div>
         <div
@@ -84,7 +84,7 @@ const Main = () => {
           <img
             src={imgcard4}
             className=" bg-cover"
-            style={{ cursor: "pointer",borderRadius:'10px' ,width: "100%", height: "200px"}}
+            style={{ cursor: "pointer", borderRadius: '10px', width: "100%", height: "200px" }}
           />
         </div>
         <div
@@ -98,7 +98,7 @@ const Main = () => {
           <img
             src={imgcard2}
             className=" bg-cover"
-            style={{ cursor: "pointer" ,borderRadius:'10px',width: "100%", height: "200px"}}
+            style={{ cursor: "pointer", borderRadius: '10px', width: "100%", height: "200px" }}
           />
         </div>
         <div
@@ -112,7 +112,7 @@ const Main = () => {
           <img
             src={imgcard5}
             className=" bg-cover"
-            style={{ cursor: "pointer" ,borderRadius:'10px',width: "100%", height: "200px"}}
+            style={{ cursor: "pointer", borderRadius: '10px', width: "100%", height: "200px" }}
           />
         </div>
         <div
@@ -126,11 +126,11 @@ const Main = () => {
           <img
             src={imgcard3}
             className=" bg-cover"
-            style={{ cursor: "pointer",borderRadius:'10px' ,width: "100%", height: "200px"}}
+            style={{ cursor: "pointer", borderRadius: '10px', width: "100%", height: "200px" }}
           />
         </div>
         <div
-      
+
           className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto m-auto"
           onClick={() => {
             navigate("/my-choices");
@@ -140,11 +140,11 @@ const Main = () => {
           <img
             src={imgcard7}
             className=" bg-cover"
-            style={{ cursor: "pointer" ,borderRadius:'10px',width: "100%", height: "200px"}}
+            style={{ cursor: "pointer", borderRadius: '10px', width: "100%", height: "200px" }}
           />
         </div>
         <div
-        
+
           className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto m-auto"
           onClick={() => {
             navigate("/educational-guidance");
@@ -154,11 +154,11 @@ const Main = () => {
           <img
             src={imgcard6}
             className=" bg-cover"
-            style={{ cursor: "pointer" ,borderRadius:'10px',width: "100%", height: "200px"}}
+            style={{ cursor: "pointer", borderRadius: '10px', width: "100%", height: "200px" }}
           />
         </div>
       </div>
-     
+
       <Modal
         className="modalStyleClass"
         bodyStyle={{
@@ -182,14 +182,13 @@ const Main = () => {
             </div>
             <div className="mt-3">
               <MyCareerGuidanceButton
-                label={`${singlequizData.score ? singlequizData.score : 0}/${
-                  singlequizData.total_score ? singlequizData.total_score : 0
-                }`}
+                label={`${singlequizData.score ? singlequizData.score : 0}/${singlequizData.total_score ? singlequizData.total_score : 0
+                  }`}
                 className="resultDataButton"
                 type="button"
                 htmlType="button"
                 onClick={handleCancel}
-                //   loading={loading}
+              //   loading={loading}
               />
             </div>
           </div>

@@ -144,61 +144,10 @@ const CaoCalculator = () => {
     }
   };
 
-  // const handleFirstDropdownChange = (value, record) => {
-
-  //   const tempData = tableData?.map((item, index) => {
-  //     if (item?.No == record?.No) {
-  //       return {
-  //         ...item,
-  //         name: value,
-  //         level: null,
-  //         grades: null,
-  //       };
-  //     } else {
-  //       return item;
-  //     }
-  //   });
-
-  //   setTableData(tempData);
-
-  // };
-
-  // const handleFirstDropdownChange = (value, record) => {
-  //   const tempData = tableData?.map((item, index) => {
-  //     if (item?.No === record?.No) {
-  //       return {
-  //         ...item,
-  //         name: value,
-  //         level: null,
-  //         grades: null,
-  //       };
-  //     } else {
-  //       return item;
-  //     }
-  //   });
-
-  //   const selectedSubjectNames = Object.values(selectedSubjects).map((subject) => subject.name);
-
-  //   if (selectedSubjectNames.includes(value)) {
-  //   console.log("hello main dobara  agai")
-  //     setSelectedSubjects((prevSelectedSubjects) => ({
-  //       ...prevSelectedSubjects,
-  //       [record.No]: { name: value, error: true },
-  //     }));
-  //   } else {
-  //     setSelectedSubjects((prevSelectedSubjects) => ({
-  //       ...prevSelectedSubjects,
-  //       [record.No]: { name: value, error: false },
-  //     }));
-  //   }
-
-  //   setTableData(tempData);
-  // };
-
-
   const handleFirstDropdownChange = (value, record) => {
-    const tempData = tableData.map((item, index) => {
-      if (item.No === record.No) {
+
+    const tempData = tableData?.map((item, index) => {
+      if (item?.No == record?.No) {
         return {
           ...item,
           name: value,
@@ -209,25 +158,10 @@ const CaoCalculator = () => {
         return item;
       }
     });
-  
-    const selectedSubjectNames = Object.values(selectedSubjects).map((subject) => subject.name);
-  
-    if (selectedSubjectNames.includes(value)) {
-      // Subject already selected in another row, show an error
-      setSelectedSubjects((prevSelectedSubjects) => ({
-        ...prevSelectedSubjects,
-        [record.No]: { name: value, error: true },
-      }));
-    } else {
-      setSelectedSubjects((prevSelectedSubjects) => ({
-        ...prevSelectedSubjects,
-        [record.No]: { name: value, error: false },
-      }));
-    }
-  
+
     setTableData(tempData);
+
   };
-  
 
   const handleSecondDropdownChange = (value, record) => {
     const tempData = tableData?.map((item, index) => {
@@ -292,8 +226,9 @@ const CaoCalculator = () => {
             placeholder={loadingSub ? <Spin size="small" /> : "Select Subject"}
             value={tableData[record?.No]?.name}
             onChange={(e) => handleFirstDropdownChange(e, record)}
-            className={`selectFieldStyle ${selectedSubjects[record.No]?.error ? "error" : ""}`}
+            className="selectFieldStyle"
             loading={loadingFirst}
+            key={record}
             showSearch
             filterOption={(input, option) =>
               option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -482,7 +417,7 @@ const CaoCalculator = () => {
     } catch (error) {
 
     } finally {
-
+   
       const remainingEmptyRows = tableData.length - newData.length;
       const emptyRows = Array.from({ length: remainingEmptyRows }, (_, index) => ({
         No: newData.length + index,
@@ -491,7 +426,7 @@ const CaoCalculator = () => {
         grades: null,
       }));
 
-
+    
       const combinedData = [...newData, ...emptyRows];
 
       setCountFields(combinedData.length);
@@ -728,60 +663,60 @@ const CaoCalculator = () => {
                     {tableData.map((item, index) => (
                       <div className="mobileTableRow " key={index}>
                         <div className="mobileTableHeader mt-2">Subject {index + 1}</div>
-                        <div className="py-2" style={{ background: ' #F4F6F8' }}>
-                          <div className="mobileTableCell my-3">
-                            <Select
-                              placeholder="Select Subject"
-                              value={item.name}
-                              onChange={(value) => handleFirstDropdownChange(value, item)}
-                              className="selectFieldStyle"
-                              loading={loadingFirst}
-                              showSearch
-                              filterOption={(input, option) =>
-                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                              }
-                            > {data?.map((item) => (
-                              <Option key={item.name} value={item.name}>
-                                {item.name}
-                              </Option>
-                            ))}
-                            </Select>
-                          </div>
-                          <div className="mobileTableCell my-3">
-                            <Select
-                              placeholder="Select Level"
-                              value={item.level}
-                              onChange={(value) => handleSecondDropdownChange(value, item)}
-                              className="selectFieldStyle"
-                            >
-                              {data
-                                .find((subject) => subject.name === item.name)
-                                ?.level?.map((level) => (
-                                  <Option
-                                    key={level?.level__id}
-                                    value={level?.level__subjectlevel}
-                                  >
-                                    {level?.level__subjectlevel}
-                                  </Option>
-                                ))}
-                            </Select>
-                          </div>
-                          <div className="mobileTableCell my-3">
-                            <Select
-                              placeholder="Select Grade"
-                              value={item.grades}
-                              onChange={(value) => handle(value, item)}
-                              onClick={() => handleThridDropDownApi(index)}
-                              className="selectFieldStyle"
-                              loading={index === currentState}
-                            >{thirdDropdownOptions.map((option) => (
+                        <div className="py-2" style={{background:' #F4F6F8'}}>
+                        <div className="mobileTableCell my-3">
+                          <Select
+                            placeholder="Select Subject"
+                            value={item.name}
+                            onChange={(value) => handleFirstDropdownChange(value, item)}
+                            className="selectFieldStyle"
+                            loading={loadingFirst}
+                            showSearch
+                            filterOption={(input, option) =>
+                              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                            }
+                          > {data?.map((item) => (
+                            <Option key={item.name} value={item.name}>
+                              {item.name}
+                            </Option>
+                          ))}
+                          </Select>
+                        </div>
+                        <div className="mobileTableCell my-3">
+                          <Select
+                            placeholder="Select Level"
+                            value={item.level}
+                            onChange={(value) => handleSecondDropdownChange(value, item)}
+                            className="selectFieldStyle"
+                          >
+                            {data
+                              .find((subject) => subject.name === item.name)
+                              ?.level?.map((level) => (
+                                <Option
+                                  key={level?.level__id}
+                                  value={level?.level__subjectlevel}
+                                >
+                                  {level?.level__subjectlevel}
+                                </Option>
+                              ))}
+                          </Select>
+                        </div>
+                        <div className="mobileTableCell my-3">
+                          <Select
+                            placeholder="Select Grade"
+                            value={item.grades}
+                            onChange={(value) => handle(value, item)}
+                            onClick={() => handleThridDropDownApi(index)}
+                            className="selectFieldStyle"
+                            loading={index === currentState}
+                          >{ thirdDropdownOptions.map((option) => (
 
-                              <Option key={option.id} value={option.value}>
-                                {option.label}
-                              </Option>
-                            ))}
-                            </Select>
-                          </div>
+                            <Option key={option.id} value={option.value}>
+                              {option.label}
+                            </Option>
+                          ))}
+                          </Select>
+                        </div>
                         </div>
                       </div>
                     ))}
@@ -800,7 +735,7 @@ const CaoCalculator = () => {
                     pagination={false}
                   />
                  */}
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div style={{display:'flex',justifyContent:'center'}}>
                   <MyCareerGuidanceButton
                     label="Add Subject"
                     className="addSubjectButton mt-2"
