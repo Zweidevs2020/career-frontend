@@ -12,6 +12,7 @@ import { Spin } from "antd";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import { API_URL } from "../../utils/constants";
 import { PlusCircleFilled, PlusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import Column from "antd/es/table/Column";
 
 const { Option } = Select;
 
@@ -255,6 +256,7 @@ const CaoCalculator = () => {
               className="selectFieldStyle"
               key={record}
             >
+
               {tableData[record?.No]?.name &&
                 data
                   .find((item) => item.name == tableData[record?.No]?.name)
@@ -315,7 +317,7 @@ const CaoCalculator = () => {
     if (response2?.data?.status === 200) {
       setData(response2.data.data);
     }
-   
+
   };
 
   const calCulateData = async () => {
@@ -356,73 +358,82 @@ const CaoCalculator = () => {
     }
   };
 
+
+
   const getCurrectSelectedValues = async () => {
     setLoadingSub(true);
-    let NewDataTable = [];
     let filterGrade = [];
-    let count = 1;
+    let newData = [];
 
-    const response = await getApiWithAuth(`calculator/user-points/`);
-
-    if (response.data.data.length === 0) {
-      setLoadingSub(false);
-      for (let i = 0; i <= tableData.length; i++) {
-        const ND = {
-          name: null,
-          level: null,
-          grades: null,
-        };
-      }
-    } else if (response.data.data.length !== 0) {
-      const newData = response?.data?.data[0]?.grades.map((item, index) => {
-        const filterSubjects = data.filter(
-          (SubItem) => SubItem.id == item?.subject
-        );
-
-        const filterLevel = filterSubjects[0].level.filter(
-          (levelItem) => levelItem.level__id == item.level
-        );
-
-        const newObj = {
-          No: index,
-          name: filterSubjects[0].name,
-          level: filterLevel[0].level__subjectlevel,
-          grades: item.grade,
-        };
-        return newObj;
-      });
-      setCountFields(newData?.length + 1);
-      for (let i = 0; i < newData?.length; i++) {
-
-        const response1 = await getApiWithAuth(
-          `calculator/check-level-grade/?level=${newData[i].level}&subject=${newData[i].name}`
-        );
+    try {
+      const response = await getApiWithAuth(`calculator/user-points/`);
 
 
-        if (response1.data.status === 200) {
+      if (response.data.data.length === 0) {
 
-          filterGrade = response1?.data?.data.filter(
-            (gradeItem) => gradeItem.grade == newData[i]?.grades
-          );
+        for (let i = 0; i < tableData.length; i++) {
+          const ND = {
+            No: i,
+            name: null,
+            level: null,
+            grades: null,
+          };
+          newData.push(ND);
         }
+      } else if (response.data.data.length !== 0) {
+        newData = response?.data?.data[0]?.grades.map((item, index) => {
+          const filterSubjects = data.filter(
+            (SubItem) => SubItem.id == item?.subject
+          );
 
-        gradeId.push({ grade: filterGrade[0]?.pk });
+          const filterLevel = filterSubjects[0].level.filter(
+            (levelItem) => levelItem.level__id == item.level
+          );
+
+          const newObj = {
+            No: index,
+            name: filterSubjects[0].name,
+            level: filterLevel[0].level__subjectlevel,
+            grades: item.grade,
+          };
+          return newObj;
+        });
+
+        for (let i = 0; i < newData?.length; i++) {
+          const response1 = await getApiWithAuth(
+            `calculator/check-level-grade/?level=${newData[i].level}&subject=${newData[i].name}`
+          );
+
+          if (response1.data.status === 200) {
+            filterGrade = response1?.data?.data.filter(
+              (gradeItem) => gradeItem.grade == newData[i]?.grades
+            );
+          }
+
+          gradeId.push({ grade: filterGrade[0]?.pk });
+        }
       }
+    } catch (error) {
 
-      for (let j = newData?.length + 1; j <= countFields; j++) {
-        const ND = {
-          name: null,
-          level: null,
-          grades: null,
-        };
-        newData.push(ND);
-      }
+    } finally {
+      // Calculate the number of empty rows needed
+      const remainingEmptyRows = tableData.length - newData.length;
+      const emptyRows = Array.from({ length: remainingEmptyRows }, (_, index) => ({
+        No: newData.length + index,
+        name: null,
+        level: null,
+        grades: null,
+      }));
 
-      setTableData(newData)
+      // Combine the fetched data and empty rows
+      const combinedData = [...newData, ...emptyRows];
 
+      setCountFields(combinedData.length);
+      setTableData(combinedData);
+      setLoadingSub(false);
     }
-
   };
+
 
 
   return (
@@ -442,9 +453,6 @@ const CaoCalculator = () => {
                   }}
                 ></div>
 
-                {/* {loadingFirst ? ( */}
-                {/* <Spin className="spinStyle" /> */}
-                {/* ) : ( */}
                 <Table
                   dataSource={tableData}
                   columns={columns}
@@ -453,13 +461,14 @@ const CaoCalculator = () => {
                   pagination={false}
                   loading={loadingFirst}
                 />
-                {/* )}  */}
+
                 <div style={{ display: "flex", justifyContent: "end" }}>
                   <MyCareerGuidanceButton
                     label="Add Subject"
                     className="addSubjectButton"
                     htmlType="button"
                     onClick={handleAdd}
+                    icon={<PlusOutlined />}
                   // loading={loadingThird}
                   />
                 </div>
@@ -557,24 +566,26 @@ const CaoCalculator = () => {
                   }}
                 >
                   <div style={{ padding: 10 }}>
-                    <div className="textStyle18">
+                    {/* <div className="textStyle18">
                       Expected Points for Semester 01
-                    </div>
-                    <div>
-                      <div className="textStyle18">CAO Points</div>
-                      <div className="coaPointTextMain">
-                        <div className="coaPointTextStyle">Points</div>
-                        <div>{finalData.points ? finalData.points : 0}</div>
+                    </div> */}
+                    <div >
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <div className="textStyle18"> Points</div>
+                        <div className="">
+                          {/* <div className="coaPointTextStyle">Posdsdints</div> */}
+                          <div>{finalData.points ? finalData.points : 0}</div>
+                        </div>
                       </div>
                       <hr />
 
                       <hr />
-                      <div className="coaPointTextMain">
+                      {/* <div className="coaPointTextMain">
                         <div className="coaPointTextStyle">Final Points</div>
                         <div>
                           {finalData.total_points ? finalData.total_points : 0}
                         </div>
-                      </div>
+                      </div> */}
                       <hr />
                       <div
                         style={{
@@ -615,7 +626,7 @@ const CaoCalculator = () => {
                   </div>
                 </div>
                 <div
-                  style={{ display: "flex", justifyContent: "space-evenly" }}
+
                 >
                   <MyCareerGuidanceButton
                     label="Clear All"
@@ -641,18 +652,81 @@ const CaoCalculator = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <div className="textStyle18">Subjects</div>
-                  <div onClick={handleAdd} style={{ cursor: "pointer" }}>
+                  {/* <div className="textStyle18 headingStyle">Subjects</div> */}
+                  {/* <div onClick={handleAdd} style={{ cursor: "pointer" }}>
                     <span>Add more row</span>
+                  </div> */}
+                  <div className="mobileTable">
+                    <div className="mobileTableRow">
+                      <div className="mobileTableHeader mt-2">Subject</div>
+                      {tableData.map((item, index) => (
+                        <div className="mobileTableCell" key={index}>
+                          <Select
+                            placeholder="Select Subject"
+                            value={item.name}
+                            onChange={(value) => handleFirstDropdownChange(value, item)}
+                            className="selectFieldStyle"
+                            loading={loadingFirst}
+                            showSearch
+                            filterOption={(input, option) =>
+                              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                            }
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mobileTableRow">
+                      <div className="mobileTableHeader mt-4">Level</div>
+                      {tableData.map((item, index) => (
+                        <div className="mobileTableCell" key={index}>
+                          <Select
+                            placeholder="Select Level"
+                            value={item.level}
+                            onChange={(value) => handleSecondDropdownChange(value, item)}
+                            className="selectFieldStyle"
+                            key={item}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mobileTableRow">
+                      <div className="mobileTableHeader mt-4">Grades</div>
+                      {tableData.map((item, index) => (
+                        <div className="mobileTableCell" key={index}>
+                          <Select
+                            placeholder="Select Grade"
+                            value={item.grades}
+                            onChange={(value) => handle(value, item)}
+                            onClick={() => handleThridDropDownApi(index)}
+                            className="selectFieldStyle"
+                            loading={index === currentState}
+                          />
+                        </div>
+                      ))}
+                    </div>
                   </div>
+
                 </div>
 
-                <Table
-                  dataSource={tableData}
-                  columns={columns}
-                  rowClassName={() => "backgroundF4F6F8"}
-                  pagination={false}
-                />
+
+                {/* <Table
+                    dataSource={tableData}
+                    columns={columns}
+                    rowClassName={() => "backgroundF4F6F8"}
+                    className="mobileTable"
+                    pagination={false}
+                  />
+                 */}
+                <div >
+                  <MyCareerGuidanceButton
+                    label="Add Subject"
+                    className="addSubjectButton"
+                    htmlType="button"
+                    onClick={handleAdd}
+                    icon={<PlusOutlined />}
+                  // loading={loadingThird}
+                  />
+                </div>
               </div>
             </div>
           )}

@@ -107,20 +107,26 @@ const TakeSelfTest = () => {
                 );
 
                 return (
-                  <div className="quizBoxStyle" key={item.question_id}>
+                  <div
+                  className={`quizBoxStyle`}
+                  key={item.question}
+                >
                     <div style={{ display: "flex" }}>
                       <div style={{ marginRight: 15 }}>{index + 1}</div>
                       <div>
                         <div
-                          style={{ color: "#1476b7", fontWeight: "bold",fontSize:'14px' }}
+                          style={{ color: submitButtonClicked && !isQuestionAnswered ? "red" : "#1476b7", fontWeight: "bold",fontSize:'14px' }}
+                          
                           dangerouslySetInnerHTML={{
                             __html: item.question,
+                            
                           }}
                         ></div>
                         <div className="mt-3">
                           <Radio.Group
                             onChange={onChange}
                             name={item.question_id}
+                            
                             buttonStyle="solid" size="large"
                           >
                             <Space direction="vertical">
@@ -135,18 +141,18 @@ const TakeSelfTest = () => {
                               ))}
                             </Space>
                           </Radio.Group>
-                          {submitButtonClicked && !isQuestionAnswered && (
+                          {/* {submitButtonClicked && !isQuestionAnswered && (
                             <p style={{ color: "red" }}>
                               Please select an option
                             </p>
-                          )}
+                          )} */}
                         </div>
                       </div>
                     </div>
                   </div>
                 );
               })}
-              <div className="mt-3">
+              <div className="mt-3 ">
                 <MyCareerGuidanceButton
                   label="Submit"
                   className="takebutton"

@@ -93,7 +93,13 @@ const Right = () => {
 
   }, [psychometricTestName]);
 
-  const chartColors = ["#b9bab8", "#87aded", "#a4eba9"];
+  // const chartColors = ["#b9bab8", "#87aded", "#a4eba9"];
+  const chartColors = ["#440542", "#592422", "#1a6f73"];
+  const assessmentColors = {
+    'Occupational Values Assessment': '#87aded',
+    'Occupational Interest Assessment': '#a4eba9',
+    'Intelligence Assessment': '#a4eba9',
+  };
   return (
     <>
       <div
@@ -135,8 +141,17 @@ const Right = () => {
               {educationGuidance.map((item, index) => {
                 const labels = item.scores.map((score) => score.name.split("/"));
                 const series = item.scores.map((score) => score.score);
-                const colorIndex = index % chartColors.length;
-                const chartColor = chartColors[colorIndex];
+                let chartColor;
+              
+                if (item.test_name == 'Occupational Values Assesment') {
+               
+                  chartColor = '#87aded';
+                } else if (item.test_name == 'Occupational Interest Assesment') {
+                  chartColor = '#b9bab8';
+                } else {
+                  chartColor = '#a4eba9'; 
+                }
+              
                 const chartOptions = {
                   ...options,
                   labels,
@@ -146,13 +161,13 @@ const Right = () => {
                       horizontal: true,
                     },
                   },
-                  colors: [chartColor], 
+                  colors: [chartColor],
                 };
 
                 return (
                   <div key={index} className="ms-3 chart-labels-container">
                     <div className="h-[30px] flex justify-between items-center mt-5 chartHeadingwBtn">
-                    <div className="leftGraphBtn">
+                      <div className="leftGraphBtn">
                         <button
                           onClick={() =>
                             navigate("/self-assesment-test", {

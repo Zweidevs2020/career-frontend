@@ -203,7 +203,7 @@ const MyGoal = () => {
                 </h>
               </div>
               <div className="inputGoal">
-                <div className="mt-3">
+                <div className="mt-3 mb-3">
                   <Radio.Group
                     name="input"
                     onChange={(e) => setGoal(e.target.value)}
@@ -220,8 +220,9 @@ const MyGoal = () => {
                 <div className="textAreaMyGoal">
                   <TextArea
                     value={description}
-                    style={{ border: "2px solid grey" }}
+                    style={{ border: "2px solid grey", lineHeight: "normal", display: "flex", alignItems: "center" }}
                     placeholder="hello"
+                className="inputCarrer sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
                     onChange={(e) => setDescription(e.target.value)}
                   >
                   </TextArea>

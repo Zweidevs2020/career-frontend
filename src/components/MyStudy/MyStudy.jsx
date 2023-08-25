@@ -34,6 +34,12 @@ const MyStudy = () => {
   const [selectedEndTime, setSelectedEndTime] = useState("");
   const [weekDay, setWeekDay] = useState("");
   const [title, setTitle] = useState("");
+  const [events, setEvents] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [editingEvent, setEditingEvent] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [loadingBooking, setLoadingBooking] = useState(false);
   const [openBooking, setOpenBooking] = useState(false);
   const [deleteBooking, setDeleteBooking] = useState(false);
@@ -51,10 +57,15 @@ const MyStudy = () => {
   const handleOpenViewBooking = () => setOpenViewBooking(true);
   const handleCloseViewBooking = () => setOpenViewBooking(false);
 
+
+  
+
+  // const [selectedEvent, setSelectedEvent] = useState(null);
+  
   const optionArray = [];
 
-  const startTime = new Date("2000-01-01T06:00:00");
-  const endTime = new Date("2000-01-02T00:00:00");
+  // const startTime = new Date("2000-01-01T06:00:00");
+  // const endTime = new Date("2000-01-02T00:00:00");
   const interval = 30 * 60 * 1000;
   for (
     let time = startTime;
@@ -103,7 +114,9 @@ const MyStudy = () => {
           viewData
         );
         event.event.setProp("start", start); // Manually update event start
+       
         event.event.setProp("end", end); // Manually update event end
+     
       } catch (error) {
         // Handle error
       }
@@ -131,6 +144,7 @@ const MyStudy = () => {
 
 
   const handleEditCalender = async (id, viewData) => {
+  
     setUpdateLoading(true);
     const startTime = moment(viewData.start).format("hh:mm:ss");
     const endTime = dayjs(viewData.end).format("hh:mm:ss");
@@ -213,8 +227,11 @@ const MyStudy = () => {
   const getCalanderData = async () => {
     setLoading(true);
     const response = await getApiWithAuth(`timetable/list-timeslot/`);
+   
     if (response?.data.status === 200) {
+    
       setData(response.data.data);
+    
       setLoading(false);
     } else {
       setLoading(false);
@@ -226,6 +243,7 @@ const MyStudy = () => {
     }
   }, [data]);
   function renderEventContent(eventInfo) {
+
     return (
       <>
         <div className="showDateData">
@@ -236,16 +254,38 @@ const MyStudy = () => {
     );
   }
 
-  const handleDateSelect = (selectInfo) => {
-    setWeekDay(dayjs(selectInfo.start).format("d"));
-    // setSelectedTime(dayjs(selectInfo.start));
-    setSelectedTime(dayjs(selectInfo.start).locale("en").format("hh:mm A"));
-    // setSelectedEndTime(dayjs(selectInfo.end));
-    setSelectedEndTime(dayjs(selectInfo.end).locale("en").format("hh:mm A"));
+  // const handleDateSelect = (selectInfo) => {
+  //   setWeekDay(dayjs(selectInfo.start).format("d"));
+  //   // setSelectedTime(dayjs(selectInfo.start));
+  //   setSelectedTime(dayjs(selectInfo.start).locale("en").format("hh:mm A"));
+  //   // setSelectedEndTime(dayjs(selectInfo.end));
+  //   setSelectedEndTime(dayjs(selectInfo.end).locale("en").format("hh:mm A"));
+  //   handleOpenBooking();
+  // };
   
 
+  const handleDateSelect = (selectInfo) => {
+    const selectedStart = new Date(selectInfo); 
+   
+    setWeekDay(selectedStart.getDay().toString());
+    setSelectedTime(selectedStart.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }));
+    // console.log("hello main set kar dea",selectInfo.event._def.extendedProps.start)
+    const selectedEnd = new Date(selectedStart.getTime() + 30 * 60 * 1000); 
+    setSelectedEndTime(selectedEnd.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }));
+ 
+    // const startTime = selectInfo?.event?._def?.extendedProps.start;
+    // const startTimeString = moment(startTime).format("HH:mm"); 
+    // const endTime = selectInfo?.event?._def?.extendedProps.end;
+    // const endTimeString = moment(endTime).format("HH:mm"); 
+    // console.log("Check karo",startTimeString); 
+    // setTitle(selectInfo?.event?._def?.title)
+    // setSelectedTime(startTimeString);
+    // setSelectedEndTime(selectInfo?.event?._def?.title);
+  
+    
     handleOpenBooking();
   };
+  
 
   const createNewEvent = async () => {
     setLoadingBooking(true);
@@ -300,11 +340,37 @@ const MyStudy = () => {
     }
   };
 
-  const handleEventClick = (clickInfo) => {
-    setViewData(clickInfo.event._def.extendedProps);
-    handleOpenViewBooking();
-  };
+  // const handleEventClick = (clickInfo) => {
+  //   const clickedEvent = clickInfo.event;
+  //   setSelectedEventStart(clickedEvent.start);
+  //   setSelectedEventEnd(clickedEvent.end);
+  //   setViewData(clickedEvent.extendedProps);
+  //   handleOpenViewBooking();
+  //   // setViewData(clickInfo.event._def.extendedProps);
+  //   // handleOpenViewBooking();
+  // };
+  // const handleEventClick = (clickInfo) => {
+  //   const eventData = clickInfo.event._def.extendedProps;
+  //   setSelectedEvent({
+  //     id: eventData.selectID,
+  //     title: eventData.title,
+  //     start: new Date(eventData.start),
+  //     end: new Date(eventData.end),
+  //   });
+  //   handleOpenViewBooking();
+  // };
 
+
+  // const handleEventClick = (clickInfo) => {
+  //   const eventData = clickInfo.event._def.extendedProps;
+  //   setSelectedEvent({
+  //     id: eventData.selectID,
+  //     title: eventData.title,
+  //     start: new Date(eventData.start),
+  //     end: new Date(eventData.end),
+  //   });
+  //   handleOpenViewBooking();
+  // };
   const deleteCurrent = async (id) => {
     setDeleteHandler(true);
     const respose = await deleteApiWithAuth(`timetable/delete-timeslot/${id}`);
@@ -342,12 +408,9 @@ const MyStudy = () => {
 
   const handleEdit = async (id) => {
     setUpdateLoading(true);
+  
     let startTime = moment(viewData.start).format("hh:mm:ss");
     let endTime = dayjs(viewData.end).format("hh:mm:ss");
-    // let dataarr = []
-    // data.map((e,i)=>(
-    //   dataarr.push(e.day)
-    // ))
     setBtnDisabled(true);
     const response = await putApiWithAuth(`timetable/update-timeslot/${id}`, {
       timeslot: startTime,
@@ -368,6 +431,7 @@ const MyStudy = () => {
 
 
   const handleTimeChange = (start, end) => {
+    
     if (start && end) {
       const startTime = dayjs(start, "hh:mm A");
       const endTime = dayjs(end, "hh:mm A");
@@ -384,8 +448,35 @@ const MyStudy = () => {
     }
   };
 
+  const handleEventClick = (event) => {
+    setSelectedEvent(event);
+    setModalVisible(true);
+    setTitle(event.title);
+    setStartTime(event.start);
+    setEndTime(event.end);
+  };
 
+  const handleEditEvent = () => {
+    if (editingEvent) {
+      // Update the event with the new values
+      const updatedEvent = {
+        ...editingEvent,
+        title: title,
+        start: startTime,
+        end: endTime,
+      };
+      // Update the event in the events array
+      const updatedEvents = events.map((event) =>
+        event.id === updatedEvent.id ? updatedEvent : event
+      );
+      setEvents(updatedEvents);
+      setSelectedEvent(updatedEvent);
+      setEditingEvent(null);
+      setModalVisible(false);
+    }
+  };
   function handleChange(value) {
+   
     setSelectedTime(value);
     handleTimeChange(value, selectedEndTime);
   }
@@ -461,6 +552,7 @@ const MyStudy = () => {
         open={openBooking}
         onCancel={handleCloseBooking}
         footer={[]}
+        onOk={handleEditEvent}
       >
         <div className="mt-5 pt-5 ps-2">
           <MyCareerGuidanceInputField
@@ -480,7 +572,9 @@ const MyStudy = () => {
             <Select
               placeholder="Select time"
               onChange={handleChange}
-              value={selectedTime}
+              
+             value={selectedTime }
+     
               className="inputFieldStyleSelect"
             >
               {optionArray.map((option) => (
@@ -489,24 +583,7 @@ const MyStudy = () => {
                 </Option>
               ))}
             </Select>
-            {/* <TimePicker
-              onChange={(e) => setSelectedTime(e)}
-              value={selectedTime}
-              use12Hours={true}
-              minuteStep={15}
-              format="h:mm a"
-              style={{ width: 200 }}
-              className="inputFieldStyle"
-            /> */}
-            {/* <TimePicker
-              onChange={(e) => setSelectedEndTime(e)}
-              value={selectedEndTime}
-              use12Hours={true}
-              minuteStep={15}
-              format="h:mm a"
-              className="inputFieldStyle"
-              style={{ width: 200 }}
-            /> */}
+           
 
             <Select
               placeholder="Select end Time"
@@ -542,153 +619,6 @@ const MyStudy = () => {
         </div>
       </Modal>
 
-      <Modal
-        className="modalStyleClass"
-        bodyStyle={{
-          background: "none",
-          width: "97%",
-        }}
-        open={deleteBooking}
-        onCancel={handleCloseBooking2}
-        footer={[]}
-      >
-        <div className="mt-5 pt-5 ps-2">
-          <div>
-            <span className="warnText">
-              Are you sure you want to Delete this?
-            </span>
-          </div>
-          <div
-            className="mt-3"
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <MyCareerGuidanceButton
-              label={"Cancel"}
-              className="viewResultButton mr-2"
-              type="button"
-              htmlType="button"
-              onClick={() => setDeleteBooking(false)}
-            />
-            <MyCareerGuidanceButton
-              label={deleteHandler ? <Spin size="small" /> : "Delete"}
-              className="takebutton deleteBtn"
-              type="button"
-              htmlType="button"
-              onClick={() => {
-                deleteCurrent(viewData.selectID);
-              }}
-              loading={loadingBooking}
-            />
-          </div>
-        </div>
-      </Modal>
-
-      <Modal
-        className="modalStyleClass"
-        bodyStyle={{
-          background: "none",
-          width: "97%",
-        }}
-        open={openViewBooking}
-        onCancel={handleCloseViewBooking}
-        footer={[]}
-      >
-        <div className="mt-5 pt-5 ps-2">
-          <MyCareerGuidanceInputField
-            placeholder="Add Title"
-            type="input"
-            name="title"
-            inputValue={viewData.title}
-            onChange={handleChangeViewData}
-          />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: 20,
-            }}
-          >
-            <Select
-              placeholder="Select time"
-              onChange={(value) => {
-                setBtnDisabled(false);
-                const selectedTime = dayjs(value, "hh:mm A");
-                const updatedStartDate = dayjs(viewData.start)
-                  .set("hour", selectedTime.hour())
-                  .set("minute", selectedTime.minute())
-                  .toDate();
-                setViewData({ ...viewData, start: updatedStartDate });
-              }}
-              value={dayjs(viewData.start).locale("en").format("hh:mm A")}
-              className="inputFieldStyleSelect"
-            >
-              {optionArray.map((option) => (
-                <Option key={option.value} value={option.value}>
-                  {option.label}
-                </Option>
-              ))}
-            </Select>
-            <Select
-              placeholder="Select End time"
-              // onChange={(value) => {
-              //   setBtnDisabled(false);
-              //   setViewData({ ...viewData, end: value });
-              // }}
-              onChange={(value) => {
-                setBtnDisabled(false);
-                const selectedTime = dayjs(value, "hh:mm A");
-                const updatedStartDate = dayjs(viewData.start)
-                  .set("hour", selectedTime.hour())
-                  .set("minute", selectedTime.minute())
-                  .toDate();
-                setViewData({ ...viewData, end: updatedStartDate });
-              }}
-              value={dayjs(viewData.end).locale("en").format("hh:mm A")}
-              className="inputFieldStyleSelect"
-            >
-              {optionArray.map((option) => (
-                <Option key={option.value} value={option.value}>
-                  {option.label}
-                </Option>
-              ))}
-            </Select>
-          </div>
-          <div
-            className="mt-3"
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <MyCareerGuidanceButton
-              label={"Delete"}
-              className="takebutton deleteBtn"
-              type="button"
-              htmlType="button"
-              onClick={() => {
-                setOpenViewBooking(false);
-                setDeleteBooking(true);
-              }}
-              loading={loadingBooking}
-            />
-            <MyCareerGuidanceButton
-              label={updateLoading ? <Spin size="small" /> : "Edit"}
-              disabled={btnDisabled}
-              className={
-                btnDisabled ? "disabledBtnStyle" : "viewResultButton editBtn"
-              }
-              type="button"
-              htmlType="button"
-              onClick={() => handleEdit(viewData.selectID)}
-            />
-          </div>
-        </div>
-      </Modal>
     </>
   );
 };

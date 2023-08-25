@@ -57,18 +57,20 @@ const Main = () => {
         </div>
      
       </div>
-      <div className="grid grid-cols-12 gap-4 px-3 careerGuidenceGrid">
+      <div className="grid grid-cols-12 gap-3 px-3 careerGuidenceGrid">
         <div
           // className="col-span-6 rounded-xl"
           className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto m-auto"
           onClick={() => {
             navigate("/cao-calculator");
           }}
+          style={{ width: "100%", height: "200px" }}
         >
           <img
             src={imgcard}
             className=" bg-cover "
-            style={{ cursor: "pointer", borderRadius:'10px'}}
+            style={{ width: "100%", height: "200px",cursor: "pointer", borderRadius:'10px' }}
+          
           />
         </div>
         <div
@@ -77,11 +79,12 @@ const Main = () => {
           onClick={() => {
             navigate("/my-goals");
           }}
+          style={{ width: "100%", height: "200px" }}
         >
           <img
             src={imgcard4}
             className=" bg-cover"
-            style={{ cursor: "pointer",borderRadius:'10px' }}
+            style={{ cursor: "pointer",borderRadius:'10px' ,width: "100%", height: "200px"}}
           />
         </div>
         <div
@@ -90,11 +93,12 @@ const Main = () => {
           onClick={() => {
             navigate("/cover-letter");
           }}
+          style={{ width: "100%", height: "200px" }}
         >
           <img
             src={imgcard2}
             className=" bg-cover"
-            style={{ cursor: "pointer" ,borderRadius:'10px'}}
+            style={{ cursor: "pointer" ,borderRadius:'10px',width: "100%", height: "200px"}}
           />
         </div>
         <div
@@ -103,11 +107,12 @@ const Main = () => {
           onClick={() => {
             navigate("/self-assesment");
           }}
+          style={{ width: "100%", height: "200px" }}
         >
           <img
             src={imgcard5}
             className=" bg-cover"
-            style={{ cursor: "pointer" ,borderRadius:'10px'}}
+            style={{ cursor: "pointer" ,borderRadius:'10px',width: "100%", height: "200px"}}
           />
         </div>
         <div
@@ -116,11 +121,12 @@ const Main = () => {
           onClick={() => {
             navigate("/my-study");
           }}
+          style={{ width: "100%", height: "200px" }}
         >
           <img
             src={imgcard3}
             className=" bg-cover"
-            style={{ cursor: "pointer",borderRadius:'10px' }}
+            style={{ cursor: "pointer",borderRadius:'10px' ,width: "100%", height: "200px"}}
           />
         </div>
         <div
@@ -129,11 +135,12 @@ const Main = () => {
           onClick={() => {
             navigate("/my-choices");
           }}
+          style={{ width: "100%", height: "200px" }}
         >
           <img
             src={imgcard7}
             className=" bg-cover"
-            style={{ cursor: "pointer" ,borderRadius:'10px'}}
+            style={{ cursor: "pointer" ,borderRadius:'10px',width: "100%", height: "200px"}}
           />
         </div>
         <div
@@ -142,11 +149,12 @@ const Main = () => {
           onClick={() => {
             navigate("/educational-guidance");
           }}
+          style={{ width: "100%", height: "200px" }}
         >
           <img
             src={imgcard6}
             className=" bg-cover"
-            style={{ cursor: "pointer" ,borderRadius:'10px',marginBottom:'2rem'}}
+            style={{ cursor: "pointer" ,borderRadius:'10px',width: "100%", height: "200px"}}
           />
         </div>
       </div>

@@ -76,7 +76,7 @@ const Selfassesment = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const chartColors = ["#b9bab8", "#a4eba9", "#87aded"];
+  
   return (
     <>
       <div className="educationalGuidanceMainDiv">
@@ -84,8 +84,16 @@ const Selfassesment = () => {
 
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {psychometricTest?.map((mapData, index) => {
-            const colorIndex = index % chartColors.length;
-            const chartColor = chartColors[colorIndex];
+            let chartColor;
+        
+            if (mapData.name == 'Occupational Values Assesment') {
+           
+              chartColor = '#87aded';
+            } else if (mapData.name == 'Occupational Interest Assesment') {
+              chartColor = '#b9bab8';
+            } else {
+              chartColor = '#a4eba9'; 
+            }
             let chartOptions;
             if (mapData?.test_results?.length > 0) {
               const labels = mapData?.test_results[0]?.question_scores?.map(

@@ -50,14 +50,20 @@ const Occupational = () => {
  
 
   const sortByScoreDescending = (a, b) => b.score - a.score;
-
- 
   const sortedData = educationGuidance.slice().sort(sortByScoreDescending);
 
- 
   const scores = sortedData.map((item) => item.score);
   const questionTypes = sortedData.map((item) => item.question_type);
+  let chartColor;
 
+  if (educationGuidance[0]?.test_name == 'Occupational Values Assesment') {
+   
+    chartColor = '#87aded';
+  } else if (educationGuidance[0]?.test_name == 'Occupational Interest Assesment') {
+    chartColor = '#b9bab8';
+  } else {
+    chartColor = '#a4eba9'; 
+  }
  
   const series = [
     {
@@ -89,7 +95,7 @@ const Occupational = () => {
     xaxis: {
       categories: questionTypes,
     },
-    colors: ["#8BBDDB"],
+    colors: [chartColor],
     series: [
       {
         data: scores,
@@ -105,6 +111,7 @@ const Occupational = () => {
       },
     },
   };
+ 
   return (
     <>
       <div className="educationalGuidanceMainDiv">
