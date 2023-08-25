@@ -19,6 +19,10 @@
   border-radius: 5px;
 }
 
+.error {
+  border: 1px solid red;
+}
+
 .backgroundF4F6F8 td:first-child {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
@@ -350,7 +354,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
        
         /* margin-right: 20px; */
       }
-      
+    
       .mobileTableHeader {
         font-weight: bold;
         margin-top: 1rem;

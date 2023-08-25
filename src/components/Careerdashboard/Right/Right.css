@@ -162,7 +162,7 @@ word-wrap: break-word;
   }
 
   .chartHeadingwBtn {
-    display: block;
+    /* display: block; */
     height: 60px;
     margin-top: 10px;
 
@@ -170,12 +170,15 @@ word-wrap: break-word;
 
   .chartHeading {
     margin-top: 15px;
+    font-size: 11px;
   }
 
   .rightGraphBtn {
     width: 120px
   }
-
+  .leftGraphBtn button {
+    font-size: 9px;
+}
   .rightGraphBtn,
   .parentRightDashboardDivBtnDiv {
     height: 3vh;
