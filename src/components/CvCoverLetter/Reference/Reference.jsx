@@ -6,12 +6,14 @@ import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
 import { API_URL } from "../../../utils/constants";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PlusCircleOutlined } from "@ant-design/icons";
+import axios from "axios";
 
 const Reference = ({ setCurrent, current }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [downloadBtn, setDownloadBtn] = useState(false);
   const [referArray, setReferArray] = useState([]);
+  const [userData, setUserData] = useState({});
   const { Option } = Select;
 
   const handleGetApi = async () => {
@@ -84,20 +86,34 @@ const Reference = ({ setCurrent, current }) => {
 
   const SavePdf = async (e) => {
     e.preventDefault();
-    let data = createArrayData(referArray);
+    var token = localStorage.getItem("access_token", "");
 
-    const response = await getApiWithAuth(API_URL.SAVEPDF);
+    const response = await axios.get(
+      `${process.env.REACT_APP_LINK_BASE_URL}cv/cv/`,
+      {
+        responseType: "blob", // Set the response type to 'blob'
+        headers: {
+          Authorization: `Bearer ${token}`, // Set the Authorization header
+        },
+      }
+    );
 
-    if (response.data.status === 201) {
-      // Assuming the PDF content is in the response data
-      const pdfBlob = new Blob([response.data], { type: "application/pdf" });
-      const pdfUrl = URL.createObjectURL(pdfBlob);
+    // Create a blob from the response data
+    const pdfBlob = new Blob([response.data], { type: "application/pdf" });
 
-      // Open the PDF in a new browser tab
-      window.open(pdfUrl, "_blank");
-    } else {
-      message.error(response.data.message);
-    }
+    // Create a temporary URL for the blob
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+
+    // Create a link and initiate the download
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.download = `${userData.full_name}.pdf`; // Set the desired filename
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Clean up the temporary URL
+    URL.revokeObjectURL(pdfUrl);
   };
 
   const createArrayData = (data) => {
@@ -244,6 +260,7 @@ const Reference = ({ setCurrent, current }) => {
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
     if (response.data.status === 200) {
+      setUserData(response.data.data);
       if (response.data.data.cv_completed === true) {
         setDownloadBtn(true);
       }
