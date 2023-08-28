@@ -69,26 +69,43 @@ const Reference = ({ setCurrent, current }) => {
     }
   };
 
+  // const SavePdf = async (e) => {
+  //   e.preventDefault();
+  //   let data = createArrayData(referArray);
+
+  //   const respose = await getApiWithAuth(API_URL.SAVEPDF);
+
+  //   if (respose.data.status === 201) {
+
+  //   } else {
+  //     message.error(respose.data.message);
+  //   }
+  // };
+
   const SavePdf = async (e) => {
     e.preventDefault();
     let data = createArrayData(referArray);
 
-    const respose = await getApiWithAuth(API_URL.SAVEPDF);
-  
-    if (respose.data.status === 201) {
+    const response = await getApiWithAuth(API_URL.SAVEPDF);
 
+    if (response.data.status === 201) {
+      // Assuming the PDF content is in the response data
+      const pdfBlob = new Blob([response.data], { type: "application/pdf" });
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+
+      // Open the PDF in a new browser tab
+      window.open(pdfUrl, "_blank");
     } else {
-      message.error(respose.data.message);
+      message.error(response.data.message);
     }
   };
 
   const createArrayData = (data) => {
- 
     let array = [];
     data.map((item) => {
       array.push(item.dataValue);
     });
-   
+
     return array;
   };
 
@@ -123,7 +140,6 @@ const Reference = ({ setCurrent, current }) => {
           : item;
       })
     );
-  
   };
 
   const referenceItems = (item, index) => {
@@ -136,8 +152,12 @@ const Reference = ({ setCurrent, current }) => {
                 label="Name"
                 name={`name ${index}`}
                 className="refItemLable"
-                rules={[{ required: item?.dataValue.name ? false : true, message: "Please input name!" }]}
-              >
+                rules={[
+                  {
+                    required: item?.dataValue.name ? false : true,
+                    message: "Please input name!",
+                  },
+                ]}>
                 <MyCareerGuidanceInputField
                   placeholder="Danial Brot"
                   type="input"
@@ -153,9 +173,13 @@ const Reference = ({ setCurrent, current }) => {
                 label="Position"
                 name={`position ${index}`}
                 className="refItemLable"
-                rules={[{ required: item?.dataValue.position ? false : true, message: "Please input position!" }]}
-                style={{ marginBottom: "20px" }}
-              >
+                rules={[
+                  {
+                    required: item?.dataValue.position ? false : true,
+                    message: "Please input position!",
+                  },
+                ]}
+                style={{ marginBottom: "20px" }}>
                 <MyCareerGuidanceInputField
                   placeholder="e.g H&M"
                   type="input"
@@ -173,8 +197,12 @@ const Reference = ({ setCurrent, current }) => {
                 label="Contact Phone"
                 name={`contact_number ${index}`}
                 className="refItemLable"
-                rules={[{ required: item?.dataValue.contact_number ? false : true, message: "Please input Contact!" }]}
-              >
+                rules={[
+                  {
+                    required: item?.dataValue.contact_number ? false : true,
+                    message: "Please input Contact!",
+                  },
+                ]}>
                 <MyCareerGuidanceInputField
                   placeholder="+xx-xxx-xxx-xxxx"
                   type="input"
@@ -191,10 +219,12 @@ const Reference = ({ setCurrent, current }) => {
                 name={`email ${index}`}
                 className="refItemLable"
                 rules={[
-                  { required: item?.dataValue.email ? false : true, message: "Please input Contact Email!" },
+                  {
+                    required: item?.dataValue.email ? false : true,
+                    message: "Please input Contact Email!",
+                  },
                 ]}
-                style={{ marginBottom: "20px" }}
-              >
+                style={{ marginBottom: "20px" }}>
                 <MyCareerGuidanceInputField
                   placeholder="xyz@gmail.com"
                   type="email"
@@ -218,11 +248,11 @@ const Reference = ({ setCurrent, current }) => {
         setDownloadBtn(true);
       }
     }
-  }
+  };
 
   useEffect(() => {
     getUserData();
-  }, [])
+  }, []);
 
   return (
     <>
@@ -260,8 +290,7 @@ const Reference = ({ setCurrent, current }) => {
                         },
                       },
                     ])
-                  }
-                >
+                  }>
                   <span>
                     <PlusCircleOutlined
                       style={{
@@ -281,27 +310,28 @@ const Reference = ({ setCurrent, current }) => {
                 <Button
                   className="skillsButtonBack"
                   type="primary"
-                  onClick={prev}
-                >
+                  onClick={prev}>
                   Back
                 </Button>
               </Form.Item>
 
               <Form.Item>
                 <Button
-                  className={downloadBtn === false ? "disabledBtn me-3" : "skillsButton me-3 "}
+                  className={
+                    downloadBtn === false
+                      ? "disabledBtn me-3"
+                      : "skillsButton me-3 "
+                  }
                   type="primary"
                   htmlType="submit"
-                  onClick={(e) => SavePdf(e)}
-                >
+                  onClick={(e) => SavePdf(e)}>
                   Download CV
                 </Button>
                 <Button
                   className="skillsButton"
                   type="primary"
                   htmlType="submit"
-                  onClick={(e) => onsubmit(e)}
-                >
+                  onClick={(e) => onsubmit(e)}>
                   Save
                 </Button>
               </Form.Item>
