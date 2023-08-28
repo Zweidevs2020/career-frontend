@@ -124,8 +124,6 @@ const CaoCalculator = () => {
   };
 
 
-
-
   useEffect(() => {
     if (firstDropdownValue !== "" && secondDropdownValue !== "") {
 
@@ -148,102 +146,55 @@ const CaoCalculator = () => {
     }
   };
 
-  // const handleFirstDropdownChange = (value, record) => {
-
-  //   const tempData = tableData?.map((item, index) => {
-  //     if (item?.No == record?.No) {
-  //       return {
-  //         ...item,
-  //         name: value,
-  //         level: null,
-  //         grades: null,
-  //       };
-  //     } else {
-  //       return item;
-  //     }
-  //   });
-
-  //   setTableData(tempData);
-
-  // };
-
-
-
-  // const handleFirstDropdownChange = (value, record) => {
-  //   // Check if the selected subject is already chosen
-  //   const isDuplicate = tableData.some(item => item.name === value);
-
-  //   if (isDuplicate) {
-  //     // Handle duplicate subject error
-  //     console.log("Subject already selected");
-  //     const errorMessages = { subjectErrors };
-  //     errorMessages[record.No] = "Subject already selected";
-  //     setSubjectErrors(errorMessages);
-  //     return;
-  //   }
-  //   // Update the available subjects
-  //   setAvailableSubjects(prevSubjects =>
-  //     prevSubjects.filter(subject => subject !== value)
-  //   );
-
-  //   // Clear the error message if subject is not duplicate
-  //   const errorMessages = { subjectErrors };
-  //   delete errorMessages[record.No];
-  //   setSubjectErrors(errorMessages);
-
-
-
-  //   const tempData = tableData.map(item =>
-  //     item.No === record.No
-  //       ? {
-  //         ...item,
-  //         name: value,
-  //         level: null,
-  //         grades: null,
-  //       }
-  //       : item
-  //   );
-
-  //   setTableData(tempData);
-  // };
 
 
   const handleFirstDropdownChange = (value, record) => {
-    // Check if the selected subject is already chosen
+
     const isDuplicate = tableData.some(item => item.name === value);
-  
+
     if (isDuplicate) {
-      // Set the error message for the duplicate subject
       const errorMessages = { ...subjectErrors };
       errorMessages[record.No] = "Subject already selected";
       setSubjectErrors(errorMessages);
-      return;
-    }
-  
-    // Clear the error message if subject is not duplicate
-    const errorMessages = { ...subjectErrors };
-    delete errorMessages[record.No];
-    setSubjectErrors(errorMessages);
-  
-    // Update the available subjects
-    setAvailableSubjects(prevSubjects =>
-      prevSubjects.filter(subject => subject !== value)
-    );
-  
-    const tempData = tableData.map(item =>
-      item.No === record.No
-        ? {
+      const tempData = tableData.map(item =>
+        item.No === record.No
+          ? {
             ...item,
-            name: value,
+            name: "",
             level: null,
             grades: null,
           }
+          : item
+      );
+
+      setTableData(tempData);
+
+      return;
+    } else if (!isDuplicate) {
+
+      const errorMessages = { ...subjectErrors };
+      delete errorMessages[record.No];
+      setSubjectErrors(errorMessages);
+
+    }
+    setAvailableSubjects(prevSubjects =>
+      prevSubjects.filter(subject => subject !== value)
+    );
+
+    const tempData = tableData.map(item =>
+      item.No === record.No
+        ? {
+          ...item,
+          name: value,
+          level: null,
+          grades: null,
+        }
         : item
     );
-  
+
     setTableData(tempData);
   };
-  
+
 
 
 
@@ -305,25 +256,6 @@ const CaoCalculator = () => {
       align: "center",
       render: (_, record) => (
         <>
-
-          {/* <Select
-            placeholder={loadingSub ? <Spin size="small" /> : "Select Subject"}
-            value={tableData[record?.No]?.name}
-            onChange={(e) => handleFirstDropdownChange(e, record)}
-            className="selectFieldStyle"
-            loading={loadingFirst}
-            key={record}
-            showSearch
-            filterOption={(input, option) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
-          >
-            {data?.map((item) => (
-              <Option key={item.name} value={item.name}>
-                {item.name}
-              </Option>
-            ))}
-          </Select> */}
           <Select
             placeholder={loadingSub ? <Spin size="small" /> : "Select Subject"}
             value={tableData[record?.No]?.name}
@@ -342,10 +274,10 @@ const CaoCalculator = () => {
             ))}
           </Select>
           {subjectErrors[record?.No] && (
-  <div style={{ color: "red", fontSize: "12px" }}>
-    {subjectErrors[record?.No]}
-  </div>
-)}
+            <div style={{ color: "red", fontSize: "12px" ,marginBottom:'-1rem'}}>
+              {subjectErrors[record?.No]}
+            </div>
+          )}
 
         </>
       ),
@@ -438,11 +370,6 @@ const CaoCalculator = () => {
       setLoading(false);
     }
   };
-
-
-  // useEffect(() => {
-  //   getFiltersData();
-  // }, []);
 
   useEffect(() => {
 
@@ -750,6 +677,7 @@ const CaoCalculator = () => {
                 <div
 
                 >
+                       <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <MyCareerGuidanceButton
                     label="Clear All"
                     className="clearAllButton"
@@ -757,6 +685,8 @@ const CaoCalculator = () => {
                     htmlType="button"
                     onClick={clearAllData}
                   />
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <MyCareerGuidanceButton
                     label="Calculate"
                     className="calculateButton"
@@ -765,6 +695,7 @@ const CaoCalculator = () => {
                     onClick={calCulateData}
                     loading={loading}
                   />
+                  </div>
                 </div>
               </div>
               <div className="coaSubjectWidth" style={{ paddingTop: "30px" }}>
@@ -788,7 +719,7 @@ const CaoCalculator = () => {
                           <div className="mobileTableCell my-3">
                             <Select
                               placeholder="Select Subject"
-                              value={item.name}
+                              value={item?.name}
                               onChange={(value) => handleFirstDropdownChange(value, item)}
                               className="selectFieldStyle"
                               loading={loadingFirst}
@@ -796,23 +727,37 @@ const CaoCalculator = () => {
                               filterOption={(input, option) =>
                                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                               }
-                            > {data?.map((item) => (
-                              <Option key={item.name} value={item.name}>
+                            >
+                              {/* {data?.map((item) => (
+                              <Option key={item?.name} value={item?.name}>
                                 {item.name}
                               </Option>
-                            ))}
+                            ))} */}
+                              {availableSubjects.map(item => (
+                                <Option key={item} value={item}>
+                                  {item}
+                                </Option>
+                              ))}
                             </Select>
+                            {subjectErrors[index] && (
+                              <div style={{ color: "red", fontSize: "12px" ,marginLeft:'1rem'}}>
+                                {subjectErrors[index]}
+                              </div>
+                            )}
+
+
+
 
                           </div>
                           <div className="mobileTableCell my-3">
                             <Select
                               placeholder="Select Level"
-                              value={item.level}
+                              value={item?.level}
                               onChange={(value) => handleSecondDropdownChange(value, item)}
                               className="selectFieldStyle"
                             >
                               {data
-                                .find((subject) => subject.name === item.name)
+                                .find((subject) => subject?.name === item?.name)
                                 ?.level?.map((level) => (
                                   <Option
                                     key={level?.level__id}
@@ -826,7 +771,7 @@ const CaoCalculator = () => {
                           <div className="mobileTableCell my-3">
                             <Select
                               placeholder="Select Grade"
-                              value={item.grades}
+                              value={item?.grades}
                               onChange={(value) => handle(value, item)}
                               onClick={() => handleThridDropDownApi(index)}
                               className="selectFieldStyle"
@@ -834,7 +779,7 @@ const CaoCalculator = () => {
                             >{thirdDropdownOptions.map((option) => (
 
                               <Option key={option.id} value={option.value}>
-                                {option.label}
+                                {option?.label}
                               </Option>
                             ))}
                             </Select>
