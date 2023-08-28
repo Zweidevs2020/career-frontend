@@ -342,6 +342,11 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
         flex-direction: column;
         width: 100%;
       }
+      .caoHeadingText{
+        font-size: 19px;
+        font-weight: bold;
+        text-align: center;
+      }
       
       /* .mobileTableRow {
         display: flex;
@@ -387,6 +392,8 @@ line-height: normal;
 
       .clearAllButton,.calculateButton{
         width: 60%;
+        border-radius: 12px !important;
+        height: 40px !important;
       }
       .addSubjectButton {
         margin-top: 2rem;

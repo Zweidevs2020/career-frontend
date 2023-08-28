@@ -568,7 +568,7 @@ const CaoCalculator = () => {
                                 trailColor: "#d6d6d6",
                               })}
                             >
-                              <div className="welcomeHaddingText">
+                              <div className="caoHeadingText">
                                 {finalData.total_points
                                   ? finalData.total_points
                                   : 0}
@@ -659,7 +659,7 @@ const CaoCalculator = () => {
                                 trailColor: "#d6d6d6",
                               })}
                             >
-                              <div className="welcomeHaddingText">
+                              <div className="caoHeadingText">
                                 {finalData.total_points
                                   ? finalData.total_points
                                   : 0}

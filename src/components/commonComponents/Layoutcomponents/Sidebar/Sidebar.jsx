@@ -44,12 +44,13 @@ import {
   patchApiWithAuth,
 } from "../../../../utils/api";
 import MyCareerGuidanceButton from "../../MyCareerGuidanceButton";
+import { MenuFoldOutlined, MenuOutlined } from "@ant-design/icons";
 const { Content, Sider, Header } = Layout;
 const Sidebar = ({ children, flags }) => {
   const navigate = useNavigate();
   const location = useLocation();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [selectedMenuItem, setSelectedMenuItem] = useState("Overview");
   const [userData, setUserData] = useState({});
   const [updateData, setUpdateData] = useState({});
@@ -61,7 +62,11 @@ const Sidebar = ({ children, flags }) => {
     width: window.innerWidth,
     height: window.innerHeight,
   });
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // State to manage sidebar visibility
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen); // Toggle sidebar visibility
+  };
   useEffect(() => {
     const handleResize = () => {
       setScreenSize({ width: window.innerWidth, height: window.innerHeight });
@@ -73,7 +78,7 @@ const Sidebar = ({ children, flags }) => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
- 
+
   const { Title } = Typography;
 
   const handleEditClick = () => {
@@ -103,6 +108,13 @@ const Sidebar = ({ children, flags }) => {
     } else {
       setLoading(false);
     }
+  };
+
+
+
+  const handleMenuItemClick = (key) => {
+    setSelectedMenuItem(key);
+    toggleSidebar();
   };
 
   useEffect(() => {
@@ -137,7 +149,7 @@ const Sidebar = ({ children, flags }) => {
   const handleUpdate = async () => {
     setLoading2(true);
     const response = await patchApiWithAuth(API_URL.GETUSER2, updateData);
-  
+
 
     if (response.data.status === 200) {
       setIsModalOpen(false);
@@ -202,15 +214,16 @@ const Sidebar = ({ children, flags }) => {
       location.pathname === "/my-choice-edit"
     ) {
       setSelectedMenuItem("MyChoices");
-    } 
-  
+    }
+
   }, [location]);
 
   const logoutUser = async () => {
-  
+
     removeToken();
     navigate("/");
   };
+
   return (
     <>
       {screenSize.width > "748" ? (
@@ -225,6 +238,7 @@ const Sidebar = ({ children, flags }) => {
             top: 0,
           }}
         >
+
           <Sider className="backgroundColorSidebar">
             <div className="logoStyle my-2">
               <img src={mycareer} alt="cyberLegendLogo" width="70%" />
@@ -302,7 +316,7 @@ const Sidebar = ({ children, flags }) => {
                   }
                 >
                   <span className="textStyling">
-                  My CV{" "}
+                    My CV{" "}
                     {selectedMenuItem === "CoverLater" ? (
                       <span> &nbsp;&nbsp;&#x25cf; </span>
                     ) : null}
@@ -321,7 +335,7 @@ const Sidebar = ({ children, flags }) => {
                   }
                 >
                   <span className="textStyling">
-                  My Self Assessment{" "}
+                    My Self Assessment{" "}
                     {selectedMenuItem === "SelfAssessment" ? (
                       <span> &nbsp;&nbsp;&#x25cf; </span>
                     ) : null}
@@ -374,7 +388,7 @@ const Sidebar = ({ children, flags }) => {
                   }
                 >
                   <span className="textStyling">
-                  My Educational Guidance
+                    My Educational Guidance
                     {selectedMenuItem === "EducationalGuidance" ? (
                       <span> &nbsp;&#x25cf; </span>
                     ) : null}
@@ -444,9 +458,9 @@ const Sidebar = ({ children, flags }) => {
                 justifyContent: "center",
               }}
               open={isModalOpen}
-             
+
               footer={[]}
-             
+
               title={
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <Title
@@ -622,7 +636,7 @@ const Sidebar = ({ children, flags }) => {
                     </Col>
                   </Row>
 
-                  <div className="mt-5" style={{ display: "flex" ,justifyContent:'center' }}>
+                  <div className="mt-5" style={{ display: "flex", justifyContent: 'center' }}>
                     <MyCareerGuidanceButton
                       label="Update"
                       className="takebutton"
@@ -653,11 +667,14 @@ const Sidebar = ({ children, flags }) => {
             background: "#F8FAFC",
           }}
         >
-          <Sider className="backgroundColorSidebar">
-            <div className="logoStyle my-2">
-              <img src={myCareer} alt="cyberLegendLogo" width="40%" />
+
+          {isSidebarOpen && (<Sider className="backgroundColorSidebar"  >
+            <div className="menuIcon my-2" style={{display:'flex',justifyContent:'center'}}>
+              {/* <img src={myCareer} alt="cyberLegendLogo" width="40%" /> */}
+              <MenuOutlined onClick={toggleSidebar} />
             </div>
-            <div className="selectTextMain">
+           
+            {isSidebarOpen && (<div className="selectTextMain">
               <Menu
                 selectedKeys={selectedMenuItem}
                 mode="inline"
@@ -674,7 +691,7 @@ const Sidebar = ({ children, flags }) => {
                     />
                   }
                 >
-                 
+
                 </Menu.Item>
                 <Menu.Item
                   key="CAOCalculator"
@@ -688,7 +705,7 @@ const Sidebar = ({ children, flags }) => {
                     />
                   }
                 >
-                 
+
                 </Menu.Item>
                 <Menu.Item
                   key="MyGoals"
@@ -700,7 +717,7 @@ const Sidebar = ({ children, flags }) => {
                     />
                   }
                 >
-                  
+
                 </Menu.Item>
                 <Menu.Item
                   key="CoverLater"
@@ -714,7 +731,7 @@ const Sidebar = ({ children, flags }) => {
                     />
                   }
                 >
-                
+
                 </Menu.Item>
                 <Menu.Item
                   key="SelfAssessment"
@@ -728,7 +745,7 @@ const Sidebar = ({ children, flags }) => {
                     />
                   }
                 >
-                 
+
                 </Menu.Item>
                 <Menu.Item
                   key="MyStudy"
@@ -740,7 +757,7 @@ const Sidebar = ({ children, flags }) => {
                     />
                   }
                 >
-                  
+
                 </Menu.Item>
                 <Menu.Item
                   key="MyChoices"
@@ -752,7 +769,7 @@ const Sidebar = ({ children, flags }) => {
                     />
                   }
                 >
-                
+
                 </Menu.Item>
                 <Menu.Item
                   key="EducationalGuidance"
@@ -766,9 +783,10 @@ const Sidebar = ({ children, flags }) => {
                     />
                   }
                 >
-                  
+
                 </Menu.Item>
               </Menu>
+
               <div
                 style={{
                   display: "flex",
@@ -778,7 +796,7 @@ const Sidebar = ({ children, flags }) => {
                 className="careerBtnDiv"
               >
                 <MyCareerGuidanceButton
-                 
+
                   className="mobLogoutBtn"
                   type="primary"
                   htmlType="button"
@@ -793,17 +811,29 @@ const Sidebar = ({ children, flags }) => {
                   }
                 />
               </div>
+
+
             </div>
-          </Sider>
+            )}
+          </Sider>)}
+
           <Layout className="site-layout">
+
             <Header className="Navbar">
-              <div className="navtext">
-                <p className="nav-text">
-                  Hello <strong>{userData.full_name}</strong>, welcome back!
-                </p>
+
+           
+              {!isSidebarOpen && <div className="menuIconSidebarHide " onClick={toggleSidebar}>
+
+                <MenuOutlined />
+              </div>}
+             
+              <div className="logoStyle mt-3 " style={{width:"200px"}}>
+
+                <img src={myCareer} alt="cyberLegendLogo" width="100%" />
+
               </div>
-              <div className="img" onClick={() => showModal()}>
-                <div className="imgcard">
+              <div style={{width:"200px"}} className="img" onClick={() => showModal()}>
+                <div className="imgcard" style={{width:'100%'}}>
                   <img src={userData.profile_image} className="cardprofile" />
                   <div className="cardtext">
                     <p className="name" style={{ height: 20, color: "white" }}>
@@ -826,9 +856,9 @@ const Sidebar = ({ children, flags }) => {
                 justifyContent: "center",
               }}
               open={isModalOpen}
-            
+
               footer={[]}
-            
+
               title={
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <Title

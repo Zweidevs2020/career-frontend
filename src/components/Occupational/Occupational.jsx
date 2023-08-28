@@ -13,33 +13,52 @@ const Occupational = () => {
   const [educationGuidance, setEducationGuidance] = useState([]);
 
   const { data } = location.state || {};
+  console.log("===prev data",data)
   useEffect(() => {
-    if (data.name) {
-      getViewResult();
-    } else {
+    if (data.name || data.test_name) {
+      console.log("===in ifff")
+      getViewResult(data);
+    } 
+    else {
+      console.log("===in elses")
       getQuizData();
     }
   }, [data]);
 
 
-  const getViewResult = async () => {
+  const getViewResult = async (data) => {
     setLoading(true);
+    if(data.name){
     const response = await getApiWithAuth(
       `/psychometric/result?name=${data.name}`
     );
-  
     if (response.data.status === 200) {
-      setEducationGuidance(response.data.data);
+      setEducationGuidance(response?.data?.data);
       setLoading(false);
     } else {
       setLoading(false);
     }
+    }
+    else if(data.test_name){
+      const response1 = await getApiWithAuth(
+        `/psychometric/result?name=${data.test_name}`
+      );
+      if (response1.data.status === 200) {
+        setEducationGuidance(response1?.data?.data);
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
+    }
+
+    // console.log("====resssss",response)
+
   };
 
   const getQuizData = async () => {
+    console.log("==innn")
     setLoading(true);
-    const response = await getApiWithAuth(`/psychometric/result/${data}/`);
-   
+    const response = await getApiWithAuth(`/psychometric/result/${data}/`);   
     if (response.data.status === 200) {
       setEducationGuidance(response.data.data);
       setLoading(false);
@@ -125,7 +144,14 @@ const Occupational = () => {
               <Button
                 className="viewResultButton"
                 type="primary"
-                onClick={() => navigate("/self-assesment")}
+                onClick={() => {
+                  if(data.test_name){
+                    navigate("/dashboard")
+                  }
+                  else{
+                    navigate("/self-assesment")
+                  }
+                }}
                 style={{ color: "white" }}
               >
                 Back
