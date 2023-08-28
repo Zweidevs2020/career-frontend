@@ -408,11 +408,13 @@ const Experenice = ({ setCurrent, current }) => {
                       />
                     </Form.Item>
                     <div className="mainContainerDelete">
+                    {!isInputDisabled && (
                       <img
                         className="deleteSubject"
                         src={Delete}
                         onClick={() => handleDeleteExperience(item.dataValue.id)}
                       />
+                    )}
                     </div>
                   </div>
 

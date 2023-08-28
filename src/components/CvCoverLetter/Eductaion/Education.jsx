@@ -171,7 +171,7 @@ const Education = ({ setCurrent, current }) => {
   const SavePdf = async () => {
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
     if (respose.data.status === 201) {
-     
+
     } else {
       message.error(respose.data.message);
     }
@@ -330,11 +330,14 @@ const Education = ({ setCurrent, current }) => {
               </Checkbox>
 
               <div className="mainContainerDelete">
-                <img
-                  className="deleteSubject"
-                  src={Delete}
-                  onClick={() => handleDeleteEducation(item.dataValue.id)}
-                />
+
+                {!isInputDisabled && (
+                  <img
+                    className="deleteSubject"
+                    src={Delete}
+                    onClick={() => handleDeleteEducation(item.dataValue.id)}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -463,6 +466,7 @@ const Education = ({ setCurrent, current }) => {
             <img
               className="deleteSubject"
               src={Delete}
+              disabled={isInputDisabled}
               onClick={() => handleDeleteJuniorCert(item.dataValue.id)}
             />
           )}
