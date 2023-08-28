@@ -11,6 +11,7 @@ const Right = () => {
   const [loading, setLoading] = useState(false);
   const [educationGuidance, setEducationGuidance] = useState([]);
   const [psychometricTestName, setPsychometricTestName] = useState([]);
+  const [psychometricTestResult, setPsychometricTestResult] = useState([]);
 
 
   useEffect(() => {
@@ -21,7 +22,7 @@ const Right = () => {
   const getducationGuidance = async () => {
     setLoading(true);
     const response = await getApiWithAuth("psychometric/calculate/");
-
+    console.log("educational guidence", response.data.data)
     if (response?.data?.status === 200) {
       const testScore = response.data.data
 
@@ -32,6 +33,7 @@ const Right = () => {
           );
         }
       });
+      console.log("-====backend",response.data.data)
 
       setEducationGuidance(response.data.data);
 
@@ -43,12 +45,15 @@ const Right = () => {
   };
   const getPsychometricTestNames = async () => {
     const response = await getApiWithAuth(API_URL.GETPSYCHOMETRICTEST);
-
+    // console.log("hello i am real psychometric test",response.data.data)
+    setPsychometricTestResult(response.data.data)
     if (response?.data?.status === 200) {
       const filterSCore = response.data.data.filter(
         (item) => item.score === null
 
       );
+     
+      // console.log("filterscore",filterSCore)
       setPsychometricTestName(filterSCore);
 
     }
@@ -139,19 +144,20 @@ const Right = () => {
           ) : (
             <div>
               {educationGuidance.map((item, index) => {
+                //  {psychometricTestResult.map((item1, index1) => {
                 const labels = item.scores.map((score) => score.name.split("/"));
                 const series = item.scores.map((score) => score.score);
                 let chartColor;
-              
+                console.log("untakend test", psychometricTestName)
                 if (item.test_name == 'Occupational Values Assesment') {
-               
+
                   chartColor = '#87aded';
                 } else if (item.test_name == 'Occupational Interest Assesment') {
                   chartColor = '#b9bab8';
                 } else {
-                  chartColor = '#a4eba9'; 
+                  chartColor = '#a4eba9';
                 }
-              
+
                 const chartOptions = {
                   ...options,
                   labels,
@@ -167,17 +173,21 @@ const Right = () => {
                 return (
                   <div key={index} className="ms-3 chart-labels-container">
                     <div className="h-[30px] flex justify-between items-center mt-5 chartHeadingwBtn">
+                      {/* {psychometricTestName.map((item) => ( */}
                       <div className="leftGraphBtn">
+                        {console.log("items",item)}
                         <button
                           onClick={() =>
-                            navigate("/self-assesment-test", {
+                            navigate("/occupation", {
                               state: { data: item },
                             })
                           }
                         >
                           View Result
                         </button>
+                        {console.log("helllo i am inside ", item)}
                       </div>
+                      {/* ))} */}
                       <p className="text-[#474749] mt-3 sm:text-[15px text-[16px] font-bold chartHeading">
                         {item.test_name}
                       </p>
@@ -206,6 +216,7 @@ const Right = () => {
                   </div>
                 );
               })}
+              {/* })} */}
               {psychometricTestName.map((item) => (
                 <div className="dashboardRightDiv">
                   <div className="parentRightDashboardDiv">
