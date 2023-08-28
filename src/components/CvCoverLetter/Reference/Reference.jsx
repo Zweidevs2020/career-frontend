@@ -6,12 +6,14 @@ import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
 import { API_URL } from "../../../utils/constants";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PlusCircleOutlined } from "@ant-design/icons";
+import axios from "axios";
 
 const Reference = ({ setCurrent, current }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [downloadBtn, setDownloadBtn] = useState(false);
   const [referArray, setReferArray] = useState([]);
+  const [userData, setUserData] = useState({});
   const { Option } = Select;
 
   const handleGetApi = async () => {
@@ -69,26 +71,57 @@ const Reference = ({ setCurrent, current }) => {
     }
   };
 
+  // const SavePdf = async (e) => {
+  //   e.preventDefault();
+  //   let data = createArrayData(referArray);
+
+  //   const respose = await getApiWithAuth(API_URL.SAVEPDF);
+
+  //   if (respose.data.status === 201) {
+
+  //   } else {
+  //     message.error(respose.data.message);
+  //   }
+  // };
+
   const SavePdf = async (e) => {
     e.preventDefault();
-    let data = createArrayData(referArray);
+    var token = localStorage.getItem("access_token", "");
 
-    const respose = await getApiWithAuth(API_URL.SAVEPDF);
-  
-    if (respose.data.status === 201) {
+    const response = await axios.get(
+      `${process.env.REACT_APP_LINK_BASE_URL}cv/cv/`,
+      {
+        responseType: "blob", // Set the response type to 'blob'
+        headers: {
+          Authorization: `Bearer ${token}`, // Set the Authorization header
+        },
+      }
+    );
 
-    } else {
-      message.error(respose.data.message);
-    }
+    // Create a blob from the response data
+    const pdfBlob = new Blob([response.data], { type: "application/pdf" });
+
+    // Create a temporary URL for the blob
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+
+    // Create a link and initiate the download
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.download = `${userData.full_name}.pdf`; // Set the desired filename
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Clean up the temporary URL
+    URL.revokeObjectURL(pdfUrl);
   };
 
   const createArrayData = (data) => {
- 
     let array = [];
     data.map((item) => {
       array.push(item.dataValue);
     });
-   
+
     return array;
   };
 
@@ -123,7 +156,6 @@ const Reference = ({ setCurrent, current }) => {
           : item;
       })
     );
-  
   };
 
   const referenceItems = (item, index) => {
@@ -136,8 +168,12 @@ const Reference = ({ setCurrent, current }) => {
                 label="Name"
                 name={`name ${index}`}
                 className="refItemLable"
-                rules={[{ required: item?.dataValue.name ? false : true, message: "Please input name!" }]}
-              >
+                rules={[
+                  {
+                    required: item?.dataValue.name ? false : true,
+                    message: "Please input name!",
+                  },
+                ]}>
                 <MyCareerGuidanceInputField
                   placeholder="Danial Brot"
                   type="input"
@@ -153,9 +189,13 @@ const Reference = ({ setCurrent, current }) => {
                 label="Position"
                 name={`position ${index}`}
                 className="refItemLable"
-                rules={[{ required: item?.dataValue.position ? false : true, message: "Please input position!" }]}
-                style={{ marginBottom: "20px" }}
-              >
+                rules={[
+                  {
+                    required: item?.dataValue.position ? false : true,
+                    message: "Please input position!",
+                  },
+                ]}
+                style={{ marginBottom: "20px" }}>
                 <MyCareerGuidanceInputField
                   placeholder="e.g H&M"
                   type="input"
@@ -173,8 +213,12 @@ const Reference = ({ setCurrent, current }) => {
                 label="Contact Phone"
                 name={`contact_number ${index}`}
                 className="refItemLable"
-                rules={[{ required: item?.dataValue.contact_number ? false : true, message: "Please input Contact!" }]}
-              >
+                rules={[
+                  {
+                    required: item?.dataValue.contact_number ? false : true,
+                    message: "Please input Contact!",
+                  },
+                ]}>
                 <MyCareerGuidanceInputField
                   placeholder="+xx-xxx-xxx-xxxx"
                   type="input"
@@ -191,10 +235,12 @@ const Reference = ({ setCurrent, current }) => {
                 name={`email ${index}`}
                 className="refItemLable"
                 rules={[
-                  { required: item?.dataValue.email ? false : true, message: "Please input Contact Email!" },
+                  {
+                    required: item?.dataValue.email ? false : true,
+                    message: "Please input Contact Email!",
+                  },
                 ]}
-                style={{ marginBottom: "20px" }}
-              >
+                style={{ marginBottom: "20px" }}>
                 <MyCareerGuidanceInputField
                   placeholder="xyz@gmail.com"
                   type="email"
@@ -214,15 +260,16 @@ const Reference = ({ setCurrent, current }) => {
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
     if (response.data.status === 200) {
+      setUserData(response.data.data);
       if (response.data.data.cv_completed === true) {
         setDownloadBtn(true);
       }
     }
-  }
+  };
 
   useEffect(() => {
     getUserData();
-  }, [])
+  }, []);
 
   return (
     <>
@@ -260,8 +307,7 @@ const Reference = ({ setCurrent, current }) => {
                         },
                       },
                     ])
-                  }
-                >
+                  }>
                   <span>
                     <PlusCircleOutlined
                       style={{
@@ -281,27 +327,28 @@ const Reference = ({ setCurrent, current }) => {
                 <Button
                   className="skillsButtonBack"
                   type="primary"
-                  onClick={prev}
-                >
+                  onClick={prev}>
                   Back
                 </Button>
               </Form.Item>
 
               <Form.Item>
                 <Button
-                  className={downloadBtn === false ? "disabledBtn me-3" : "skillsButton me-3 "}
+                  className={
+                    downloadBtn === false
+                      ? "disabledBtn me-3"
+                      : "skillsButton me-3 "
+                  }
                   type="primary"
                   htmlType="submit"
-                  onClick={(e) => SavePdf(e)}
-                >
+                  onClick={(e) => SavePdf(e)}>
                   Download CV
                 </Button>
                 <Button
                   className="skillsButton"
                   type="primary"
                   htmlType="submit"
-                  onClick={(e) => onsubmit(e)}
-                >
+                  onClick={(e) => onsubmit(e)}>
                   Save
                 </Button>
               </Form.Item>
