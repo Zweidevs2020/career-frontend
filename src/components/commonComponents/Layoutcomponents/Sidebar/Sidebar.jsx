@@ -669,7 +669,7 @@ const Sidebar = ({ children, flags }) => {
         >
 
           {isSidebarOpen && (<Sider className="backgroundColorSidebar"  >
-            <div className="menuIcon my-2" style={{display:'flex',justifyContent:'center'}}>
+            <div className="menuIcon " style={{display:'flex',justifyContent:'center'}}>
               {/* <img src={myCareer} alt="cyberLegendLogo" width="40%" /> */}
               <MenuOutlined onClick={toggleSidebar} />
             </div>

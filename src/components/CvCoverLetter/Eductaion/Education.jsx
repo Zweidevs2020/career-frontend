@@ -223,7 +223,7 @@ const Education = ({ setCurrent, current }) => {
                 name="school"
                 onChange={(event) => onChangeHandle(event, index, 1)}
                 inputValue={item?.dataValue.school}
-                isPrefix={false}
+                isPrefix={true}
                 disabled={isInputDisabled}
               />
             </Form.Item>
@@ -275,7 +275,7 @@ const Education = ({ setCurrent, current }) => {
                 name="examtaken"
                 onChange={(event) => onChangeHandle(event, index, 1)}
                 inputValue={item?.dataValue.examtaken}
-                isPrefix={false}
+                isPrefix={true}
                 disabled={isInputDisabled}
               />
             </Form.Item>
@@ -421,7 +421,7 @@ const Education = ({ setCurrent, current }) => {
                 name="subject"
                 onChange={(event) => onChangeHandle(event, index, 2)}
                 inputValue={item?.dataValue?.subject}
-                isPrefix={false}
+                isPrefix={true}
                 disabled={isInputDisabled}
               />
             </Form.Item>
