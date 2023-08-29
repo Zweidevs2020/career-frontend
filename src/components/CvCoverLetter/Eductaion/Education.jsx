@@ -3,6 +3,7 @@ import { Form, Button, DatePicker, Checkbox, Select, message } from "antd";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import "./Education.css";
+import { Input } from "antd";
 import {
   postApiWithAuth,
   getApiWithAuth,
@@ -225,8 +226,8 @@ const Education = ({ setCurrent, current }) => {
                 type="input"
                 name="school"
                 onChange={(event) => onChangeHandle(event, index, 1)}
-                inputValue={item?.dataValue.school}
-                isPrefix={false}
+                inputValue={item.dataValue.school}
+                // isPrefix={false}
                 disabled={isInputDisabled}
               />
             </Form.Item>
@@ -276,7 +277,7 @@ const Education = ({ setCurrent, current }) => {
                 name="examtaken"
                 onChange={(event) => onChangeHandle(event, index, 1)}
                 inputValue={item?.dataValue.examtaken}
-                isPrefix={false}
+                // isPrefix={false}
                 disabled={isInputDisabled}
               />
             </Form.Item>
@@ -418,7 +419,7 @@ const Education = ({ setCurrent, current }) => {
                 name="subject"
                 onChange={(event) => onChangeHandle(event, index, 2)}
                 inputValue={item?.dataValue?.subject}
-                isPrefix={false}
+                // isPrefix={false}
                 disabled={isInputDisabled}
               />
             </Form.Item>
