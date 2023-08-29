@@ -140,7 +140,7 @@
 }
 
 
-@media only screen and (max-width: 392px) and (min-width: 320px) {
+@media only screen and (max-width: 358px) and (min-width: 320px) {
 
   .menuIconSidebarHide {
     /* margin-left: 1.1rem;
@@ -154,7 +154,22 @@
   }
 
 }
-@media only screen and (max-width: 400px) and (min-width: 393px) {
+
+@media only screen and (max-width: 372px) and (min-width: 359px) {
+
+  .menuIconSidebarHide {
+    /* margin-left: 1.1rem;
+    margin-top: -1rem; */
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    margin-top: -0.1rem;
+    margin-left: 1.2rem;
+    height: 20px;
+  }
+
+}
+@media only screen and (max-width: 400px) and (min-width: 371px) {
 
   .menuIconSidebarHide {
     /* margin-left: 1.1rem;
