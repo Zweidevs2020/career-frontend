@@ -3,7 +3,12 @@ import { Form, Button, DatePicker, Checkbox, Select, message } from "antd";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import "./Education.css";
-import { postApiWithAuth, getApiWithAuth, deleteApiWithAuth } from "../../../utils/api";
+import { Input } from "antd";
+import {
+  postApiWithAuth,
+  getApiWithAuth,
+  deleteApiWithAuth,
+} from "../../../utils/api";
 import Delete from "../../../assets/delete.png";
 import dayjs from "dayjs";
 import { API_URL } from "../../../utils/constants";
@@ -42,7 +47,7 @@ const Education = ({ setCurrent, current }) => {
             return {
               index: indexx,
               dataValue: item,
-              setIndex: indexx
+              setIndex: indexx,
             };
           })
         );
@@ -171,7 +176,6 @@ const Education = ({ setCurrent, current }) => {
   const SavePdf = async () => {
     const respose = await getApiWithAuth(API_URL.SAVEPDF);
     if (respose.data.status === 201) {
-
     } else {
       message.error(respose.data.message);
     }
@@ -198,8 +202,9 @@ const Education = ({ setCurrent, current }) => {
     getUserData();
   }, []);
 
-  useEffect(() => {
-  }, [educationArray]);
+  useEffect(() => {}, [educationArray]);
+
+  console.log(educationArray);
 
   const educationItems = (item, index) => {
     return (
@@ -215,15 +220,14 @@ const Education = ({ setCurrent, current }) => {
                   required: item?.dataValue.school ? false : true,
                   message: "Please input your school!",
                 },
-              ]}
-            >
+              ]}>
               <MyCareerGuidanceInputField
                 placeholder="e.g School Name"
                 type="input"
                 name="school"
                 onChange={(event) => onChangeHandle(event, index, 1)}
                 inputValue={item?.dataValue.school}
-                isPrefix={false}
+                isPrefix={true}
                 disabled={isInputDisabled}
               />
             </Form.Item>
@@ -238,8 +242,7 @@ const Education = ({ setCurrent, current }) => {
                   required: item?.dataValue.year ? false : true,
                   message: "Please input Month/year!",
                 },
-              ]}
-            >
+              ]}>
               <DatePicker
                 picker="month"
                 onChange={(date, dateString) =>
@@ -267,15 +270,14 @@ const Education = ({ setCurrent, current }) => {
                   required: item?.dataValue.examtaken ? false : true,
                   message: "Please input your Exam!",
                 },
-              ]}
-            >
+              ]}>
               <MyCareerGuidanceInputField
                 placeholder="Exam Taken"
                 type="input"
                 name="examtaken"
                 onChange={(event) => onChangeHandle(event, index, 1)}
                 inputValue={item?.dataValue.examtaken}
-                isPrefix={false}
+                isPrefix={true}
                 disabled={isInputDisabled}
               />
             </Form.Item>
@@ -290,8 +292,7 @@ const Education = ({ setCurrent, current }) => {
                   required: item?.dataValue.enddate ? false : true,
                   message: "Please input end Date!",
                 },
-              ]}
-            >
+              ]}>
               <DatePicker
                 onChange={(date, dateString) =>
                   onChangeDate("enddate", dateString, index)
@@ -314,23 +315,21 @@ const Education = ({ setCurrent, current }) => {
                     prevArray.map((educationItem) =>
                       educationItem.index === item.index
                         ? {
-                          ...educationItem,
-                          dataValue: {
-                            ...educationItem.dataValue,
-                            present: e.target.checked,
-                          },
-                        }
+                            ...educationItem,
+                            dataValue: {
+                              ...educationItem.dataValue,
+                              present: e.target.checked,
+                            },
+                          }
                         : educationItem
                     )
                   );
                   setIsCurrentCheck(!isCurrentCheck);
-                }}
-              >
+                }}>
                 I'm still studying here
               </Checkbox>
 
               <div className="mainContainerDelete">
-
                 {!isInputDisabled && (
                   <img
                     className="deleteSubject"
@@ -413,15 +412,14 @@ const Education = ({ setCurrent, current }) => {
                   required: item?.dataValue.subject ? false : true,
                   message: "Please input your subject",
                 },
-              ]}
-            >
+              ]}>
               <MyCareerGuidanceInputField
                 placeholder="e.g. Subject"
                 type="input"
                 name="subject"
                 onChange={(event) => onChangeHandle(event, index, 2)}
                 inputValue={item?.dataValue?.subject}
-                isPrefix={false}
+                isPrefix={true}
                 disabled={isInputDisabled}
               />
             </Form.Item>
@@ -436,23 +434,20 @@ const Education = ({ setCurrent, current }) => {
                   required: item?.dataValue.result ? false : true,
                   message: "Please Select 1 Option",
                 },
-              ]}
-            >
+              ]}>
               <Select
                 placeholder="Select"
                 onChange={(event) => handleChange(event, "level", index)}
                 optionLabelProp="label"
                 className="eduSelect eduSelectItem"
                 defaultValue={item?.dataValue?.level}
-                disabled={isInputDisabled}
-              >
+                disabled={isInputDisabled}>
                 {levelArray.map((item) => {
                   return (
                     <Option
                       value={item.value}
                       key={item.value}
-                      label={item.label}
-                    >
+                      label={item.label}>
                       {item.label}
                     </Option>
                   );
@@ -481,23 +476,20 @@ const Education = ({ setCurrent, current }) => {
                 required: item?.dataValue.result ? false : true,
                 message: "Please Select 1 Option",
               },
-            ]}
-          >
+            ]}>
             <Select
               placeholder="Select"
               onChange={(event) => handleChange(event, "result", index)}
               optionLabelProp="label"
               className="eduSelect eduSelectItem"
               defaultValue={item?.dataValue?.result}
-              disabled={isInputDisabled}
-            >
+              disabled={isInputDisabled}>
               {resultArray.map((item) => {
                 return (
                   <Option
                     value={item.value}
                     key={item.value}
-                    label={item.label}
-                  >
+                    label={item.label}>
                     {item.label}
                   </Option>
                 );
@@ -522,8 +514,8 @@ const Education = ({ setCurrent, current }) => {
           <Form layout="vertical" onFinish={onsubmit}>
             {educationArray.length > 0
               ? educationArray.map((item, index) => {
-                return educationItems(item, index);
-              })
+                  return educationItems(item, index);
+                })
               : ""}
 
             <div>
@@ -547,8 +539,7 @@ const Education = ({ setCurrent, current }) => {
                         },
                       },
                     ])
-                  }
-                >
+                  }>
                   <span>
                     <PlusCircleOutlined
                       style={{
@@ -573,8 +564,7 @@ const Education = ({ setCurrent, current }) => {
                   checked={isCheck}
                   onChange={() => {
                     setIsCheck(!isCheck);
-                  }}
-                >
+                  }}>
                   Yes
                 </Checkbox>
               </Form.Item>
@@ -585,8 +575,7 @@ const Education = ({ setCurrent, current }) => {
                   checked={!isCheck}
                   onChange={() => {
                     setIsCheck(!isCheck);
-                  }}
-                >
+                  }}>
                   No
                 </Checkbox>
               </Form.Item>
@@ -613,8 +602,7 @@ const Education = ({ setCurrent, current }) => {
                             },
                           },
                         ])
-                      }
-                    >
+                      }>
                       <span>
                         <PlusCircleOutlined
                           style={{
@@ -646,16 +634,14 @@ const Education = ({ setCurrent, current }) => {
                       : "skillsButton me-3 "
                   }
                   type="primary"
-                  onClick={edit}
-                >
+                  onClick={edit}>
                   Edit
                 </Button>
                 <Button
                   className="eduButton"
                   type="primary"
                   htmlType="submit"
-                  disabled={isInputDisabled}
-                >
+                  disabled={isInputDisabled}>
                   Save
                 </Button>
               </div>

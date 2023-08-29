@@ -71,7 +71,7 @@
 .expButton {
     border: 1px solid grey;
     width: 144px;
-    height: 52px;
+    height: 45px !important;
     background: #1476B7;
     font-size: 14px;
     border-radius: 12px;
@@ -80,7 +80,7 @@
 .expButtonBack {
     border: 1px solid #1476B7;
     width: 144px;
-    height: 52px;
+    height: 45px !important;
     font-size: 14px;
     border-radius: 12px;
     color: #1476B7;

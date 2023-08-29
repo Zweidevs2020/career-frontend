@@ -6,10 +6,12 @@
   margin-top: 20px;
   margin-bottom: 50px;
 }
+
 .backgroundColorSidebar {
   background-color: #f8fafc !important;
   min-width: 244px !important;
 }
+
 .sideBarStyle {
   font-style: normal;
   color: #c2ceed;
@@ -22,6 +24,7 @@
   flex-direction: column;
   width: 244px !important;
 }
+
 .textStyling {
   font-family: Poppins;
   font-style: normal;
@@ -47,6 +50,7 @@
   align-items: center;
   justify-content: start;
 }
+
 .nav-text {
   font-size: 20px;
   color: #1476b7;
@@ -60,6 +64,7 @@
   justify-content: end;
   align-items: center;
 }
+
 .imgcard {
   display: flex;
   align-items: center;
@@ -78,10 +83,12 @@
   width: 68%;
   height: 80px;
 }
+
 .email {
   font-weight: lighter;
   color: #fff;
 }
+
 .name {
   font-weight: bold;
   color: #fff;
@@ -109,7 +116,7 @@
   border-radius: 10px;
 }
 
-.mobLogoutBtn{
+.mobLogoutBtn {
   background-color: #f8fafc !important;
   border: 1px solid #1476b7;
   height: 40px !important;
@@ -118,16 +125,77 @@
   justify-content: center;
   align-items: center;
 }
-.profilestyle{
+
+.profilestyle {
   height: 55px !important;
   background-color: rgba(0, 0, 0, 0.04);
 }
+
 :where(.css-dev-only-do-not-override-ed5zg0).ant-menu-inline.ant-menu-root .ant-menu-item>.ant-menu-title-content,
 :where(.css-dev-only-do-not-override-ed5zg0).ant-menu-inline.ant-menu-root .ant-menu-submenu-title>.ant-menu-title-content,
 :where(.css-ed5zg0).ant-menu-inline.ant-menu-root .ant-menu-item>.ant-menu-title-content,
-:where(.css-ed5zg0).ant-menu-inline.ant-menu-root .ant-menu-submenu-title>.ant-menu-title-content{
+:where(.css-ed5zg0).ant-menu-inline.ant-menu-root .ant-menu-submenu-title>.ant-menu-title-content {
   text-overflow: unset;
   overflow: unset;
+}
+
+
+@media only screen and (max-width: 358px) and (min-width: 320px) {
+
+  .menuIconSidebarHide {
+    /* margin-left: 1.1rem;
+    margin-top: -1rem; */
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    margin-top: -0.1rem;
+    margin-left: 1rem;
+    height: 20px;
+  }
+
+}
+
+@media only screen and (max-width: 372px) and (min-width: 359px) {
+
+  .menuIconSidebarHide {
+    /* margin-left: 1.1rem;
+    margin-top: -1rem; */
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    margin-top: -0.1rem;
+    margin-left: 1.2rem;
+    height: 20px;
+  }
+
+}
+@media only screen and (max-width: 400px) and (min-width: 371px) {
+
+  .menuIconSidebarHide {
+    /* margin-left: 1.1rem;
+    margin-top: -1rem; */
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    margin-top: -0.1rem;
+    margin-left: .9rem;
+    height: 20px;
+  }
+
+}
+
+@media only screen and (max-width: 520px) and (min-width: 401px) {
+  .menuIconSidebarHide {
+    /* margin-left: 1.1rem;
+    margin-top: -1rem; */
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    margin-top: -0.1rem;
+    margin-left: .8rem;
+    height: 20px;
+  }
+
 }
 @media only screen and (max-width: 600px) and (min-width: 320px) {
   /* .backgroundColorSidebar {
@@ -135,7 +203,24 @@
   } */
   /* .backgroundColorSidebar {
     min-width: 220px !important;
+    
   } */
+
+  /* .menuIconSidebarHide {
+   
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    margin-top: -0.1rem;
+    margin-left: 1.1rem;
+    height: 20px;
+  } */
+
+  .Navbar {
+    display: flex;
+    justify-content: space-around;
+  }
+
   .navtext {
     width: 80%;
     margin-left: 5px;
@@ -144,9 +229,11 @@
   .nav-text {
     font-size: 8px;
   }
+
   .img {
     width: 70%;
   }
+
   .imgcard {
     width: 100%;
     height: 45px;
@@ -155,9 +242,20 @@
   .email {
     font-size: 8px;
   }
+
   .name {
     font-size: 8px;
   }
+
+  .logoStyle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 45px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+
   .sideBarStyle,
   .backgroundColorSidebar,
   .ant-menu-inline .ant-menu-item,
@@ -166,39 +264,78 @@
   .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
     width: 65px !important;
   }
+
   .careerBtnDiv button {
     background-color: #f8fafc !important;
   }
+
   aside.ant-layout-sider.ant-layout-sider-dark.backgroundColorSidebar {
     max-width: 15% !important;
     min-width: 15% !important;
   }
+
   :where(.css-dev-only-do-not-override-ed5zg0).ant-layout-header {
     height: 85px;
     padding-inline: 5px !important;
   }
 }
 
+.menuIcon {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  margin-top: 2rem;
+  margin-left: 1.5rem;
+  height: 20px;
+  /* margin-top: 50px;
+  margin-bottom: 50px; */
+}
+
 @media only screen and (max-width: 768px) and (min-width: 601px) {
+
   /* .backgroundColorSidebar {
     display: none;
   } */
   /* .backgroundColorSidebar {
       min-width: 220px !important;
     } */
+  .menuIcon {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    margin-top: 2rem;
+    margin-left: 1.5rem;
+    height: 20px;
+  }
+  .addSubjectButton{
+    width: 200px;
+  }
+  .menuIconSidebarHide {
+    /* margin-left: 1.1rem;
+    margin-top: -1rem; */
 
-  .Navbar {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    margin-top: 2rem;
+    margin-left: 1.5rem;
+    height: 20px;
+  }
+
+  /* .Navbar {
     display: flex;
     justify-content: space-between;
-  }
+    gap:20px
+  } */
   .sideBarStyle,
   .backgroundColorSidebar,
   .ant-menu-inline .ant-menu-item,
   .careerBtnDiv,
-  .logoStyle,
+  /* .logoStyle, */
   .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
     width: 65px !important;
-    min-width: 65px !important;
+    /* min-width: 65px !important; */
+    min-width: 235px !important;
     max-width: 65px !important;
   }
 
@@ -210,12 +347,19 @@
   .nav-text {
     font-size: 14px;
   }
+
   .img {
     width: 70%;
   }
+
   .imgcard {
     width: 100%;
     height: 50px;
+  }
+
+  .Navbar {
+    display: flex;
+    justify-content: space-around;
   }
 }
 
@@ -233,25 +377,30 @@
   .nav-text {
     font-size: 14px;
   }
+
   .img {
     width: 70%;
   }
+
   .imgcard {
     width: 100%;
     height: 50px;
   }
 }
+
 .firstOption {
   display: flex;
   justify-content: center !important;
   padding-top: 30px;
 }
+
 .firstOption1 {
   display: flex;
   justify-content: center !important;
   padding-right: 20px;
   padding-top: 10px;
 }
+
 .firstHead {
   font-family: Poppins;
   font-size: 15px;
@@ -261,30 +410,37 @@
   text-align: left;
   color: #737373;
 }
+
 .sidebarHomeImage {
   padding-right: 20px;
 }
+
 .mainContainerSideBar {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+
 .overviewHead {
   width: 150px;
   cursor: pointer;
 }
+
 .overviewHead2 {
   width: 170px;
   cursor: pointer;
 }
+
 .cvHead {
   width: 170px;
   cursor: pointer;
 }
+
 .selfHead {
   width: 170px;
   cursor: pointer;
 }
+
 .studyHead {
   width: 170px;
   cursor: pointer;
@@ -294,6 +450,7 @@
   width: 170px;
   cursor: pointer;
 }
+
 .dotStyle {
   height: 5px;
   width: 5px;

@@ -17,6 +17,7 @@ const Selfassesment = () => {
   const [psychometricTest, setPsychometricTest] = useState([]);
   const [singlequizData, setSinglequizData] = useState({});
 
+  console.log("=====testttt",psychometricTest)
   useEffect(() => {
     getPsychometricTest();
   }, []);
@@ -49,7 +50,7 @@ const Selfassesment = () => {
   const getPsychometricTest = async () => {
     setLoading(true);
     const response = await getApiWithAuth(API_URL.GETPSYCHOMETRICTEST);
-
+console.log("hello psychometric test",response.data.data)
     if (response?.data?.status === 200) {
       const psychometricTestData = response.data.data;
 
@@ -85,7 +86,7 @@ const Selfassesment = () => {
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {psychometricTest?.map((mapData, index) => {
             let chartColor;
-        
+         console.log("mapdata",mapData)
             if (mapData.name == 'Occupational Values Assesment') {
            
               chartColor = '#87aded';
