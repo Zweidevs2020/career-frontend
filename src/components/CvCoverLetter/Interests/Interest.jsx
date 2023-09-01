@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./Interest.css";
 import { Form, Button, Input, message } from "antd";
+import axios from "axios";
 import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
 import { API_URL } from "../../../utils/constants";
 
 const Interest = ({ setCurrent, current }) => {
   const [downloadBtn, setDownloadBtn]=useState(false);
   const { TextArea } = Input;
+  const [userData, setUserData] = useState({});
   const [textData, setTextData] = useState({ id: null });
   const [isInputDisabled, setIsInputDisabled] = useState(true);
 
@@ -41,14 +43,36 @@ const Interest = ({ setCurrent, current }) => {
     }
   };
 
-  const SavePdf = async () => {
-    const respose = await getApiWithAuth(API_URL.SAVEPDF);
-   
-    if (respose.data.status === 201) {
-    
-    } else {
-      message.error(respose.data.message);
-    }
+  const SavePdf = async (e) => {
+    e.preventDefault();
+    var token = localStorage.getItem("access_token", "");
+
+    const response = await axios.get(
+      `${process.env.REACT_APP_LINK_BASE_URL}cv/cv/`,
+      {
+        responseType: "blob", // Set the response type to 'blob'
+        headers: {
+          Authorization: `Bearer ${token}`, // Set the Authorization header
+        },
+      }
+    );
+
+    // Create a blob from the response data
+    const pdfBlob = new Blob([response.data], { type: "application/pdf" });
+
+    // Create a temporary URL for the blob
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+
+    // Create a link and initiate the download
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.download = `${userData.full_name}.pdf`; // Set the desired filename
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Clean up the temporary URL
+    URL.revokeObjectURL(pdfUrl);
   };
 
   const getUserData = async() => {
@@ -59,6 +83,7 @@ const Interest = ({ setCurrent, current }) => {
       setIsInputDisabled(false); 
     }
     if(response.data.status === 200){
+      setUserData(response.data.data);
      if(response.data.data.cv_completed===true){
       setDownloadBtn(true);
      }
@@ -99,7 +124,7 @@ const Interest = ({ setCurrent, current }) => {
                   value={textData.interests}
                   name="interests"
                   onChange={handleChange}
-                  disabled={isInputDisabled}
+                  // disabled={isInputDisabled}
                 />
               </Form.Item>
             </div>
@@ -116,18 +141,29 @@ const Interest = ({ setCurrent, current }) => {
               </Form.Item>
 
               <Form.Item>
-              <Button
+              {/* <Button
                   className={downloadBtn === true ? "skillsButton me-3": "skillsButton me-3 "}
                   type="primary"
                   onClick={edit}
                 >
                   Edit
-                </Button>
+                </Button> */}
+                  {downloadBtn &&( <Button
+                className={
+                  downloadBtn === false
+                    ? "disabledBtn me-3"
+                    : "skillsButton me-3 "
+                }
+                type="primary"
+                htmlType="submit"
+                onClick={(e) => SavePdf(e)}>
+                Download CV
+              </Button>)}
                 <Button
                   className="interestButton"
                   type="primary"
                   htmlType="submit"
-                  disabled={isInputDisabled}
+                  // disabled={isInputDisabled}
 
                 >
                   Save

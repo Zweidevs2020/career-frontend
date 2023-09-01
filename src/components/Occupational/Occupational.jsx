@@ -13,14 +13,14 @@ const Occupational = () => {
   const [educationGuidance, setEducationGuidance] = useState([]);
 
   const { data } = location.state || {};
-  console.log("===prev data",data)
+ 
   useEffect(() => {
     if (data.name || data.test_name) {
-      console.log("===in ifff")
+    
       getViewResult(data);
     } 
     else {
-      console.log("===in elses")
+     
       getQuizData();
     }
   }, [data]);
@@ -51,12 +51,12 @@ const Occupational = () => {
       }
     }
 
-    // console.log("====resssss",response)
+  
 
   };
 
   const getQuizData = async () => {
-    console.log("==innn")
+  
     setLoading(true);
     const response = await getApiWithAuth(`/psychometric/result/${data}/`);   
     if (response.data.status === 200) {
@@ -124,11 +124,23 @@ const Occupational = () => {
       text: educationGuidance[0]?.test_name,
       align: "center",
     },
+    // tooltip: {
+    //   y: {
+    //     formatter: (value) => value,
+    //   },
+    // },
     tooltip: {
       y: {
-        formatter: (value) => value,
-      },
-    },
+        formatter: function(val) {
+          return val
+        },
+        title: {
+          formatter: function (seriesName) {
+            return ''
+          }
+        }
+      }
+    }
   };
  
   return (

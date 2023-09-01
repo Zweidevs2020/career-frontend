@@ -11,7 +11,15 @@
   background-color: #f8fafc !important;
   min-width: 244px !important;
 }
-
+.drawerIcon
+{
+  max-width: 100%;
+  height: auto;
+  position: absolute;
+  z-index: 0;
+  width: 2.3rem;
+  margin-top: -3rem;
+}
 .sideBarStyle {
   font-style: normal;
   color: #c2ceed;
@@ -40,7 +48,7 @@
   align-items: center;
   justify-content: space-between;
   height: 85px;
-  padding-inline: 10px;
+  padding-inline: 5px;
 }
 
 .navtext {
@@ -139,8 +147,56 @@
   overflow: unset;
 }
 
+@media only screen and (max-width: 360px) and (min-width: 320px) {
+  .ant-drawer-content-wrapper {
+    width: 190px !important;
+  }
 
-@media only screen and (max-width: 358px) and (min-width: 320px) {
+  .mobLogoutBtn {
+    background-color: #1476b7 !important;
+    border: none;
+    font-size: 12px;
+    width: 85% !important;
+  }
+
+  .careerBtnDiv {
+    width: 106px !important;
+  }
+
+  .ant-drawer .ant-drawer-body {
+    margin-top: -1rem;
+
+  }
+
+  menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 193px !important;
+    margin-left: 2rem;
+  }
+
+  .ant-menu-inline .ant-menu-item,
+  .ant-menu-vertical .ant-menu-item {
+    margin-bottom: 0px;
+    margin-left: -5rem;
+  }
+
+  .logoStyle {
+
+    margin-top: 3rem !important;
+  }
+
+  .email {
+
+    font-size: 9px;
+  }
+
+  .ant-drawer .ant-drawer-close {
+
+    margin-left: 8rem;
+  }
+
+  .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    margin-left: 12rem !important;
+  }
 
   .menuIconSidebarHide {
     /* margin-left: 1.1rem;
@@ -149,13 +205,77 @@
     justify-content: start;
     align-items: start;
     margin-top: -0.1rem;
-    margin-left: 1rem;
+    margin-left: 1.5rem;
     height: 20px;
   }
 
+  .selectTextMain {
+    margin-top: 2rem;
+  }
+
+  .textStyling {
+    font-size: 9px;
+    padding-left: 0;
+    margin-left: 4rem !important;
+  }
+
+  .sideBarStyle,
+  .backgroundColorSidebar,
+  /* .ant-menu-inline .ant-menu-item, */
+
+  .logoStyle,
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 65px !important;
+
+  }
+
+  .ant-menu-inline .ant-menu-item:not(:last-child),
+  .ant-menu-vertical .ant-menu-item:not(:last-child) {
+    margin-bottom: 0px;
+    width: 190px !important;
+  }
 }
 
-@media only screen and (max-width: 372px) and (min-width: 359px) {
+@media only screen and (max-width: 375px) and (min-width: 361px) {
+  .ant-drawer-content-wrapper {
+    width: 160px !important;
+  }
+
+  .mobLogoutBtn {
+    background-color: #1476b7 !important;
+    border: none;
+    font-size: 12px;
+    width: 85% !important;
+
+  }
+
+  .careerBtnDiv {
+    width: 106px !important;
+  }
+
+  .ant-menu-inline .ant-menu-item,
+  .ant-menu-vertical .ant-menu-item {
+    margin-bottom: 0px;
+    margin-left: -4rem !important;
+  }
+
+  menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 113px !important;
+  }
+
+  .email {
+
+    font-size: 9px;
+  }
+
+  .ant-drawer-content-wrapper {
+    width: 160px;
+  }
+
+  .ant-drawer .ant-drawer-close {
+
+    margin-left: 6rem;
+  }
 
   .menuIconSidebarHide {
     /* margin-left: 1.1rem;
@@ -164,12 +284,97 @@
     justify-content: start;
     align-items: start;
     margin-top: -0.1rem;
-    margin-left: 1.2rem;
+    margin-left: 1.5rem;
     height: 20px;
   }
 
+  .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    margin-left: 11rem !important;
+  }
+
+  .selectTextMain {
+    margin-top: 2rem;
+  }
+
+  .textStyling {
+    font-size: 9px;
+    padding-left: 0 !important;
+    margin-left: 2rem !important;
+  }
+
+  .sideBarStyle,
+  .backgroundColorSidebar,
+  .logoStyle {
+    width: 65px !important;
+
+  }
+
+  .ant-menu-item-selected {
+    width: 100% !important;
+    margin-left: -4.5rem !important;
+  }
+
+  .logoStyle {
+
+    margin-top: 3rem !important;
+  }
+
+  .ant-drawer .ant-drawer-body {
+    margin-top: -1rem;
+
+  }
 }
-@media only screen and (max-width: 400px) and (min-width: 371px) {
+
+@media only screen and (max-width: 390px) and (min-width: 376px) {
+  .ant-drawer-content-wrapper {
+    width: 190px !important;
+  }
+
+  .mobLogoutBtn {
+    background-color: #1476b7 !important;
+    border: none;
+    font-size: 12px;
+    width: 85% !important;
+  }
+
+  .careerBtnDiv {
+    width: 106px !important;
+  }
+
+  .ant-drawer .ant-drawer-body {
+    margin-top: -1rem;
+
+  }
+
+  menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 193px !important;
+    margin-left: 2rem;
+  }
+
+  .ant-menu-inline .ant-menu-item,
+  .ant-menu-vertical .ant-menu-item {
+    margin-bottom: 0px;
+    margin-left: -5rem;
+  }
+
+  .logoStyle {
+
+    margin-top: 3rem !important;
+  }
+
+  .email {
+
+    font-size: 9px;
+  }
+
+  .ant-drawer .ant-drawer-close {
+
+    margin-left: 8rem;
+  }
+
+  .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    margin-left: 12rem !important;
+  }
 
   .menuIconSidebarHide {
     /* margin-left: 1.1rem;
@@ -178,13 +383,88 @@
     justify-content: start;
     align-items: start;
     margin-top: -0.1rem;
-    margin-left: .9rem;
+    margin-left: 1.5rem;
     height: 20px;
+  }
+
+  .selectTextMain {
+    margin-top: 2rem;
+  }
+
+  .textStyling {
+    font-size: 9px;
+    padding-left: 0;
+    margin-left: 4rem !important;
+  }
+
+  .sideBarStyle,
+  .backgroundColorSidebar,
+
+  .logoStyle,
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 65px !important;
+
+  }
+
+  .ant-menu-inline .ant-menu-item:not(:last-child),
+  .ant-menu-vertical .ant-menu-item:not(:last-child) {
+    margin-bottom: 0px;
+    width: 190px !important;
   }
 
 }
 
-@media only screen and (max-width: 520px) and (min-width: 401px) {
+@media only screen and (max-width: 400px) and (min-width: 391px) {
+  .ant-drawer-content-wrapper {
+    width: 190px !important;
+  }
+
+  .mobLogoutBtn {
+    background-color: #1476b7 !important;
+    border: none;
+    font-size: 12px;
+    width: 85% !important;
+  }
+
+  .careerBtnDiv {
+    width: 106px !important;
+  }
+
+  .ant-drawer .ant-drawer-body {
+    margin-top: -1rem;
+
+  }
+
+  menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 193px !important;
+    margin-left: 2rem;
+  }
+
+  .ant-menu-inline .ant-menu-item,
+  .ant-menu-vertical .ant-menu-item {
+    margin-bottom: 0px;
+    margin-left: -5rem;
+  }
+
+  .logoStyle {
+
+    margin-top: 3rem !important;
+  }
+
+  .email {
+
+    font-size: 9px;
+  }
+
+  .ant-drawer .ant-drawer-close {
+
+    margin-left: 8rem;
+  }
+
+  .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    margin-left: 12rem !important;
+  }
+
   .menuIconSidebarHide {
     /* margin-left: 1.1rem;
     margin-top: -1rem; */
@@ -192,33 +472,171 @@
     justify-content: start;
     align-items: start;
     margin-top: -0.1rem;
-    margin-left: .8rem;
+    margin-left: 1.5rem;
     height: 20px;
   }
 
-}
-@media only screen and (max-width: 600px) and (min-width: 320px) {
-  /* .backgroundColorSidebar {
-    display: none;
-  } */
-  /* .backgroundColorSidebar {
-    min-width: 220px !important;
-    
-  } */
+  .selectTextMain {
+    margin-top: 2rem;
+  }
 
-  /* .menuIconSidebarHide {
-   
+  .textStyling {
+    font-size: 9px;
+    padding-left: 0;
+    margin-left: 4rem !important;
+  }
+
+  .sideBarStyle,
+  .backgroundColorSidebar,
+
+  .logoStyle,
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 65px !important;
+
+  }
+
+  .ant-menu-inline .ant-menu-item:not(:last-child),
+  .ant-menu-vertical .ant-menu-item:not(:last-child) {
+    margin-bottom: 0px;
+    width: 190px !important;
+  }
+
+}
+
+@media only screen and (max-width: 414px) and (min-width: 401px) {
+  .ant-drawer-content-wrapper {
+    width: 160px !important;
+  }
+  .drawerIcon
+  {
+    max-width: 100%;
+    height: auto;
+    position: absolute !important;
+    z-index: 0 !important;
+    width: 2.3rem !important;
+    margin-top: -3rem !important;
+  }
+  .mobLogoutBtn {
+    background-color: #1476b7 !important;
+    border: none;
+    font-size: 12px;
+    width: 85% !important;
+  }
+
+  .careerBtnDiv {
+    width: 106px !important;
+  }
+
+  .ant-menu-inline .ant-menu-item,
+  .ant-menu-vertical .ant-menu-item {
+    margin-bottom: 0px;
+    margin-left: -4rem !important;
+  }
+
+  menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 113px !important;
+  }
+
+  .email {
+
+    font-size: 9px;
+  }
+
+  .ant-drawer-content-wrapper {
+    width: 160px;
+  }
+
+  .ant-drawer .ant-drawer-close {
+
+    margin-left: 6rem;
+  }
+
+  .menuIconSidebarHide {
+    /* margin-left: 1.1rem;
+    margin-top: -1rem; */
     display: flex;
     justify-content: start;
     align-items: start;
     margin-top: -0.1rem;
-    margin-left: 1.1rem;
+    margin-left: 1.5rem;
     height: 20px;
-  } */
+  }
+
+  .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    margin-left: 13.2rem !important;
+  }
+
+  .selectTextMain {
+    margin-top: 2rem;
+  }
+
+  .textStyling {
+    font-size: 10px;
+    padding-left: 0 !important;
+    margin-left: 2rem !important;
+  }
+
+  .sideBarStyle,
+  .backgroundColorSidebar,
+
+  .logoStyle {
+    width: 65px !important;
+
+
+  }
+
+  .ant-menu-item-selected {
+    width: 100% !important;
+    margin-left: -4.5rem !important;
+  }
+
+  .logoStyle {
+
+    margin-top: 3rem !important;
+  }
+
+  .ant-drawer .ant-drawer-body {
+    margin-top: -1rem;
+
+  }
+
+
+}
+
+@media only screen and (max-width: 600px) and (min-width: 521px) {
+  .selectTextMain {
+    margin-top: 2rem;
+  }
+
+  .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    margin-left: 13.4rem !important;
+  }
+
+  .ant-drawer .ant-drawer-content-wrapper {
+
+    width: 185px !important;
+  }
+
+  .ant-drawer .ant-drawer-close {
+    margin-left: 6rem;
+  }
+
+  .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    margin-left: 21.4rem !important;
+  }
 
   .Navbar {
     display: flex;
     justify-content: space-around;
+  }
+
+  .textStyling {
+    font-size: 10px;
+    padding-left: 0 !important;
+    margin-right: -2rem;
+  }
+  .careerBtnDiv {
+    width: 106px !important;
   }
 
   .navtext {
@@ -232,6 +650,7 @@
 
   .img {
     width: 70%;
+    margin-left: 3rem;
   }
 
   .imgcard {
@@ -252,32 +671,31 @@
     justify-content: center;
     align-items: center;
     height: 45px;
+    width: 100px !important;
     margin-top: 50px;
     margin-bottom: 50px;
   }
 
-  .sideBarStyle,
-  .backgroundColorSidebar,
-  .ant-menu-inline .ant-menu-item,
-  .careerBtnDiv,
-  .logoStyle,
-  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-    width: 65px !important;
-  }
-
   .careerBtnDiv button {
-    background-color: #f8fafc !important;
+    background-color: #1476b7 !important;
+    width: 150px !important;
+    margin-left: 2rem;
   }
 
   aside.ant-layout-sider.ant-layout-sider-dark.backgroundColorSidebar {
     max-width: 15% !important;
-    min-width: 15% !important;
+    min-width: 20% !important;
   }
 
-  :where(.css-dev-only-do-not-override-ed5zg0).ant-layout-header {
+  .ant-layout-header {
     height: 85px;
     padding-inline: 5px !important;
   }
+}
+
+.ant-menu-inline .ant-menu-item:not(:last-child),
+.ant-menu-vertical .ant-menu-item:not(:last-child) {
+  margin-bottom: 0px;
 }
 
 .menuIcon {
@@ -293,12 +711,6 @@
 
 @media only screen and (max-width: 768px) and (min-width: 601px) {
 
-  /* .backgroundColorSidebar {
-    display: none;
-  } */
-  /* .backgroundColorSidebar {
-      min-width: 220px !important;
-    } */
   .menuIcon {
     display: flex;
     justify-content: start;
@@ -307,9 +719,11 @@
     margin-left: 1.5rem;
     height: 20px;
   }
-  .addSubjectButton{
+
+  .addSubjectButton {
     width: 200px;
   }
+
   .menuIconSidebarHide {
     /* margin-left: 1.1rem;
     margin-top: -1rem; */
@@ -322,11 +736,7 @@
     height: 20px;
   }
 
-  /* .Navbar {
-    display: flex;
-    justify-content: space-between;
-    gap:20px
-  } */
+
   .sideBarStyle,
   .backgroundColorSidebar,
   .ant-menu-inline .ant-menu-item,
@@ -335,6 +745,7 @@
   .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
     width: 65px !important;
     /* min-width: 65px !important; */
+    padding-left: 3px !important;
     min-width: 235px !important;
     max-width: 65px !important;
   }
@@ -360,6 +771,11 @@
   .Navbar {
     display: flex;
     justify-content: space-around;
+  }
+
+  .ant-menu-inline .ant-menu-item:not(:last-child),
+  .ant-menu-vertical .ant-menu-item:not(:last-child) {
+    margin-bottom: 0px;
   }
 }
 

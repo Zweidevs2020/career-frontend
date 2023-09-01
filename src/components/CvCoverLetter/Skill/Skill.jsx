@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./Skill.css";
 import { Form, Select, Button, message } from "antd";
+import axios from "axios";
 import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
 import { API_URL } from "../../../utils/constants";
 const Skill = ({ setCurrent, current }) => {
   const [selectOption, setSelectOption] = useState([]);
   const [selectOption2, setSelectOption2] = useState([]);
   const [userSkillData, setUserSkillsData] = useState([]);
+  const [userData, setUserData] = useState({});
   const [userQualityData, setUserQualityData] = useState([]);
   const [downloadBtn, setDownloadBtn] = useState(false);
   const [isInputDisabled, setIsInputDisabled] = useState(true);
@@ -201,14 +203,7 @@ const Skill = ({ setCurrent, current }) => {
     setSelectOption2(value);
   };
 
-  const SavePdf = async () => {
-    const respose = await getApiWithAuth(API_URL.SAVEPDF);
 
-    if (respose.data.status === 201) {
-    } else {
-      message.error(respose.data.message);
-    }
-  };
 
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
@@ -219,6 +214,7 @@ const Skill = ({ setCurrent, current }) => {
     }
 
     if (response.data.status === 200) {
+      setUserData(response.data.data);
       if (response.data.data.cv_completed === true) {
         setDownloadBtn(true);
       }
@@ -232,6 +228,37 @@ const Skill = ({ setCurrent, current }) => {
   const edit = () => {
     setIsInputDisabled(false)
   }
+  const SavePdf = async (e) => {
+    e.preventDefault();
+    var token = localStorage.getItem("access_token", "");
+
+    const response = await axios.get(
+      `${process.env.REACT_APP_LINK_BASE_URL}cv/cv/`,
+      {
+        responseType: "blob", // Set the response type to 'blob'
+        headers: {
+          Authorization: `Bearer ${token}`, // Set the Authorization header
+        },
+      }
+    );
+
+    // Create a blob from the response data
+    const pdfBlob = new Blob([response.data], { type: "application/pdf" });
+
+    // Create a temporary URL for the blob
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+
+    // Create a link and initiate the download
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.download = `${userData.full_name}.pdf`; // Set the desired filename
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Clean up the temporary URL
+    URL.revokeObjectURL(pdfUrl);
+  };
 
   return (
     <>
@@ -257,7 +284,7 @@ const Skill = ({ setCurrent, current }) => {
                   onChange={handleChange}
                   optionLabelProp="label"
                   value={selectOption}
-                  disabled={isInputDisabled}
+                  // disabled={isInputDisabled}
                 >
                   {optionArray.map((item) => {
                     return (
@@ -288,7 +315,7 @@ const Skill = ({ setCurrent, current }) => {
                   optionLabelProp="label"
                
                   value={selectOption2}
-                  disabled={isInputDisabled}
+                  // disabled={isInputDisabled}
                 >
                   
                   {optionArrayQualities.map((item) => {
@@ -319,7 +346,7 @@ const Skill = ({ setCurrent, current }) => {
               </Form.Item>
 
               <Form.Item>
-                <Button
+                {/* <Button
                   className={
                     downloadBtn === true
                       ? "skillsButton me-3"
@@ -329,12 +356,23 @@ const Skill = ({ setCurrent, current }) => {
                   onClick={edit}
                 >
                   Edit
-                </Button>
+                </Button> */}
+                 {downloadBtn &&( <Button
+                className={
+                  downloadBtn === false
+                    ? "disabledBtn me-3"
+                    : "skillsButton me-3 "
+                }
+                type="primary"
+                htmlType="submit"
+                onClick={(e) => SavePdf(e)}>
+                Download CV
+              </Button>)}
                 <Button
                   className="skillsButton"
                   type="primary"
                   htmlType="submit"
-                  disabled={isInputDisabled}
+                  // disabled={isInputDisabled}
                 >
                   Save
                 </Button>

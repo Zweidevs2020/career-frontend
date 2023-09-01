@@ -388,7 +388,7 @@ const CaoCalculator = () => {
     if (data.length > 0) {
       // Initialize available subjects
       const subjects = data.map(item => item.name);
-      console.log("main hun Done", subjects)
+     
       setAvailableSubjects(subjects);
     }
   }, [data]);
@@ -415,7 +415,7 @@ const CaoCalculator = () => {
 
     try {
       const response = await getApiWithAuth(`calculator/user-points/`);
-      console.log("DATA IS", response.data.data[0].grades)
+    
 
       if (response.data.data.length === 0) {
 

@@ -5,6 +5,7 @@ import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceI
 import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
 import { API_URL } from "../../../utils/constants";
 import { putApiWithAuth } from "../../../utils/api";
+import axios from "axios";
 
 const { TextArea } = Input;
 
@@ -14,6 +15,8 @@ const PersonalProfile = ({ setCurrent, current }) => {
   const [profileObject, setProfileObject] = useState({ id: null });
   const [downloadBtn, setDownloadBtn] = useState(false);
   const [isInputDisabled, setIsInputDisabled] = useState(true);
+  const [userData, setUserData] = useState({});
+  const [enableDownloadCV, setEnableDownloadCV] = useState(false)
 
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
@@ -35,7 +38,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
 
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETPROFILE);
- 
+
     if (response.data?.status === 200 && response.data.data.length > 0) {
       setProfileObject(response.data.data[0]);
       form.setFieldsValue({
@@ -51,22 +54,23 @@ const PersonalProfile = ({ setCurrent, current }) => {
     }
   };
 
-  const SavePdf = async () => {
+  // const SavePdf = async () => {
 
 
-    const respose = await getApiWithAuth(API_URL.SAVEPDF);
+  //   const respose = await getApiWithAuth(API_URL.SAVEPDF);
 
-    if (respose.data.status === 201) {
+  //   if (respose.data.status === 201) {
 
-    } else {
-      message.error(respose.data.message);
-    }
-  };
+  //   } else {
+  //     message.error(respose.data.message);
+  //   }
+  // };
 
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
   
     if (response.data.status === 200) {
+      setUserData(response.data.data);
       if (response.data.data.cv_completed === true) {
         setDownloadBtn(true);
       }
@@ -85,6 +89,37 @@ const PersonalProfile = ({ setCurrent, current }) => {
     handleGetApi();
     getUserData();
   }, []);
+  const SavePdf = async (e) => {
+    e.preventDefault();
+    var token = localStorage.getItem("access_token", "");
+
+    const response = await axios.get(
+      `${process.env.REACT_APP_LINK_BASE_URL}cv/cv/`,
+      {
+        responseType: "blob", // Set the response type to 'blob'
+        headers: {
+          Authorization: `Bearer ${token}`, // Set the Authorization header
+        },
+      }
+    );
+
+    // Create a blob from the response data
+    const pdfBlob = new Blob([response.data], { type: "application/pdf" });
+
+    // Create a temporary URL for the blob
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+
+    // Create a link and initiate the download
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.download = `${userData.full_name}.pdf`; // Set the desired filename
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Clean up the temporary URL
+    URL.revokeObjectURL(pdfUrl);
+  };
 
   return (
     <>
@@ -116,7 +151,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     onChange={onChangeHandle}
                     inputValue={profileObject?.full_name}
                     isPrefix={false}
-                    disabled={isInputDisabled}
+                  // disabled={isInputDisabled}
                   />
                 </Form.Item>
               </div>
@@ -136,7 +171,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     onChange={onChangeHandle}
                     inputValue={profileObject?.email}
                     isPrefix={false}
-                    disabled={isInputDisabled}
+                  // disabled={isInputDisabled}
 
                   />
                 </Form.Item>
@@ -161,7 +196,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   onChange={onChangeHandle}
                   inputValue={profileObject?.address}
                   isPrefix={false}
-                  disabled={isInputDisabled}
+                // disabled={isInputDisabled}
                 />
               </Form.Item>
             </div>
@@ -184,7 +219,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   onChange={onChangeHandle}
                   inputValue={profileObject?.address2}
                   isPrefix={false}
-                  disabled={isInputDisabled}
+                // disabled={isInputDisabled}
 
                 />
               </Form.Item>
@@ -207,7 +242,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     onChange={onChangeHandle}
                     inputValue={profileObject?.town}
                     isPrefix={false}
-                    disabled={isInputDisabled}
+                  // disabled={isInputDisabled}
 
                   />
                 </Form.Item>
@@ -228,7 +263,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     onChange={onChangeHandle}
                     inputValue={profileObject?.city}
                     isPrefix={false}
-                    disabled={isInputDisabled}
+                  // disabled={isInputDisabled}
 
                   />
                 </Form.Item>
@@ -252,7 +287,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     onChange={onChangeHandle}
                     inputValue={profileObject?.eircode}
                     isPrefix={false}
-                    disabled={isInputDisabled}
+                  // disabled={isInputDisabled}
 
                   />
                 </Form.Item>
@@ -275,14 +310,14 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   inputValue={profileObject?.objective}
                   name="objective"
                   onChange={onChangeHandle}
-                  disabled={isInputDisabled}
+                // disabled={isInputDisabled}
 
                 />
               </Form.Item>
             </div>
 
             <div className="profileItemButton">
-              <div style={{ paddingRight: "10px" }}>
+              {/* <div style={{ paddingRight: "10px" }}>
                 <Button
                   className={downloadBtn === true ? "skillsButton" : "skillsButton me-3 "}
                   type="primary"
@@ -290,14 +325,25 @@ const PersonalProfile = ({ setCurrent, current }) => {
                 >
                   Edit
                 </Button>
-              </div>
-
+              </div> */}
+             {downloadBtn &&( <Button
+                className={
+                  downloadBtn === false
+                    ? "disabledBtn me-3"
+                    : "skillsButton me-3 "
+                }
+                type="primary"
+                htmlType="submit"
+                onClick={(e) => SavePdf(e)}>
+                Download CV
+              </Button>)
+}
               <div>
                 <Button
                   className="profileButton mr-2"
                   type="primary"
                   htmlType="submit"
-                  disabled={isInputDisabled}
+                // disabled={isInputDisabled}
                 >
                   Save
                 </Button>

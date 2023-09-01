@@ -12,9 +12,11 @@ import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceI
 import "./Experenice.css";
 import { DeleteColumnOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
+import axios from "axios";
 import { deleteApiWithAuth, getApiWithAuth, postApiWithAuth } from "../../../utils/api";
 import Delete from "../../../assets/delete.png";
 import { API_URL } from "../../../utils/constants";
+
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -23,6 +25,7 @@ const Experenice = ({ setCurrent, current }) => {
   const [downloadBtn, setDownloadBtn] = useState(false);
   const [expereniceArray, setExpereniceArray] = useState([]);
   const [isCurrentCheck, setIsCurrentCheck] = useState(false);
+  const [userData, setUserData] = useState({});
   const [isInputDisabled, setIsInputDisabled] = useState(true);
   
   const getExperiance = async () => {
@@ -141,18 +144,43 @@ const Experenice = ({ setCurrent, current }) => {
     );
   };
 
-  const SavePdf = async () => {
-    const respose = await getApiWithAuth(API_URL.SAVEPDF);
+  const SavePdf = async (e) => {
+    e.preventDefault();
+    var token = localStorage.getItem("access_token", "");
 
-    if (respose.data.status === 201) {
-    } else {
-      message.error(respose.data.message);
-    }
+    const response = await axios.get(
+      `${process.env.REACT_APP_LINK_BASE_URL}cv/cv/`,
+      {
+        responseType: "blob", // Set the response type to 'blob'
+        headers: {
+          Authorization: `Bearer ${token}`, // Set the Authorization header
+        },
+      }
+    );
+
+    // Create a blob from the response data
+    const pdfBlob = new Blob([response.data], { type: "application/pdf" });
+
+    // Create a temporary URL for the blob
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+
+    // Create a link and initiate the download
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.download = `${userData.full_name}.pdf`; // Set the desired filename
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Clean up the temporary URL
+    URL.revokeObjectURL(pdfUrl);
   };
+
 
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
     if (response.data.status === 200) {
+      setUserData(response.data.data);
       if (response.data.data.current_step !== 3) {
         setIsInputDisabled(true);
       } else {
@@ -223,7 +251,7 @@ const Experenice = ({ setCurrent, current }) => {
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue?.job_title}
                           isPrefix={true}
-                          disabled={isInputDisabled}
+                          // disabled={isInputDisabled}
                         />
                       </Form.Item>
                     </div>
@@ -246,7 +274,7 @@ const Experenice = ({ setCurrent, current }) => {
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue?.company}
                           isPrefix={true}
-                          disabled={isInputDisabled}
+                          // disabled={isInputDisabled}
                         />
                       </Form.Item>
                     </div>
@@ -272,7 +300,7 @@ const Experenice = ({ setCurrent, current }) => {
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue.city}
                           isPrefix={true}
-                          disabled={isInputDisabled}
+                          // disabled={isInputDisabled}
                         />
                       </Form.Item>
                     </div>
@@ -295,7 +323,7 @@ const Experenice = ({ setCurrent, current }) => {
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue?.country}
                           isPrefix={true}
-                          disabled={isInputDisabled}
+                        
                         />
                       </Form.Item>
                     </div>
@@ -319,7 +347,7 @@ const Experenice = ({ setCurrent, current }) => {
                             onChangeDate("startdate", dateString, index)
                           }
                           className="expDateInputFieldStyle"
-                          disabled={isInputDisabled}
+                        
                           format="DD-MM-YYYY" // Format the selected date
                           value={dayjs(item?.dataValue.startdate, "DD-MM-YYYY")}
                           defaultValue={dayjs(
@@ -351,9 +379,8 @@ const Experenice = ({ setCurrent, current }) => {
                             item?.dataValue.enddate,
                             "DD-MM-YYYY"
                           )}
-                          disabled={
-                            item?.dataValue.is_current_work || isInputDisabled
-                          }
+                         
+                        
                           className="expDateInputFieldStyle"
                         />
                       </Form.Item>
@@ -362,6 +389,7 @@ const Experenice = ({ setCurrent, current }) => {
                           className="expCheckBox"
                           name="is_current_work"
                           inputValue={item?.dataValue?.is_current_work}
+                         
                           onChange={(e) => {
                             setExpereniceArray(
                               expereniceArray.map((item) => {
@@ -372,6 +400,7 @@ const Experenice = ({ setCurrent, current }) => {
                                         ...item.dataValue,
                                         is_current_work: e.target.checked,
                                       },
+                                      
                                     }
                                   : item;
                               })
@@ -404,17 +433,17 @@ const Experenice = ({ setCurrent, current }) => {
                         className="inputFieldStyle"
                         defaultValue={item?.dataValue?.description}
                         onChange={(event) => onChangeHandle(event, index)}
-                        disabled={isInputDisabled}
+                        // disabled={isInputDisabled}
                       />
                     </Form.Item>
                     <div className="mainContainerDelete">
-                    {!isInputDisabled && (
+                  
                       <img
                         className="deleteSubject"
                         src={Delete}
                         onClick={() => handleDeleteExperience(item.dataValue.id)}
                       />
-                    )}
+                   
                     </div>
                   </div>
 
@@ -469,7 +498,7 @@ const Experenice = ({ setCurrent, current }) => {
                 </Button>
               </Form.Item>
               <Form.Item>
-                <Button
+                {/* <Button
                   className={
                     downloadBtn === true
                       ? "skillsButton me-3"
@@ -479,12 +508,23 @@ const Experenice = ({ setCurrent, current }) => {
                   onClick={edit}
                 >
                   Edit
-                </Button>
+                </Button> */}
+                  {downloadBtn &&( <Button
+                className={
+                  downloadBtn === false
+                    ? "disabledBtn me-3"
+                    : "skillsButton me-3 "
+                }
+                type="primary"
+                htmlType="submit"
+                onClick={(e) => SavePdf(e)}>
+                Download CV
+              </Button>)}
                 <Button
                   className="expButton"
                   type="primary"
                   htmlType="submit"
-                  disabled={isInputDisabled}
+                  // disabled={isInputDisabled}
                 >
                   Save
                 </Button>

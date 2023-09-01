@@ -22,7 +22,7 @@ const Right = () => {
   const getducationGuidance = async () => {
     setLoading(true);
     const response = await getApiWithAuth("psychometric/calculate/");
-    console.log("educational guidence", response.data.data)
+  
     if (response?.data?.status === 200) {
       const testScore = response.data.data
 
@@ -33,8 +33,7 @@ const Right = () => {
           );
         }
       });
-      console.log("-====backend",response.data.data)
-
+    
       setEducationGuidance(response.data.data);
 
 
@@ -45,7 +44,7 @@ const Right = () => {
   };
   const getPsychometricTestNames = async () => {
     const response = await getApiWithAuth(API_URL.GETPSYCHOMETRICTEST);
-    // console.log("hello i am real psychometric test",response.data.data)
+   
     setPsychometricTestResult(response.data.data)
     if (response?.data?.status === 200) {
       const filterSCore = response.data.data.filter(
@@ -53,7 +52,7 @@ const Right = () => {
 
       );
      
-      // console.log("filterscore",filterSCore)
+     
       setPsychometricTestName(filterSCore);
 
     }
@@ -79,6 +78,7 @@ const Right = () => {
     dataLabels: {
       enabled: false,
     },
+    
     labels: educationGuidance.map((item) => item.scores.map((score) => score.name))
       .flat(),
     // colors: ["#440542", "#592422"],
@@ -88,14 +88,17 @@ const Right = () => {
           .map((item) => item.scores.map((score) => score.score))
           .flat(),
       },
+   
     ],
+   
   };
+
   useEffect(() => {
 
   }, [educationGuidance]);
 
   useEffect(() => {
-
+   
   }, [psychometricTestName]);
 
   // const chartColors = ["#b9bab8", "#87aded", "#a4eba9"];
@@ -148,7 +151,7 @@ const Right = () => {
                 const labels = item.scores.map((score) => score.name.split("/"));
                 const series = item.scores.map((score) => score.score);
                 let chartColor;
-                console.log("untakend test", psychometricTestName)
+              
                 if (item.test_name == 'Occupational Values Assesment') {
 
                   chartColor = '#87aded';
@@ -162,12 +165,25 @@ const Right = () => {
                   ...options,
                   labels,
                   series: [{ data: series }],
+
                   plotOptions: {
                     bar: {
                       horizontal: true,
                     },
                   },
                   colors: [chartColor],
+                  tooltip: {
+                    y: {
+                      formatter: function(val) {
+                        return val
+                      },
+                      title: {
+                        formatter: function (seriesName) {
+                          return ''
+                        }
+                      }
+                    }
+                  }
                 };
 
                 return (
@@ -175,7 +191,7 @@ const Right = () => {
                     <div className="h-[30px] flex justify-between items-center mt-5 chartHeadingwBtn">
                       {/* {psychometricTestName.map((item) => ( */}
                       <div className="leftGraphBtn">
-                        {console.log("items",item)}
+                        
                         <button
                           onClick={() =>
                             navigate("/occupation", {
@@ -185,7 +201,7 @@ const Right = () => {
                         >
                           View Result
                         </button>
-                        {console.log("helllo i am inside ", item)}
+                      
                       </div>
                       {/* ))} */}
                       <p className="text-[#474749] mt-3 sm:text-[15px text-[16px] font-bold chartHeading">
