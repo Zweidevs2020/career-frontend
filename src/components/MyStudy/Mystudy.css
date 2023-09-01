@@ -19,7 +19,53 @@
     white-space: nowrap;
     width: 85%
 }
+.fc-direction-ltr .fc-toolbar>*>:not(:first-child) {
+  
+    display: none;
+}
+.fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+   
+    margin-left: 11rem;
+}
 
+.fc .fc-button-primary {
+    background-color: #1476B7;
+    border:none;
+    color: white;
+    width: 5rem;
+}
+.fc .fc-button-primary:hover {
+    background-color:#1476B7 ;
+    border:none;
+    color: white;
+}
+.fc-icon-chevron-left:before {
+    content: "\e900 Previous";
+    font-size: 14px;
+    margin-left: -1.5rem;
+   
+}
+.fc .fc-button {
+    border-radius: 1.25em;
+}
+.fc-direction-ltr .fc-button-group>.fc-button:not(:last-child) {
+    border-bottom-right-radius: 1rem;
+    border-top-right-radius: 1rem!important;
+}
+.fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    border-bottom-left-radius: 1rem;
+    border-top-left-radius: 1rem;
+}
+.fc-icon-chevron-right:before {
+    content: "\e901 Next";
+    font-size: 14px;
+    margin-left: -1rem;
+}
+.fc .fc-button .fc-icon {
+    font-size: 1.5em;
+    margin-bottom: 1rem;
+    vertical-align:auto !important;
+}
 .disabledBtnStyle {
     background-color: gray;
     cursor: not-allowed;
@@ -64,6 +110,7 @@ fc-col-header-cell-cushion {
     .fc .fc-col-header-cell-cushion {
         font-size: 8px !important;
     }
+    
 }
 
 @media (min-width: 500px) and (max-width: 767px) {

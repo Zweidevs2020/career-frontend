@@ -306,10 +306,8 @@ padding-left: 20px;
 }
 .textAreaMyGoal
 {
-
-  width:97%;
+  width:100%;
   border: 2px gray !important;
-
 }
 .textAreaMyGoal textarea
 {

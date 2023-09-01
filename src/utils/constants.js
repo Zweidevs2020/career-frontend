@@ -36,5 +36,6 @@ export const API_URL = {
   GETMYGOALPDF:'goals/goalPdf/',
   DELETE:'/cv/delete-education',
   DELETE_EXPERIENCE:'/cv/delete-experience',
-  DELETE_RESULT:'/cv/delete-junior-cert'
+  DELETE_RESULT:'/cv/delete-junior-cert',
+  SENDCV:'cv/sendcv/'
 };

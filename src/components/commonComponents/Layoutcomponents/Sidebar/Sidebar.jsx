@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import {
   Modal,
@@ -10,7 +11,10 @@ import {
   Popover,
   Input,
   Row,
+  Drawer,
   Col,
+  Space,
+  Button,
   message,
 } from "antd";
 import mycareer from "../../../../assets/my-guidance-logo1.png";
@@ -44,13 +48,13 @@ import {
   patchApiWithAuth,
 } from "../../../../utils/api";
 import MyCareerGuidanceButton from "../../MyCareerGuidanceButton";
-import { MenuFoldOutlined, MenuOutlined } from "@ant-design/icons";
+import { CloseOutlined, MenuFoldOutlined, MenuOutlined, PlusOutlined } from "@ant-design/icons";
 const { Content, Sider, Header } = Layout;
 const Sidebar = ({ children, flags }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [collapsed, setCollapsed] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState("Overview");
   const [userData, setUserData] = useState({});
   const [updateData, setUpdateData] = useState({});
@@ -62,10 +66,20 @@ const Sidebar = ({ children, flags }) => {
     width: window.innerWidth,
     height: window.innerHeight,
   });
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // State to manage sidebar visibility
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+
+  const [open, setOpen] = useState(false);
+  const [placement, setPlacement] = useState('left');
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen); // Toggle sidebar visibility
+    setIsSidebarOpen(!isSidebarOpen);
   };
   useEffect(() => {
     const handleResize = () => {
@@ -668,13 +682,140 @@ const Sidebar = ({ children, flags }) => {
           }}
         >
 
+
+          <Drawer
+          
+            placement={placement}
+            
+            onClose={onClose}
+            open={open}
+         
+            key={placement}
+          
+          >
+            <img src={myCareer} style={{position:'absolute',zIndex:'0',width:'2.3rem'}} className="drawerIcon" alt="cyberLegendLogo" width="100%" />
+             <Menu
+                selectedKeys={selectedMenuItem}
+                mode="inline"
+                className=""
+                onClick={(e) => componentsSwtich(e.key)}
+              >
+                <Menu.Item
+                  key="Overview"
+
+                >
+                  <span className="textStyling">
+                    Overview{" "}
+                    {selectedMenuItem === "Overview" ? (
+                      <span> &nbsp;&nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
+                </Menu.Item>
+                <Menu.Item
+                  key="CAOCalculator"
+                >
+                  <span className="textStyling">
+                    CAO Calculator{" "}
+                    {selectedMenuItem === "CAOCalculator" ? (
+                      <span> &nbsp;&nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
+                </Menu.Item>
+
+                <Menu.Item
+                  key="MyGoals"
+
+                >
+                  <span className="textStyling">
+                    My Goals{" "}
+                    {selectedMenuItem === "MyGoals" ? (
+                      <span> &nbsp;&nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
+                </Menu.Item>
+                <Menu.Item
+                  key="CoverLater"
+
+                >
+                  <span className="textStyling">
+                    My CV{" "}
+                    {selectedMenuItem === "CoverLater" ? (
+                      <span> &nbsp;&nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
+                </Menu.Item>
+                <Menu.Item
+                  key="SelfAssessment"
+
+                >
+                  <span className="textStyling">
+                    My Self Assessment{" "}
+                    {selectedMenuItem === "SelfAssessment" ? (
+                      <span> &nbsp;&nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
+                </Menu.Item>
+                <Menu.Item
+                  key="MyStudy"
+
+                >
+                  <span className="textStyling">
+                    My Study{" "}
+                    {selectedMenuItem === "MyStudy" ? (
+                      <span> &nbsp;&nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
+                </Menu.Item>
+                <Menu.Item
+                  key="MyChoices"
+
+                >
+                  <span className="textStyling">
+                    My Choices{" "}
+                    {selectedMenuItem === "MyChoices" ? (
+                      <span> &nbsp;&nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
+                </Menu.Item>
+                <Menu.Item
+                  key="EducationalGuidance"
+
+                >
+                  <span className="textStyling">
+                    My Educational Guidance
+                    {selectedMenuItem === "EducationalGuidance" ? (
+                      <span> &nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
+                </Menu.Item>
+              </Menu>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: 30,
+                }}
+                className="careerBtnDiv"
+              >
+                <MyCareerGuidanceButton
+                  label="Logout"
+                  className="mobLogoutBtn"
+                  type="primary"
+                  htmlType="button"
+                  onClick={logoutUser}
+              
+                />
+              </div>
+          </Drawer>
+          {/* 
           {isSidebarOpen && (<Sider className="backgroundColorSidebar"  >
-            <div className="menuIcon " style={{display:'flex',justifyContent:'center'}}>
-              {/* <img src={myCareer} alt="cyberLegendLogo" width="40%" /> */}
+         
+            <div className="menuIcon " >
+             
               <MenuOutlined onClick={toggleSidebar} />
             </div>
-           
-            {isSidebarOpen && (<div className="selectTextMain">
+
+            {isSidebarOpen && (<div className="selectTextMain" >
               <Menu
                 selectedKeys={selectedMenuItem}
                 mode="inline"
@@ -683,107 +824,91 @@ const Sidebar = ({ children, flags }) => {
               >
                 <Menu.Item
                   key="Overview"
-                  icon={
-                    <HomeSvg
-                      fill={
-                        selectedMenuItem === "Overview" ? "#1476B7" : "#BDBDBD"
-                      }
-                    />
-                  }
-                >
 
+                >
+                  <span className="textStyling">
+                    Overview{" "}
+                    {selectedMenuItem === "Overview" ? (
+                      <span> &nbsp;&nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
                 </Menu.Item>
                 <Menu.Item
                   key="CAOCalculator"
-                  icon={
-                    <CalculatorSvg
-                      fill={
-                        selectedMenuItem === "CAOCalculator"
-                          ? "#1476B7"
-                          : "#BDBDBD"
-                      }
-                    />
-                  }
                 >
-
+                  <span className="textStyling">
+                    CAO Calculator{" "}
+                    {selectedMenuItem === "CAOCalculator" ? (
+                      <span> &nbsp;&nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
                 </Menu.Item>
+
                 <Menu.Item
                   key="MyGoals"
-                  icon={
-                    <GoalSvg
-                      fill={
-                        selectedMenuItem === "MyGoals" ? "#1476B7" : "#BDBDBD"
-                      }
-                    />
-                  }
-                >
 
+                >
+                  <span className="textStyling">
+                    My Goals{" "}
+                    {selectedMenuItem === "MyGoals" ? (
+                      <span> &nbsp;&nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
                 </Menu.Item>
                 <Menu.Item
                   key="CoverLater"
-                  icon={
-                    <ProfileSvg
-                      fill={
-                        selectedMenuItem === "CoverLater"
-                          ? "#1476B7"
-                          : "#BDBDBD"
-                      }
-                    />
-                  }
-                >
 
+                >
+                  <span className="textStyling">
+                    My CV{" "}
+                    {selectedMenuItem === "CoverLater" ? (
+                      <span> &nbsp;&nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
                 </Menu.Item>
                 <Menu.Item
                   key="SelfAssessment"
-                  icon={
-                    <AssesmentSvg
-                      fill={
-                        selectedMenuItem === "SelfAssessment"
-                          ? "#1476B7"
-                          : "#BDBDBD"
-                      }
-                    />
-                  }
-                >
 
+                >
+                  <span className="textStyling">
+                    My Self Assessment{" "}
+                    {selectedMenuItem === "SelfAssessment" ? (
+                      <span> &nbsp;&nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
                 </Menu.Item>
                 <Menu.Item
                   key="MyStudy"
-                  icon={
-                    <StudySvg
-                      fill={
-                        selectedMenuItem === "MyStudy" ? "#1476B7" : "#BDBDBD"
-                      }
-                    />
-                  }
-                >
 
+                >
+                  <span className="textStyling">
+                    My Study{" "}
+                    {selectedMenuItem === "MyStudy" ? (
+                      <span> &nbsp;&nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
                 </Menu.Item>
                 <Menu.Item
                   key="MyChoices"
-                  icon={
-                    <ChoicesSvg
-                      fill={
-                        selectedMenuItem === "MyChoices" ? "#1476B7" : "#BDBDBD"
-                      }
-                    />
-                  }
-                >
 
+                >
+                  <span className="textStyling">
+                    My Choices{" "}
+                    {selectedMenuItem === "MyChoices" ? (
+                      <span> &nbsp;&nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
                 </Menu.Item>
                 <Menu.Item
                   key="EducationalGuidance"
-                  icon={
-                    <EducationalSvg
-                      fill={
-                        selectedMenuItem === "EducationalGuidance"
-                          ? "#1476B7"
-                          : "#BDBDBD"
-                      }
-                    />
-                  }
-                >
 
+                >
+                  <span className="textStyling">
+                    My Educational Guidance
+                    {selectedMenuItem === "EducationalGuidance" ? (
+                      <span> &nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
                 </Menu.Item>
               </Menu>
 
@@ -796,44 +921,33 @@ const Sidebar = ({ children, flags }) => {
                 className="careerBtnDiv"
               >
                 <MyCareerGuidanceButton
-
+                  label="Logout"
                   className="mobLogoutBtn"
                   type="primary"
                   htmlType="button"
                   onClick={logoutUser}
-                  icon={
-                    <Image
-                      preview={false}
-                      src={logout1}
-                      width={20}
-                      style={{ paddingRight: 4 }}
-                    />
-                  }
+              
                 />
               </div>
 
 
             </div>
             )}
-          </Sider>)}
+          </Sider>)} */}
 
           <Layout className="site-layout">
 
             <Header className="Navbar">
-
-           
-              {!isSidebarOpen && <div className="menuIconSidebarHide " onClick={toggleSidebar}>
-
+              <div className="menuIconSidebarHide " onClick={showDrawer}>
                 <MenuOutlined />
-              </div>}
-             
-              <div className="logoStyle mt-3 " style={{width:"200px"}}>
-
+              </div>
+              <div className={`logoStyle mt-3 ${isSidebarOpen ? 'sidebarOpen' : ''}`} style={{ width: "200px", marginRight: !isSidebarOpen ? '-1rem' : '0' }}>
                 <img src={myCareer} alt="cyberLegendLogo" width="100%" />
 
               </div>
-              <div style={{width:"200px"}} className="img" onClick={() => showModal()}>
-                <div className="imgcard" style={{width:'100%'}}>
+
+              <div style={{ width: "209px" }} className="img" onClick={() => showModal()}>
+                <div className="imgcard" style={{ width: '100%' }}>
                   <img src={userData.profile_image} className="cardprofile" />
                   <div className="cardtext">
                     <p className="name" style={{ height: 20, color: "white" }}>

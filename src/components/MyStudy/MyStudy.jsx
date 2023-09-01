@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Spin, message, Button, TimePicker, Modal, Select } from "antd";
 import dayjs from "dayjs";
-
 import {
   getApiWithAuth,
   postApiWithAuth,
@@ -19,6 +18,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import moment from "moment";
 import { API_URL } from "../../utils/constants";
+
 import "./Mystudy.css";
 const isMobile = window.innerWidth <= 768;
 const MyStudy = () => {
@@ -47,14 +47,11 @@ const MyStudy = () => {
   const handleCloseBooking = () => setOpenBooking(false);
   const handleCloseBooking2 = () => setDeleteBooking(false);
   const [errorMessage, setErrorMessage] = useState("");
-
   const handleOpenViewBooking = () => setOpenViewBooking(true);
   const handleCloseViewBooking = () => setOpenViewBooking(false);
 
   const [selectedEvent, setSelectedEvent] = useState(null);
-
   const optionArray = [];
-
   const startTime = new Date("2000-01-01T06:00:00");
   const endTime = new Date("2000-01-02T00:00:00");
   const interval = 30 * 60 * 1000;
@@ -105,7 +102,6 @@ const MyStudy = () => {
           viewData
         );
         event.event.setProp("start", start);
-
         event.event.setProp("end", end);
 
       } catch (error) {
@@ -132,13 +128,11 @@ const MyStudy = () => {
     }
   };
 
-
   const handleEditCalender = async (id, viewData) => {
 
     setUpdateLoading(true);
     const startTime = moment(viewData.start).format("hh:mm:ss");
     const endTime = dayjs(viewData.end).format("hh:mm:ss");
-
 
     try {
       const response = await putApiWithAuth(`timetable/update-timeslot/${id}`, {
@@ -153,7 +147,7 @@ const MyStudy = () => {
         message.success("Booking Updated Successfully");
 
         const updatedCalenderData = arr.map((item) => {
-          // if (item.id === parseInt(viewData.id)) {
+         
           return {
             ...item,
             title: viewData.title,
@@ -244,9 +238,6 @@ const MyStudy = () => {
     );
   }
 
-
-
-
   const handleDateSelect = (selectInfo, b) => {
     if (b !== undefined) {
 
@@ -271,22 +262,20 @@ const MyStudy = () => {
       setWeekDay(selectedStart.getDay().toString());
       setTitle(selectInfo?.event?._def?.extendedProps.title)
       const startTime = selectInfo?.event?._def?.extendedProps.start;
-      console.log('=============================start',startTime)
+
       const originalDateStart = moment(startTime, "ddd MMM D YYYY HH:mm:ss ZZ");
 
-      // Convert to 12-hour format with "pm" notation
       const formattedDateStart = originalDateStart.format("hh:mm A");
 
-      // const startTimeString = moment(startTime, ["h:mm A"]).format("HH:mm");
       setSelectedTime(formattedDateStart);
 
       const endTime = selectInfo?.event?._def?.extendedProps.end;
       const originalDateEnd = moment(endTime, "ddd MMM D YYYY HH:mm:ss ZZ");
       const formattedDateEnd = originalDateEnd.format("hh:mm A");
-      // const endTimeString = moment(formattedDateEnd).format("HH:mm");
+    
       setSelectedEndTime(formattedDateEnd);
-      // const selectedEnd = new Date(selectedStart.getTime() + 30 * 60 * 1000); // Add 30 minutes
-      // setSelectedEndTime(selectedEnd.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }));
+
+
 
       handleOpenBooking();
     }
@@ -346,27 +335,17 @@ const MyStudy = () => {
       message.error(respose.data.message);
     }
   };
-
-  // const handleEventClick = (clickInfo) => {
-  //   const clickedEvent = clickInfo.event;
-  //   setSelectedEventStart(clickedEvent.start);
-  //   setSelectedEventEnd(clickedEvent.end);
-  //   setViewData(clickedEvent.extendedProps);
-  //   handleOpenViewBooking();
-  //   // setViewData(clickInfo.event._def.extendedProps);
-  //   // handleOpenViewBooking();
-  // };
-  // const handleEventClick = (clickInfo) => {
-  //   const eventData = clickInfo.event._def.extendedProps;
-  //   setSelectedEvent({
-  //     id: eventData.selectID,
-  //     title: eventData.title,
-  //     start: new Date(eventData.start),
-  //     end: new Date(eventData.end),
-  //   });
-  //   handleOpenViewBooking();
-  // };
-
+ 
+  const updateDataTime = (newDate) => {
+    const weekStart = moment(newDate).startOf("week");
+    const updatedDataTime = [];
+    for (let i = 0; i <= 6; i++) {
+      updatedDataTime.push(
+        moment(weekStart).add(i, "days").format("ddd MMMM DD YYYY")
+      );
+    }
+    setDatatime(updatedDataTime);
+  };
 
   const handleEventClick = (clickInfo) => {
     const eventData = clickInfo.event._def.extendedProps;
@@ -415,11 +394,10 @@ const MyStudy = () => {
 
   const handleEdit = async (id) => {
     setUpdateLoading(true);
-    console.log("viedata", viewData)
+
     let startTime = moment(viewData.start).format("hh:mm:ss");
     let endTime = dayjs(viewData.end).format("hh:mm:ss");
 
-    console.log("hello start time", startTime, endTime)
     // let dataarr = []
     // data.map((e,i)=>(
     //   dataarr.push(e.day)
@@ -442,6 +420,10 @@ const MyStudy = () => {
     }
   };
 
+  // useEffect(() => {
+  //   getCalanderData();
+  //   updateDataTime(currentDate);
+  // }, [currentDate]);
 
   const handleTimeChange = (start, end) => {
 
@@ -460,10 +442,9 @@ const MyStudy = () => {
       setErrorMessage("");
     }
   };
-
+  const [nextDayOfWeek, setNextDayOfWeek] = useState("");
 
   function handleChange(value) {
-
     setSelectedTime(value);
     handleTimeChange(value, selectedEndTime);
   }
@@ -472,6 +453,7 @@ const MyStudy = () => {
     setSelectedEndTime(value);
     handleTimeChange(selectedTime, value);
   }
+
   return (
     <>
       <div className="educationalGuidanceMainDiv">
@@ -495,41 +477,55 @@ const MyStudy = () => {
         {loading ? (
           <Spin className="spinStyle" />
         ) : (
-          <FullCalendar
-            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-            headerToolbar={{
-              left: "",
-              center: "",
-              right: "",
-            }}
-            initialView={isMobile ? "timeGridWeek" : "timeGridWeek"}
-            events={calenderData}
-            eventContent={renderEventContent}
-            eventClick={handleDateSelect}
-            longPressDelay={1}
-            select={(arg) => {
-              handleDateSelect(arg.start, arg.end);
-            }}
-            selectable={true}
-            editable={true}
-            weekends={true}
-            eventDrop={handleEventDrop}
-            eventResize={handleEventResize}
-            allDaySlot={false}
-            height="100vh"
-            dayMaxEventRows={isMobile ? 1 : 5}
-            dayHeaderContent={(args) => {
-              const date = args.date;
-              const dayOfWeek = date.toLocaleString("default", {
-                weekday: "long",
-              });
-              return `${dayOfWeek}`;
-            }}
-            slotMinTime="06:00:00"
-          />
-        )}
-      </div>
+          <>
+            <FullCalendar
+              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+              headerToolbar={
+                isMobile
+                  ? {
+                    left: "prev,next",
+                    center: "",
+                    right: "",
+                  }
+                  : {
+                    left: "",
+                    center: "",
+                    right: "",
+                  }
+              }
 
+              initialView={isMobile ? "timeGridDay" : "timeGridWeek"}
+              events={calenderData}
+              eventContent={renderEventContent}
+              eventClick={handleDateSelect}
+              longPressDelay={1}
+              select={(arg) => {
+                handleDateSelect(arg.start, arg.end);
+              }}
+           
+              selectable={true}
+              editable={true}
+              weekends={true}
+              eventDrop={handleEventDrop}
+              eventResize={handleEventResize}
+              allDaySlot={false}
+              height="100vh"
+              dayMaxEventRows={isMobile ? 1 : 5}
+              dayHeaderContent={(args) => {
+                const date = args.date;
+                console.log("dateeee", date)
+                const dayOfWeek = date.toLocaleString("default", {
+                  weekday: "long",
+                });
+                console.log("dayofweek", dayOfWeek)
+                return `${dayOfWeek}`;
+              }}
+              slotMinTime="06:00:00"
+            />
+          </>)}
+
+      </div>
+      {console.log("dayofweek",)}
       <Modal
         className="modalStyleClass"
         bodyStyle={{
@@ -559,7 +555,6 @@ const MyStudy = () => {
               placeholder="Select time"
               onChange={handleChange}
               value={selectedTime}
-              {...console.log("dsdsdsdddddddddddddd")}
               className="inputFieldStyleSelect"
             >
               {optionArray.map((option) => (
@@ -605,6 +600,7 @@ const MyStudy = () => {
       </Modal>
 
     </>
+
   );
 };
 
