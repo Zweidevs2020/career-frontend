@@ -13,6 +13,16 @@
   cursor: pointer;
 
 }
+.myChoicesRow{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 95px;
+}
+.mainContainerRow{
+  display: flex;
+  align-items: center;
+}
 
 .choicesWithBorder {
   background: #ffffff;
@@ -47,4 +57,85 @@
   border: 1px solid #1476B7;
   color: #1476b7;
 
+}
+/* ////////////////// */
+
+@media screen and (max-width: 400px) {
+  .quizHeadingStyle {
+   
+    font-size: 10px;
+    line-height: 17px;
+ 
+}
+.myChoicesRow{
+  display: block;
+ 
+  align-items: center;
+  height: 95px;
+}
+.choicesWithoutBorder {
+  
+  height: 155px;
+}
+.mainContainerRow {
+  width: 14rem;
+  margin-top: 1rem;
+ 
+}
+.addChoicesButton {
+  min-width: 14rem !important;
+  
+}
+.ps-4 {
+  padding-inline-start: 2rem;
+}
+.editButtonMobileView{
+display: flex;
+align-items: center;
+justify-content: center;
+margin-top: 1rem;
+}
+.me-3 {
+  margin-inline-end: 0px !important;
+}
+}
+
+
+/* ////////////////////// */
+
+
+
+/* 401 se 502 pixels ke screens ke liye */
+@media screen and (min-width: 401px) and (max-width: 502px) {
+  .quizHeadingStyle {
+    font-size: 12px;
+    line-height: 17px;
+  }
+  .myChoicesRow {
+    display: block;
+    align-items: center;
+    height: 95px;
+  }
+  .choicesWithoutBorder {
+    height: 155px;
+  }
+  .mainContainerRow {
+    width: 17rem;
+    margin-top: 1rem;
+  }
+  .me-3 {
+    margin-inline-end: 0px !important;
+}
+  .addChoicesButton {
+    min-width: 16rem !important;
+  }
+  .ps-4 {
+    padding-inline-start: 3rem;
+  }
+  .editButtonMobileView {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+  }
 }

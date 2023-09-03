@@ -24,7 +24,24 @@ const MyChoices = () => {
   const [choices, setChoices] = useState([]);
   const [userGetChoices, setUserGetChoices] = useState([]);
   const [data, setData] = useState([]);
+  const [screenSize, setScreenSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  
   const choicesData = [
     {
       id: "level8",
@@ -148,16 +165,11 @@ const MyChoices = () => {
             ) : (
               choicesData.map((item, index) => {
                 return (
-                  <div className={"choicesWithoutBorder"} key={index}>
+                 <> <div className={"choicesWithoutBorder"} key={index}>
                     <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        height: "95px",
-                      }}
+                      className="myChoicesRow"
                     >
-                      <div style={{ display: "flex", alignItems: "center" }}>
+                      <div  className="mainContainerRow">
                         <img
                           src={item.icon}
                           alt="cyberLegendLogo"
@@ -165,7 +177,7 @@ const MyChoices = () => {
                         />
                         <div className="ps-4 quizHeadingStyle">{item.name}</div>
                       </div>
-                      <div>
+                      <div className="editButtonMobileView" >
                         <Button
                           className="addChoicesButton me-3 "
                           type="primary"
@@ -181,7 +193,7 @@ const MyChoices = () => {
                        
                       </div>
                     </div>
-                  </div>
+                  </div></>
                 );
               })
             )}
