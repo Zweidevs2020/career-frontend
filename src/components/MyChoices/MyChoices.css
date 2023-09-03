@@ -83,7 +83,7 @@
  
 }
 .addChoicesButton {
-  min-width: 10rem !important;
+  min-width: 14rem !important;
   
 }
 .ps-4 {
@@ -94,6 +94,9 @@ display: flex;
 align-items: center;
 justify-content: center;
 margin-top: 1rem;
+}
+.me-3 {
+  margin-inline-end: 0px !important;
 }
 }
 
@@ -120,8 +123,11 @@ margin-top: 1rem;
     width: 17rem;
     margin-top: 1rem;
   }
+  .me-3 {
+    margin-inline-end: 0px !important;
+}
   .addChoicesButton {
-    min-width: 10rem !important;
+    min-width: 16rem !important;
   }
   .ps-4 {
     padding-inline-start: 3rem;
