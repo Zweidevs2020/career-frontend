@@ -87,6 +87,24 @@ const Selfassesment = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  const [screenSize, setScreenSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  
   
   return (
     <>
@@ -108,7 +126,7 @@ const Selfassesment = () => {
             let chartOptions;
             if (mapData?.test_results?.length > 0) {
               const labels = mapData?.test_results[0]?.question_scores?.map(
-                (score) => score.question
+                (score) => score.question.split("/")
               );
               const series = mapData?.test_results[0]?.question_scores?.map(
                 (score) => score.score
@@ -137,13 +155,15 @@ const Selfassesment = () => {
                     className={`${!mapData.complete ? 'grayed-out-container' : ''
                       }`}
                   >
+                 
                     <Chart
                       options={chartOptions}
                       series={chartOptions.series}
                       type="bar"
-                      width={450}
+                      width={screenSize.width > '748' ? '450' : '330'}
                       height={320}
                     />
+               
                   </div>
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     {!mapData.complete ? (

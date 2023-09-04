@@ -11,7 +11,7 @@ const MyCareerGuidanceButton = (props) => {
         disabled={props.disabled}
         className={props.className}
         htmlType={props.htmlType}
-        style={{color:props.color, backgroundColor:props.backgroundColor}}
+        style={{color:props.color, backgroundColor:props.backgroundColor,width:props.width ? props.width : null}}
       >
         {props.label}
       </Button>
