@@ -193,7 +193,7 @@ const MyGoal = () => {
                   onChange={(e) => setProffession(e.target.value)}
                   name="input"
                   placeholder=" EG: Accountant or save the planet"
-                  className="inputCarrer sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
+                  className="inputCarrer sm:text-[8px] md:text-[10px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
                 />
               </div>
 
@@ -221,7 +221,7 @@ const MyGoal = () => {
                   <TextArea
                     value={description}
                     style={{ border: "2px solid grey", lineHeight: "normal", display: "flex", alignItems: "center" }}
-                    className="inputCarrer sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
+                    className="inputCarrer sm:text-[8px] md:text-[10px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
                     onChange={(e) => setDescription(e.target.value)}
                   >
                   </TextArea>
@@ -239,7 +239,7 @@ const MyGoal = () => {
                   name="action1"
                   value={actions.action1}
                   style={{width:"97%"}}
-                  className=" sm:text-[8px] md:text-[8px] xl:text-[11px] px-2 mt-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[100%] rounded-md border-solid border-2 border-gray-400 outline-none "
+                  className=" sm:text-[8px] md:text-[10px] xl:text-[11px] px-2 mt-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[100%] rounded-md border-solid border-2 border-gray-400 outline-none "
                   onChange={(e) => {
                     onChangeHandle(e);
                   }}
@@ -250,7 +250,7 @@ const MyGoal = () => {
                   name="action2"
                   value={actions.action2}
                   style={{width:"97%"}}
-                  className=" px-2 sm:text-[8px] md:text-[8px] mt-2 h-[50px] xl:text-[11px] w-[100%] sm:w-[30%] sm:h-[35px] md:h-[38px] rounded-md border-solid border-2 border-gray-400 outline-none "
+                  className=" px-2 sm:text-[8px] md:text-[10px] mt-2 h-[50px] xl:text-[11px] w-[100%] sm:w-[30%] sm:h-[35px] md:h-[38px] rounded-md border-solid border-2 border-gray-400 outline-none "
                   onChange={(e) => {
                     onChangeHandle(e);
                   }}

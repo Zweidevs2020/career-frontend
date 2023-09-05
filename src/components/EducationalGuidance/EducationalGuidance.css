@@ -160,7 +160,7 @@ min-height: 140px;
 }
 
 .takeTestMobile {
-  width: 10%;
+  width: 9.5%;
   /* border: 2px solid red; */
 }
 .mobileEducationalRow{
@@ -206,7 +206,7 @@ margin-top: 30px;
   align-items: center;
   }
 
-@media (max-width: 860px) {
+@media (max-width: 913px) {
   .retake {
     display: none;
     /* border: 3px solid red; */
@@ -237,6 +237,7 @@ justify-content: center;
 }
 .takeTestMobile{
   display: none;
+  width: 24.5% !important;
 }
 .quizDetailsStyle{
   text-align: start;
@@ -244,12 +245,16 @@ justify-content: center;
 }
 }
 
-
-
-
 @media only screen and (min-width: 651px) and (max-width: 1200px) {
-  .viewResultButton {
-    margin-left: 0px;
-  }
 
+  .takeTestMobile {
+    width: 20.5%;
+   
+}
+}
+@media only screen and (min-width: 1200px) and (max-width: 1280px) {
+
+  .takeTestMobile {
+    width: 14.5%;
+}
 }
