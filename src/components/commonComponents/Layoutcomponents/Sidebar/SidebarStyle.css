@@ -41,7 +41,75 @@
   padding-left: 14px;
   height: 58px !important;
 }
+.firstOption {
+  display: flex;
+  justify-content: center !important;
+  padding-top: 30px;
+}
 
+.firstOption1 {
+  display: flex;
+  justify-content: center !important;
+  padding-right: 20px;
+  padding-top: 10px;
+}
+
+.firstHead {
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #737373;
+}
+
+.sidebarHomeImage {
+  padding-right: 20px;
+}
+
+.mainContainerSideBar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.overviewHead {
+  width: 150px;
+  cursor: pointer;
+}
+
+.overviewHead2 {
+  width: 170px;
+  cursor: pointer;
+}
+
+.cvHead {
+  width: 170px;
+  cursor: pointer;
+}
+
+.selfHead {
+  width: 170px;
+  cursor: pointer;
+}
+
+.studyHead {
+  width: 170px;
+  cursor: pointer;
+}
+
+.study {
+  width: 170px;
+  cursor: pointer;
+}
+
+.dotStyle {
+  height: 5px;
+  width: 5px;
+  border-radius: 5px;
+  background-color: white;
+}
 .Navbar {
   background-color: #f8fafc;
   display: flex;
@@ -779,7 +847,7 @@
   }
 }
 
-@media only screen and (max-width: 1024px) and (min-width: 769px) {
+@media only screen and (max-width: 1024px) and (min-width: 768px) {
   .Navbar {
     display: flex;
     justify-content: space-between;
@@ -791,85 +859,20 @@
   }
 
   .nav-text {
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .img {
     width: 70%;
+    margin-right: 8%;
   }
 
   .imgcard {
     width: 100%;
     height: 50px;
   }
+  .email{
+    font-size: 8px;
+  }
 }
 
-.firstOption {
-  display: flex;
-  justify-content: center !important;
-  padding-top: 30px;
-}
-
-.firstOption1 {
-  display: flex;
-  justify-content: center !important;
-  padding-right: 20px;
-  padding-top: 10px;
-}
-
-.firstHead {
-  font-family: Poppins;
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 21px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: #737373;
-}
-
-.sidebarHomeImage {
-  padding-right: 20px;
-}
-
-.mainContainerSideBar {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.overviewHead {
-  width: 150px;
-  cursor: pointer;
-}
-
-.overviewHead2 {
-  width: 170px;
-  cursor: pointer;
-}
-
-.cvHead {
-  width: 170px;
-  cursor: pointer;
-}
-
-.selfHead {
-  width: 170px;
-  cursor: pointer;
-}
-
-.studyHead {
-  width: 170px;
-  cursor: pointer;
-}
-
-.study {
-  width: 170px;
-  cursor: pointer;
-}
-
-.dotStyle {
-  height: 5px;
-  width: 5px;
-  border-radius: 5px;
-  background-color: white;
-}
