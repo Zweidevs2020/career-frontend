@@ -12,13 +12,21 @@
   padding: 20px;
 }
 
-.quizStyle {
+.quizMain {
+
   background: white;
   box-shadow: 0px 5px 11px rgba(0, 0, 0, 0.02);
   border-radius: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
-  height: 140px;
+min-height: 140px;
+}
+
+.educationalButtonBottom{
+  display: none;
+}
+
+.quizStyle {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,6 +35,7 @@
 .width90 {
   width: 90%;
   display: flex;
+  margin-top: 20px;
   justify-content: space-between;
   align-items: center;
 }
@@ -39,6 +48,7 @@
   line-height: 30px;
   color: #303030;
 }
+
 .quizDetailsStyle {
   font-family: Poppins;
   font-style: normal;
@@ -47,6 +57,7 @@
   line-height: 18px;
   color: #807a7a;
 }
+
 .takebutton {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -62,6 +73,7 @@
   text-align: center;
   color: #ffffff;
 }
+
 .viewResultButtonupdate {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -98,11 +110,13 @@
   color: #1476b7;
   margin-left: 15px;
 }
+
 .modalStyleClass {
   border-radius: 15px;
   width: 528px;
   height: 400px;
 }
+
 .totalScoreHadding {
   font-family: "Poppins";
   font-style: normal;
@@ -111,10 +125,12 @@
   line-height: 36px;
   color: #474749;
 }
+
 .modalInnerStyle {
   margin-top: 50px;
   width: 90%;
 }
+
 .resultDataButton {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -131,50 +147,109 @@
   color: #ffffff;
   letter-spacing: 2px;
 }
-.spinStyle{
+
+.spinStyle {
   height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-@media only screen and (min-width: 0px) and (max-width: 650px) {
-  .viewResultButton{
-      margin-left: 0px;
-  }
+.pointsText {
+  font-weight: 900;
 }
 
-@media only screen and (min-width: 651px) and (max-width: 1200px) {
-    .viewResultButton{
-        margin-left: 0px;
-    }
-  
+.takeTestMobile {
+  width: 10%;
+  /* border: 2px solid red; */
+}
+.mobileEducationalRow{
+margin-top: 30px;
+}
+
+.retakeChart {
+  width: 50%;
+}
+
+.crossContainer {
+  cursor: pointer;
+}
+
+.quizBoard {
+  width: 100px;
+  height: 100px;
+}
+
+.retakeChart {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 250px;
+}
+
+.retakeButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.retake {
+  display: flex;
+  justify-content: center !important;
+  align-items: center !important;
+}
+.mobileEducationalRow{
+
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   }
-  .crossContainer
-  {
-    cursor: pointer;
+
+@media (max-width: 860px) {
+  .retake {
+    display: none;
+    /* border: 3px solid red; */
   }
-  .quizBoard
-  {
-    width: 100px;
-    height: 100px;
-  }
-  .retakeChart
-  {
+
+  .retakeChart {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width:250px;
-  }
-  .retakeButton
-  {
-    display: flex;
-    justify-content: center;
     align-items: center;
+    width: fit-content;
+    justify-content: center;
   }
-  .retake
-  {
-    display: flex;
-    justify-content: center !important;
-    align-items: center !important;
+
+  .quizHeadingStyle {
+    font-size: 16px;
   }
+.width90{
+  width: 100%;
+  padding: 8px;
+}
+.mobileEducationalRow{
+justify-content: center;
+}
+
+.educationalButtonBottom{
+  display: block;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.takeTestMobile{
+  display: none;
+}
+.quizDetailsStyle{
+  text-align: start;
+  font-size: 9px;
+}
+}
+
+
+
+
+@media only screen and (min-width: 651px) and (max-width: 1200px) {
+  .viewResultButton {
+    margin-left: 0px;
+  }
+
+}
