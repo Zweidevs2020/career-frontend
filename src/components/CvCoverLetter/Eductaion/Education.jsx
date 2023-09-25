@@ -10,17 +10,20 @@ import {
   deleteApiWithAuth,
 } from "../../../utils/api";
 import Delete from "../../../assets/delete.png";
+import { useNavigate } from 'react-router-dom';
 import dayjs from "dayjs";
 import axios from "axios";
 import { API_URL } from "../../../utils/constants";
 
 const Education = ({ setCurrent, current }) => {
   const [data, setData] = useState(null);
-
+  const navigate = useNavigate();
   const [downloadBtn, setDownloadBtn] = useState(false);
   const [educationArray, setEducationArray] = useState([]);
   const [resultArrayData, setResultArrayData] = useState([]);
+  const [savedTotalStep,setSavedTotalStep]=useState();
   const [isCheck, setIsCheck] = useState(true);
+  const [nextBtn, setNextBtn] = useState(false);
   const [userData, setUserData] = useState({});
   const [isCurrentCheck, setIsCurrentCheck] = useState(false);
   const [isInputDisabled, setIsInputDisabled] = useState(true);
@@ -210,7 +213,12 @@ const Education = ({ setCurrent, current }) => {
 
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
+
     if (response.data.status === 200) {
+      if (response.data.data["current_step"] > 1) {
+        setNextBtn(true)
+        setSavedTotalStep(response.data.data["current_step"])
+      }
       setUserData(response.data.data);
       if (response.data.data.cv_completed === true) {
         setDownloadBtn(true);
@@ -230,7 +238,15 @@ const Education = ({ setCurrent, current }) => {
     getUserData();
   }, []);
 
-  useEffect(() => {}, [educationArray]);
+  useEffect(() => { }, [educationArray]);
+
+
+  const handleNextClick = () => {
+    if (savedTotalStep >= current) { 
+      setCurrent(current + 1);
+      navigate(`?step=${current + 1}`);
+    }
+  };
 
 
   const educationItems = (item, index) => {
@@ -255,7 +271,7 @@ const Education = ({ setCurrent, current }) => {
                 onChange={(event) => onChangeHandle(event, index, 1)}
                 inputValue={item?.dataValue.school}
                 isPrefix={true}
-                // disabled={isInputDisabled}
+              // disabled={isInputDisabled}
               />
             </Form.Item>
           </div>
@@ -280,7 +296,7 @@ const Education = ({ setCurrent, current }) => {
                 value={dayjs(item?.dataValue.year, "MM/YYYY")}
                 defaultValue={dayjs(item?.dataValue.year, "MM/YYYY")}
                 className="expDateInputFieldStyle"
-                // disabled={isInputDisabled}
+              // disabled={isInputDisabled}
               />
             </Form.Item>
           </div>
@@ -305,7 +321,7 @@ const Education = ({ setCurrent, current }) => {
                 onChange={(event) => onChangeHandle(event, index, 1)}
                 inputValue={item?.dataValue.examtaken}
                 isPrefix={true}
-                // disabled={isInputDisabled}
+              // disabled={isInputDisabled}
               />
             </Form.Item>
           </div>
@@ -342,12 +358,12 @@ const Education = ({ setCurrent, current }) => {
                     prevArray.map((educationItem) =>
                       educationItem.index === item.index
                         ? {
-                            ...educationItem,
-                            dataValue: {
-                              ...educationItem.dataValue,
-                              present: e.target.checked,
-                            },
-                          }
+                          ...educationItem,
+                          dataValue: {
+                            ...educationItem.dataValue,
+                            present: e.target.checked,
+                          },
+                        }
                         : educationItem
                     )
                   );
@@ -357,13 +373,13 @@ const Education = ({ setCurrent, current }) => {
               </Checkbox>
 
               <div className="mainContainerDelete">
-               
-                  <img
-                    className="deleteSubject"
-                    src={Delete}
-                    onClick={() => handleDeleteEducation(item.dataValue.id)}
-                  />
-               
+
+                <img
+                  className="deleteSubject"
+                  src={Delete}
+                  onClick={() => handleDeleteEducation(item.dataValue.id)}
+                />
+
               </div>
             </div>
           </div>
@@ -447,18 +463,18 @@ const Education = ({ setCurrent, current }) => {
                 onChange={(event) => onChangeHandle(event, index, 2)}
                 inputValue={item?.dataValue?.subject}
                 isPrefix={true}
-                // disabled={isInputDisabled}
+              // disabled={isInputDisabled}
               />
             </Form.Item>
           </div>
           <div className="expFormDoubleItem mt-3">
             <Form.Item
               label="Level"
-              name={`result ${index}`}
+              name={`level ${index}`}
               className="skillItemLable"
               rules={[
                 {
-                  required: item?.dataValue.result ? false : true,
+                  required: item?.dataValue.level ? false : true,
                   message: "Please Select 1 Option",
                 },
               ]}>
@@ -468,8 +484,8 @@ const Education = ({ setCurrent, current }) => {
                 optionLabelProp="label"
                 className="eduSelect eduSelectItem"
                 defaultValue={item?.dataValue?.level}
-                // disabled={isInputDisabled}
-                >
+              // disabled={isInputDisabled}
+              >
                 {levelArray.map((item) => {
                   return (
                     <Option
@@ -510,10 +526,12 @@ const Education = ({ setCurrent, current }) => {
               onChange={(event) => handleChange(event, "result", index)}
               optionLabelProp="label"
               className="eduSelect eduSelectItem"
-              defaultValue={item?.dataValue?.result}
-              // disabled={isInputDisabled}>
-              >
+             {...console.log("resultarray",item.dataValue.level)}
+              defaultValue={item?.dataValue?.level}
+            // disabled={isInputDisabled}>
+            >
               {resultArray.map((item) => {
+              
                 return (
                   <Option
                     value={item.value}
@@ -543,8 +561,8 @@ const Education = ({ setCurrent, current }) => {
           <Form layout="vertical" onFinish={onsubmit}>
             {educationArray.length > 0
               ? educationArray.map((item, index) => {
-                  return educationItems(item, index);
-                })
+                return educationItems(item, index);
+              })
               : ""}
 
             <div>
@@ -651,38 +669,34 @@ const Education = ({ setCurrent, current }) => {
               ""
             )}
 
-            <div className="eduItemButton">
-              <Button className="eduButtonBack" type="primary" onClick={prev}>
-                Back
-              </Button>
+            <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+              <div className="eduItemButton">
+                <Button className="eduButtonBack me-3" type="primary" onClick={prev}>
+                  Back
+                </Button>
+                {nextBtn && (<Button className="eduButtonNext me-3" type="primary" onClick={handleNextClick}>
+                  Next
+                </Button>)}
+              </div>
               <div className="buttonEducation">
-                {/* <Button
+
+                {downloadBtn && (<Button
                   className={
-                    downloadBtn === true
-                      ? "skillsButton me-3"
+                    downloadBtn === false
+                      ? "disabledBtn me-3"
                       : "skillsButton me-3 "
                   }
                   type="primary"
-                  onClick={edit}>
-                  Edit
-                </Button> */}
-                  {downloadBtn &&( <Button
-                className={
-                  downloadBtn === false
-                    ? "disabledBtn me-3"
-                    : "skillsButton me-3 "
-                }
-                type="primary"
-                htmlType="submit"
-                onClick={(e) => SavePdf(e)}>
-                Download CV
-              </Button>)}
+                  htmlType="submit"
+                  onClick={(e) => SavePdf(e)}>
+                  Download CV
+                </Button>)}
                 <Button
                   className="eduButton"
                   type="primary"
                   htmlType="submit"
-                  // disabled={isInputDisabled}>
-                  >
+                // disabled={isInputDisabled}>
+                >
                   Save
                 </Button>
               </div>

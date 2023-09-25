@@ -2,7 +2,7 @@
   border: 1px solid #d3d3d3;
   border-radius: 12px;
   height: 50px;
-  width: "100%";
+  width: 100%;
   font-family: "Poppins";
   font-style: normal;
   font-weight: 400;
@@ -14,7 +14,7 @@
   border: 1px solid #d3d3d3;
   border-radius: 12px;
   height: 50px;
-  width: "100%";
+  width: 100%;
   font-family: "Poppins";
   font-style: normal;
   font-weight: 400;
@@ -24,4 +24,11 @@
   display: flex;
   align-items: center;
 
+}
+
+@media only screen and (max-width: 380px) and (min-width: 980px) {
+
+  .inputFieldStyle {
+    width: 120px !important;
+  }
 }

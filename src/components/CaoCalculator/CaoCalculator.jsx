@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Select, Table } from "antd";
+import { Button, Select, Table, Space, message } from "antd";
 import add from "../../assets/add.svg";
 import {
   buildStyles,
@@ -9,9 +9,9 @@ import { MyCareerGuidanceButton } from "../commonComponents";
 import "react-circular-progressbar/dist/styles.css";
 import "./CaoCalculator.css";
 import { Spin } from "antd";
-import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
+import { deleteApiWithAuth, getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import { API_URL } from "../../utils/constants";
-import { PlusCircleFilled, PlusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { PlusCircleFilled, PlusCircleOutlined, PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import Column from "antd/es/table/Column";
 
 const { Option } = Select;
@@ -63,6 +63,8 @@ const CaoCalculator = () => {
   const [selectedSubjects, setSelectedSubjects] = useState({});
   const [subjectErrors, setSubjectErrors] = useState({});
   const [availableSubjects, setAvailableSubjects] = useState([]);
+  const [dataId, setDataId] = useState(null);
+
   const [tableData, setTableData] = useState([
     {
       No: 0,
@@ -106,6 +108,7 @@ const CaoCalculator = () => {
       level: null,
       grades: null,
     },
+
   ]);
 
 
@@ -122,6 +125,7 @@ const CaoCalculator = () => {
 
     setTableData([...tableData, newData]);
   };
+
 
 
   useEffect(() => {
@@ -234,10 +238,7 @@ const CaoCalculator = () => {
       }
     });
     setTableData(tempData);
-
-
     const gradeid = grades?.filter((item) => item?.grade === value);
-
     setGradeId((prevState) => {
       const newArray = [...prevState];
 
@@ -248,6 +249,10 @@ const CaoCalculator = () => {
 
   };
 
+  const isDeleteButtonDisabled = tableData.length <= 7;
+
+  const buttonColor = isDeleteButtonDisabled ? 'grey' : 'red';
+  const buttonCursor = isDeleteButtonDisabled ? 'none' : 'pointer';
   const columns = [
 
     {
@@ -274,7 +279,7 @@ const CaoCalculator = () => {
             ))}
           </Select>
           {subjectErrors[record?.No] && (
-            <div style={{ color: "red", fontSize: "12px" ,marginBottom:'-1rem'}}>
+            <div style={{ color: "red", fontSize: "12px", marginBottom: '-1rem' }}>
               {subjectErrors[record?.No]}
             </div>
           )}
@@ -340,22 +345,62 @@ const CaoCalculator = () => {
         </Select>
       ),
     },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (text, record) => (
+        <Space size="middle">
+
+          <DeleteOutlined
+            style={{ color: buttonColor }}
+            onClick={() => handleDelete(record.No)}
+            disabled={!isDeleteButtonDisabled}
+            className={isDeleteButtonDisabled ? "disabled" : ""}
+          />
+        </Space>
+      ),
+    },
+
   ];
 
+  const handleDelete = async (id) => {
+    
+    if (tableData.length > 7) {
+    
+      const targetIndex = tableData.findIndex(item => item.No === id);
+    
+      if (targetIndex !== -1) {
+        const deletedRowData = tableData[targetIndex];
+      
+        const body = {
+          "id": dataId,
+          "subjectId": deletedRowData.id
+        }
+        const response = await postApiWithAuth(`calculator/remove-subject-grade/`, body);
+
+        if (response?.data?.status === 200) {
+          // setData(response.data.data);
+          getCurrectSelectedValues()
+        }
+
+      };
+    }
+    else{
+      return null
+    }
+
+  }
+
+
+
   const clearAllData = async () => {
+    
 
-    const completeTableData = tableData.map((item) => {
-      item.name = null;
-      item.grades = null;
-      item.level = null;
-    });
-    setTableData(completeTableData);
+    const response = await deleteApiWithAuth(`calculator/user-points/delete/${dataId}/`);
+    // const response2 = await getApiWithAuth(API_URL.SUBJECTLIST);
 
-    const response1 = await postApiWithAuth(API_URL.CALCULATEDATA, tableData)
-    const response2 = await getApiWithAuth(API_URL.SUBJECTLIST);
-
-    if (response2?.data?.status === 200) {
-      setData(response2.data.data);
+    if (response?.data?.status === 204) {
+      getCurrectSelectedValues()
     }
 
   };
@@ -363,8 +408,10 @@ const CaoCalculator = () => {
   const calCulateData = async () => {
     setLoading(true);
     const response = await postApiWithAuth(API_URL.CALCULATEDATA, gradeId);
+  
     if (response.data.data.success) {
       setFinalData(response.data.data.data);
+      getCurrectSelectedValues()
       setLoading(false);
     } else {
       setLoading(false);
@@ -386,9 +433,8 @@ const CaoCalculator = () => {
 
   useEffect(() => {
     if (data.length > 0) {
-      // Initialize available subjects
+
       const subjects = data.map(item => item.name);
-     
       setAvailableSubjects(subjects);
     }
   }, [data]);
@@ -415,7 +461,11 @@ const CaoCalculator = () => {
 
     try {
       const response = await getApiWithAuth(`calculator/user-points/`);
-    
+     
+      setDataId(response.data.data[0].id)
+      // const parsedId = parseInt(response.data.data[0].id);
+      // setDataId(parsedId)
+
 
       if (response.data.data.length === 0) {
 
@@ -428,6 +478,7 @@ const CaoCalculator = () => {
           };
           newData.push(ND);
         }
+   
       } else if (response.data.data.length !== 0) {
         newData = response?.data?.data[0]?.grades.map((item, index) => {
           const filterSubjects = data.filter(
@@ -439,6 +490,7 @@ const CaoCalculator = () => {
           );
 
           const newObj = {
+            id: item.id,
             No: index,
             name: filterSubjects[0].name,
             level: filterLevel[0].level__subjectlevel,
@@ -482,6 +534,10 @@ const CaoCalculator = () => {
     }
   };
 
+  useEffect(() => {
+   
+
+  }, [dataId])
 
 
   return (
@@ -510,7 +566,7 @@ const CaoCalculator = () => {
                   loading={loadingFirst}
                 />
 
-                <div style={{ display: "flex", justifyContent: "end" }}>
+                <div className="addSubjectContainer">
                   <MyCareerGuidanceButton
                     label="Add Subject"
                     className="addSubjectButton"
@@ -615,26 +671,19 @@ const CaoCalculator = () => {
                   }}
                 >
                   <div style={{ padding: 10 }}>
-                    {/* <div className="textStyle18">
-                      Expected Points for Semester 01
-                    </div> */}
+
                     <div >
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <div className="textStyle18"> Points</div>
                         <div className="">
-                          {/* <div className="coaPointTextStyle">Posdsdints</div> */}
+
                           <div>{finalData.points ? finalData.points : 0}</div>
                         </div>
                       </div>
                       <hr />
 
                       <hr />
-                      {/* <div className="coaPointTextMain">
-                        <div className="coaPointTextStyle">Final Points</div>
-                        <div>
-                          {finalData.total_points ? finalData.total_points : 0}
-                        </div>
-                      </div> */}
+
                       <hr />
                       <div
                         style={{
@@ -677,24 +726,24 @@ const CaoCalculator = () => {
                 <div
 
                 >
-                       <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <MyCareerGuidanceButton
-                    label="Clear All"
-                    className="clearAllButton"
-                    type="primary"
-                    htmlType="button"
-                    onClick={clearAllData}
-                  />
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <MyCareerGuidanceButton
+                      label="Clear All"
+                      className="clearAllButton"
+                      type="primary"
+                      htmlType="button"
+                      onClick={clearAllData}
+                    />
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <MyCareerGuidanceButton
-                    label="Calculate"
-                    className="calculateButton"
-                    type="primary"
-                    htmlType="button"
-                    onClick={calCulateData}
-                    loading={loading}
-                  />
+                    <MyCareerGuidanceButton
+                      label="Calculate"
+                      className="calculateButton"
+                      type="primary"
+                      htmlType="button"
+                      onClick={calCulateData}
+                      loading={loading}
+                    />
                   </div>
                 </div>
               </div>
@@ -705,10 +754,7 @@ const CaoCalculator = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  {/* <div className="textStyle18 headingStyle">Subjects</div> */}
-                  {/* <div onClick={handleAdd} style={{ cursor: "pointer" }}>
-                    <span>Add more row</span>
-                  </div> */}
+
                   <div className="mobileTable">
 
 
@@ -728,11 +774,7 @@ const CaoCalculator = () => {
                                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                               }
                             >
-                              {/* {data?.map((item) => (
-                              <Option key={item?.name} value={item?.name}>
-                                {item.name}
-                              </Option>
-                            ))} */}
+
                               {availableSubjects.map(item => (
                                 <Option key={item} value={item}>
                                   {item}
@@ -740,13 +782,10 @@ const CaoCalculator = () => {
                               ))}
                             </Select>
                             {subjectErrors[index] && (
-                              <div style={{ color: "red", fontSize: "12px" ,marginLeft:'1rem'}}>
+                              <div style={{ color: "red", fontSize: "12px", marginLeft: '1rem' }}>
                                 {subjectErrors[index]}
                               </div>
                             )}
-
-
-
 
                           </div>
                           <div className="mobileTableCell my-3">
@@ -784,24 +823,18 @@ const CaoCalculator = () => {
                             ))}
                             </Select>
                           </div>
+                          <DeleteOutlined
+                            style={{ color: buttonColor, display: 'flex', justifyContent: 'center' }}
+                            onClick={() => handleDelete(item.No)}
+                            disabled={!isDeleteButtonDisabled}
+                            className={isDeleteButtonDisabled ? "disabled" : ""}
+                          />
                         </div>
                       </div>
                     ))}
                   </div>
-
-
-
                 </div>
 
-
-                {/* <Table
-                    dataSource={tableData}
-                    columns={columns}
-                    rowClassName={() => "backgroundF4F6F8"}
-                    className="mobileTable"
-                    pagination={false}
-                  />
-                 */}
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <MyCareerGuidanceButton
                     label="Add Subject"

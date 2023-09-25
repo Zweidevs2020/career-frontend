@@ -3,12 +3,16 @@ import "./Skill.css";
 import { Form, Select, Button, message } from "antd";
 import axios from "axios";
 import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
+import { useNavigate } from 'react-router-dom';
 import { API_URL } from "../../../utils/constants";
 const Skill = ({ setCurrent, current }) => {
   const [selectOption, setSelectOption] = useState([]);
   const [selectOption2, setSelectOption2] = useState([]);
+  const navigate = useNavigate();
   const [userSkillData, setUserSkillsData] = useState([]);
   const [userData, setUserData] = useState({});
+  const [nextBtn, setNextBtn] = useState(false);
+  const [savedTotalStep,setSavedTotalStep]=useState()
   const [userQualityData, setUserQualityData] = useState([]);
   const [downloadBtn, setDownloadBtn] = useState(false);
   const [isInputDisabled, setIsInputDisabled] = useState(true);
@@ -207,6 +211,11 @@ const Skill = ({ setCurrent, current }) => {
 
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
+  
+    if (response.data.data["current_step"] > 1) {
+      setNextBtn(true)
+      setSavedTotalStep(response.data.data["current_step"])
+    }
     if (response.data.data.current_step !== 4) {
       setIsInputDisabled(true);
     } else {
@@ -235,31 +244,35 @@ const Skill = ({ setCurrent, current }) => {
     const response = await axios.get(
       `${process.env.REACT_APP_LINK_BASE_URL}cv/cv/`,
       {
-        responseType: "blob", // Set the response type to 'blob'
+        responseType: "blob", 
         headers: {
-          Authorization: `Bearer ${token}`, // Set the Authorization header
+          Authorization: `Bearer ${token}`, 
         },
       }
     );
 
-    // Create a blob from the response data
+   
     const pdfBlob = new Blob([response.data], { type: "application/pdf" });
 
-    // Create a temporary URL for the blob
+ 
     const pdfUrl = URL.createObjectURL(pdfBlob);
 
-    // Create a link and initiate the download
+  
     const link = document.createElement("a");
     link.href = pdfUrl;
-    link.download = `${userData.full_name}.pdf`; // Set the desired filename
+    link.download = `${userData.full_name}.pdf`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 
-    // Clean up the temporary URL
     URL.revokeObjectURL(pdfUrl);
   };
-
+  const handleNextClick = () => {
+    if (savedTotalStep >= current) { 
+      setCurrent(current + 1);
+      navigate(`?step=${current + 1}`);
+    }
+  };
   return (
     <>
       <div className="flex flex-col justify-center">
@@ -333,30 +346,32 @@ const Skill = ({ setCurrent, current }) => {
                 </Select>
               </Form.Item>
             </div>
-
+            <div style={{ display: 'flex', justifyContent: 'space-between'}}>
             <div className="skillsItemButton">
               <Form.Item>
                 <Button
-                  className="skillsButtonBack"
+                  className="skillsButtonBack me-3"
                   type="primary"
                   onClick={prev}
                 >
                   Back
                 </Button>
               </Form.Item>
-
-              <Form.Item>
-                {/* <Button
-                  className={
-                    downloadBtn === true
-                      ? "skillsButton me-3"
-                      : "skillsButton me-3 "
-                  }
+              {nextBtn && ( <Form.Item>
+                <Button
+                  className="skillsButtonBack me-3"
                   type="primary"
-                  onClick={edit}
+                  onClick={handleNextClick}
+                 
                 >
-                  Edit
-                </Button> */}
+                  Next
+                </Button>
+              </Form.Item>
+              )}
+              </div>
+              <div className="buttonEducation">
+              <Form.Item>
+               
                  {downloadBtn &&( <Button
                 className={
                   downloadBtn === false
@@ -377,6 +392,7 @@ const Skill = ({ setCurrent, current }) => {
                   Save
                 </Button>
               </Form.Item>
+            </div>
             </div>
           </Form>
         </div>

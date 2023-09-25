@@ -31,7 +31,12 @@
   justify-content: space-between;
   margin-bottom: -2%;
 }
-
+.personalItemButton {
+ 
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
 .profileFormEmailItem {
   width: 49%
 }

@@ -702,7 +702,10 @@ const Sidebar = ({ children, flags }) => {
               >
                 <Menu.Item
                   key="Overview"
-
+                  onClick={() => {
+                    componentsSwtich("Overview"); // You can keep this line if needed
+                    onClose(); // Close the Drawer
+                  }}
                 >
                   <span className="textStyling">
                     Overview{" "}
@@ -713,6 +716,10 @@ const Sidebar = ({ children, flags }) => {
                 </Menu.Item>
                 <Menu.Item
                   key="CAOCalculator"
+                  onClick={() => {
+                    componentsSwtich("CAOCalculator"); // You can keep this line if needed
+                    onClose(); // Close the Drawer
+                  }}
                 >
                   <span className="textStyling">
                     CAO Calculator{" "}
@@ -724,7 +731,10 @@ const Sidebar = ({ children, flags }) => {
 
                 <Menu.Item
                   key="MyGoals"
-
+                  onClick={() => {
+                    componentsSwtich("MyGoals"); // You can keep this line if needed
+                    onClose(); // Close the Drawer
+                  }}
                 >
                   <span className="textStyling">
                     My Goals{" "}
@@ -735,7 +745,10 @@ const Sidebar = ({ children, flags }) => {
                 </Menu.Item>
                 <Menu.Item
                   key="CoverLater"
-
+                  onClick={() => {
+                    componentsSwtich("CoverLater"); // You can keep this line if needed
+                    onClose(); // Close the Drawer
+                  }}
                 >
                   <span className="textStyling">
                     My CV{" "}
@@ -746,7 +759,10 @@ const Sidebar = ({ children, flags }) => {
                 </Menu.Item>
                 <Menu.Item
                   key="SelfAssessment"
-
+                  onClick={() => {
+                    componentsSwtich("SelfAssessment"); // You can keep this line if needed
+                    onClose(); // Close the Drawer
+                  }}
                 >
                   <span className="textStyling">
                     My Self Assessment{" "}
@@ -757,7 +773,10 @@ const Sidebar = ({ children, flags }) => {
                 </Menu.Item>
                 <Menu.Item
                   key="MyStudy"
-
+                  onClick={() => {
+                    componentsSwtich("MyStudy"); // You can keep this line if needed
+                    onClose(); // Close the Drawer
+                  }}
                 >
                   <span className="textStyling">
                     My Study{" "}
@@ -768,7 +787,10 @@ const Sidebar = ({ children, flags }) => {
                 </Menu.Item>
                 <Menu.Item
                   key="MyChoices"
-
+                  onClick={() => {
+                    componentsSwtich("MyChoices"); // You can keep this line if needed
+                    onClose(); // Close the Drawer
+                  }}
                 >
                   <span className="textStyling">
                     My Choices{" "}
@@ -779,7 +801,10 @@ const Sidebar = ({ children, flags }) => {
                 </Menu.Item>
                 <Menu.Item
                   key="EducationalGuidance"
-
+                  onClick={() => {
+                    componentsSwtich("EducationalGuidance"); // You can keep this line if needed
+                    onClose(); // Close the Drawer
+                  }}
                 >
                   <span className="textStyling">
                     My Educational Guidance
@@ -807,133 +832,7 @@ const Sidebar = ({ children, flags }) => {
                 />
               </div>
           </Drawer>
-          {/* 
-          {isSidebarOpen && (<Sider className="backgroundColorSidebar"  >
          
-            <div className="menuIcon " >
-             
-              <MenuOutlined onClick={toggleSidebar} />
-            </div>
-
-            {isSidebarOpen && (<div className="selectTextMain" >
-              <Menu
-                selectedKeys={selectedMenuItem}
-                mode="inline"
-                className="sideBarStyle"
-                onClick={(e) => componentsSwtich(e.key)}
-              >
-                <Menu.Item
-                  key="Overview"
-
-                >
-                  <span className="textStyling">
-                    Overview{" "}
-                    {selectedMenuItem === "Overview" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span>
-                </Menu.Item>
-                <Menu.Item
-                  key="CAOCalculator"
-                >
-                  <span className="textStyling">
-                    CAO Calculator{" "}
-                    {selectedMenuItem === "CAOCalculator" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span>
-                </Menu.Item>
-
-                <Menu.Item
-                  key="MyGoals"
-
-                >
-                  <span className="textStyling">
-                    My Goals{" "}
-                    {selectedMenuItem === "MyGoals" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span>
-                </Menu.Item>
-                <Menu.Item
-                  key="CoverLater"
-
-                >
-                  <span className="textStyling">
-                    My CV{" "}
-                    {selectedMenuItem === "CoverLater" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span>
-                </Menu.Item>
-                <Menu.Item
-                  key="SelfAssessment"
-
-                >
-                  <span className="textStyling">
-                    My Self Assessment{" "}
-                    {selectedMenuItem === "SelfAssessment" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span>
-                </Menu.Item>
-                <Menu.Item
-                  key="MyStudy"
-
-                >
-                  <span className="textStyling">
-                    My Study{" "}
-                    {selectedMenuItem === "MyStudy" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span>
-                </Menu.Item>
-                <Menu.Item
-                  key="MyChoices"
-
-                >
-                  <span className="textStyling">
-                    My Choices{" "}
-                    {selectedMenuItem === "MyChoices" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span>
-                </Menu.Item>
-                <Menu.Item
-                  key="EducationalGuidance"
-
-                >
-                  <span className="textStyling">
-                    My Educational Guidance
-                    {selectedMenuItem === "EducationalGuidance" ? (
-                      <span> &nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span>
-                </Menu.Item>
-              </Menu>
-
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: 30,
-                }}
-                className="careerBtnDiv"
-              >
-                <MyCareerGuidanceButton
-                  label="Logout"
-                  className="mobLogoutBtn"
-                  type="primary"
-                  htmlType="button"
-                  onClick={logoutUser}
-              
-                />
-              </div>
-
-
-            </div>
-            )}
-          </Sider>)} */}
 
           <Layout className="site-layout">
 
