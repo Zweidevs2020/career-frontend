@@ -25,7 +25,7 @@
 }
 .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
    
-    margin-left: 21rem;
+    margin-left: 23rem;
 }
 
 .fc .fc-button-primary {
@@ -106,16 +106,24 @@ fc-col-header-cell-cushion {
     font-size: 2px !important;
 }
 
-@media (max-width: 499px) {
+@media (max-width: 369px) {
     .fc .fc-col-header-cell-cushion {
         font-size: 8px !important;
+    }
+    .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+   
+        margin-left: 10rem !important;
     }
     
 }
 
-@media (min-width: 500px) and (max-width: 767px) {
+@media (min-width: 500px) and (max-width: 770px) {
     .fc .fc-col-header-cell-cushion {
         font-size: 10px !important;
+    }
+    .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+   
+        margin-left: 20rem !important;
     }
 }
 
