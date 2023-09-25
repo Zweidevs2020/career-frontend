@@ -44,15 +44,26 @@ const MyChoicesEdit = () => {
   const [showRowsData, setShowRowsData] = useState(null);
   const dataRef = useRef([]);
   const rowRef = useRef(null);
-
-
-
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getChoiceRecord();
     getTableRecord();
   }, [dataa]);
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 780);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 780);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const getChoiceRecord = async () => {
     setLoadingFirst(true);
@@ -63,8 +74,7 @@ const MyChoicesEdit = () => {
     if (response.data.status === 200) {
       const columnsData = response.data.data.data;
       const columnsWithoutOrderNumber = columnsData.slice(0, columnsData.length - 1);
-      // const columnsWithNumber = ["No.", ...columnsWithoutOrderNumber];
-
+     
       setColums(columnsWithoutOrderNumber);
       setShowRows(response.data.data.rows);
       setLoadingFirst(false);
@@ -77,8 +87,6 @@ const MyChoicesEdit = () => {
   const getTableRecord = async () => {
 
     const response = await getApiWithAuth(`choices/${dataa.id}/`);
-
-
     if (response.data.status === 200) {
       setOldData(response.data.data);
 
@@ -202,9 +210,7 @@ const MyChoicesEdit = () => {
         }
       }
     }
-
   };
-
 
   const handleDelete = async (item) => {
     const respose = await deleteApiWithAuth(
@@ -226,12 +232,8 @@ const MyChoicesEdit = () => {
 
     if (row.length != 0) {
       const row1 = row[0];
-
-
       const checkNullValue = (row1, key) => {
-
         if (row1[key] === undefined || row1[key] === "") {
-
           return key;
         }
         else {
@@ -247,7 +249,6 @@ const MyChoicesEdit = () => {
         message.error(`Please enter the ${nullKeys[0]} of the Row`);
 
       } else {
-
         row1.order_number = record.rowNo + 1
         const respose = await postApiWithAuth(`choices/${dataa.id}/`, row);
 
@@ -377,7 +378,7 @@ const MyChoicesEdit = () => {
         <div className="caoMainDiv">
           <div style={{ background: "white" }}>
             <div className="coaInnerf8fafcDiv">
-              <div class="h-[40px] w-[10%] bg-[#1476B7] rounded-lg flex items-center justify-evenly">
+              <div class="h-[40px] w-[10%] bg-[#1476B7] rounded-lg flex items-center justify-evenly" className={isMobile?'backMobileButtonChoicesEdit':'backDesktopButtonChoicesEdit'}>
                 <button class="text-[#fff] flex items-center" onClick={() => { navigate("/my-choices") }}>
                   {/* <LeftOutlined class="h-4" /> */}
                   <span class="ml-1">Back</span>
@@ -385,7 +386,8 @@ const MyChoicesEdit = () => {
               </div>
               <div className="welcomeHaddingText py-3">{dataa.name}</div>
               <div className="w-100 p-3">
-                <div className="w-100">
+            
+                <div className="w-100" style={{ overflowX: "auto" }}>
                   <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
                     <SortableContext
 
@@ -397,12 +399,11 @@ const MyChoicesEdit = () => {
                     >
                       {loadingFirst ? (
                         <Spin className="spinStyle" />
-                      ) : (<Table pagination={false} dataSource={data.filter(item => item.id !== null)} className={data.length > 0 && data[0]?.id !== null ? "nonEmptyTable" : "emptyTable"} rowKey={"dataId"} components={{
+                      ) : (<Table pagination={false} dataSource={data.filter(item => item.id !== null)}  className={data.length > 0 && data[0]?.id !== null ? "nonEmptyTable" : "emptyTable"} rowKey={"dataId"} components={{
                         body: {
                           row: Row,
                         }
                       }}
-
                       >
 
                         <Column
@@ -482,7 +483,7 @@ const MyChoicesEdit = () => {
                     </SortableContext>
                   </DndContext>
 
-                  <Table pagination={false} dataSource={data.filter(item => item.id === null)} className={data.length > 0 && data[0]?.id === null ? "nonEmptyTable" : "emptyTable"} rowKey={"dataId"} components={{
+                  <Table pagination={false} dataSource={data.filter(item => item.id === null)}   className={data.length > 0 && data[0]?.id === null ? "nonEmptyTable" : "emptyTable"} rowKey={"dataId"} components={{
                     body: {
                       row: Row,
                     }

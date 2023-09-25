@@ -3,7 +3,7 @@ import sideAuthImage from "../../../assets/kid-front-page (1).jpg";
 import myCareerGuidanceIcon from "../../../assets/my-guidance-logo.png";
 import usernameIcon from "../../../assets/usernameIcon.svg";
 import nameIcon from "../../../assets/nameIcon.svg";
-
+import phoneIcon from "../../../assets/phone.svg";
 import lockIcon from "../../../assets/lockIcon.svg";
 import dropdownIcon from "../../../assets/dropdownIcon.svg";
 import { Link } from "react-router-dom";
@@ -32,20 +32,21 @@ import countyImg from "../../../assets/county.png";
 import schoolImg from "../../../assets/schoolimg.png";
 
 const Signup = () => {
-  
+
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
   const [schools, setSchools] = useState([]);
   const [newSchools, setNewSchools] = useState("");
   const [dobSave, setDobSave] = useState({});
+  const [number, setPhoneNumber] = useState("");
   const [open, setOpen] = useState(false);
   const currentYear = moment().year();
 
   const disabledDate = (current) => {
     return current.year() > currentYear;
   };
-  
+
 
   const onChangeYearInternal = (date) => {
     onChangeYear(date?.year());
@@ -58,12 +59,13 @@ const Signup = () => {
   const handlerSaveSubmit = async () => {
     setLoading(true);
     const response = await postApiWithoutAuth(API_URL.SINGUPUSER, {
-   
+
       ...data,
       dob: `${dobSave.year}-${dobSave.month}-${dobSave.day}`,
     });
-    
+
     if (response.status === 200) {
+     
       message.success("User is Created Successfully, You can now Login");
       navigate("/");
     } else {
@@ -87,7 +89,7 @@ const Signup = () => {
 
 
   const handleSelectDay = (d) => {
-   
+
     setDobSave({ ...dobSave, day: d });
   };
 
@@ -96,7 +98,7 @@ const Signup = () => {
   }, [dobSave]);
 
   const onChangeYear = (date) => {
-  
+
     setDobSave({ ...dobSave, year: date });
     // setDobSave({ ...dobSave, year: date?.$y });
   };
@@ -112,14 +114,14 @@ const Signup = () => {
 
   const getSchools = async () => {
     const response = await getApiWithoutAuth(API_URL.GETUSERSCHOOL);
-  
+
 
     if (response?.data?.success) {
       const school = response.data.data?.map((item) => {
         return {
           value: item.pk,
           label: item.school,
-          county:item.county
+          county: item.county
         };
       });
       setSchools(school);
@@ -129,7 +131,7 @@ const Signup = () => {
     }
   };
   const handleSelectMonth = (m) => {
-  
+
     setDobSave({ ...dobSave, month: m });
     if (dobSave.day) {
       const isValidDayForMonth =
@@ -145,6 +147,7 @@ const Signup = () => {
       }
     }
   };
+  
 
   return (
     <div className="mainDiv">
@@ -184,9 +187,24 @@ const Signup = () => {
             />
           </Form.Item>
           <Form.Item
+            name="number"
+            rules={[
+              { required: true, message: "Please input your Phone Number!" },
+           
+            ]}
+          >
+            <MyCareerGuidanceInputField
+              placeholder="Phone Number"
+              prefix={phoneIcon}
+              name="number"
+              type="input"
+              onChange={onChangeHandle}
+            />
+          </Form.Item>
+          <Form.Item
             name="password"
             rules={[
-            
+
               {
                 required: true,
                 pattern: new RegExp(
@@ -207,19 +225,19 @@ const Signup = () => {
             />
           </Form.Item>
           <Form.Item
-          
+
             rules={[{ required: true, message: "Please select a school!" }]}
             style={{ marginBottom: "12px" }}
           >
             <Select
-              showSearch 
+              showSearch
               placeholder="School"
               name="school"
               value={data?.school}
-              optionFilterProp="children" 
+              optionFilterProp="children"
               filterOption={(input, option) =>
                 option.children.toLowerCase().startsWith(input.toLowerCase())
-              } 
+              }
               className="inputSelectFieldStyle"
               onChange={handleSelect}
               bordered={false}
@@ -233,7 +251,7 @@ const Signup = () => {
               }
             >
               {schools.map((school) => (
-               
+
                 <Select.Option key={school.value} value={school.value}>
                   {`${school.label}, ${school.county}`}
                 </Select.Option>
@@ -284,6 +302,8 @@ const Signup = () => {
                   />
                 </Form.Item>
               </Form>
+
+
             </Modal>
           </div>
 
@@ -305,20 +325,20 @@ const Signup = () => {
                   name="day"
                   options={
                     dobSave.month === "01" &&
-                    "03" &&
-                    "05" &&
-                    "07" &&
-                    "08" &&
-                    "10" &&
-                    "12"
+                      "03" &&
+                      "05" &&
+                      "07" &&
+                      "08" &&
+                      "10" &&
+                      "12"
                       ? dayArray31
                       : dobSave.month === "02"
-                      ? dayArray28
-                      : dobSave.month === "04" && "06" && "09" && "11"
-                      ? dayArray30
-                      : dobSave.month === "undefined"
-                      ? dayArray28
-                      : dayArray31
+                        ? dayArray28
+                        : dobSave.month === "04" && "06" && "09" && "11"
+                          ? dayArray30
+                          : dobSave.month === "undefined"
+                            ? dayArray28
+                            : dayArray31
                   }
                   className="inputSelectFieldStyle"
                   onSelect={handleSelectDay}
@@ -342,7 +362,7 @@ const Signup = () => {
                 <Select
                   placeholder="Month"
                   name="month"
-                  options={dobSave.day==='31' ? monthArray31Days:dobSave.day==='30' ? monthArray30Days:monthArray}
+                  options={dobSave.day === '31' ? monthArray31Days : dobSave.day === '30' ? monthArray30Days : monthArray}
                   className="inputSelectFieldStyle"
                   onSelect={handleSelectMonth}
                   bordered={false}
@@ -382,7 +402,7 @@ const Signup = () => {
           </div>
           <Form.Item
             name="profile_image"
-          
+
           >
             <Upload
               beforeUpload={() => false}

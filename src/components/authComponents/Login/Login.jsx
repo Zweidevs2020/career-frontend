@@ -3,6 +3,7 @@ import sideAuthImage from "../../../assets/kid-front-page (1).jpg";
 import myCareerGuidanceIcon from "../../../assets/my-guidance-logo.png";
 import usernameIcon from "../../../assets/usernameIcon.svg";
 import lockIcon from "../../../assets/lockIcon.svg";
+import phoneIcon from "../../../assets/phone.svg";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../../utils/constants";
 import { postApiWithoutAuth } from "../../../utils/api";
@@ -15,10 +16,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import "./LoginStyle.css";
 
+
 const Login = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
+
   const [data, setData] = useState({});
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
@@ -26,10 +29,10 @@ const Login = () => {
   };
 
   const handlerSubmit = async () => {
-   
+
     setLoading(true);
     const response = await postApiWithoutAuth(API_URL.SIGNIN, data);
-   
+
     if (response?.status === 200) {
       message.success("Login Successfully");
       setLoading(false);
@@ -75,6 +78,23 @@ const Login = () => {
               inputValue={data.email}
             />
           </Form.Item>
+          <Form.Item
+            name="phone_number"
+            rules={[
+              { required: true, message: "Please input your Phone Number!" },
+             
+            ]}
+          >
+            <MyCareerGuidanceInputField
+              placeholder="Phone Number"
+              prefix={phoneIcon} 
+              type="input"
+              name="phone_number"
+              onChange={onChangeHandle}
+              inputValue={data.phone_number}
+            />
+          </Form.Item>
+
           <Form.Item
             name="password"
             rules={[
@@ -140,7 +160,7 @@ const Login = () => {
         </span>
       </div>
       <div className="rightImageStyle">
-      <Image  
+        <Image
           preview={false}
           src={sideAuthImage}
           width={"100%"}

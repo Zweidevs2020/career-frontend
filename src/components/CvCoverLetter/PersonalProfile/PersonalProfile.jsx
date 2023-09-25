@@ -4,16 +4,20 @@ import "./PersonalProfile.css";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
 import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
 import { API_URL } from "../../../utils/constants";
+import { useNavigate } from 'react-router-dom';
 import { putApiWithAuth } from "../../../utils/api";
 import axios from "axios";
 
 const { TextArea } = Input;
 
 const PersonalProfile = ({ setCurrent, current }) => {
-  const [form] = Form.useForm();
 
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
   const [profileObject, setProfileObject] = useState({ id: null });
   const [downloadBtn, setDownloadBtn] = useState(false);
+  const [nextBtn, setNextBtn] = useState(false);
+  const [savedTotalStep,setSavedTotalStep]=useState()
   const [isInputDisabled, setIsInputDisabled] = useState(true);
   const [userData, setUserData] = useState({});
   const [enableDownloadCV, setEnableDownloadCV] = useState(false)
@@ -54,21 +58,13 @@ const PersonalProfile = ({ setCurrent, current }) => {
     }
   };
 
-  // const SavePdf = async () => {
-
-
-  //   const respose = await getApiWithAuth(API_URL.SAVEPDF);
-
-  //   if (respose.data.status === 201) {
-
-  //   } else {
-  //     message.error(respose.data.message);
-  //   }
-  // };
-
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
-  
+   
+    if (response.data.data["current_step"] > 1) {
+      setNextBtn(true)
+      setSavedTotalStep(response.data.data["current_step"])
+    }
     if (response.data.status === 200) {
       setUserData(response.data.data);
       if (response.data.data.cv_completed === true) {
@@ -119,6 +115,13 @@ const PersonalProfile = ({ setCurrent, current }) => {
 
     // Clean up the temporary URL
     URL.revokeObjectURL(pdfUrl);
+  };
+
+  const handleNextClick = () => {
+    if (savedTotalStep >= current) { // Assuming you have a total of 6 steps
+      setCurrent(current + 1);
+      navigate(`?step=${current + 1}`);
+    }
   };
 
   return (
@@ -315,40 +318,36 @@ const PersonalProfile = ({ setCurrent, current }) => {
                 />
               </Form.Item>
             </div>
+            <div className="personalItemButton">
+              {nextBtn && (<Button className="eduButtonBack" type="primary" onClick={handleNextClick}>
+                Next
+              </Button>
+              )}
+              <div className="buttonEducation">
 
-            <div className="profileItemButton">
-              {/* <div style={{ paddingRight: "10px" }}>
-                <Button
-                  className={downloadBtn === true ? "skillsButton" : "skillsButton me-3 "}
-                  type="primary"
-                  onClick={edit}
-                >
-                  Edit
-                </Button>
-              </div> */}
-             {downloadBtn &&( <Button
-                className={
-                  downloadBtn === false
-                    ? "disabledBtn me-3"
-                    : "skillsButton me-3 "
-                }
-                type="primary"
-                htmlType="submit"
-                onClick={(e) => SavePdf(e)}>
-                Download CV
-              </Button>)
-}
-              <div>
-                <Button
-                  className="profileButton mr-2"
+                {downloadBtn && (<Button
+                  className={
+                    downloadBtn === false
+                      ? "disabledBtn me-3"
+                      : "skillsButton me-3 "
+                  }
                   type="primary"
                   htmlType="submit"
-                // disabled={isInputDisabled}
+                  onClick={(e) => SavePdf(e)}>
+                  Download CV
+                </Button>)}
+                <Button
+                  className="eduButton"
+                  type="primary"
+                  htmlType="submit"
+                // disabled={isInputDisabled}>
                 >
                   Save
                 </Button>
               </div>
             </div>
+          
+           
           </Form>
         </div>
       </div>

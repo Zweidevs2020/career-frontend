@@ -15,34 +15,44 @@ import { useLocation } from "react-router-dom";
 import { MailOutlined } from "@ant-design/icons";
 
 const CvCoverLetter = () => {
-  const location = useLocation(); // React Router's location object
+
+  const location = useLocation();
   const initialStep = new URLSearchParams(location.search).get("step") || 1;
   const [current, setCurrent] = useState(parseInt(initialStep));
   const [downloadBtn, setDownloadBtn] = useState(false);
-
+  const [response, setResponse] = useState(null); 
 
   const getUserData = async () => {
-    const response = await getApiWithAuth(API_URL.GETUSER2);
+    try {
+      const response = await getApiWithAuth(API_URL.GETUSER2);
+    
 
-    if (response.data.status === 200) {
-
-      if (response.data.data.cv_completed === true) {
-        setDownloadBtn(true);
+      if (response.data.status === 200) {
+        if (response.data.data.cv_completed === true) {
+          setDownloadBtn(true);
+        }
       }
+      setResponse(response.data.data['current_step']);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
     }
   }
   useEffect(() => {
     getUserData();
-    // Update URL parameter when current step changes
+
     const searchParams = new URLSearchParams(location.search);
     searchParams.set("step", current);
     window.history.replaceState(null, "", `${location.pathname}?${searchParams}`);
+ 
   }, [current, location]);
+
   const sendToEmail = async () => {
-    console.log("i am clicked")
+
     const res = await getApiWithAuth(API_URL.SENDCV)
-    console.log("send to email", res)
+   
   }
+
+
   return (
     <>
       <div class="h-[100%] w-[100%] bg-white mt-3">
@@ -77,22 +87,24 @@ const CvCoverLetter = () => {
           </span>)}
         </div>
 
+
         <div className="cv-Data">
           <div className="ml-2">
-            <Steps current={current} setCurrent={setCurrent} />
+       
+          <Steps current={response} setCurrent={setCurrent} currentStep={response+1} />
           </div>
           {current === 1 ? (
-            <PersonalProfile setCurrent={setCurrent} current={current} />
+            <PersonalProfile setCurrent={setCurrent}  current={current} />
           ) : current === 2 ? (
             <Education setCurrent={setCurrent} current={current} />
           ) : current === 3 ? (
-            <Experenice setCurrent={setCurrent} current={current} />
+            <Experenice setCurrent={setCurrent}  current={current} />
           ) : current === 4 ? (
-            <Skill setCurrent={setCurrent} current={current} />
+            <Skill setCurrent={setCurrent}  current={current} />
           ) : current === 5 ? (
-            <Interest setCurrent={setCurrent} current={current} />
+            <Interest setCurrent={setCurrent}current={current} />
           ) : current === 6 ? (
-            <Reference setCurrent={setCurrent} current={current} />
+            <Reference setCurrent={setCurrent}  current={current} />
           ) : (
             ""
           )}

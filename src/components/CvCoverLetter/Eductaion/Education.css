@@ -47,12 +47,17 @@
     margin-top: 24px;
 }
 
-
-.eduItemButton {
-    margin-top: 3%;
+.buttonEducation{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
+    margin-bottom: 2rem;  
+}
+.eduItemButton {
+ 
+    display: flex;
+    justify-content: flex-start;
     margin-bottom: 2rem;
+    width: 100%;
 }
 
 .eduButton {
@@ -64,13 +69,16 @@
     border-radius: 12px;
 }
 
-.eduButtonBack {
+.eduButtonBack,.eduButtonNext {
     border: 1px solid #1476B7;
     width: 144px;
     height: 45px !important;
     font-size: 14px;
     border-radius: 12px;
     color: #1476B7;
+}
+.eduButtonNext{
+    margin-right: 58%;
 }
 
 .eduAddButton {

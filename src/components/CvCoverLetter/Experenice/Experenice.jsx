@@ -12,6 +12,7 @@ import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceI
 import "./Experenice.css";
 import { DeleteColumnOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { deleteApiWithAuth, getApiWithAuth, postApiWithAuth } from "../../../utils/api";
 import Delete from "../../../assets/delete.png";
@@ -22,12 +23,15 @@ const { Option } = Select;
 
 const Experenice = ({ setCurrent, current }) => {
   const [data, setData] = useState(null);
+  const navigate = useNavigate();
   const [downloadBtn, setDownloadBtn] = useState(false);
   const [expereniceArray, setExpereniceArray] = useState([]);
+  const [savedTotalStep,setSavedTotalStep]=useState();
   const [isCurrentCheck, setIsCurrentCheck] = useState(false);
+  const [nextBtn, setNextBtn] = useState(false);
   const [userData, setUserData] = useState({});
   const [isInputDisabled, setIsInputDisabled] = useState(true);
-  
+
   const getExperiance = async () => {
     const response = await getApiWithAuth(API_URL.GETEXPERIANCE);
     if (response.data?.status === 200) {
@@ -81,7 +85,7 @@ const Experenice = ({ setCurrent, current }) => {
   const onSubmit = async () => {
     let data = createArrayData(expereniceArray);
     const respose = await postApiWithAuth(API_URL.POSTEXPERIANCE, data);
- 
+
     if (respose.data.status === 201) {
       setCurrent(current + 1);
     } else {
@@ -125,11 +129,11 @@ const Experenice = ({ setCurrent, current }) => {
     );
   };
   const onChangeDate = (name, date, arrayIndex) => {
-  
+
 
     if (name === "enddate") {
       if (dayjs(date, "DD-MM-YYYY").isAfter(dayjs())) {
-      
+
         message.error("End date cannot be in the future.");
         return;
       }
@@ -180,6 +184,10 @@ const Experenice = ({ setCurrent, current }) => {
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
     if (response.data.status === 200) {
+      if (response.data.data["current_step"] > 1) {
+        setNextBtn(true)
+        setSavedTotalStep(response.data.data["current_step"])
+      }
       setUserData(response.data.data);
       if (response.data.data.current_step !== 3) {
         setIsInputDisabled(true);
@@ -196,11 +204,12 @@ const Experenice = ({ setCurrent, current }) => {
     getUserData();
   }, []);
   const handleDeleteExperience = async (id) => {
-   
+
     try {
       setExpereniceArray((prevArray) =>
         prevArray.filter((item) => item.dataValue.id !== id)
       );
+
       const response = await deleteApiWithAuth(`${API_URL.DELETE_EXPERIENCE}/${id}/`);
    
       if (response.data.status === 204) {
@@ -215,6 +224,12 @@ const Experenice = ({ setCurrent, current }) => {
       setExpereniceArray((prevArray) => [...prevArray, expereniceArray.find(item => item.dataValue.id === id)]);
     }
   }
+  const handleNextClick = () => {
+    if (savedTotalStep >= current) { 
+      setCurrent(current + 1);
+      navigate(`?step=${current + 1}`);
+    }
+  };
   return (
     <>
       <div className="flex flex-col justify-center">
@@ -251,7 +266,7 @@ const Experenice = ({ setCurrent, current }) => {
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue?.job_title}
                           isPrefix={true}
-                          // disabled={isInputDisabled}
+                        // disabled={isInputDisabled}
                         />
                       </Form.Item>
                     </div>
@@ -274,7 +289,7 @@ const Experenice = ({ setCurrent, current }) => {
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue?.company}
                           isPrefix={true}
-                          // disabled={isInputDisabled}
+                        // disabled={isInputDisabled}
                         />
                       </Form.Item>
                     </div>
@@ -300,7 +315,7 @@ const Experenice = ({ setCurrent, current }) => {
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue.city}
                           isPrefix={true}
-                          // disabled={isInputDisabled}
+                        // disabled={isInputDisabled}
                         />
                       </Form.Item>
                     </div>
@@ -323,7 +338,7 @@ const Experenice = ({ setCurrent, current }) => {
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue?.country}
                           isPrefix={true}
-                        
+
                         />
                       </Form.Item>
                     </div>
@@ -347,7 +362,7 @@ const Experenice = ({ setCurrent, current }) => {
                             onChangeDate("startdate", dateString, index)
                           }
                           className="expDateInputFieldStyle"
-                        
+
                           format="DD-MM-YYYY" // Format the selected date
                           value={dayjs(item?.dataValue.startdate, "DD-MM-YYYY")}
                           defaultValue={dayjs(
@@ -379,8 +394,8 @@ const Experenice = ({ setCurrent, current }) => {
                             item?.dataValue.enddate,
                             "DD-MM-YYYY"
                           )}
-                         
-                        
+
+
                           className="expDateInputFieldStyle"
                         />
                       </Form.Item>
@@ -389,19 +404,19 @@ const Experenice = ({ setCurrent, current }) => {
                           className="expCheckBox"
                           name="is_current_work"
                           inputValue={item?.dataValue?.is_current_work}
-                         
+
                           onChange={(e) => {
                             setExpereniceArray(
                               expereniceArray.map((item) => {
                                 return item.index === index
                                   ? {
-                                      ...item,
-                                      dataValue: {
-                                        ...item.dataValue,
-                                        is_current_work: e.target.checked,
-                                      },
-                                      
-                                    }
+                                    ...item,
+                                    dataValue: {
+                                      ...item.dataValue,
+                                      is_current_work: e.target.checked,
+                                    },
+
+                                  }
                                   : item;
                               })
                             );
@@ -433,17 +448,17 @@ const Experenice = ({ setCurrent, current }) => {
                         className="inputFieldStyle"
                         defaultValue={item?.dataValue?.description}
                         onChange={(event) => onChangeHandle(event, index)}
-                        // disabled={isInputDisabled}
+                      // disabled={isInputDisabled}
                       />
                     </Form.Item>
                     <div className="mainContainerDelete">
-                  
+
                       <img
                         className="deleteSubject"
                         src={Delete}
                         onClick={() => handleDeleteExperience(item.dataValue.id)}
                       />
-                   
+
                     </div>
                   </div>
 
@@ -491,45 +506,49 @@ const Experenice = ({ setCurrent, current }) => {
                 </Button>
               </Form.Item>
             </div>
-            <div className="expItemButton">
+
+
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div className="eduItemButton">
               <Form.Item>
-                <Button className="expButton" type="primary" onClick={prev}>
+                <Button className="eduButtonBack me-3" type="primary" onClick={prev}>
                   Back
                 </Button>
               </Form.Item>
+              {nextBtn && <Form.Item>
+                <Button className="eduButtonNext me-3" type="primary" onClick={handleNextClick}>
+                      Next
+                </Button>
+              </Form.Item>
+}
+              </div>
               <Form.Item>
-                {/* <Button
+               
+              <div className="buttonEducation">
+                {downloadBtn && (<Button
                   className={
-                    downloadBtn === true
-                      ? "skillsButton me-3"
+                    downloadBtn === false
+                      ? "disabledBtn me-3"
                       : "skillsButton me-3 "
                   }
                   type="primary"
-                  onClick={edit}
-                >
-                  Edit
-                </Button> */}
-                  {downloadBtn &&( <Button
-                className={
-                  downloadBtn === false
-                    ? "disabledBtn me-3"
-                    : "skillsButton me-3 "
-                }
-                type="primary"
-                htmlType="submit"
-                onClick={(e) => SavePdf(e)}>
-                Download CV
-              </Button>)}
+                  htmlType="submit"
+                  onClick={(e) => SavePdf(e)}>
+                  Download CV
+                </Button>)}
                 <Button
                   className="expButton"
                   type="primary"
                   htmlType="submit"
-                  // disabled={isInputDisabled}
+                // disabled={isInputDisabled}
                 >
                   Save
                 </Button>
+                </div>
               </Form.Item>
-            </div>
+              </div>
+           
+          
           </Form>
         </div>
       </div>

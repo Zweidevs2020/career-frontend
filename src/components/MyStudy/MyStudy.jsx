@@ -6,6 +6,7 @@ import {
   postApiWithAuth,
   deleteApiWithAuth,
   putApiWithAuth,
+  patchApiWithAuth,
 } from "../../utils/api";
 import {
   MyCareerGuidanceButton,
@@ -33,6 +34,7 @@ const MyStudy = () => {
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedEndTime, setSelectedEndTime] = useState("");
   const [weekDay, setWeekDay] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState("");
   const [loadingBooking, setLoadingBooking] = useState(false);
   const [openBooking, setOpenBooking] = useState(false);
@@ -49,7 +51,8 @@ const MyStudy = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const handleOpenViewBooking = () => setOpenViewBooking(true);
   const handleCloseViewBooking = () => setOpenViewBooking(false);
-
+  const [eventId, setEventId] = useState(0);
+  const [weekId, setWeekId] = useState(0);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const optionArray = [];
   const startTime = new Date("2000-01-01T06:00:00");
@@ -101,6 +104,7 @@ const MyStudy = () => {
           event.event._def.extendedProps.selectID,
           viewData
         );
+
         event.event.setProp("start", start);
         event.event.setProp("end", end);
 
@@ -111,29 +115,37 @@ const MyStudy = () => {
   };
 
   const handleEventResize = async (event) => {
+   
     const { id, start, end } = event.event;
+
+
 
     if (start && end) {
       const viewData = {
         id: start.getDay(),
         title: event.event.title,
-        start: start.toISOString(),
-        end: end.toISOString(),
+        start: start,
+        end: end,
       };
 
-      await handleEditCalender(
-        event.event._def.extendedProps.selectID,
-        viewData
-      );
+      try {
+        await handleEditCalender(
+          event.event._def.extendedProps.selectID,
+          viewData
+        );
+
+      } catch (error) { }
     }
   };
 
   const handleEditCalender = async (id, viewData) => {
 
     setUpdateLoading(true);
-    const startTime = moment(viewData.start).format("hh:mm:ss");
-    const endTime = dayjs(viewData.end).format("hh:mm:ss");
+   
+    const startTime = dayjs(viewData?.start).format("HH:mm:ss");
+    const endTime = dayjs(viewData?.end).format("HH:mm:ss");
 
+   
     try {
       const response = await putApiWithAuth(`timetable/update-timeslot/${id}`, {
         timeslot: startTime,
@@ -147,7 +159,7 @@ const MyStudy = () => {
         message.success("Booking Updated Successfully");
 
         const updatedCalenderData = arr.map((item) => {
-         
+
           return {
             ...item,
             title: viewData.title,
@@ -168,7 +180,7 @@ const MyStudy = () => {
               ),
             },
           };
-          // }
+
           return item;
         });
 
@@ -211,11 +223,9 @@ const MyStudy = () => {
   const getCalanderData = async () => {
     setLoading(true);
     const response = await getApiWithAuth(`timetable/list-timeslot/`);
-
+   
     if (response?.data.status === 200) {
-
       setData(response.data.data);
-
       setLoading(false);
     } else {
       setLoading(false);
@@ -231,7 +241,7 @@ const MyStudy = () => {
     return (
       <>
         <div className="showDateData">
-          <b className="showDateData2">{eventInfo.timeText}</b>
+          {/* <b className="showDateData2">{eventInfo.timeText}</b> */}
           <b className="showDateData2">{eventInfo.event._def.title}</b>
         </div>
       </>
@@ -240,8 +250,7 @@ const MyStudy = () => {
 
   const handleDateSelect = (selectInfo, b) => {
     if (b !== undefined) {
-
-
+      setIsEditing(false);
       const selectedStart = new Date(selectInfo);
 
       setWeekDay(selectedStart.getDay().toString());
@@ -249,32 +258,30 @@ const MyStudy = () => {
 
       setSelectedEndTime(selectedTime);
       setTitle('')
-      const selectedEnd = new Date(selectedStart.getTime() + 30 * 60 * 1000); // Add 30 minutes
+      const selectedEnd = new Date(selectedStart.getTime() + 30 * 60 * 1000);
       setSelectedEndTime(selectedEnd.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }));
-
       handleOpenBooking();
     }
     else {
 
-
+      setIsEditing(true);
+    
       const selectedStart = new Date(selectInfo.el.fcSeg.start);
-
       setWeekDay(selectedStart.getDay().toString());
       setTitle(selectInfo?.event?._def?.extendedProps.title)
       const startTime = selectInfo?.event?._def?.extendedProps.start;
-
       const originalDateStart = moment(startTime, "ddd MMM D YYYY HH:mm:ss ZZ");
-
       const formattedDateStart = originalDateStart.format("hh:mm A");
-
       setSelectedTime(formattedDateStart);
-
+      setEventId(selectInfo?.event?._def?.extendedProps.selectID)
+      setWeekId()
       const endTime = selectInfo?.event?._def?.extendedProps.end;
       const originalDateEnd = moment(endTime, "ddd MMM D YYYY HH:mm:ss ZZ");
       const formattedDateEnd = originalDateEnd.format("hh:mm A");
-    
-      setSelectedEndTime(formattedDateEnd);
 
+      setSelectedEndTime(formattedDateEnd);
+      
+      // handleEdit(eventData.selectID);
 
 
       handleOpenBooking();
@@ -288,7 +295,7 @@ const MyStudy = () => {
 
     let startTime = dayjs(selectedTime, "hh:mm A").format("HH:mm:ss");
     let endTime = dayjs(selectedEndTime, "hh:mm A").format("HH:mm:ss");
-
+  
     const response = await postApiWithAuth(API_URL.ADDSLOTTABLE, {
       timeslot: startTime,
       endslot: endTime,
@@ -297,6 +304,7 @@ const MyStudy = () => {
     });
 
     if (response.data.status === 201) {
+   
       message.success("Booking Added");
       setSelectedTime("");
       setSelectedEndTime("");
@@ -318,6 +326,7 @@ const MyStudy = () => {
   const handleDelete = async () => {
     setDeleteHandler(true);
     const respose = await deleteApiWithAuth(`timetable/reset-timeslot/`);
+   
     if (respose.data.data.success) {
       message.success("Reset Data succesfully");
       setSelectedTime("");
@@ -335,7 +344,7 @@ const MyStudy = () => {
       message.error(respose.data.message);
     }
   };
- 
+
   const updateDataTime = (newDate) => {
     const weekStart = moment(newDate).startOf("week");
     const updatedDataTime = [];
@@ -347,6 +356,19 @@ const MyStudy = () => {
     setDatatime(updatedDataTime);
   };
 
+  // const handleEventClick = (clickInfo) => {
+  //   const eventData = clickInfo.event._def.extendedProps;
+  //   setSelectedEvent({
+  //     id: eventData.selectID,
+  //     title: eventData.title,
+  //     start: new Date(eventData.start),
+  //     end: new Date(eventData.end),
+  //   });
+  //   handleOpenViewBooking();
+  // };
+
+
+
   const handleEventClick = (clickInfo) => {
     const eventData = clickInfo.event._def.extendedProps;
     setSelectedEvent({
@@ -356,7 +378,10 @@ const MyStudy = () => {
       end: new Date(eventData.end),
     });
     handleOpenViewBooking();
+    // Pass the event ID to handleEdit
+    handleEdit(eventData.selectID);
   };
+
   const deleteCurrent = async (id) => {
     setDeleteHandler(true);
     const respose = await deleteApiWithAuth(`timetable/delete-timeslot/${id}`);
@@ -394,36 +419,39 @@ const MyStudy = () => {
 
   const handleEdit = async (id) => {
     setUpdateLoading(true);
+  
 
-    let startTime = moment(viewData.start).format("hh:mm:ss");
-    let endTime = dayjs(viewData.end).format("hh:mm:ss");
+    const formattedStartTime = dayjs(selectedTime, "hh:mm A").format("HH:mm:ss");
+    const formattedEndTime = dayjs(selectedEndTime, "hh:mm A").format("HH:mm:ss");
 
-    // let dataarr = []
-    // data.map((e,i)=>(
-    //   dataarr.push(e.day)
-    // ))
+   
     setBtnDisabled(true);
-    const response = await putApiWithAuth(`timetable/update-timeslot/${id}`, {
-      timeslot: startTime,
-      endslot: endTime,
-      day: viewData.id,
-      title: viewData.title,
+    console.log("starttime", startTime, endTime,{
+      timeslot: formattedStartTime,
+      endslot: formattedEndTime,
+      day: weekDay,
+      title: title,
+    })
+    const response = await putApiWithAuth(`timetable/update-timeslot/${eventId}`, {
+      timeslot: formattedStartTime,
+      endslot: formattedEndTime,
+      day: weekDay,
+      title: title,
     });
+ 
     if (response.data.success === true) {
       message.success("Booking Updated Successfully");
       setUpdateLoading(false);
       getCalanderData();
       setOpenViewBooking(false);
+      window.location.reload();
+      
     }
     if (response.data.success === false) {
       message.error(response.data.message);
     }
+   
   };
-
-  // useEffect(() => {
-  //   getCalanderData();
-  //   updateDataTime(currentDate);
-  // }, [currentDate]);
 
   const handleTimeChange = (start, end) => {
 
@@ -498,11 +526,12 @@ const MyStudy = () => {
               events={calenderData}
               eventContent={renderEventContent}
               eventClick={handleDateSelect}
+         
               longPressDelay={1}
               select={(arg) => {
                 handleDateSelect(arg.start, arg.end);
               }}
-           
+
               selectable={true}
               editable={true}
               weekends={true}
@@ -513,11 +542,11 @@ const MyStudy = () => {
               dayMaxEventRows={isMobile ? 1 : 5}
               dayHeaderContent={(args) => {
                 const date = args.date;
-                console.log("dateeee", date)
+
                 const dayOfWeek = date.toLocaleString("default", {
                   weekday: "long",
                 });
-                console.log("dayofweek", dayOfWeek)
+
                 return `${dayOfWeek}`;
               }}
               slotMinTime="06:00:00"
@@ -525,7 +554,7 @@ const MyStudy = () => {
           </>)}
 
       </div>
-      {console.log("dayofweek",)}
+
       <Modal
         className="modalStyleClass"
         bodyStyle={{
@@ -586,7 +615,7 @@ const MyStudy = () => {
               justifyContent: "flex-end",
             }}
           >
-            <MyCareerGuidanceButton
+            {!isEditing && (<MyCareerGuidanceButton
               label={"Create"}
               className="takebutton"
               type="button"
@@ -594,10 +623,21 @@ const MyStudy = () => {
               onClick={createNewEvent}
               loading={loadingBooking}
               disabled={disableCreateButton}
-            />
+            />)}
+            {isEditing && (<MyCareerGuidanceButton
+              label={"Edit"}
+              className="takebutton"
+              type="button"
+              htmlType="button"
+              onClick={handleEdit}
+              loading={loadingBooking}
+              disabled={disableCreateButton}
+            />)}
           </div>
         </div>
       </Modal>
+
+
 
     </>
 
