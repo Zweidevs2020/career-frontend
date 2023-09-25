@@ -25,7 +25,7 @@ const CvCoverLetter = () => {
   const getUserData = async () => {
     try {
       const response = await getApiWithAuth(API_URL.GETUSER2);
-      console.log('response from cv cover', response.data.data['current_step']);
+    
 
       if (response.data.status === 200) {
         if (response.data.data.cv_completed === true) {
@@ -43,7 +43,7 @@ const CvCoverLetter = () => {
     const searchParams = new URLSearchParams(location.search);
     searchParams.set("step", current);
     window.history.replaceState(null, "", `${location.pathname}?${searchParams}`);
-    console.log("ressssssssssssss",response)
+ 
   }, [current, location]);
 
   const sendToEmail = async () => {
@@ -51,6 +51,7 @@ const CvCoverLetter = () => {
     const res = await getApiWithAuth(API_URL.SENDCV)
    
   }
+
 
   return (
     <>
@@ -89,21 +90,21 @@ const CvCoverLetter = () => {
 
         <div className="cv-Data">
           <div className="ml-2">
-           
-          <Steps current={response} setCurrent={setCurrent} currentStep={response} />
+       
+          <Steps current={response} setCurrent={setCurrent} currentStep={response+1} />
           </div>
           {current === 1 ? (
-            <PersonalProfile setCurrent={setCurrent} current={current} />
+            <PersonalProfile setCurrent={setCurrent}  current={current} />
           ) : current === 2 ? (
             <Education setCurrent={setCurrent} current={current} />
           ) : current === 3 ? (
-            <Experenice setCurrent={setCurrent} current={current} />
+            <Experenice setCurrent={setCurrent}  current={current} />
           ) : current === 4 ? (
-            <Skill setCurrent={setCurrent} current={current} />
+            <Skill setCurrent={setCurrent}  current={current} />
           ) : current === 5 ? (
-            <Interest setCurrent={setCurrent} current={current} />
+            <Interest setCurrent={setCurrent}current={current} />
           ) : current === 6 ? (
-            <Reference setCurrent={setCurrent} current={current} />
+            <Reference setCurrent={setCurrent}  current={current} />
           ) : (
             ""
           )}

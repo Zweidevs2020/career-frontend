@@ -211,7 +211,7 @@ const Experenice = ({ setCurrent, current }) => {
       );
 
       const response = await deleteApiWithAuth(`${API_URL.DELETE_EXPERIENCE}/${id}/`);
-      console.log("delete response is",response)
+   
       if (response.data.status === 204) {
         message.success("Experience entry deleted successfully.");
       } else {

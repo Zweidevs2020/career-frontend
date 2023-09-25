@@ -526,7 +526,7 @@ const Education = ({ setCurrent, current }) => {
               onChange={(event) => handleChange(event, "result", index)}
               optionLabelProp="label"
               className="eduSelect eduSelectItem"
-             {...console.log("resultarray",item.dataValue.level)}
+      
               defaultValue={item?.dataValue?.level}
             // disabled={isInputDisabled}>
             >

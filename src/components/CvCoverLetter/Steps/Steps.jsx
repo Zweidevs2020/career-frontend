@@ -2,7 +2,7 @@ import React from "react";
 import "./Steps.css";
 
 const Steps = ({ current, setCurrent, currentStep }) => {
-
+console.log("curremt setcurrent",current,setCurrent,currentStep)
 
   return (
     <>
