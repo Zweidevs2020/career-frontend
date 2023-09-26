@@ -1058,6 +1058,17 @@ const Sidebar = ({ children, flags }) => {
                           }
                         />
                       </Form.Item>
+                      <Col xs={24} md={24}>
+                      <Input
+                        value={userData.number}
+                        name="number"
+                        onChange={(e) => handleChange(e)}
+                        disabled={!editMode}
+                        style={{ padding: "15px 10px" }}
+                        placeholder="Phone Number"
+                      />
+                    </Col>
+
                     </Col>
 
 
@@ -1066,7 +1077,7 @@ const Sidebar = ({ children, flags }) => {
 
 
 
-                  <div className="mt-5" style={{ display: "flex" }}>
+                  <div className="mt-5" style={{ display: "flex",justifyContent:'center' }}>
                     <MyCareerGuidanceButton
                       label="Update"
                       className="takebutton"
