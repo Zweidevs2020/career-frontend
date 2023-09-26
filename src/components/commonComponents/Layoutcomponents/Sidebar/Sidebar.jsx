@@ -27,6 +27,7 @@ import adthe from "../../../../assets/adthe.svg";
 import pass from "../../../../assets/pass.svg";
 import profileInput from "../../../../assets/profileInput.svg";
 import dropdownIcon from "../../../../assets/dropdownIcon.svg";
+import phoneIcon from "../../../../assets/phone.svg";
 import { convertBase64 } from "../../../../utils/helper";
 import { useLocation, useNavigate } from "react-router-dom";
 import { removeToken } from "../../../../utils/LocalStorage";
@@ -648,6 +649,24 @@ const Sidebar = ({ children, flags }) => {
                         />
                       </Form.Item>
                     </Col>
+                    <Col xs={24} md={24}>
+                      <Input
+                        value={userData.number}
+                        name="number"
+                        onChange={(e) => handleChange(e)}
+                        disabled={!editMode}
+                        style={{ padding: "15px 10px" }}
+                        placeholder="Phone Number"
+                        prefix={
+                          <img
+                            src={phoneIcon}
+                            style={{ marginRight: "15px",width:'19px' }}
+                            alt=""
+                          />
+                        }
+                      />
+                    </Col>
+
                   </Row>
 
                   <div className="mt-5" style={{ display: "flex", justifyContent: 'center' }}>
@@ -684,155 +703,155 @@ const Sidebar = ({ children, flags }) => {
 
 
           <Drawer
-          
+
             placement={placement}
-            
+
             onClose={onClose}
             open={open}
-         
-            key={placement}
-          
-          >
-            <img src={myCareer} style={{position:'absolute',zIndex:'0',width:'2.3rem'}} className="drawerIcon" alt="cyberLegendLogo" width="100%" />
-             <Menu
-                selectedKeys={selectedMenuItem}
-                mode="inline"
-                className=""
-                onClick={(e) => componentsSwtich(e.key)}
-              >
-                <Menu.Item
-                  key="Overview"
-                  onClick={() => {
-                    componentsSwtich("Overview"); // You can keep this line if needed
-                    onClose(); // Close the Drawer
-                  }}
-                >
-                  <span className="textStyling">
-                    Overview{" "}
-                    {selectedMenuItem === "Overview" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span>
-                </Menu.Item>
-                <Menu.Item
-                  key="CAOCalculator"
-                  onClick={() => {
-                    componentsSwtich("CAOCalculator"); // You can keep this line if needed
-                    onClose(); // Close the Drawer
-                  }}
-                >
-                  <span className="textStyling">
-                    CAO Calculator{" "}
-                    {selectedMenuItem === "CAOCalculator" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span>
-                </Menu.Item>
 
-                <Menu.Item
-                  key="MyGoals"
-                  onClick={() => {
-                    componentsSwtich("MyGoals"); // You can keep this line if needed
-                    onClose(); // Close the Drawer
-                  }}
-                >
-                  <span className="textStyling">
-                    My Goals{" "}
-                    {selectedMenuItem === "MyGoals" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span>
-                </Menu.Item>
-                <Menu.Item
-                  key="CoverLater"
-                  onClick={() => {
-                    componentsSwtich("CoverLater"); // You can keep this line if needed
-                    onClose(); // Close the Drawer
-                  }}
-                >
-                  <span className="textStyling">
-                    My CV{" "}
-                    {selectedMenuItem === "CoverLater" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span>
-                </Menu.Item>
-                <Menu.Item
-                  key="SelfAssessment"
-                  onClick={() => {
-                    componentsSwtich("SelfAssessment"); // You can keep this line if needed
-                    onClose(); // Close the Drawer
-                  }}
-                >
-                  <span className="textStyling">
-                    My Self Assessment{" "}
-                    {selectedMenuItem === "SelfAssessment" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span>
-                </Menu.Item>
-                <Menu.Item
-                  key="MyStudy"
-                  onClick={() => {
-                    componentsSwtich("MyStudy"); // You can keep this line if needed
-                    onClose(); // Close the Drawer
-                  }}
-                >
-                  <span className="textStyling">
-                    My Study{" "}
-                    {selectedMenuItem === "MyStudy" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span>
-                </Menu.Item>
-                <Menu.Item
-                  key="MyChoices"
-                  onClick={() => {
-                    componentsSwtich("MyChoices"); // You can keep this line if needed
-                    onClose(); // Close the Drawer
-                  }}
-                >
-                  <span className="textStyling">
-                    My Choices{" "}
-                    {selectedMenuItem === "MyChoices" ? (
-                      <span> &nbsp;&nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span>
-                </Menu.Item>
-                <Menu.Item
-                  key="EducationalGuidance"
-                  onClick={() => {
-                    componentsSwtich("EducationalGuidance"); // You can keep this line if needed
-                    onClose(); // Close the Drawer
-                  }}
-                >
-                  <span className="textStyling">
-                    My Educational Guidance
-                    {selectedMenuItem === "EducationalGuidance" ? (
-                      <span> &nbsp;&#x25cf; </span>
-                    ) : null}
-                  </span>
-                </Menu.Item>
-              </Menu>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: 30,
+            key={placement}
+
+          >
+            <img src={myCareer} style={{ position: 'absolute', zIndex: '0', width: '2.3rem' }} className="drawerIcon" alt="cyberLegendLogo" width="100%" />
+            <Menu
+              selectedKeys={selectedMenuItem}
+              mode="inline"
+              className=""
+              onClick={(e) => componentsSwtich(e.key)}
+            >
+              <Menu.Item
+                key="Overview"
+                onClick={() => {
+                  componentsSwtich("Overview"); // You can keep this line if needed
+                  onClose(); // Close the Drawer
                 }}
-                className="careerBtnDiv"
               >
-                <MyCareerGuidanceButton
-                  label="Logout"
-                  className="mobLogoutBtn"
-                  type="primary"
-                  htmlType="button"
-                  onClick={logoutUser}
-              
-                />
-              </div>
+                <span className="textStyling">
+                  Overview{" "}
+                  {selectedMenuItem === "Overview" ? (
+                    <span> &nbsp;&nbsp;&#x25cf; </span>
+                  ) : null}
+                </span>
+              </Menu.Item>
+              <Menu.Item
+                key="CAOCalculator"
+                onClick={() => {
+                  componentsSwtich("CAOCalculator"); // You can keep this line if needed
+                  onClose(); // Close the Drawer
+                }}
+              >
+                <span className="textStyling">
+                  CAO Calculator{" "}
+                  {selectedMenuItem === "CAOCalculator" ? (
+                    <span> &nbsp;&nbsp;&#x25cf; </span>
+                  ) : null}
+                </span>
+              </Menu.Item>
+
+              <Menu.Item
+                key="MyGoals"
+                onClick={() => {
+                  componentsSwtich("MyGoals"); // You can keep this line if needed
+                  onClose(); // Close the Drawer
+                }}
+              >
+                <span className="textStyling">
+                  My Goals{" "}
+                  {selectedMenuItem === "MyGoals" ? (
+                    <span> &nbsp;&nbsp;&#x25cf; </span>
+                  ) : null}
+                </span>
+              </Menu.Item>
+              <Menu.Item
+                key="CoverLater"
+                onClick={() => {
+                  componentsSwtich("CoverLater"); // You can keep this line if needed
+                  onClose(); // Close the Drawer
+                }}
+              >
+                <span className="textStyling">
+                  My CV{" "}
+                  {selectedMenuItem === "CoverLater" ? (
+                    <span> &nbsp;&nbsp;&#x25cf; </span>
+                  ) : null}
+                </span>
+              </Menu.Item>
+              <Menu.Item
+                key="SelfAssessment"
+                onClick={() => {
+                  componentsSwtich("SelfAssessment"); // You can keep this line if needed
+                  onClose(); // Close the Drawer
+                }}
+              >
+                <span className="textStyling">
+                  My Self Assessment{" "}
+                  {selectedMenuItem === "SelfAssessment" ? (
+                    <span> &nbsp;&nbsp;&#x25cf; </span>
+                  ) : null}
+                </span>
+              </Menu.Item>
+              <Menu.Item
+                key="MyStudy"
+                onClick={() => {
+                  componentsSwtich("MyStudy"); // You can keep this line if needed
+                  onClose(); // Close the Drawer
+                }}
+              >
+                <span className="textStyling">
+                  My Study{" "}
+                  {selectedMenuItem === "MyStudy" ? (
+                    <span> &nbsp;&nbsp;&#x25cf; </span>
+                  ) : null}
+                </span>
+              </Menu.Item>
+              <Menu.Item
+                key="MyChoices"
+                onClick={() => {
+                  componentsSwtich("MyChoices"); // You can keep this line if needed
+                  onClose(); // Close the Drawer
+                }}
+              >
+                <span className="textStyling">
+                  My Choices{" "}
+                  {selectedMenuItem === "MyChoices" ? (
+                    <span> &nbsp;&nbsp;&#x25cf; </span>
+                  ) : null}
+                </span>
+              </Menu.Item>
+              <Menu.Item
+                key="EducationalGuidance"
+                onClick={() => {
+                  componentsSwtich("EducationalGuidance"); // You can keep this line if needed
+                  onClose(); // Close the Drawer
+                }}
+              >
+                <span className="textStyling">
+                  My Educational Guidance
+                  {selectedMenuItem === "EducationalGuidance" ? (
+                    <span> &nbsp;&#x25cf; </span>
+                  ) : null}
+                </span>
+              </Menu.Item>
+            </Menu>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: 30,
+              }}
+              className="careerBtnDiv"
+            >
+              <MyCareerGuidanceButton
+                label="Logout"
+                className="mobLogoutBtn"
+                type="primary"
+                htmlType="button"
+                onClick={logoutUser}
+
+              />
+            </div>
           </Drawer>
-         
+
 
           <Layout className="site-layout">
 
@@ -860,6 +879,7 @@ const Sidebar = ({ children, flags }) => {
             <Content className="marginContent">
               <div className="site-layout-background">{children}</div>
             </Content>
+
             <Modal
               className="modalStyleClass2"
               width={800}
@@ -1045,10 +1065,33 @@ const Sidebar = ({ children, flags }) => {
                           }
                         />
                       </Form.Item>
+                      <Col xs={24} md={24} style={{paddingLeft:'0px'}}>
+                      <Input
+                        value={userData.number}
+                        name="number"
+                        onChange={(e) => handleChange(e)}
+                        disabled={!editMode}
+                        style={{ padding: "15px 10px" }}
+                        placeholder="Phone Number"
+                        prefix={
+                          <img
+                            src={phoneIcon}
+                            style={{ marginRight: "15px" ,width:'18px'}}
+                            alt=""
+                          />
+                        }
+                      />
                     </Col>
+
+                    </Col>
+
+
+
                   </Row>
 
-                  <div className="mt-5" style={{ display: "flex" }}>
+
+
+                  <div className="mt-5" style={{ display: "flex",justifyContent:'center' }}>
                     <MyCareerGuidanceButton
                       label="Update"
                       className="takebutton"
