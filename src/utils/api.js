@@ -66,11 +66,11 @@ export const putApiWithAuth = async (url, body) => {
 };
 
 export const deleteApiWithAuth = async (url) => {
-  console.log("i am in api DELETE",url)
+ 
   await setApiHeader();
   try {
     const res = await baseInstance.delete(url);
-    console.log("i am in res of DELETE",res)
+
     return {
       data: res,
     };
