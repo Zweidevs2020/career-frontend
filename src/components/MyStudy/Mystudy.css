@@ -82,7 +82,30 @@
     text-align: center;
     color: white;
 }
+.errorTime {
+    color: red;
+    margin-top: 5px;
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+.saveData
+{
+    background-color: #1476B7;
+    color: white !important;
+    width: 150px;
+    height: 45px;
+    border-radius: 10px;
+}
 
+.download
+{
+    background-color: #1476B7;
+    color: white !important;
+    width: 200px;   
+    height: 45px;
+    border-radius: 10px;
+}
 button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-button.viewResultButton.editBtn {
     background-color: #1476B7;
     color: white;
@@ -115,39 +138,17 @@ fc-col-header-cell-cushion {
         margin-left: 10rem !important;
     }
     
+
 }
 
-@media (min-width: 500px) and (max-width: 770px) {
+@media (min-width: 500px) and (max-width: 670px)  {
     .fc .fc-col-header-cell-cushion {
-        font-size: 10px !important;
+        font-size: 10px ;
     }
     .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
    
-        margin-left: 20rem !important;
+        margin-left: 28rem !important;
     }
 }
 
-.errorTime {
-    color: red;
-    margin-top: 5px;
-    width: 100%;
-    display: flex;
-    justify-content: end;
-}
-.saveData
-{
-    background-color: #1476B7;
-    color: white !important;
-    width: 150px;
-    height: 45px;
-    border-radius: 10px;
-}
 
-.download
-{
-    background-color: #1476B7;
-    color: white !important;
-    width: 200px;   
-    height: 45px;
-    border-radius: 10px;
-}
