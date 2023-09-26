@@ -657,6 +657,13 @@ const Sidebar = ({ children, flags }) => {
                         disabled={!editMode}
                         style={{ padding: "15px 10px" }}
                         placeholder="Phone Number"
+                        prefix={
+                          <img
+                            src={phoneIcon}
+                            style={{ marginRight: "15px",width:'19px' }}
+                            alt=""
+                          />
+                        }
                       />
                     </Col>
 
@@ -1058,7 +1065,7 @@ const Sidebar = ({ children, flags }) => {
                           }
                         />
                       </Form.Item>
-                      <Col xs={24} md={24}>
+                      <Col xs={24} md={24} style={{paddingLeft:'0px'}}>
                       <Input
                         value={userData.number}
                         name="number"
@@ -1066,6 +1073,13 @@ const Sidebar = ({ children, flags }) => {
                         disabled={!editMode}
                         style={{ padding: "15px 10px" }}
                         placeholder="Phone Number"
+                        prefix={
+                          <img
+                            src={phoneIcon}
+                            style={{ marginRight: "15px" ,width:'18px'}}
+                            alt=""
+                          />
+                        }
                       />
                     </Col>
 
