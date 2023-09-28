@@ -88,9 +88,10 @@ const MyChoicesEdit = () => {
   const getTableRecord = async () => {
     console.log("get table record")
     const response = await getApiWithAuth(`choices/${dataa.id}/`);
+    console.log("response of get data", response)
     if (response.data.status === 200) {
       setOldData(response.data.data);
-      setData(response.data.data);
+      // setData(response.data.data);
       setLoadingFirst(false);
     } else {
       setLoadingFirst(true);
@@ -138,7 +139,7 @@ const MyChoicesEdit = () => {
         return rowData;
       });
       setMyData(oldData)
-
+     
       setShowRowsData(newData);
     }
   }, [showRows]);
@@ -356,28 +357,44 @@ const MyChoicesEdit = () => {
     }),
   );
 
+  // const sensors = useSensors(
+  //   useSensor(PointerSensor, {
+  //     activationConstraint: {
+  //       distance: 1,
+  //     },
+  //     events: {
+  //       pointerDown: handleTouchStart,
+  //       pointerMove: handleTouchMove,
+  //       pointerUp: handleTouchEnd,
+  //     },
+  //   }),
+  // );
+
   const isMobileScreen = window.innerWidth < 748;
 
   const onDragEnd = async ({ active, over }) => {
-    console.log("hello")
+    console.log("hello drag drop", active, over)
     if (active?.id && over?.id) {
       if (active?.id !== over?.id) {
         setData((prev) => {
           const activeIndex = prev.findIndex((i) => i.dataId === active?.id);
-
+          console.log("active index", activeIndex)
           const overIndex = prev.findIndex((i) => i.dataId === over?.id);
-
+          console.log("over index", overIndex)
           const orderUpdate1 = { "order_number": oldData[overIndex]?.order_number }
-
+          console.log("order 1", orderUpdate1)
           const orderUpdate2 = { "order_number": oldData[activeIndex]?.order_number }
+          console.log("order 2", orderUpdate2)
           const updateOrder1 = async () => {
             setLoadingFirst(true);
             const respose1 = await patchApiWithAuth(
               `choices/update-${dataa.id}/${oldData[activeIndex].id}/`,
               orderUpdate1
             );
+            console.log("response1", respose1)
             if (respose1.data.status === 200) {
               getTableRecord();
+              // setData(response.data.data);
             }
             setLoadingFirst(false);
           }
@@ -388,8 +405,10 @@ const MyChoicesEdit = () => {
               `choices/update-${dataa.id}/${oldData[overIndex].id}/`,
               orderUpdate2
             );
+            console.log("response2", respose2)
             if (respose2.data.status === 200) {
               getTableRecord();
+              // setData(response.data.data);
             }
 
             setLoadingFirst(false);
@@ -401,7 +420,9 @@ const MyChoicesEdit = () => {
           return arrayMove(prev, activeIndex, overIndex);
         });
       }
+
     }
+    // window.location.reload();
   };
 
 
@@ -413,13 +434,22 @@ const MyChoicesEdit = () => {
         <div className="caoMainDiv">
           <div style={{ background: "white" }}>
             <div className="coaInnerf8fafcDiv">
-              <div class="h-[40px] w-[10%] bg-[#1476B7] rounded-lg flex items-center justify-evenly" className={isMobile ? 'backMobileButtonChoicesEdit' : 'backDesktopButtonChoicesEdit'}>
+            {isMobile ? (
+              <div className="h-[40px] w-[15%] bg-[#1476B7] rounded-lg flex items-center justify-evenly mx-2" >
                 <button class="text-[#fff] flex items-center" onClick={() => { navigate("/my-choices") }}>
                   {/* <LeftOutlined class="h-4" /> */}
                   <span class="ml-1">Back</span>
                 </button>
               </div>
-              <div className="welcomeHaddingText py-3">{dataa.name}</div>
+                ) : (
+                  <div className="h-[40px] w-[10%] bg-[#1476B7] rounded-lg flex items-center justify-evenly backDesktopButtonChoicesEdit">
+                    <button className="text-[#fff] flex items-center" onClick={() => { navigate("/my-choices") }}>
+                      <span className="ml-1">Back</span>
+                    </button>
+                  </div>
+                  
+                )}
+              <div className="myChoiceEditHeading py-3">{dataa.name}</div>
               <div className="w-100 p-3">
                 {!isMobileScreen ? (
 
@@ -593,74 +623,70 @@ const MyChoicesEdit = () => {
 
                   </div>
                 ) : (
+                  
                   <div className="mobile-table">
+                    
                     <div className="mobile-table">
+                  
                       <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
                         <SortableContext
-                         items={data
-                          .filter(item => item.id !== null)
-                          .map(item => item.dataId)
-                          } 
+                          items={data
+                            .filter(item => item.id !== null)
+                            .map(item => item.dataId)
+                          }
                           strategy={verticalListSortingStrategy}>
+                            
                           {data.map((row) => (
-                              <Row key={row.id} data-row-key={row.dataId}>
-                            <div className="dragDrop" key={row.id}>
-                              <div className={`row mobile-row`} style={{ background: 'rgb(244, 246, 248)', marginBottom: '5rem' }}>
-                                <div className="menuIconMobile drag-handle" >
-                                  <MenuOutlined
-                                    style={{
-                                      touchAction: 'none',
-                                      cursor: 'move',
-                                    }}
-                                  />
-                                  <div className="actionColumn">
-                                    {/* <span className="rowHeadingMobile">Action</span> */}
-                                    <Space size="middle">
-                                      {row.editable && row.id !== null ? (
-                                        <a onClick={() => handleUpdate(row)}><CheckOutlined /></a>
-                                      ) : row.editable && row.id === null ? (
-                                        <a onClick={() => handleAddRow(row)}><PlusCircleOutlined /></a>
-                                      ) : (
-                                        <a onClick={() => eidtThisRow(row)}><EditOutlined /></a>
-                                      )}
-                                      <a onClick={() => handleDelete(row)}><DeleteOutlined style={{ color: 'red' }} /></a>
-                                    </Space>
-                                  </div>
-                                </div>
-                                <div className="first-column">
-                                  <div className="column"></div>
-                                  <div className="column" style={{ width: '100%' }}>
-                                    <span className="rowHeadingMobile">No.{' '}{row.rowNo}</span>
-                                    {/* <MyCareerGuidanceInputField
-                                      placeholder={row.rowNo}
-                                      type="input"
-                                      name={row.rowNo}
-                                      defaultValue={row.rowNo}
-                                      isPrefix={false}
-                                      disabled={!row.editable}
-                                    /> */}
-                                  </div>
-                                </div>
-                                <div className="remaining-columns">
-                                  {columns.map((item, index) => (
-                                    <div className="column" key={index}>
-                                      <span className="rowHeadingMobile">{capitalizeWords(item)}</span>
-                                      <MyCareerGuidanceInputField
-                                        ref={inputRef}
-                                        placeholder={row[item]}
-                                        type="input"
-                                        name={item}
-                                        onChange={(e) => handleChangeTable(e, row)}
-                                        defaultValue={row[item]}
-                                        isPrefix={false}
-                                        disabled={!row.editable}
-                                      />
+                            <Row key={row.id} data-row-key={row.dataId}>
+                              <div className="dragDrop" key={row.id}>
+                                <div className={`row mobile-row`} style={{ background: 'rgb(244, 246, 248)', marginBottom: '5rem' }}>
+                                  <div className="menuIconMobile drag-handle" >
+                                    <MenuOutlined
+                                      style={{
+                                        touchAction: 'none',
+                                        cursor: 'move',
+                                      }}
+                                    />
+                                    <div className="actionColumn">
+                                      {/* <span className="rowHeadingMobile">Action</span> */}
+                                      <Space size="middle">
+                                        {row.editable && row.id !== null ? (
+                                          <a onClick={() => handleUpdate(row)}><CheckOutlined /></a>
+                                        ) : row.editable && row.id === null ? (
+                                          <a onClick={() => handleAddRow(row)}><PlusCircleOutlined /></a>
+                                        ) : (
+                                          <a onClick={() => eidtThisRow(row)}><EditOutlined /></a>
+                                        )}
+                                        <a onClick={() => handleDelete(row)}><DeleteOutlined style={{ color: 'red' }} /></a>
+                                      </Space>
                                     </div>
-                                  ))}
+                                  </div>
+                                  <div className="first-column">
+                                    <div className="column"></div>
+                                    <div className="column" style={{ width: '100%' }}>
+                                      <span className="rowHeadingMobile">No.{' '}{row.rowNo}</span>
+                                    </div>
+                                  </div>
+                                  <div className="remaining-columns">
+                                    {columns.map((item, index) => (
+                                      <div className="column" key={index}>
+                                        <span className="rowHeadingMobile">{capitalizeWords(item)}</span>
+                                        <MyCareerGuidanceInputField
+                                          ref={inputRef}
+                                          placeholder={row[item]}
+                                          type="input"
+                                          name={item}
+                                          onChange={(e) => handleChangeTable(e, row)}
+                                          defaultValue={row[item]}
+                                          isPrefix={false}
+                                          disabled={!row.editable}
+                                        />
+                                      </div>
+                                    ))}
+                                  </div>
                                 </div>
-                              </div>
 
-                            </div>
+                              </div>
                             </Row>
                           ))}
                         </SortableContext>
@@ -672,6 +698,9 @@ const MyChoicesEdit = () => {
                 )}
               </div>
             </div>
+
+
+            
           </div>
         </div>
       )}

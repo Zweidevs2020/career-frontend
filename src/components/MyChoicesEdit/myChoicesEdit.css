@@ -62,7 +62,9 @@
 }
 
 .backButtonChoicesEdit {
-  width: 20px !important;
+  width: 40px !important;
+  color: white !important;
+  background: #1476b7 !important;
 }
 
 .mobile-table {
@@ -117,6 +119,14 @@
   margin-left: 1.5rem;
 
 }
+.myChoiceEditHeading{
+  font-family: "Poppins";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 30px;
+    color: #333333;
+}
 
 @media only screen and (max-width: 780px) {
 
@@ -124,6 +134,12 @@
   .new-data input {
 
     width: 155px !important;
+  }
+  .myChoiceEditHeading{
+  
+      font-weight: 700;
+      font-size: 16px;
+    margin-left: 15px;
   }
 
 }
