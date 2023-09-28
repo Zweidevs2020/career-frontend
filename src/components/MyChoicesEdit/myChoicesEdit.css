@@ -13,12 +13,20 @@
   color: #2b2a2a !important;
 }
 
-.inputFieldStyleLarge{
+.inputFieldStyleLarge {
   color: #5c0404;
-  
+
 }
 
-.inputFieldStyleSmall{
+.rowHeadingMobile {
+  color: #1476b7 !important;
+  font-family: poppins;
+  font-size: 16px;
+  margin-right: 3px;
+  font-weight: 700 !important;
+}
+
+.inputFieldStyleSmall {
   width: 120px;
   color: #2b2a2a;
 }
@@ -53,14 +61,69 @@
   display: none;
 }
 
-.backButtonChoicesEdit{
+.backButtonChoicesEdit {
   width: 20px !important;
 }
 
+.mobile-table {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.row.mobile-row {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.first-column {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.remaining-columns {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.column {
+  width: 50%;
+  padding: 8px;
+}
+
+.actionColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -12px;
+  line-height: 40px;
+  margin-right: 10px;
+}
+
+.dragdrop {
+  width: 100%;
+}
+
+
+.menuIconMobile {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-top: 2rem;
+  margin-left: 1.5rem;
+
+}
+
 @media only screen and (max-width: 780px) {
-  .old-data input ,.new-data input {
-   
-    width:120px !important;
+
+  .old-data input,
+  .new-data input {
+
+    width: 155px !important;
   }
-  
+
 }

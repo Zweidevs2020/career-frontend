@@ -365,7 +365,7 @@ const CaoCalculator = () => {
 
   const handleDelete = async (id) => {
     
-    if (tableData.length > 7) {
+    if (tableData.length >= 7) {
     
       const targetIndex = tableData.findIndex(item => item.No === id);
     
@@ -463,9 +463,7 @@ const CaoCalculator = () => {
       const response = await getApiWithAuth(`calculator/user-points/`);
      
       setDataId(response.data.data[0].id)
-      // const parsedId = parseInt(response.data.data[0].id);
-      // setDataId(parsedId)
-
+   
 
       if (response.data.data.length === 0) {
 
