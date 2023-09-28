@@ -74,7 +74,7 @@ const MyChoicesEdit = () => {
     if (response.data.status === 200) {
       const columnsData = response.data.data.data;
       const columnsWithoutOrderNumber = columnsData.slice(0, columnsData.length - 1);
-     
+
       setColums(columnsWithoutOrderNumber);
       setShowRows(response.data.data.rows);
       setLoadingFirst(false);
@@ -84,12 +84,13 @@ const MyChoicesEdit = () => {
     }
   }
 
-  const getTableRecord = async () => {
 
+  const getTableRecord = async () => {
+    console.log("get table record")
     const response = await getApiWithAuth(`choices/${dataa.id}/`);
     if (response.data.status === 200) {
       setOldData(response.data.data);
-
+      setData(response.data.data);
       setLoadingFirst(false);
     } else {
       setLoadingFirst(true);
@@ -156,7 +157,7 @@ const MyChoicesEdit = () => {
       }
 
     });
-
+    console.log("helllo updated", dataRef.current)
     dataRef.current = [...updatedData];
 
   }
@@ -173,9 +174,9 @@ const MyChoicesEdit = () => {
   };
 
   const handleUpdate = async (record) => {
-
-    const row = dataRef.current.filter((item) => item.id === record.id);
-
+    console.log("update record", record)
+    const row = dataRef.current.filter((item) => item.id === record?.id);
+    console.log("update row", row)
     if (row) {
       const checkNullValue = (row, key) => {
 
@@ -194,6 +195,7 @@ const MyChoicesEdit = () => {
       if (nullKeys.length > 0) {
         message.error(`Please enter the ${nullKeys[0]} of the Row`);
       } else {
+
         const respose = await patchApiWithAuth(
           `choices/update-${dataa.id}/${record.id}/`,
           row[0]
@@ -209,7 +211,9 @@ const MyChoicesEdit = () => {
           message.error(respose.data.message);
         }
       }
+
     }
+
   };
 
   const handleDelete = async (item) => {
@@ -227,9 +231,9 @@ const MyChoicesEdit = () => {
   };
 
   const handleAddRow = async (record) => {
-
+    console.log("record ", record)
     const row = dataRef.current.filter((item) => item.dataId === record.dataId);
-
+    console.log("add record data", row)
     if (row.length != 0) {
       const row1 = row[0];
       const checkNullValue = (row1, key) => {
@@ -263,7 +267,8 @@ const MyChoicesEdit = () => {
           message.error(respose.data.message);
         }
       }
-    } else {
+    }
+    else if (!record || !record.code) {
       message.error(`Please enter Code to proceed further`);
     }
 
@@ -293,7 +298,6 @@ const MyChoicesEdit = () => {
           ...transform,
           scaleY: 1,
         },
-
       ),
 
       transition,
@@ -310,11 +314,40 @@ const MyChoicesEdit = () => {
 
     return (
       <><tr {...props} ref={setNodeRef} className={isIdNotNull ? 'old-data' : 'new-data'} style={style} {...attributes} {...listeners} >
-
       </tr></>
     );
-
   };
+
+  // const MobileRow = (props) => {
+  //   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+  //     id: props['data-row-key'],
+  //   });
+  //   const rowId = props['data-row-key'];
+  //   const row = data.find((item) => item.dataId === rowId);
+  //   const isIdNotNull = row && row.id !== null;
+  //   const style = {
+  //     ...props.style,
+  //     transform: CSS.Transform.toString(
+  //       transform && {
+  //         ...transform,
+  //         scaleY: 1,
+  //       },
+  //     ),
+  //     transition,
+  //     cursor: 'move',
+  //     ...(isDragging
+  //       ? {
+  //         position: 'relative',
+  //         zIndex: 9999,
+  //       }
+  //       : {}),
+  //   };
+
+  //   return (
+  //     <div {...props} ref={setNodeRef} className={isIdNotNull ? 'old-data' : 'new-data'} style={style} {...attributes} {...listeners} />
+  //   );
+  // };
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -323,8 +356,10 @@ const MyChoicesEdit = () => {
     }),
   );
 
-  const onDragEnd = async ({ active, over }) => {
+  const isMobileScreen = window.innerWidth < 748;
 
+  const onDragEnd = async ({ active, over }) => {
+    console.log("hello")
     if (active?.id && over?.id) {
       if (active?.id !== over?.id) {
         setData((prev) => {
@@ -378,7 +413,7 @@ const MyChoicesEdit = () => {
         <div className="caoMainDiv">
           <div style={{ background: "white" }}>
             <div className="coaInnerf8fafcDiv">
-              <div class="h-[40px] w-[10%] bg-[#1476B7] rounded-lg flex items-center justify-evenly" className={isMobile?'backMobileButtonChoicesEdit':'backDesktopButtonChoicesEdit'}>
+              <div class="h-[40px] w-[10%] bg-[#1476B7] rounded-lg flex items-center justify-evenly" className={isMobile ? 'backMobileButtonChoicesEdit' : 'backDesktopButtonChoicesEdit'}>
                 <button class="text-[#fff] flex items-center" onClick={() => { navigate("/my-choices") }}>
                   {/* <LeftOutlined class="h-4" /> */}
                   <span class="ml-1">Back</span>
@@ -386,191 +421,263 @@ const MyChoicesEdit = () => {
               </div>
               <div className="welcomeHaddingText py-3">{dataa.name}</div>
               <div className="w-100 p-3">
-            
-                <div className="w-100" style={{ overflowX: "auto" }}>
-                  <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
-                    <SortableContext
+                {!isMobileScreen ? (
 
-                      items={data
-                        .filter(item => item.id !== null)
-                        .map(item => item.dataId)
-                      }
-                      strategy={verticalListSortingStrategy}
-                    >
-                      {loadingFirst ? (
-                        <Spin className="spinStyle" />
-                      ) : (<Table pagination={false} dataSource={data.filter(item => item.id !== null)}  className={data.length > 0 && data[0]?.id !== null ? "nonEmptyTable" : "emptyTable"} rowKey={"dataId"} components={{
-                        body: {
-                          row: Row,
+                  <div className="w-100" style={{ overflowX: "auto" }}>
+                    <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
+                      <SortableContext
+
+                        items={data
+                          .filter(item => item.id !== null)
+                          .map(item => item.dataId)
                         }
-                      }}
+                        strategy={verticalListSortingStrategy}
                       >
-
-                        <Column
-                          title=""
-                          key="menuIcon"
-                          dataIndex="menuIcon"
-                          render={(text, record) => (
-
-                            <MenuOutlined
-                              style={{
-                                touchAction: 'none',
-                                cursor: 'move',
-
-                              }}
-
-                            />
-                          )}
-                        />
-                        <Column
-                          title="No."
-                          dataIndex="rowNo"
-                          key="rowNo"
-                          className="tableHeadingStyle"
-                          render={(text) => <span>{text + 1}</span>}
-                        />
-                        {columns.map((item) => {
-
-                          return (
-                            <>
-
-                              <Column
-                                title={capitalizeWords(item)}
-                                dataIndex={item}
-                                key={item}
-                                className="tableHeadingStyle"
-                                render={(text, record) => (
-                                  <>
-
-                                    <MyCareerGuidanceInputField
-                                      ref={inputRef}
-                                      placeholder={item}
-                                      type="input"
-                                      name={item}
-                                      defaultValue={text}
-                                      onChange={(e) => handleChangeTable(e, record)}
-                                      isPrefix={false}
-                                      disabled={!record.editable}
-                                    />
-                                  </>
-                                )}
-                              />
-                            </>
-                          );
-                        })}
-
-                        <Column
-                          title="Action"
-                          key="Object"
-                          className="tableHeadingStyle"
-                          dataIndex={"Object"}
-                          render={(_, record) => (
-                            <Space size="middle">
-                              {record.editable && record.id !== null ? (
-                                <a onClick={() => handleUpdate(record)}><CheckOutlined /></a>
-                              ) : record.editable && record.id === null ? (
-                                <a onClick={() => handleAddRow(record)}><PlusCircleOutlined /></a>
-                              ) : (
-                                <a onClick={() => eidtThisRow(record)}><EditOutlined /></a>
-                              )}
-                              <a onClick={() => handleDelete(record)}><DeleteOutlined /></a>
-                            </Space>
-                          )}
-                        />
-                      </Table>
-                      )}
-
-                    </SortableContext>
-                  </DndContext>
-
-                  <Table pagination={false} dataSource={data.filter(item => item.id === null)}   className={data.length > 0 && data[0]?.id === null ? "nonEmptyTable" : "emptyTable"} rowKey={"dataId"} components={{
-                    body: {
-                      row: Row,
-                    }
-                  }}
-
-                  >
-
-                    <Column
-                      render={() => (
-                        <MenuOutlined
-                          style={{
-                            touchAction: 'none',
-                            cursor: 'move',
-                            color: 'white'
-                          }}
-                        />
-                      )}
-                    />
-                    <Column
-                      title="No."
-                      dataIndex="rowNo"
-                      key="rowNo"
-                      className="tableHeadingStyle"
-                      render={(text) => <span>{text + 1}</span>}
-                    />
-                    {columns.map((item) => {
-
-                      return (
-                        <>
-
+                        {loadingFirst ? (
+                          <Spin className="spinStyle" />
+                        ) : (<Table pagination={false} dataSource={data.filter(item => item.id !== null)} className={data.length > 0 && data[0]?.id !== null ? "nonEmptyTable" : "emptyTable"} rowKey={"dataId"} components={{
+                          body: {
+                            row: Row,
+                          }
+                        }}
+                        >
 
                           <Column
-                            title={capitalizeWords(item)}
-                            dataIndex={item}
-                            key={item}
-                            className="tableHeadingStyle"
+                            title=""
+                            key="menuIcon"
+                            dataIndex="menuIcon"
                             render={(text, record) => (
-                              <>
-                                <MyCareerGuidanceInputField
-                                  ref={inputRef}
-                                  placeholder={item}
-                                  type="input"
-                                  name={item}
-                                  defaultValue={text}
-                                  onChange={(e) => handleChangeTable(e, record)}
-                                  isPrefix={false}
-                                  disabled={!record.editable}
-                                />
-                              </>
+
+                              <MenuOutlined
+                                style={{
+                                  touchAction: 'none',
+                                  cursor: 'move',
+
+                                }}
+
+                              />
                             )}
                           />
-                        </>
-                      );
-                    })}
+                          <Column
+                            title="No."
+                            dataIndex="rowNo"
+                            key="rowNo"
+                            className="tableHeadingStyle"
+                            render={(text) => <span>{text + 1}</span>}
+                          />
+                          {columns.map((item) => {
 
-                    <Column
-                      title="Action"
-                      key="Object"
-                      className="tableHeadingStyle"
-                      dataIndex={"Object"}
-                      render={(_, record) => (
-                        <Space size="middle">
-                          {record.editable && record.id !== null ? (
-                            <a onClick={() => handleUpdate(record)}><CheckOutlined /></a>
-                          ) : record.editable && record.id === null ? (
-                            <a onClick={() => handleAddRow(record)}><PlusCircleOutlined /></a>
-                          ) : (
-                            <a onClick={() => eidtThisRow(record)}><EditOutlined /></a>
-                          )}
-                          <a onClick={() => handleDelete(record)}><DeleteOutlined /></a>
-                        </Space>
-                      )}
-                    />
-                  </Table>
+                            return (
+                              <>
 
-                </div>
+                                <Column
+                                  title={capitalizeWords(item)}
+                                  dataIndex={item}
+                                  key={item}
+                                  className="tableHeadingStyle"
+                                  render={(text, record) => (
+                                    <>
+
+                                      <MyCareerGuidanceInputField
+                                        ref={inputRef}
+                                        placeholder={item}
+                                        type="input"
+                                        name={item}
+                                        defaultValue={text}
+                                        onChange={(e) => handleChangeTable(e, record)}
+                                        isPrefix={false}
+                                        disabled={!record.editable}
+                                      />
+                                    </>
+                                  )}
+                                />
+                              </>
+                            );
+                          })}
+
+                          <Column
+                            title="Action"
+                            key="Object"
+                            className="tableHeadingStyle"
+                            dataIndex={"Object"}
+                            render={(_, record) => (
+                              <Space size="middle">
+                                {record.editable && record.id !== null ? (
+                                  <a onClick={() => handleUpdate(record)}><CheckOutlined /></a>
+                                ) : record.editable && record.id === null ? (
+                                  <a onClick={() => handleAddRow(record)}><PlusCircleOutlined /></a>
+                                ) : (
+                                  <a onClick={() => eidtThisRow(record)}><EditOutlined /></a>
+                                )}
+                                <a onClick={() => handleDelete(record)}><DeleteOutlined /></a>
+                              </Space>
+                            )}
+                          />
+                        </Table>
+                        )}
+
+                      </SortableContext>
+                    </DndContext>
+
+                    <Table pagination={false} dataSource={data.filter(item => item.id === null)} className={data.length > 0 && data[0]?.id === null ? "nonEmptyTable" : "emptyTable"} rowKey={"dataId"} components={{
+                      body: {
+                        row: Row,
+                      }
+                    }}
+                    >
+                      <Column
+                        render={() => (
+                          <MenuOutlined
+                            style={{
+                              touchAction: 'none',
+                              cursor: 'move',
+                              color: 'white'
+                            }}
+                          />
+                        )}
+                      />
+                      <Column
+                        title="No."
+                        dataIndex="rowNo"
+                        key="rowNo"
+                        className="tableHeadingStyle"
+                        render={(text) => <span>{text + 1}</span>}
+                      />
+                      {columns.map((item) => {
+
+                        return (
+                          <>
+                            <Column
+                              title={capitalizeWords(item)}
+                              dataIndex={item}
+                              key={item}
+                              className="tableHeadingStyle"
+                              render={(text, record) => (
+                                <>
+                                  <MyCareerGuidanceInputField
+                                    ref={inputRef}
+                                    placeholder={item}
+                                    type="input"
+                                    name={item}
+                                    defaultValue={text}
+                                    onChange={(e) => handleChangeTable(e, record)}
+                                    isPrefix={false}
+                                    disabled={!record.editable}
+                                  />
+                                </>
+                              )}
+                            />
+                          </>
+                        );
+                      })}
+
+                      <Column
+                        title="Action"
+                        key="Object"
+                        className="tableHeadingStyle"
+                        dataIndex={"Object"}
+                        render={(_, record) => (
+                          <Space size="middle">
+                            {record.editable && record.id !== null ? (
+                              <a onClick={() => handleUpdate(record)}><CheckOutlined /></a>
+                            ) : record.editable && record.id === null ? (
+                              <a onClick={() => handleAddRow(record)}><PlusCircleOutlined /></a>
+                            ) : (
+                              <a onClick={() => eidtThisRow(record)}><EditOutlined /></a>
+                            )}
+                            <a onClick={() => handleDelete(record)}><DeleteOutlined /></a>
+                          </Space>
+                        )}
+                      />
+                    </Table>
+
+                  </div>
+                ) : (
+                  <div className="mobile-table">
+                    <div className="mobile-table">
+                      <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
+                        <SortableContext
+                         items={data
+                          .filter(item => item.id !== null)
+                          .map(item => item.dataId)
+                          } 
+                          strategy={verticalListSortingStrategy}>
+                          {data.map((row) => (
+                              <Row key={row.id} data-row-key={row.dataId}>
+                            <div className="dragDrop" key={row.id}>
+                              <div className={`row mobile-row`} style={{ background: 'rgb(244, 246, 248)', marginBottom: '5rem' }}>
+                                <div className="menuIconMobile drag-handle" >
+                                  <MenuOutlined
+                                    style={{
+                                      touchAction: 'none',
+                                      cursor: 'move',
+                                    }}
+                                  />
+                                  <div className="actionColumn">
+                                    {/* <span className="rowHeadingMobile">Action</span> */}
+                                    <Space size="middle">
+                                      {row.editable && row.id !== null ? (
+                                        <a onClick={() => handleUpdate(row)}><CheckOutlined /></a>
+                                      ) : row.editable && row.id === null ? (
+                                        <a onClick={() => handleAddRow(row)}><PlusCircleOutlined /></a>
+                                      ) : (
+                                        <a onClick={() => eidtThisRow(row)}><EditOutlined /></a>
+                                      )}
+                                      <a onClick={() => handleDelete(row)}><DeleteOutlined style={{ color: 'red' }} /></a>
+                                    </Space>
+                                  </div>
+                                </div>
+                                <div className="first-column">
+                                  <div className="column"></div>
+                                  <div className="column" style={{ width: '100%' }}>
+                                    <span className="rowHeadingMobile">No.{' '}{row.rowNo}</span>
+                                    {/* <MyCareerGuidanceInputField
+                                      placeholder={row.rowNo}
+                                      type="input"
+                                      name={row.rowNo}
+                                      defaultValue={row.rowNo}
+                                      isPrefix={false}
+                                      disabled={!row.editable}
+                                    /> */}
+                                  </div>
+                                </div>
+                                <div className="remaining-columns">
+                                  {columns.map((item, index) => (
+                                    <div className="column" key={index}>
+                                      <span className="rowHeadingMobile">{capitalizeWords(item)}</span>
+                                      <MyCareerGuidanceInputField
+                                        ref={inputRef}
+                                        placeholder={row[item]}
+                                        type="input"
+                                        name={item}
+                                        onChange={(e) => handleChangeTable(e, row)}
+                                        defaultValue={row[item]}
+                                        isPrefix={false}
+                                        disabled={!row.editable}
+                                      />
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+
+                            </div>
+                            </Row>
+                          ))}
+                        </SortableContext>
+                      </DndContext>
+                    </div>
+
+                  </div>
+
+                )}
               </div>
             </div>
           </div>
-        </div >
-
+        </div>
       )}
-
     </>
   );
-};
-
+}
 export default MyChoicesEdit;
 
 
