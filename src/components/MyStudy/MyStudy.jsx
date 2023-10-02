@@ -446,6 +446,7 @@ const MyStudy = () => {
       setOpenViewBooking(false);
       window.location.reload();
       
+      
     }
     if (response.data.success === false) {
       message.error(response.data.message);
