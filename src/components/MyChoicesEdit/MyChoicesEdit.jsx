@@ -88,9 +88,9 @@ const MyChoicesEdit = () => {
 
 
   const getTableRecord = async () => {
-    console.log("get table record")
+    
     const response = await getApiWithAuth(`choices/${dataa.id}/`);
-    console.log("response of get data", response)
+   
     if (response.data.status === 200) {
       setOldData(response.data.data);
       // setData(response.data.data);
@@ -160,7 +160,7 @@ const MyChoicesEdit = () => {
       }
 
     });
-    console.log("helllo updated", dataRef.current)
+   
     dataRef.current = [...updatedData];
 
   }
@@ -177,9 +177,9 @@ const MyChoicesEdit = () => {
   };
 
   const handleUpdate = async (record) => {
-    console.log("update record", record)
+  
     const row = dataRef.current.filter((item) => item.id === record?.id);
-    console.log("update row", row)
+   
     if (row) {
       const checkNullValue = (row, key) => {
 
@@ -234,9 +234,9 @@ const MyChoicesEdit = () => {
   };
 
   const handleAddRow = async (record) => {
-    console.log("record ", record)
+  
     const row = dataRef.current.filter((item) => item.dataId === record.dataId);
-    console.log("add record data", row)
+  
     if (row.length != 0) {
       const row1 = row[0];
       const checkNullValue = (row1, key) => {
@@ -368,7 +368,7 @@ const MyChoicesEdit = () => {
               `choices/update-${dataa.id}/${oldData[activeIndex].id}/`,
               orderUpdate1
             );
-            console.log("response1", respose1)
+          
             if (respose1.data.status === 200) {
               getTableRecord();
               // setData(respose1.data.data);
@@ -382,7 +382,7 @@ const MyChoicesEdit = () => {
               `choices/update-${dataa.id}/${oldData[overIndex].id}/`,
               orderUpdate2
             );
-            console.log("response2", respose2)
+
             if (respose2.data.status === 200) {
               getTableRecord();
               // setData(response.data.data);

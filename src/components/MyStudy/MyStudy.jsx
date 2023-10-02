@@ -241,7 +241,7 @@ const MyStudy = () => {
     return (
       <>
         <div className="showDateData">
-          {/* <b className="showDateData2">{eventInfo.timeText}</b> */}
+         
           <b className="showDateData2">{eventInfo.event._def.title}</b>
         </div>
       </>
@@ -252,7 +252,7 @@ const MyStudy = () => {
     if (b !== undefined) {
       setIsEditing(false);
       const selectedStart = new Date(selectInfo);
-      console.log("selectedStartin handle select".selectedStart)
+    
       setWeekDay(selectedStart.getDay().toString());
       setSelectedTime(selectedStart.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }));
 
@@ -265,9 +265,9 @@ const MyStudy = () => {
     else {
 
       setIsEditing(true);
-      console.log("bedfore edit selecetstart", selectInfo.event._def.extendedProps['start'])
+    
       const selectedStart = new Date(selectInfo.event._def.extendedProps['start']);
-      console.log("edit selectedstart", selectedStart)
+     
       setWeekDay(selectedStart.getDay().toString());
       setTitle(selectInfo?.event?._def?.extendedProps.title)
       const startTime = selectInfo?.event?._def?.extendedProps.start;
@@ -282,16 +282,10 @@ const MyStudy = () => {
 
       setSelectedEndTime(formattedDateEnd);
 
-      // handleEdit(eventData.selectID);
-
-
       handleOpenBooking();
     }
 
   };
-  useEffect(() => {
-    console.log("weekday", weekDay)
-  }, [weekDay]);
 
   const createNewEvent = async () => {
     setLoadingBooking(true);
@@ -359,17 +353,6 @@ const MyStudy = () => {
     setDatatime(updatedDataTime);
   };
 
-  // const handleEventClick = (clickInfo) => {
-  //   const eventData = clickInfo.event._def.extendedProps;
-  //   setSelectedEvent({
-  //     id: eventData.selectID,
-  //     title: eventData.title,
-  //     start: new Date(eventData.start),
-  //     end: new Date(eventData.end),
-  //   });
-  //   handleOpenViewBooking();
-  // };
-
 
 
   const handleEventClick = (clickInfo) => {
@@ -381,7 +364,7 @@ const MyStudy = () => {
       end: new Date(eventData.end),
     });
     handleOpenViewBooking();
-    // Pass the event ID to handleEdit
+  
     handleEdit(eventData.selectID);
   };
 
@@ -427,22 +410,16 @@ const MyStudy = () => {
     const formattedStartTime = dayjs(selectedTime, "hh:mm A").format("HH:mm:ss");
     const formattedEndTime = dayjs(selectedEndTime, "hh:mm A").format("HH:mm:ss");
 
-    console.log("formattedStaert", formattedStartTime)
-    console.log("formattedEND", formattedEndTime)
+ 
     setBtnDisabled(true);
-    console.log("starttime in edit", startTime, endTime, {
-      timeslot: formattedStartTime,
-      endslot: formattedEndTime,
-      day: weekDay,
-      title: title,
-    })
+ 
     const response = await putApiWithAuth(`timetable/update-timeslot/${eventId}`, {
       timeslot: formattedStartTime,
       endslot: formattedEndTime,
       day: weekDay,
       title: title,
     });
-    console.log("response of edit", response)
+   
     if (response.data.success === true) {
       message.success("Booking Updated Successfully");
       setUpdateLoading(false);
