@@ -396,6 +396,7 @@ const CaoCalculator = () => {
       if (response?.data?.status === 200) {
         // setData(response.data.data);
         getCurrectSelectedValues()
+        window.location.reload();
       }
 
     };

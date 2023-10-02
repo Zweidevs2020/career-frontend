@@ -115,7 +115,7 @@ const MyStudy = () => {
   };
 
   const handleEventResize = async (event) => {
-   
+
     const { id, start, end } = event.event;
 
 
@@ -141,11 +141,11 @@ const MyStudy = () => {
   const handleEditCalender = async (id, viewData) => {
 
     setUpdateLoading(true);
-   
+
     const startTime = dayjs(viewData?.start).format("HH:mm:ss");
     const endTime = dayjs(viewData?.end).format("HH:mm:ss");
 
-   
+
     try {
       const response = await putApiWithAuth(`timetable/update-timeslot/${id}`, {
         timeslot: startTime,
@@ -223,7 +223,7 @@ const MyStudy = () => {
   const getCalanderData = async () => {
     setLoading(true);
     const response = await getApiWithAuth(`timetable/list-timeslot/`);
-   
+
     if (response?.data.status === 200) {
       setData(response.data.data);
       setLoading(false);
@@ -252,7 +252,7 @@ const MyStudy = () => {
     if (b !== undefined) {
       setIsEditing(false);
       const selectedStart = new Date(selectInfo);
-
+      console.log("selectedStartin handle select".selectedStart)
       setWeekDay(selectedStart.getDay().toString());
       setSelectedTime(selectedStart.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }));
 
@@ -265,8 +265,9 @@ const MyStudy = () => {
     else {
 
       setIsEditing(true);
-    
-      const selectedStart = new Date(selectInfo.el.fcSeg.start);
+      console.log("bedfore edit selecetstart", selectInfo.event._def.extendedProps['start'])
+      const selectedStart = new Date(selectInfo.event._def.extendedProps['start']);
+      console.log("edit selectedstart", selectedStart)
       setWeekDay(selectedStart.getDay().toString());
       setTitle(selectInfo?.event?._def?.extendedProps.title)
       const startTime = selectInfo?.event?._def?.extendedProps.start;
@@ -280,7 +281,7 @@ const MyStudy = () => {
       const formattedDateEnd = originalDateEnd.format("hh:mm A");
 
       setSelectedEndTime(formattedDateEnd);
-      
+
       // handleEdit(eventData.selectID);
 
 
@@ -288,14 +289,16 @@ const MyStudy = () => {
     }
 
   };
-
+  useEffect(() => {
+    console.log("weekday", weekDay)
+  }, [weekDay]);
 
   const createNewEvent = async () => {
     setLoadingBooking(true);
 
     let startTime = dayjs(selectedTime, "hh:mm A").format("HH:mm:ss");
     let endTime = dayjs(selectedEndTime, "hh:mm A").format("HH:mm:ss");
-  
+
     const response = await postApiWithAuth(API_URL.ADDSLOTTABLE, {
       timeslot: startTime,
       endslot: endTime,
@@ -304,7 +307,7 @@ const MyStudy = () => {
     });
 
     if (response.data.status === 201) {
-   
+
       message.success("Booking Added");
       setSelectedTime("");
       setSelectedEndTime("");
@@ -326,7 +329,7 @@ const MyStudy = () => {
   const handleDelete = async () => {
     setDeleteHandler(true);
     const respose = await deleteApiWithAuth(`timetable/reset-timeslot/`);
-   
+
     if (respose.data.data.success) {
       message.success("Reset Data succesfully");
       setSelectedTime("");
@@ -419,14 +422,15 @@ const MyStudy = () => {
 
   const handleEdit = async (id) => {
     setUpdateLoading(true);
-  
+
 
     const formattedStartTime = dayjs(selectedTime, "hh:mm A").format("HH:mm:ss");
     const formattedEndTime = dayjs(selectedEndTime, "hh:mm A").format("HH:mm:ss");
 
-   
+    console.log("formattedStaert", formattedStartTime)
+    console.log("formattedEND", formattedEndTime)
     setBtnDisabled(true);
-    console.log("starttime", startTime, endTime,{
+    console.log("starttime in edit", startTime, endTime, {
       timeslot: formattedStartTime,
       endslot: formattedEndTime,
       day: weekDay,
@@ -438,20 +442,20 @@ const MyStudy = () => {
       day: weekDay,
       title: title,
     });
- 
+    console.log("response of edit", response)
     if (response.data.success === true) {
       message.success("Booking Updated Successfully");
       setUpdateLoading(false);
       getCalanderData();
       setOpenViewBooking(false);
-      window.location.reload();
-      
-      
+      // window.location.reload();
+
+
     }
     if (response.data.success === false) {
       message.error(response.data.message);
     }
-   
+
   };
 
   const handleTimeChange = (start, end) => {
@@ -527,7 +531,7 @@ const MyStudy = () => {
               events={calenderData}
               eventContent={renderEventContent}
               eventClick={handleDateSelect}
-         
+
               longPressDelay={1}
               select={(arg) => {
                 handleDateSelect(arg.start, arg.end);
@@ -577,6 +581,7 @@ const MyStudy = () => {
           <div
             style={{
               display: "flex",
+              width:'100%',
               justifyContent: "space-between",
               marginTop: 20,
             }}
@@ -598,6 +603,7 @@ const MyStudy = () => {
             <Select
               placeholder="Select end Time"
               onChange={handleChange2}
+              style={{marginRight:'5px'}}
               value={selectedEndTime}
               className="inputFieldStyleSelect"
             >
@@ -613,7 +619,7 @@ const MyStudy = () => {
             style={{
               width: "100%",
               display: "flex",
-              justifyContent: "flex-end",
+              justifyContent: "center",
             }}
           >
             {!isEditing && (<MyCareerGuidanceButton
