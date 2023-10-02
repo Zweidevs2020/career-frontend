@@ -42,6 +42,17 @@ const CaoCalculator = () => {
   const [subjectErrors, setSubjectErrors] = useState({});
   const [availableSubjects, setAvailableSubjects] = useState([]);
   const [dataId, setDataId] = useState(null);
+  const [dataLength, setDataLength] = useState(0);
+  const [finalData, setFinalData] = useState({
+    points: 0,
+    bonus_points: 0,
+    total_points: 0,
+  });
+  const [screenSize, setScreenSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
 
   const [tableData, setTableData] = useState([
     {
@@ -90,6 +101,11 @@ const CaoCalculator = () => {
   ]);
 
   useEffect(() => {
+    const idExistsLength = tableData.filter(item => item.id !== undefined).length;
+    setDataLength(idExistsLength);
+  }, [tableData]);
+
+  useEffect(() => {
     const handleResize = () => {
       setScreenSize({ width: window.innerWidth, height: window.innerHeight });
     };
@@ -101,15 +117,6 @@ const CaoCalculator = () => {
     };
   }, []);
 
-  const [finalData, setFinalData] = useState({
-    points: 0,
-    bonus_points: 0,
-    total_points: 0,
-  });
-  const [screenSize, setScreenSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
 
 
   const handleAdd = () => {
@@ -217,15 +224,11 @@ const CaoCalculator = () => {
 
 
   };
-  // const handleThirdDropdownChange = (value, index) => {
-  //   if (index == 0) setGradeId(value);
-  //   else
-  //     setThirdDropdownValue(value);
-  // };
+
 
   const handle = (value, record) => {
 
-    console.log("handle fun alled", value)
+
     const tempData = tableData?.map((item, index) => {
 
       if (item?.No === record?.No) {
@@ -238,35 +241,29 @@ const CaoCalculator = () => {
       }
     });
 
-    console.log("value is", value)
+
     setTableData(tempData);
     const gradeid = grades?.filter((item) => item?.grade === value);
-    console.log("gradid is", gradeid)
+
     setGradeId((prevState) => {
-      console.log("prevState", prevState)
+
       const newArray = [...prevState];
-      console.log("newArray1", newArray)
+
       newArray[record.No] = { grade: gradeid[0]?.pk };
-      console.log("newarray",newArray[record.No])
+
       return newArray;
     }
     );
-    // const newArray = [...gradeId];
-    // console.log("newArray---------",newArray)
-    // console.log("newArray11111---------", newArray[record.No] = { grade: gradeid[0]?.pk })
 
-    // newArray[record.No] = { grade: gradeid[0]?.pk };
-    // setGradeId(newArray)
 
 
   };
 
-  console.log(gradeId, "===================GradeIdTest")
 
-  const isDeleteButtonDisabled = tableData.length <= 7;
 
-  const buttonColor = isDeleteButtonDisabled ? 'grey' : 'red';
-  const buttonCursor = isDeleteButtonDisabled ? 'none' : 'pointer';
+  const isDeleteButtonDisabled = dataLength < 7;
+  console.log("hello", isDeleteButtonDisabled, dataLength)
+ 
   const columns = [
 
     {
@@ -366,10 +363,10 @@ const CaoCalculator = () => {
         <Space size="middle">
 
           <DeleteOutlined
-            style={{ color: buttonColor }}
+         {... console.log("i am good",isDeleteButtonDisabled)}
+            style={{ color: isDeleteButtonDisabled ? 'grey' : 'red' }}
             onClick={() => handleDelete(record.No)}
             disabled={!isDeleteButtonDisabled}
-            className={isDeleteButtonDisabled ? "disabled" : ""}
           />
         </Space>
       ),
@@ -378,24 +375,26 @@ const CaoCalculator = () => {
   ];
 
   const handleDelete = async (id) => {
-    console.log("id", id)
-    if (tableData.length >= 7) {
+    console.log('table data lenght', dataLength, tableData)
+    const idExistsLength = tableData.filter(item => item.id !== undefined).length;
+    console.log('Length of tableData elements with "id" property:', idExistsLength);
+
+    if (idExistsLength >= 7) {
 
       const targetIndex = tableData.findIndex(item => item.No === id);
-      console.log("targetindex", targetIndex)
-
       const deletedRowData = tableData[targetIndex];
-      console.log("deleted row", deletedRowData)
+
       const body = {
         "id": dataId,
         "subjectId": deletedRowData.id
       }
-      console.log("body", body)
+
       const response = await postApiWithAuth(`calculator/remove-subject-grade/`, body);
-      console.log("respose delete", response)
+
       if (response?.data?.status === 200) {
         // setData(response.data.data);
         getCurrectSelectedValues()
+        // window.location.reload();
       }
 
     };
@@ -406,10 +405,7 @@ const CaoCalculator = () => {
 
 
   const clearAllData = async () => {
-
-
     const response = await deleteApiWithAuth(`calculator/user-points/delete/${dataId}/`);
-    // const response2 = await getApiWithAuth(API_URL.SUBJECTLIST);
 
     if (response?.data?.status === 204) {
       getCurrectSelectedValues()
@@ -424,7 +420,7 @@ const CaoCalculator = () => {
 
   const calCulateData = async () => {
     setLoading(true);
-    console.log("grade Id inside calculate fun", gradeId)
+
     const response = await postApiWithAuth(API_URL.CALCULATEDATA, gradeId);
 
     if (response.data.data.success) {
@@ -481,7 +477,8 @@ const CaoCalculator = () => {
 
     try {
       const response = await getApiWithAuth(`calculator/user-points/`);
-      console.log("response from get all data", response.data)
+      console.log("reponseeee", response.data.data.length)
+      setDataLength(response.data.data.length)
       setDataId(response.data.data[0].id)
 
 
@@ -522,26 +519,21 @@ const CaoCalculator = () => {
             `calculator/check-level-grade/?level=${newData[i].level}&subject=${newData[i].name}`
           );
 
-          console.log("9999==========",response1)
+
 
           if (response1.data.status === 200) {
             filterGrade = response1?.data?.data.filter(
               (gradeItem) => gradeItem.grade == newData[i]?.grades
             );
           }
-          console.log("running ",i,filterGrade[0]?.pk );
-          // gradeId.push({ grade: filterGrade[0]?.pk });
-          // setGradeId(prevState => ([...prevState,{ grade: filterGrade[0]?.pk }]))
+
           setGradeId(prevState => {
             const newGrade = { grade: filterGrade[0]?.pk };
             const updatedGradeId = [...prevState, newGrade];
-            
-            // Create a Set to store unique values based on the grade property
             const uniqueGradeSet = new Set(updatedGradeId.map(item => item.grade));
-          
-            // Convert the Set back to an array
+
             const uniqueGradeArray = Array.from(uniqueGradeSet).map(grade => ({ grade }));
-          
+
             return uniqueGradeArray;
           });
         }
@@ -849,7 +841,7 @@ const CaoCalculator = () => {
                             </Select>
                           </div>
                           <DeleteOutlined
-                            style={{ color: buttonColor, display: 'flex', justifyContent: 'center' }}
+                            style={{color: isDeleteButtonDisabled ? 'grey' : 'red' , display: 'flex', justifyContent: 'center' }}
                             onClick={() => handleDelete(item.No)}
                             disabled={!isDeleteButtonDisabled}
                             className={isDeleteButtonDisabled ? "disabled" : ""}

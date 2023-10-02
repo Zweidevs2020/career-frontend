@@ -39,6 +39,8 @@ const MyChoicesEdit = () => {
   const [columns, setColums] = useState([]);
   const [showRows, setShowRows] = useState(null);
   const [data, setData] = useState([]);
+  const [isDragInProgress, setIsDragInProgress] = useState(false);
+  const [dragTimer, setDragTimer] = useState(null);
   const [myData, setMyData] = useState([]);
   const [oldData, setOldData] = useState(null);
   const [showRowsData, setShowRowsData] = useState(null);
@@ -86,9 +88,9 @@ const MyChoicesEdit = () => {
 
 
   const getTableRecord = async () => {
-    console.log("get table record")
+    
     const response = await getApiWithAuth(`choices/${dataa.id}/`);
-    console.log("response of get data", response)
+   
     if (response.data.status === 200) {
       setOldData(response.data.data);
       // setData(response.data.data);
@@ -139,7 +141,7 @@ const MyChoicesEdit = () => {
         return rowData;
       });
       setMyData(oldData)
-     
+
       setShowRowsData(newData);
     }
   }, [showRows]);
@@ -158,7 +160,7 @@ const MyChoicesEdit = () => {
       }
 
     });
-    console.log("helllo updated", dataRef.current)
+   
     dataRef.current = [...updatedData];
 
   }
@@ -175,9 +177,9 @@ const MyChoicesEdit = () => {
   };
 
   const handleUpdate = async (record) => {
-    console.log("update record", record)
+  
     const row = dataRef.current.filter((item) => item.id === record?.id);
-    console.log("update row", row)
+   
     if (row) {
       const checkNullValue = (row, key) => {
 
@@ -232,9 +234,9 @@ const MyChoicesEdit = () => {
   };
 
   const handleAddRow = async (record) => {
-    console.log("record ", record)
+  
     const row = dataRef.current.filter((item) => item.dataId === record.dataId);
-    console.log("add record data", row)
+  
     if (row.length != 0) {
       const row1 = row[0];
       const checkNullValue = (row1, key) => {
@@ -274,7 +276,19 @@ const MyChoicesEdit = () => {
     }
 
   };
+  const handleTouchStart = () => {
+    // Set a timer to detect long touch
+    const timer = setTimeout(() => {
+      setIsDragInProgress(true);
+    }, 900); // Adjust the delay time (in milliseconds) as needed
 
+    setDragTimer(timer);
+  };
+
+  const handleTouchEnd = () => {
+    clearTimeout(dragTimer);
+    setIsDragInProgress(false);
+  };
 
   const capitalizeWords = (str) => {
     return str
@@ -314,7 +328,9 @@ const MyChoicesEdit = () => {
     };
 
     return (
-      <><tr {...props} ref={setNodeRef} className={isIdNotNull ? 'old-data' : 'new-data'} style={style} {...attributes} {...listeners} >
+      <><tr {...props} ref={setNodeRef} className={isIdNotNull ? 'old-data' : 'new-data'} style={style}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd} {...attributes} {...listeners} >
       </tr></>
     );
   };
@@ -325,34 +341,37 @@ const MyChoicesEdit = () => {
         distance: 10,
       },
     }),
-  
+
   );
 
-  const isMobileScreen = window.innerWidth < 748;
+ 
 
   const onDragEnd = async ({ active, over }) => {
-    console.log("hello drag drop", active, over)
+    if (isMobile && !isDragInProgress) {
+      return;
+    }
+   
     if (active?.id && over?.id) {
       if (active?.id !== over?.id) {
         setData((prev) => {
           const activeIndex = prev.findIndex((i) => i.dataId === active?.id);
-          console.log("active index", activeIndex)
+         
           const overIndex = prev.findIndex((i) => i.dataId === over?.id);
-          console.log("over index", overIndex)
+        
           const orderUpdate1 = { "order_number": oldData[overIndex]?.order_number }
-          console.log("order 1", orderUpdate1)
+        
           const orderUpdate2 = { "order_number": oldData[activeIndex]?.order_number }
-          console.log("order 2", orderUpdate2)
+         
           const updateOrder1 = async () => {
             setLoadingFirst(true);
             const respose1 = await patchApiWithAuth(
               `choices/update-${dataa.id}/${oldData[activeIndex].id}/`,
               orderUpdate1
             );
-            console.log("response1", respose1)
+          
             if (respose1.data.status === 200) {
               getTableRecord();
-              // setData(response.data.data);
+              // setData(respose1.data.data);
             }
             setLoadingFirst(false);
           }
@@ -363,7 +382,7 @@ const MyChoicesEdit = () => {
               `choices/update-${dataa.id}/${oldData[overIndex].id}/`,
               orderUpdate2
             );
-            console.log("response2", respose2)
+
             if (respose2.data.status === 200) {
               getTableRecord();
               // setData(response.data.data);
@@ -380,8 +399,9 @@ const MyChoicesEdit = () => {
       }
 
     }
-    { isMobile &&
-    window.location.reload();
+    {
+      isMobile &&
+      window.location.reload();
     }
   };
 
@@ -394,24 +414,24 @@ const MyChoicesEdit = () => {
         <div className="caoMainDiv">
           <div style={{ background: "white" }}>
             <div className="coaInnerf8fafcDiv">
-            {isMobile ? (
-              <div className="h-[40px] w-[15%] bg-[#1476B7] rounded-lg flex items-center justify-evenly mx-2" >
-                <button class="text-[#fff] flex items-center" onClick={() => { navigate("/my-choices") }}>
-                  {/* <LeftOutlined class="h-4" /> */}
-                  <span class="ml-1">Back</span>
-                </button>
-              </div>
-                ) : (
-                  <div className="h-[40px] w-[10%] bg-[#1476B7] rounded-lg flex items-center justify-evenly backDesktopButtonChoicesEdit">
-                    <button className="text-[#fff] flex items-center" onClick={() => { navigate("/my-choices") }}>
-                      <span className="ml-1">Back</span>
-                    </button>
-                  </div>
-                  
-                )}
+              {isMobile ? (
+                <div className="h-[40px] w-[15%] bg-[#1476B7] rounded-lg flex items-center justify-evenly mx-2" >
+                  <button class="text-[#fff] flex items-center" onClick={() => { navigate("/my-choices") }}>
+                    {/* <LeftOutlined class="h-4" /> */}
+                    <span class="ml-1">Back</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="h-[40px] w-[10%] bg-[#1476B7] rounded-lg flex items-center justify-evenly backDesktopButtonChoicesEdit">
+                  <button className="text-[#fff] flex items-center" onClick={() => { navigate("/my-choices") }}>
+                    <span className="ml-1">Back</span>
+                  </button>
+                </div>
+
+              )}
               <div className="myChoiceEditHeading py-3">{dataa.name}</div>
               <div className="w-100 p-3">
-                {!isMobileScreen ? (
+                {!isMobile ? (
 
                   <div className="w-100" style={{ overflowX: "auto" }}>
                     <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
@@ -499,7 +519,7 @@ const MyChoicesEdit = () => {
                                 ) : (
                                   <a onClick={() => eidtThisRow(record)}><EditOutlined /></a>
                                 )}
-                                <a onClick={() => handleDelete(record)}><DeleteOutlined style={{color:'red'}}/></a>
+                                <a onClick={() => handleDelete(record)}><DeleteOutlined style={{ color: 'red' }} /></a>
                               </Space>
                             )}
                           />
@@ -575,7 +595,7 @@ const MyChoicesEdit = () => {
                             ) : (
                               <a onClick={() => eidtThisRow(record)}><EditOutlined /></a>
                             )}
-                            <a onClick={() => handleDelete(record)}><DeleteOutlined style={{color:'red'}}/></a>
+                            <a onClick={() => handleDelete(record)}><DeleteOutlined style={{ color: 'red' }} /></a>
                           </Space>
                         )}
                       />
@@ -583,11 +603,11 @@ const MyChoicesEdit = () => {
 
                   </div>
                 ) : (
-                  
+
                   <div className="mobile-table">
-                    
+
                     <div className="mobile-table">
-                  
+
                       <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
                         <SortableContext
                           items={data
@@ -595,7 +615,7 @@ const MyChoicesEdit = () => {
                             .map(item => item.dataId)
                           }
                           strategy={verticalListSortingStrategy}>
-                            
+
                           {data.map((row) => (
                             <Row key={row.id} data-row-key={row.dataId}>
                               <div className="dragDrop" key={row.id}>
@@ -611,11 +631,11 @@ const MyChoicesEdit = () => {
                                       {/* <span className="rowHeadingMobile">Action</span> */}
                                       <Space size="middle">
                                         {row.editable && row.id !== null ? (
-                                          <a onClick={() => handleUpdate(row)}><CheckOutlined style={{color:'#1476b7'}} /></a>
+                                          <a onClick={() => handleUpdate(row)}><CheckOutlined style={{ color: '#1476b7' }} /></a>
                                         ) : row.editable && row.id === null ? (
-                                          <a onClick={() => handleAddRow(row)}><PlusCircleOutlined style={{color:'#1476b7'}}/></a>
+                                          <a onClick={() => handleAddRow(row)}><PlusCircleOutlined style={{ color: '#1476b7' }} /></a>
                                         ) : (
-                                          <a onClick={() => eidtThisRow(row)}><EditOutlined style={{color:'#1476b7'}}/></a>
+                                          <a onClick={() => eidtThisRow(row)}><EditOutlined style={{ color: '#1476b7' }} /></a>
                                         )}
                                         <a onClick={() => handleDelete(row)}><DeleteOutlined style={{ color: 'red' }} /></a>
                                       </Space>
@@ -660,7 +680,7 @@ const MyChoicesEdit = () => {
             </div>
 
 
-            
+
           </div>
         </div>
       )}
