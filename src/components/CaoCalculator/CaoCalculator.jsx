@@ -18,27 +18,6 @@ const { Option } = Select;
 
 const CaoCalculator = () => {
   const refDiv = useRef();
-  const [finalData, setFinalData] = useState({
-    points: 0,
-    bonus_points: 0,
-    total_points: 0,
-  });
-  const [screenSize, setScreenSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-
-  useEffect(() => {
-    const handleResize = () => {
-      setScreenSize({ width: window.innerWidth, height: window.innerHeight });
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
   const [countFields, setCountFields] = useState(0);
   const [firstDropdownValue, setFirstDropdownValue] = useState("");
   const [secondDropdownValue, setSecondDropdownValue] = useState("");
@@ -51,7 +30,6 @@ const CaoCalculator = () => {
   const [gradeId, setGradeId] = useState([]);
   const [gradeIdApi, setGradeIdApi] = useState([]);
   const [gradeId1, setGradeId1] = useState([{}, {}]);
-
   const [grades, setGrades] = useState([]);
   const [subjects, setSubjects] = useState("");
   const [level, setLevel] = useState("");
@@ -111,6 +89,27 @@ const CaoCalculator = () => {
 
   ]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const [finalData, setFinalData] = useState({
+    points: 0,
+    bonus_points: 0,
+    total_points: 0,
+  });
+  const [screenSize, setScreenSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
 
   const handleAdd = () => {
@@ -218,17 +217,18 @@ const CaoCalculator = () => {
 
 
   };
-
-  const handleThirdDropdownChange = (value, index) => {
-    if (index == 0) setGradeId(value);
-    else
-      setThirdDropdownValue(value);
-  };
+  // const handleThirdDropdownChange = (value, index) => {
+  //   if (index == 0) setGradeId(value);
+  //   else
+  //     setThirdDropdownValue(value);
+  // };
 
   const handle = (value, record) => {
+
+    console.log("handle fun alled", value)
     const tempData = tableData?.map((item, index) => {
 
-      if (item?.No == record?.No) {
+      if (item?.No === record?.No) {
         return {
           ...item,
           grades: value,
@@ -237,17 +237,31 @@ const CaoCalculator = () => {
         return item;
       }
     });
+
+    console.log("value is", value)
     setTableData(tempData);
     const gradeid = grades?.filter((item) => item?.grade === value);
+    console.log("gradid is", gradeid)
     setGradeId((prevState) => {
+      console.log("prevState", prevState)
       const newArray = [...prevState];
-
+      console.log("newArray1", newArray)
       newArray[record.No] = { grade: gradeid[0]?.pk };
+      console.log("newarray",newArray[record.No])
       return newArray;
-    });
+    }
+    );
+    // const newArray = [...gradeId];
+    // console.log("newArray---------",newArray)
+    // console.log("newArray11111---------", newArray[record.No] = { grade: gradeid[0]?.pk })
+
+    // newArray[record.No] = { grade: gradeid[0]?.pk };
+    // setGradeId(newArray)
 
 
   };
+
+  console.log(gradeId, "===================GradeIdTest")
 
   const isDeleteButtonDisabled = tableData.length <= 7;
 
@@ -364,54 +378,59 @@ const CaoCalculator = () => {
   ];
 
   const handleDelete = async (id) => {
-    
+    console.log("id", id)
     if (tableData.length >= 7) {
-    
+
       const targetIndex = tableData.findIndex(item => item.No === id);
-    
-      if (targetIndex !== -1) {
-        const deletedRowData = tableData[targetIndex];
-      
-        const body = {
-          "id": dataId,
-          "subjectId": deletedRowData.id
-        }
-        const response = await postApiWithAuth(`calculator/remove-subject-grade/`, body);
+      console.log("targetindex", targetIndex)
 
-        if (response?.data?.status === 200) {
-          // setData(response.data.data);
-          getCurrectSelectedValues()
-        }
+      const deletedRowData = tableData[targetIndex];
+      console.log("deleted row", deletedRowData)
+      const body = {
+        "id": dataId,
+        "subjectId": deletedRowData.id
+      }
+      console.log("body", body)
+      const response = await postApiWithAuth(`calculator/remove-subject-grade/`, body);
+      console.log("respose delete", response)
+      if (response?.data?.status === 200) {
+        // setData(response.data.data);
+        getCurrectSelectedValues()
+      }
 
-      };
-    }
-    else{
-      return null
-    }
+    };
+
 
   }
 
 
 
   const clearAllData = async () => {
-    
+
 
     const response = await deleteApiWithAuth(`calculator/user-points/delete/${dataId}/`);
     // const response2 = await getApiWithAuth(API_URL.SUBJECTLIST);
 
     if (response?.data?.status === 204) {
       getCurrectSelectedValues()
+      window.location.reload();
     }
 
   };
 
+
+
+
+
   const calCulateData = async () => {
     setLoading(true);
+    console.log("grade Id inside calculate fun", gradeId)
     const response = await postApiWithAuth(API_URL.CALCULATEDATA, gradeId);
-  
+
     if (response.data.data.success) {
       setFinalData(response.data.data.data);
-      getCurrectSelectedValues()
+      // getCurrectSelectedValues()
+      getCurrectSelectedValues();
       setLoading(false);
     } else {
       setLoading(false);
@@ -427,6 +446,7 @@ const CaoCalculator = () => {
     }
 
   }, [data]);
+
   useEffect(() => {
     getFiltersData();
   }, []);
@@ -461,9 +481,9 @@ const CaoCalculator = () => {
 
     try {
       const response = await getApiWithAuth(`calculator/user-points/`);
-     
+      console.log("response from get all data", response.data)
       setDataId(response.data.data[0].id)
-   
+
 
       if (response.data.data.length === 0) {
 
@@ -476,7 +496,7 @@ const CaoCalculator = () => {
           };
           newData.push(ND);
         }
-   
+
       } else if (response.data.data.length !== 0) {
         newData = response?.data?.data[0]?.grades.map((item, index) => {
           const filterSubjects = data.filter(
@@ -502,13 +522,28 @@ const CaoCalculator = () => {
             `calculator/check-level-grade/?level=${newData[i].level}&subject=${newData[i].name}`
           );
 
+          console.log("9999==========",response1)
+
           if (response1.data.status === 200) {
             filterGrade = response1?.data?.data.filter(
               (gradeItem) => gradeItem.grade == newData[i]?.grades
             );
           }
-
-          gradeId.push({ grade: filterGrade[0]?.pk });
+          console.log("running ",i,filterGrade[0]?.pk );
+          // gradeId.push({ grade: filterGrade[0]?.pk });
+          // setGradeId(prevState => ([...prevState,{ grade: filterGrade[0]?.pk }]))
+          setGradeId(prevState => {
+            const newGrade = { grade: filterGrade[0]?.pk };
+            const updatedGradeId = [...prevState, newGrade];
+            
+            // Create a Set to store unique values based on the grade property
+            const uniqueGradeSet = new Set(updatedGradeId.map(item => item.grade));
+          
+            // Convert the Set back to an array
+            const uniqueGradeArray = Array.from(uniqueGradeSet).map(grade => ({ grade }));
+          
+            return uniqueGradeArray;
+          });
         }
       }
     } catch (error) {
@@ -522,8 +557,6 @@ const CaoCalculator = () => {
         level: null,
         grades: null,
       }));
-
-
       const combinedData = [...newData, ...emptyRows];
 
       setCountFields(combinedData.length);
@@ -531,12 +564,6 @@ const CaoCalculator = () => {
       setLoadingSub(false);
     }
   };
-
-  useEffect(() => {
-   
-
-  }, [dataId])
-
 
   return (
     <div className="caoMainDiv">

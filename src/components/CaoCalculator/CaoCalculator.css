@@ -108,7 +108,7 @@
 }
 
 .coaPointsWidth {
-  width: 30%;
+  width: 35%;
 }
 
 .coaPointTextMain {
@@ -266,7 +266,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   }
 
   .coaPointsWidth {
-    width: 28%;
+    width: 35%;
   }
 }
 
@@ -302,13 +302,35 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
     width: 35%;
   }
 }
-@media only screen and (min-width: 1841px) and (max-width: 1950px) {
+@media only screen and (min-width: 1771px) and (max-width: 1950px) {
   .addSubjectContainer{
   
-    width: 106%;
+    width: 104%;
+  }
+  .coaPointsWidth {
+    width: 28%;
   }
 }
-@media (max-width: 1440px) {
+@media only screen and (min-width: 1712px) and (max-width: 1770px) {
+  .addSubjectContainer{
+  
+    width: 110%;
+  }
+  .coaPointsWidth {
+    width: 25%;
+  }
+}
+@media only screen and (min-width: 1561px) and (max-width: 1711px) {
+  .addSubjectContainer{
+  display: flex;
+  justify-content: flex-start;
+    width: 100%;
+  }
+  .coaPointsWidth {
+    width: 19%;
+  }
+}
+@media (max-width: 1540px) {
 
   .coaSubjectWidth .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow.ant-select-show-search,
   .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
@@ -337,7 +359,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   }
 
   .coaPointsWidth {
-    width: 35%;
+    width: 30%;
   }
 }
 @media (max-width: 1310px) {
@@ -358,7 +380,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   }
 
   .coaPointsWidth {
-    width: 33%;
+    width: 29%;
   }
 
 
@@ -418,7 +440,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
     width: 27.5%;
   }
 }
-@media (max-width: 1024px) {
+@media (max-width: 1234px) {
   .coaSubjectDiv {
     display: block;
   }

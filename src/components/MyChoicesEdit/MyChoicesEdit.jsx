@@ -319,56 +319,14 @@ const MyChoicesEdit = () => {
     );
   };
 
-  // const MobileRow = (props) => {
-  //   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-  //     id: props['data-row-key'],
-  //   });
-  //   const rowId = props['data-row-key'];
-  //   const row = data.find((item) => item.dataId === rowId);
-  //   const isIdNotNull = row && row.id !== null;
-  //   const style = {
-  //     ...props.style,
-  //     transform: CSS.Transform.toString(
-  //       transform && {
-  //         ...transform,
-  //         scaleY: 1,
-  //       },
-  //     ),
-  //     transition,
-  //     cursor: 'move',
-  //     ...(isDragging
-  //       ? {
-  //         position: 'relative',
-  //         zIndex: 9999,
-  //       }
-  //       : {}),
-  //   };
-
-  //   return (
-  //     <div {...props} ref={setNodeRef} className={isIdNotNull ? 'old-data' : 'new-data'} style={style} {...attributes} {...listeners} />
-  //   );
-  // };
-
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 1,
+        distance: 10,
       },
     }),
+  
   );
-
-  // const sensors = useSensors(
-  //   useSensor(PointerSensor, {
-  //     activationConstraint: {
-  //       distance: 1,
-  //     },
-  //     events: {
-  //       pointerDown: handleTouchStart,
-  //       pointerMove: handleTouchMove,
-  //       pointerUp: handleTouchEnd,
-  //     },
-  //   }),
-  // );
 
   const isMobileScreen = window.innerWidth < 748;
 
@@ -422,7 +380,9 @@ const MyChoicesEdit = () => {
       }
 
     }
-    // window.location.reload();
+    { isMobile &&
+    window.location.reload();
+    }
   };
 
 
@@ -539,7 +499,7 @@ const MyChoicesEdit = () => {
                                 ) : (
                                   <a onClick={() => eidtThisRow(record)}><EditOutlined /></a>
                                 )}
-                                <a onClick={() => handleDelete(record)}><DeleteOutlined /></a>
+                                <a onClick={() => handleDelete(record)}><DeleteOutlined style={{color:'red'}}/></a>
                               </Space>
                             )}
                           />
@@ -615,7 +575,7 @@ const MyChoicesEdit = () => {
                             ) : (
                               <a onClick={() => eidtThisRow(record)}><EditOutlined /></a>
                             )}
-                            <a onClick={() => handleDelete(record)}><DeleteOutlined /></a>
+                            <a onClick={() => handleDelete(record)}><DeleteOutlined style={{color:'red'}}/></a>
                           </Space>
                         )}
                       />
@@ -651,11 +611,11 @@ const MyChoicesEdit = () => {
                                       {/* <span className="rowHeadingMobile">Action</span> */}
                                       <Space size="middle">
                                         {row.editable && row.id !== null ? (
-                                          <a onClick={() => handleUpdate(row)}><CheckOutlined /></a>
+                                          <a onClick={() => handleUpdate(row)}><CheckOutlined style={{color:'#1476b7'}} /></a>
                                         ) : row.editable && row.id === null ? (
-                                          <a onClick={() => handleAddRow(row)}><PlusCircleOutlined /></a>
+                                          <a onClick={() => handleAddRow(row)}><PlusCircleOutlined style={{color:'#1476b7'}}/></a>
                                         ) : (
-                                          <a onClick={() => eidtThisRow(row)}><EditOutlined /></a>
+                                          <a onClick={() => eidtThisRow(row)}><EditOutlined style={{color:'#1476b7'}}/></a>
                                         )}
                                         <a onClick={() => handleDelete(row)}><DeleteOutlined style={{ color: 'red' }} /></a>
                                       </Space>
