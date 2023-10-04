@@ -68,7 +68,7 @@ const MyCareerGuidanceInputField = (props) => {
           name={props.name}
           prefix={
             props.prefix ? (
-              <div style={{ color: "#D3D3D3" }}>
+              <div style={{ color: "#D3D3D3" ,display:'flex',alignContent:'center',alignItems:'center'}}>
                 <Image
                   preview={false}
                   src={props.prefix}

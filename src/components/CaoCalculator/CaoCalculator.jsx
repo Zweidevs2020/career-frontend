@@ -378,19 +378,14 @@ const CaoCalculator = () => {
     console.log('table data lenght', dataLength, tableData)
     const idExistsLength = tableData.filter(item => item.id !== undefined).length;
     console.log('Length of tableData elements with "id" property:', idExistsLength);
-
     if (idExistsLength >= 7) {
-
       const targetIndex = tableData.findIndex(item => item.No === id);
       const deletedRowData = tableData[targetIndex];
-
       const body = {
         "id": dataId,
         "subjectId": deletedRowData.id
       }
-
       const response = await postApiWithAuth(`calculator/remove-subject-grade/`, body);
-
       if (response?.data?.status === 200) {
         // setData(response.data.data);
         getCurrectSelectedValues()
@@ -413,9 +408,6 @@ const CaoCalculator = () => {
     }
 
   };
-
-
-
 
 
   const calCulateData = async () => {

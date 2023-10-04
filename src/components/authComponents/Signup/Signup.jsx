@@ -30,6 +30,7 @@ import { useNavigate } from "react-router-dom";
 import { Modal } from "antd";
 import countyImg from "../../../assets/county.png";
 import schoolImg from "../../../assets/schoolimg.png";
+import { ClockCircleOutlined, CloseCircleOutlined, CloseOutlined } from "@ant-design/icons";
 
 const Signup = () => {
 
@@ -41,12 +42,12 @@ const Signup = () => {
   const [dobSave, setDobSave] = useState({});
   const [number, setPhoneNumber] = useState("");
   const [open, setOpen] = useState(false);
+  const [isAddSchoolValid, setIsAddSchoolValid] = useState(false);
   const currentYear = moment().year();
 
   const disabledDate = (current) => {
     return current.year() > currentYear;
   };
-
 
   const onChangeYearInternal = (date) => {
     onChangeYear(date?.year());
@@ -65,11 +66,12 @@ const Signup = () => {
     });
 
     if (response.status === 200) {
-     
-      message.success("User is Created Successfully, You can now Login");
+
+      message.success("Congratulations! You've successfully signed up. You're now ready to log in and explore our platform. Welcome aboard!");
       navigate("/");
     } else {
       setLoading(false);
+      console.log("error", response.data.message)
       message.error(response.data.message);
     }
   };
@@ -110,6 +112,8 @@ const Signup = () => {
   const handleSchool = (e) => {
     const { value } = e.target;
     setNewSchools(value);
+    // Check if the "Add New School" input is empty
+    setIsAddSchoolValid(!!value.trim());
   };
 
   const getSchools = async () => {
@@ -147,7 +151,7 @@ const Signup = () => {
       }
     }
   };
-  
+
 
   return (
     <div className="mainDiv">
@@ -190,7 +194,7 @@ const Signup = () => {
             name="number"
             rules={[
               { required: true, message: "Please input your Phone Number!" },
-           
+
             ]}
           >
             <MyCareerGuidanceInputField
@@ -211,7 +215,7 @@ const Signup = () => {
                   /^(?=.*\d)(?=.*?[@$!%*#?&^_.,-])(?=.*[a-z])(?=.*[A-Z]).{8,}$/
                 ),
                 message:
-                  "Password Must contain Number , Special Character , upper case letter, lower case letter, min length 8",
+                  "Please ensure your password contains at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character.",
               },
             ]}
           >
@@ -268,22 +272,39 @@ const Signup = () => {
           </span>
           <div className="schoolModalStyling">
             <Modal
-              title="Add your school"
+              title={
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ textAlign: 'center' }}>Add your school</span>
+                  <button
+                    className="closeButton"
+                    onClick={() => setOpen(false)}
+                  >
+                    <CloseOutlined />
+                  </button>
+                </div>
+              }
               centered
               open={open}
               onOk={() => setOpen(false)}
+              closeIcon={<CloseOutlined />}
+              onCancel={() => setOpen(false)}
               footer={[
                 <Button
                   key="submit"
                   type="primary"
+                  htmlType="submit"
                   onClick={() => {
-                    setOpen(false);
-                    setData({ ...data, school: newSchools });
+                    if (newSchools.trim()) {
+                      setOpen(false);
+                      setData({ ...data, school: newSchools });
+                    }
                   }}
                   style={{ background: "#1476b7" }}
+                  disabled={!isAddSchoolValid}
+
                 >
                   Update
-                </Button>,
+                </Button>
               ]}
             >
               <Form>
@@ -354,7 +375,7 @@ const Signup = () => {
                 />
               </Form.Item>
             </div>
-            <div style={{ width: "28%" }}>
+            <div style={{ width: "30%" }}>
               <Form.Item
                 name="month"
                 rules={[{ required: true, message: "Please Select Month!" }]}
@@ -452,13 +473,11 @@ const Signup = () => {
           © 2023 My Guidance. All Rights Reserved
         </span>
       </div>
-      <div className="rightImageStyle">
-        <Image
-          preview={false}
-          src={sideAuthImage}
-          width={"100%"}
-          height="100%"
-        />
+      <div style={{ borderRadius:'31px',overflow:"hidden",margin:"1em",width:'55%'}}>
+         <img src={sideAuthImage}
+          style={{ objectFit: "cover",height:"100vh",width:"100%" ,borderRadius:'20px'}}
+          alt="img"
+         />
       </div>
     </div>
   );
