@@ -860,7 +860,7 @@ const Sidebar = ({ children, flags }) => {
                 <MenuOutlined />
               </div>
               <div className={`logoStyle mt-3 ${isSidebarOpen ? 'sidebarOpen' : ''}`} style={{ width: "200px", marginRight: !isSidebarOpen ? '-1rem' : '0' }}>
-                <img src={myCareer} alt="cyberLegendLogo" width="100%" />
+                <img src={myCareer} alt="cyberLegendLogo" width="50%" />
 
               </div>
 
