@@ -26,7 +26,7 @@ const ForgetPassword = () => {
     const response = await postApiWithoutAuth(API_URL.FORGETPASSWORD, data);
     if (response.status === 200) {
       setLoading(false);
-      message.success("Code send Successfully");
+      message.success("A verification code has been successfully sent to your registered email address");
 
       navigate("/email-verification", { state: { data } });
     } else {

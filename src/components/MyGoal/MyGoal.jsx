@@ -220,6 +220,7 @@ const MyGoal = () => {
                 </div>
                 <div className="textAreaMyGoal">
                   <TextArea
+                  placeholder="Get more organized with a daily planner"
                     value={description}
                     style={{ border: "2px solid grey", lineHeight: "normal", display: "flex", alignItems: "center" }}
                     className="inputCarrer sm:text-[8px] md:text-[10px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
@@ -271,7 +272,7 @@ const MyGoal = () => {
                     onChange={() => setRealistic(true)}
                     className="h-[24px] w-[24px] border-none text-[#fff] bg-[#1476B7] "
                   />
-                  <p className="text-[#737373] sm:text-[14px] md:text-[16px] text-[18px]  ">
+                  <p className="text-[#737373] sm:text-[14px] md:text-[14px] text-[14px]  ">
                     Yes
                   </p>
                 </div>
@@ -283,7 +284,7 @@ const MyGoal = () => {
                     onChange={() => setRealistic(false)}
                     className="h-[24px] w-[24px] border-none text-[#F4F6F8] bg[#F4F6F8] "
                   />
-                  <p className="text-[#737373] sm:text-[14px] md:text-[16px] text-[18px] ">
+                  <p className="text-[#737373] sm:text-[14px] md:text-[14px] text-[14px] ">
                     No
                   </p>
                 </div>
@@ -294,7 +295,7 @@ const MyGoal = () => {
               <div className="calenderGoal">
                 <Space direction="vertical" size={12}>
                   <DatePicker
-                    className="dateLibr"
+                    className="dateLibr px-2 sm:text-[8px] md:text-[10px] mt-2 h-[50px] xl:text-[11px] w-[100%] sm:w-[30%] sm:h-[35px] md:h-[38px] rounded-md border-solid border-2 border-gray-400 outline-none"
                     value={dayjs(countdown3, "DD-MM-YYYY")}
                     onChange={handleDateChange}
                     disabledDate={disabledDate} 
