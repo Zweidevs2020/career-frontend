@@ -78,23 +78,7 @@ const Login = () => {
               inputValue={data.email}
             />
           </Form.Item>
-          {/* <Form.Item
-            name="phone_number"
-            rules={[
-              { required: true, message: "Please input your Phone Number!" },
-             
-            ]}
-          >
-            <MyCareerGuidanceInputField
-              placeholder="Phone Number"
-              prefix={phoneIcon} 
-              type="input"
-              name="phone_number"
-              onChange={onChangeHandle}
-              inputValue={data.phone_number}
-            />
-          </Form.Item> */}
-
+        
           <Form.Item
             name="password"
             rules={[
@@ -106,7 +90,9 @@ const Login = () => {
                 ),
                 message:
                   "Must contain Number , Special Character , upper case letter, lower case letter, min length 8",
+                  validateTrigger:['onSubmit']
               },
+            
             ]}
           >
             <MyCareerGuidanceInputField
@@ -159,13 +145,13 @@ const Login = () => {
           © 2023 My Guidance. All Rights Reserved
         </span>
       </div>
-      <div className="rightImageStyle">
-        <Image
-          preview={false}
-          src={sideAuthImage}
-          width={"100%"}
-          height="100%"
-        />
+      <div style={{ borderRadius:'31px',overflow:"hidden",margin:"1em",width:'55%'}}>
+         <img src={sideAuthImage}
+          style={{ objectFit: "cover",height:"100vh",width:"100%" ,borderRadius:'20px'}}
+          alt="img"
+         />
+
+      
       </div>
     </div>
   );
