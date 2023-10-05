@@ -49,7 +49,7 @@ const CvCoverLetter = () => {
   const sendToEmail = async () => {
 
     const res = await getApiWithAuth(API_URL.SENDCV)
-   
+   console.log("ress".res)
   }
 
 
@@ -66,9 +66,9 @@ const CvCoverLetter = () => {
         >
           <div>
             <h1 class="font-bold text-[24px] text-[#474749] ">CV/Cover Letter</h1>
-            <p class="text-[#737373] text-[12px] mt-1">
+            {/* <p class="text-[#737373] text-[12px] mt-1">
               Lorem ipsum is a placeholder text commonly used to demonstrate.
-            </p>
+            </p> */}
           </div>
           {downloadBtn && (<span
             style={{

@@ -61,7 +61,7 @@
 }
 
 .eduButton {
-    border: 1px solid grey;
+    /* border: 1px solid grey; */
     width: 144px;
     height: 45px !important;
     background: #1476B7;

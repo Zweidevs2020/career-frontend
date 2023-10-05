@@ -146,6 +146,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   rules={[
                     { required: true, message: "Please input your Full Name!" },
                   ]}
+                  style={{ fontFamily: 'YourFontFamily', fontWeight: 'bold' }}
                 >
                   <MyCareerGuidanceInputField
                     placeholder="Maria Murphy"

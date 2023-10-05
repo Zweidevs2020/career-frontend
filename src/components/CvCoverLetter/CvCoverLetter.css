@@ -14,3 +14,6 @@ margin: 0px 37px 0px 37px;
     cursor: not-allowed;
     padding: 10px;
 }
+.ant-form-item .ant-form-item-label >label {
+font-family: poppins;
+}
