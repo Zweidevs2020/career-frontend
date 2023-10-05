@@ -60,13 +60,11 @@
 
 .step-item-content-active {
   color: #1476b7;
-cursor: pointer;
+  cursor: pointer;
 }
 
 .step-item-content-nonActive {
   color: #cac9cf;
-  cursor: pointer;
-
 }
 
 .step-item-line {
@@ -98,9 +96,8 @@ cursor: pointer;
 
   .step-item-line-nonActive {
     display: none;
-  
   }
-  .step-item{
+  .step-item {
     margin-right: 10px;
     margin-top: 10px;
   }

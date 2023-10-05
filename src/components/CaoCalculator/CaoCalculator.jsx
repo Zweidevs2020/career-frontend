@@ -411,8 +411,8 @@ const CaoCalculator = () => {
     );
     const filteredTable = tableData.filter((item) => item.No == id);
     if (
-      filteredTable[0]?.name==null&&
-      filteredTable[0]?.grades == null&&
+      filteredTable[0]?.name == null &&
+      filteredTable[0]?.grades == null &&
       filteredTable[0]?.level === null
     ) {
       console.log("t==================table data lenght empty", filteredTable);
@@ -423,9 +423,10 @@ const CaoCalculator = () => {
       if (idExistsLength >= 7) {
         console.log(
           "t==================table data lenght not empty",
-         filteredTable.name==null,filteredTable.name==null&&
-         filteredTable.grades == null&&
-         filteredTable.level === null
+          filteredTable.name == null,
+          filteredTable.name == null &&
+            filteredTable.grades == null &&
+            filteredTable.level === null
         );
 
         const targetIndex = tableData.findIndex((item) => item.No === id);
@@ -456,6 +457,11 @@ const CaoCalculator = () => {
     );
 
     if (response?.data?.status === 204) {
+      setFinalData({
+        points: 0,
+        bonus_points: 0,
+        total_points: 0,
+      });
       getCurrectSelectedValues();
       // window.location.reload();
     }
@@ -465,6 +471,7 @@ const CaoCalculator = () => {
     setLoading(true);
 
     const response = await postApiWithAuth(API_URL.CALCULATEDATA, gradeId);
+    console.log("=============gradeId", gradeId, response.data.data.data);
 
     if (response.data.data.success) {
       setFinalData(response.data.data.data);
