@@ -403,7 +403,6 @@ const Signup = () => {
                 name="year"
                 rules={[
                   { required: true, message: 'Please Select Year!' },
-                 
                 ]}
               >
                 <DatePicker
