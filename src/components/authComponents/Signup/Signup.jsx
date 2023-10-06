@@ -184,7 +184,7 @@ const Signup = () => {
             <MyCareerGuidanceInputField
               placeholder="Email Address"
               prefix={usernameIcon}
-              type="input"
+              type="email"
               name="email"
               onChange={onChangeHandle}
               inputValue={data.email}
