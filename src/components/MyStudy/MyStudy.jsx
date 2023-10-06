@@ -21,6 +21,7 @@ import moment from "moment";
 import { API_URL } from "../../utils/constants";
 
 import "./Mystudy.css";
+import { DeleteOutlined } from "@ant-design/icons";
 const isMobile = window.innerWidth <= 768;
 const MyStudy = () => {
   const { Option } = Select;
@@ -54,6 +55,11 @@ const MyStudy = () => {
   const [eventId, setEventId] = useState(0);
   const [weekId, setWeekId] = useState(0);
   const [selectedEvent, setSelectedEvent] = useState(null);
+
+
+  const [eventToDelete, setEventToDelete] = useState(null);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+
   const optionArray = [];
   const startTime = new Date("2000-01-01T06:00:00");
   const endTime = new Date("2000-01-02T00:00:00");
@@ -236,13 +242,44 @@ const MyStudy = () => {
       getCurrentWeek();
     }
   }, [data]);
+
+
+  const handleDeleteEvent = async (event) => {
+    const eventId = event.extendedProps.selectID;
+   
+    setEventToDelete(eventId);
+   
+      const response = await deleteApiWithAuth(`timetable/delete-timeslot/${eventId}`);
+     
+      if (response.data['status']===204) {
+        message.success("Event deleted successfully.");
+        setDatatime([]);
+        getCalanderData();
+      
+        
+      } else {
+        message.error(response.data.message);
+      }
+  }
+
+
+ 
+
   function renderEventContent(eventInfo) {
 
     return (
       <>
         <div className="showDateData">
-         
-          <b className="showDateData2">{eventInfo.event._def.title}</b>
+          <div className="showDateData2">
+            {eventInfo.event._def.title.length > 10 ? `${eventInfo.event._def.title.slice(0, 15)}...` : eventInfo.event._def.title}
+          </div>
+          <button
+            onClick={() => handleDeleteEvent(eventInfo.event)}
+            data-event-id={eventInfo.event._def.extendedProps.selectID}
+            style={{ background: "none", border: "none", cursor: "pointer", position: "absolute", top: 0, right: 3 }}
+          >
+            <DeleteOutlined style={{ color: "white" }} />
+          </button>
         </div>
       </>
     );
@@ -252,7 +289,7 @@ const MyStudy = () => {
     if (b !== undefined) {
       setIsEditing(false);
       const selectedStart = new Date(selectInfo);
-    
+
       setWeekDay(selectedStart.getDay().toString());
       setSelectedTime(selectedStart.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }));
 
@@ -265,9 +302,9 @@ const MyStudy = () => {
     else {
 
       setIsEditing(true);
-    
+
       const selectedStart = new Date(selectInfo.event._def.extendedProps['start']);
-     
+
       setWeekDay(selectedStart.getDay().toString());
       setTitle(selectInfo?.event?._def?.extendedProps.title)
       const startTime = selectInfo?.event?._def?.extendedProps.start;
@@ -281,10 +318,22 @@ const MyStudy = () => {
       const formattedDateEnd = originalDateEnd.format("hh:mm A");
 
       setSelectedEndTime(formattedDateEnd);
-
-      handleOpenBooking();
+      {
+        !eventToDelete &&
+        handleOpenBooking();
+      }
     }
 
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); 
+    if (isEditing) {
+      handleEdit();
+    } 
+    else{
+      createNewEvent()
+    }
   };
 
   const createNewEvent = async () => {
@@ -312,6 +361,8 @@ const MyStudy = () => {
       setData([]);
       setDatatime([]);
       getCalanderData();
+      
+    
     } else {
       setLoadingBooking(false);
       message.error(response.data.message[0]);
@@ -353,8 +404,6 @@ const MyStudy = () => {
     setDatatime(updatedDataTime);
   };
 
-
-
   const handleEventClick = (clickInfo) => {
     const eventData = clickInfo.event._def.extendedProps;
     setSelectedEvent({
@@ -364,7 +413,7 @@ const MyStudy = () => {
       end: new Date(eventData.end),
     });
     handleOpenViewBooking();
-  
+
     handleEdit(eventData.selectID);
   };
 
@@ -386,7 +435,7 @@ const MyStudy = () => {
       message.error(respose.data.message);
     }
   };
-
+ 
   const handleChangeViewData = (e) => {
     setBtnDisabled(false);
     const { name, value } = e.target;
@@ -410,24 +459,24 @@ const MyStudy = () => {
     const formattedStartTime = dayjs(selectedTime, "hh:mm A").format("HH:mm:ss");
     const formattedEndTime = dayjs(selectedEndTime, "hh:mm A").format("HH:mm:ss");
 
- 
+
     setBtnDisabled(true);
- 
+
     const response = await putApiWithAuth(`timetable/update-timeslot/${eventId}`, {
       timeslot: formattedStartTime,
       endslot: formattedEndTime,
       day: weekDay,
       title: title,
     });
-   
+
     if (response.data.success === true) {
       message.success("Booking Updated Successfully");
       setUpdateLoading(false);
+      setDatatime([]);
       getCalanderData();
       setOpenViewBooking(false);
-      // window.location.reload();
-
-
+      setOpenBooking(false)
+  
     }
     if (response.data.success === false) {
       message.error(response.data.message);
@@ -436,23 +485,28 @@ const MyStudy = () => {
   };
 
   const handleTimeChange = (start, end) => {
-
     if (start && end) {
       const startTime = dayjs(start, "hh:mm A");
       const endTime = dayjs(end, "hh:mm A");
-      const isDisabled = startTime.isAfter(endTime);
-      setDisableCreateButton(isDisabled);
-      if (isDisabled) {
-        setErrorMessage("Start time cannot be greater than end time.");
-      } else {
-        setErrorMessage("");
+
+      let isDisabled = false;
+      let errorMessage = "";
+
+      if (startTime.isAfter(endTime)) {
+        isDisabled = true;
+        errorMessage = "Start time cannot be greater than end time.";
+      } else if (startTime.isSame(endTime)) {
+        isDisabled = true;
+        errorMessage = "Start & end time can't be the same.";
       }
+
+      setDisableCreateButton(isDisabled);
+      setErrorMessage(errorMessage);
     } else {
       setDisableCreateButton(false);
       setErrorMessage("");
     }
   };
-  const [nextDayOfWeek, setNextDayOfWeek] = useState("");
 
   function handleChange(value) {
     setSelectedTime(value);
@@ -547,7 +601,9 @@ const MyStudy = () => {
         onCancel={handleCloseBooking}
         footer={[]}
       >
+        
         <div className="mt-5 pt-5 ps-2">
+        <form onSubmit={handleSubmit}>
           <MyCareerGuidanceInputField
             placeholder="Add Title"
             type="input"
@@ -558,7 +614,7 @@ const MyStudy = () => {
           <div
             style={{
               display: "flex",
-              width:'100%',
+              width: '100%',
               justifyContent: "space-between",
               marginTop: 20,
             }}
@@ -568,6 +624,7 @@ const MyStudy = () => {
               onChange={handleChange}
               value={selectedTime}
               className="inputFieldStyleSelect"
+              style={{ flex: 1, marginRight: '10px' }}
             >
               {optionArray.map((option) => (
                 <Option key={option.value} value={option.value}>
@@ -576,12 +633,12 @@ const MyStudy = () => {
               ))}
             </Select>
 
-
             <Select
               placeholder="Select end Time"
               onChange={handleChange2}
-              style={{marginRight:'5px'}}
+              style={{ marginLeft: '10px', flex: 1 }}
               value={selectedEndTime}
+
               className="inputFieldStyleSelect"
             >
               {optionArray.map((option) => (
@@ -601,24 +658,26 @@ const MyStudy = () => {
           >
             {!isEditing && (<MyCareerGuidanceButton
               label={"Create"}
-              className="takebutton"
-              type="button"
-              htmlType="button"
-              onClick={createNewEvent}
+              className={`takebutton ${disableCreateButton ? 'disabled' : ''}`}
+              // type="submit"
+              htmlType="submit"
+              // onClick={createNewEvent}
               loading={loadingBooking}
               disabled={disableCreateButton}
             />)}
             {isEditing && (<MyCareerGuidanceButton
               label={"Edit"}
-              className="takebutton"
-              type="button"
-              htmlType="button"
-              onClick={handleEdit}
+              className={`takebutton ${disableCreateButton ? 'disabled' : ''}`}
+              // type="submit"
+              htmlType="submit"
+              // onClick={handleEdit}
               loading={loadingBooking}
               disabled={disableCreateButton}
             />)}
           </div>
+          </form>
         </div>
+        
       </Modal>
 
 

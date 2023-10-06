@@ -171,7 +171,7 @@
 @media screen and (min-width: 300px) and (max-width: 389px) {
   button.ant-btn.ant-btn-default {
     border: 1px solid #1476b7;
-    width: 155%;
+    width: 100%;
     margin-top: 1rem;
     height: 46px;
   }

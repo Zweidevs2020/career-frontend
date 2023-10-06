@@ -4,6 +4,7 @@ import "./Steps.css";
 const Steps = ({ current, setCurrent, currentStep }) => {
 console.log("curremt setcurrent",current,currentStep)
 
+
   return (
     <>
       <div className="steps">
@@ -46,7 +47,7 @@ console.log("curremt setcurrent",current,currentStep)
           "Education",
           "Work Experience",
           "Skill's",
-          "Interests",
+          `Interests`,
           "References",
         ].map((item, index) => {
           

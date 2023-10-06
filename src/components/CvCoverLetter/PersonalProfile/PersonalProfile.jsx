@@ -146,6 +146,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   rules={[
                     { required: true, message: "Please input your Full Name!" },
                   ]}
+                  style={{ fontFamily: 'YourFontFamily', fontWeight: 'bold' }}
                 >
                   <MyCareerGuidanceInputField
                     placeholder="Maria Murphy"
@@ -229,7 +230,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
             </div>
 
             <div className="profileFormEmail profileFormItem">
-              <div style={{ width: "48%" }}>
+              <div style={{ width: "48%" }} className="mobileLayout">
                 <Form.Item
                   label="Town/Area"
                   name="town"
@@ -250,7 +251,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   />
                 </Form.Item>
               </div>
-              <div style={{ width: "24%" }}>
+              <div style={{ width: "24%" }} className="mobileLayout">
                 <Form.Item
                   label="County"
                   name="city"
@@ -271,7 +272,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   />
                 </Form.Item>
               </div>
-              <div style={{ width: "24%" }}>
+              <div style={{ width: "24%" }} className="mobileLayout">
                 <Form.Item
                   label="Eircode"
                   name="eircode"

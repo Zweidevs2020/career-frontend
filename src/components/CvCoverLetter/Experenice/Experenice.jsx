@@ -26,7 +26,7 @@ const Experenice = ({ setCurrent, current }) => {
   const navigate = useNavigate();
   const [downloadBtn, setDownloadBtn] = useState(false);
   const [expereniceArray, setExpereniceArray] = useState([]);
-  const [savedTotalStep,setSavedTotalStep]=useState();
+  const [savedTotalStep, setSavedTotalStep] = useState();
   const [isCurrentCheck, setIsCurrentCheck] = useState(false);
   const [nextBtn, setNextBtn] = useState(false);
   const [userData, setUserData] = useState({});
@@ -211,7 +211,7 @@ const Experenice = ({ setCurrent, current }) => {
       );
 
       const response = await deleteApiWithAuth(`${API_URL.DELETE_EXPERIENCE}/${id}/`);
-   
+
       if (response.data.status === 204) {
         message.success("Experience entry deleted successfully.");
       } else {
@@ -225,7 +225,7 @@ const Experenice = ({ setCurrent, current }) => {
     }
   }
   const handleNextClick = () => {
-    if (savedTotalStep >= current) { 
+    if (savedTotalStep >= current) {
       setCurrent(current + 1);
       navigate(`?step=${current + 1}`);
     }
@@ -362,13 +362,13 @@ const Experenice = ({ setCurrent, current }) => {
                             onChangeDate("startdate", dateString, index)
                           }
                           className="expDateInputFieldStyle"
-
+                          placeholder="Select Start Date"
                           format="DD-MM-YYYY" // Format the selected date
                           value={dayjs(item?.dataValue.startdate, "DD-MM-YYYY")}
-                          defaultValue={dayjs(
-                            item?.dataValue.startdate,
-                            "DD-MM-YYYY"
-                          )}
+                        // defaultValue={dayjs(
+                        //   item?.dataValue.startdate,
+                        //   "DD-MM-YYYY"
+                        // )}
                         />
                       </Form.Item>
                     </div>
@@ -390,13 +390,13 @@ const Experenice = ({ setCurrent, current }) => {
                           }
                           format="DD-MM-YYYY" // Format the selected date
                           value={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
-                          defaultValue={dayjs(
-                            item?.dataValue.enddate,
-                            "DD-MM-YYYY"
-                          )}
-
-
+                          // defaultValue={dayjs(
+                          //   item?.dataValue.enddate,
+                          //   "DD-MM-YYYY"
+                          // )}
+                          placeholder="Select End Date"
                           className="expDateInputFieldStyle"
+                          disabled={isCurrentCheck}
                         />
                       </Form.Item>
                       <div>
@@ -499,56 +499,57 @@ const Experenice = ({ setCurrent, current }) => {
                         display: "flex",
                         alignItems: "center",
                         marginRight: "10px",
+                        color: '#1476b7'
                       }}
                     />
                   </span>{" "}
-                  Add Another Position
+                  <span style={{ color: '#1476b7' }}>Add Another Position</span>
                 </Button>
               </Form.Item>
             </div>
 
 
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <div className="eduItemButton">
-              <Form.Item>
-                <Button className="eduButtonBack me-3" type="primary" onClick={prev}>
-                  Back
-                </Button>
-              </Form.Item>
-              {nextBtn && <Form.Item>
-                <Button className="eduButtonNext me-3" type="primary" onClick={handleNextClick}>
-                      Next
-                </Button>
-              </Form.Item>
-}
+            <div style={{ display: 'flex', justifyContent: 'space-between' }} className="mobileLayout">
+              <div className="eduItemButton">
+                <Form.Item>
+                  <Button className="eduButtonBack me-3" type="primary" onClick={prev}>
+                    Back
+                  </Button>
+                </Form.Item>
+                {nextBtn && <Form.Item>
+                  <Button className="eduButtonNext me-3" type="primary" onClick={handleNextClick}>
+                    Next
+                  </Button>
+                </Form.Item>
+                }
               </div>
               <Form.Item>
-               
-              <div className="buttonEducation">
-                {downloadBtn && (<Button
-                  className={
-                    downloadBtn === false
-                      ? "disabledBtn me-3"
-                      : "skillsButton me-3 "
-                  }
-                  type="primary"
-                  htmlType="submit"
-                  onClick={(e) => SavePdf(e)}>
-                  Download CV
-                </Button>)}
-                <Button
-                  className="expButton"
-                  type="primary"
-                  htmlType="submit"
-                // disabled={isInputDisabled}
-                >
-                  Save
-                </Button>
+
+                <div className="buttonEducation">
+                  {downloadBtn && (<Button
+                    className={
+                      downloadBtn === false
+                        ? "disabledBtn me-3"
+                        : "skillsButton me-3 "
+                    }
+                    type="primary"
+                    htmlType="submit"
+                    onClick={(e) => SavePdf(e)}>
+                    Download CV
+                  </Button>)}
+                  <Button
+                    className="expButton"
+                    type="primary"
+                    htmlType="submit"
+                  // disabled={isInputDisabled}
+                  >
+                    Save
+                  </Button>
                 </div>
               </Form.Item>
-              </div>
-           
-          
+            </div>
+
+
           </Form>
         </div>
       </div>

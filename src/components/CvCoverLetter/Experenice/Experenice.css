@@ -69,7 +69,7 @@
 }
 
 .expButton {
-    border: 1px solid grey;
+    /* border: 1px solid grey; */
     width: 144px;
     height: 45px !important;
     background: #1476B7;
@@ -113,4 +113,17 @@
     margin-left: 2px;
 
 
+}
+
+@media (max-width: 768px) {
+    .expButton{
+display: block;
+    }
+    .buttonEducation{
+        display: block;
+    }
+    .mobileLayout{
+        display: block !important;
+        margin-bottom: 0px;
+    }
 }

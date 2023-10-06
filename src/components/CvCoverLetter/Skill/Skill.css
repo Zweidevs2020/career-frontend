@@ -33,7 +33,7 @@
 }
 
 .skillsButton{
-    border: 1px solid grey;
+    /* border: 1px solid grey; */
     width: 144px;
     height: 45px !important;
     background: #1476B7;
@@ -58,4 +58,11 @@
     font-style: normal !important;
 }
 
+@media (max-width: 768px) {
 
+    .skillsButton {
+        /* border: 1px solid grey; */
+        width: 48%;
+    }
+
+}
