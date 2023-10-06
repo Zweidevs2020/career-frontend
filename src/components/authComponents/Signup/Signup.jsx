@@ -406,18 +406,6 @@ const Signup = () => {
                 name="year"
                 rules={[
                   { required: true, message: 'Please Select Year!' },
-                  {
-                    validator: (_, value) => {
-                    
-                      const selectedYear = moment(value).year();
-                      const currentYear = moment().year();
-                      const age = currentYear - selectedYear;
-                      if (age < 18) {
-                        return Promise.reject('You must be at least 18 years old.');
-                      }
-                      return Promise.resolve();
-                    },
-                  },
                 ]}
               >
                 <DatePicker
