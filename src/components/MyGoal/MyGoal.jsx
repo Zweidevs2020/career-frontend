@@ -225,7 +225,6 @@ const MyGoal = () => {
                     style={{ border: "2px solid grey", lineHeight: "normal", display: "flex", alignItems: "center" }}
                     className="inputCarrer sm:text-[8px] md:text-[10px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
                     onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Get more organized with a daily planner"
                   >
                   </TextArea>
                 </div>

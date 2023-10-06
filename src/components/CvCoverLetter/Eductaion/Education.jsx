@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import dayjs from "dayjs";
 import axios from "axios";
 import { API_URL } from "../../../utils/constants";
+import moment from "moment";
 
 const Education = ({ setCurrent, current }) => {
   const [data, setData] = useState(null);
@@ -70,7 +71,7 @@ const Education = ({ setCurrent, current }) => {
               school: "",
               year: dayjs().format("MM/YYYY"),
               examtaken: "",
-              enddate: dayjs(dayjs()).add(1, "day").format("DD-MM-YYYY"),
+              enddate: dayjs(dayjs()).format("DD-MM-YYYY"),
               present: false,
             },
           },
@@ -278,7 +279,11 @@ const Education = ({ setCurrent, current }) => {
       navigate(`?step=${current + 1}`);
     }
   };
-
+  const disabledDate = current => {
+    const today = dayjs().startOf('day');
+    
+    return current < today;
+  };
 
   const educationItems = (item, index) => {
     return (
@@ -624,7 +629,6 @@ const Education = ({ setCurrent, current }) => {
                           year: dayjs().format("MM/YYYY"),
                           examtaken: "",
                           enddate: dayjs(dayjs())
-                            .add(1, "day")
                             .format("DD-MM-YYYY"),
                           present: false,
                         },
