@@ -68,6 +68,7 @@ font-family: poppins;
    .ant-btn-primary,.ant-btn-primary:not(:disabled){
     margin-top: 8px;
     background: #1476b7;
+    height: 48px;
     width: 100% !important;
    }
    .inputFieldStyle {

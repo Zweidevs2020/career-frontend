@@ -46,8 +46,9 @@
     width: 144px;
     height: 45px !important;
     font-size: 14px;
+    background: #1476B7;
     border-radius: 12px;
-    color: #1476B7; 
+    color: white; 
 }
 
 .skillItemLable .ant-form-item-label{
