@@ -63,11 +63,17 @@
 .fc-direction-ltr .fc-button-group>.fc-button:not(:last-child) {
     border-bottom-right-radius: 12px;
     border-top-right-radius: 12px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
     border-bottom-left-radius: 12px;
     border-top-left-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .fc .fc-icon-chevron-left:before,
@@ -83,7 +89,7 @@
 }
 
 .fc-icon-chevron-right:before {
-    content: "\e901 Next";
+    content: "Next\e901";
     font-size: 14px;
     margin-left: -1rem;
 }
