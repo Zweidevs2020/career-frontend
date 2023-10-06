@@ -189,6 +189,7 @@ const Skill = ({ setCurrent, current }) => {
       skill_data: result,
       quality_data: result2,
     });
+    console.log('==========================res',respose)
     if (respose.data.status === 201 || respose.data.status === 200) {
     
       setCurrent(current + 1);

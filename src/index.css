@@ -86,3 +86,8 @@ code {
 /* .fc-timegrid-event-harness > .fc-timegrid-event {
   bottom: 100;
 } */
+
+
+.ant-form-item-has-error .ant-select:not(.ant-select-disabled):not(.ant-select-customize-input) .ant-select-selector {
+  border-color: #ff4d4f !important;
+}

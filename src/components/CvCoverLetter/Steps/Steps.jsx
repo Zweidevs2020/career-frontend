@@ -2,6 +2,7 @@ import React from "react";
 import "./Steps.css";
 
 const Steps = ({ current, setCurrent, currentStep }) => {
+console.log("curremt setcurrent",current,currentStep)
 
 
   return (
@@ -16,14 +17,14 @@ const Steps = ({ current, setCurrent, currentStep }) => {
         >
           <div
             className={
-              current >= 1
+              currentStep >= 1
                 ? "step-icon-style step-icon-style-active"
                 : "step-icon-style step-icon-style-nonActive"
             }
           >
             <span
               className={
-                current >= 1
+                currentStep >= 1
                   ? "step-icon-text step-icon-text-active"
                   : "step-icon-text step-icon-text-nonActive"
               }
@@ -33,7 +34,7 @@ const Steps = ({ current, setCurrent, currentStep }) => {
           </div>
           <div
             className={
-              current >= 1
+              currentStep >= 1
                 ? "step-item-content step-item-content-active"
                 : "step-item-content step-item-content-nonActive"
             }
@@ -56,28 +57,28 @@ const Steps = ({ current, setCurrent, currentStep }) => {
               className="step-item"
               key={index + 2}
               onClick={() => {
-                if (current >= index + 2) {
+                if (currentStep >= index + 2) {
                   setCurrent(index + 2);
                 }
               }}
             >
               <div
                 className={
-                  current >= index + 2
+                  currentStep >= index + 2
                     ? "step-item-line  step-item-line-active"
                     : "step-item-line  step-item-line-nonActive"
                 }
               />
               <div
                 className={
-                  current >= index + 2
+                  currentStep >= index + 2
                     ? "step-icon-style step-icon-style-active"
                     : "step-icon-style step-icon-style-nonActive"
                 }
               >
                 <span
                   className={
-                    current >= index + 2
+                    currentStep >= index + 2
                       ? "step-icon-text step-icon-text-active"
                       : "step-icon-text step-icon-text-nonActive"
                   }
@@ -87,7 +88,7 @@ const Steps = ({ current, setCurrent, currentStep }) => {
               </div>
               <div
                 className={
-                  current >= index + 2
+                  currentStep >= index + 2
                     ? "step-item-content step-item-content-active"
                     : "step-item-content step-item-content-nonActive"
                 }
