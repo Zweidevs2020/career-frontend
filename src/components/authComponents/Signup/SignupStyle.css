@@ -28,7 +28,7 @@
   border: 1px solid #d3d3d3;
   display: flex;
   align-items: center;
-  width:100vmin;
+  width:100%;
 }
 
 .ant-modal-content{
@@ -74,27 +74,27 @@ button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary.eduButtonBack
 
 @media only screen and (min-width: 0px) and (max-width: 650px) {
   .signInButtonStyle {
-    width:66vmin;
+    width:100%;
   }
 }
 
 @media only screen and (min-width: 651px) and (max-width: 900px) {
 
   .signInButtonStyle {
-    width:41vw;
+    width:100%;
   }
 }
 
 
 @media only screen and (min-width: 901px) and (max-width: 1400px) {
   .signInButtonStyle {
-    width:36vw;
+    width:100%;
   }
 }
 
 
 @media only screen and (min-width: 1401px) {
   .signInButtonStyle {
-    width:26vw;
+    width:100%;
   }
 }
