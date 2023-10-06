@@ -95,7 +95,7 @@ code {
   height: 50px !important;
 }
 
-:where(.css-dev-only-do-not-override-pr0fja).ant-upload-wrapper .ant-upload-select {
+.ant-upload-wrapper .ant-upload-select {
 
   width: 100% !important;
 }
