@@ -246,24 +246,24 @@ const MyStudy = () => {
 
   const handleDeleteEvent = async (event) => {
     const eventId = event.extendedProps.selectID;
-   
+
     setEventToDelete(eventId);
-   
-      const response = await deleteApiWithAuth(`timetable/delete-timeslot/${eventId}`);
-     
-      if (response.data['status']===204) {
-        message.success("Event deleted successfully.");
-        setDatatime([]);
-        getCalanderData();
-      
-        
-      } else {
-        message.error(response.data.message);
-      }
+
+    const response = await deleteApiWithAuth(`timetable/delete-timeslot/${eventId}`);
+
+    if (response.data['status'] === 204) {
+      message.success("Event deleted successfully.");
+      setDatatime([]);
+      getCalanderData();
+
+
+    } else {
+      message.error(response.data.message);
+    }
   }
 
 
- 
+
 
   function renderEventContent(eventInfo) {
 
@@ -320,18 +320,18 @@ const MyStudy = () => {
       setSelectedEndTime(formattedDateEnd);
       {
         !eventToDelete &&
-        handleOpenBooking();
+          handleOpenBooking();
       }
     }
 
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault(); 
+    event.preventDefault();
     if (isEditing) {
       handleEdit();
-    } 
-    else{
+    }
+    else {
       createNewEvent()
     }
   };
@@ -361,8 +361,8 @@ const MyStudy = () => {
       setData([]);
       setDatatime([]);
       getCalanderData();
-      
-    
+
+
     } else {
       setLoadingBooking(false);
       message.error(response.data.message[0]);
@@ -435,7 +435,7 @@ const MyStudy = () => {
       message.error(respose.data.message);
     }
   };
- 
+
   const handleChangeViewData = (e) => {
     setBtnDisabled(false);
     const { name, value } = e.target;
@@ -476,7 +476,7 @@ const MyStudy = () => {
       getCalanderData();
       setOpenViewBooking(false);
       setOpenBooking(false)
-  
+
     }
     if (response.data.success === false) {
       message.error(response.data.message);
@@ -601,83 +601,84 @@ const MyStudy = () => {
         onCancel={handleCloseBooking}
         footer={[]}
       >
-        
+
         <div className="mt-5 pt-5 ps-2">
-        <form onSubmit={handleSubmit}>
-          <MyCareerGuidanceInputField
-            placeholder="Add Title"
-            type="input"
-            name="full_name"
-            onChange={(e) => setTitle(e.target.value)}
-            inputValue={title}
-          />
-          <div
-            style={{
-              display: "flex",
-              width: '100%',
-              justifyContent: "space-between",
-              marginTop: 20,
-            }}
-          >
-            <Select
-              placeholder="Select time"
-              onChange={handleChange}
-              value={selectedTime}
-              className="inputFieldStyleSelect"
-              style={{ flex: 1, marginRight: '10px' }}
+          <form onSubmit={handleSubmit}>
+            <MyCareerGuidanceInputField
+              placeholder="Add Title"
+              type="input"
+              name="full_name"
+              onChange={(e) => setTitle(e.target.value)}
+              inputValue={title}
+            />
+            <div
+              style={{
+                display: "flex",
+                width: '100%',
+                justifyContent: "space-between",
+                marginTop: 20,
+              }}
             >
-              {optionArray.map((option) => (
-                <Option key={option.value} value={option.value}>
-                  {option.label}
-                </Option>
-              ))}
-            </Select>
+              <Select
+                placeholder="Select time"
+                onChange={handleChange}
+                value={selectedTime}
+                bordered={false}
+                className="inputFieldStyleSelect"
+                style={{ flex: 1, marginRight: '10px' }}
+              >
+                {optionArray.map((option) => (
+                  <Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Option>
+                ))}
+              </Select>
 
-            <Select
-              placeholder="Select end Time"
-              onChange={handleChange2}
-              style={{ marginLeft: '10px', flex: 1 }}
-              value={selectedEndTime}
-
-              className="inputFieldStyleSelect"
+              <Select
+                placeholder="Select end Time"
+                onChange={handleChange2}
+                style={{ marginLeft: '10px', flex: 1 }}
+                value={selectedEndTime}
+                bordered={false}
+                className="inputFieldStyleSelect"
+              >
+                {optionArray.map((option) => (
+                  <Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+            <div className="errorTime" >{errorMessage}</div>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+              }}
             >
-              {optionArray.map((option) => (
-                <Option key={option.value} value={option.value}>
-                  {option.label}
-                </Option>
-              ))}
-            </Select>
-          </div>
-          <div className="errorTime" >{errorMessage}</div>
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            {!isEditing && (<MyCareerGuidanceButton
-              label={"Create"}
-              className={`takebutton ${disableCreateButton ? 'disabled' : ''}`}
-              // type="submit"
-              htmlType="submit"
-              // onClick={createNewEvent}
-              loading={loadingBooking}
-              disabled={disableCreateButton}
-            />)}
-            {isEditing && (<MyCareerGuidanceButton
-              label={"Edit"}
-              className={`takebutton ${disableCreateButton ? 'disabled' : ''}`}
-              // type="submit"
-              htmlType="submit"
-              // onClick={handleEdit}
-              loading={loadingBooking}
-              disabled={disableCreateButton}
-            />)}
-          </div>
+              {!isEditing && (<MyCareerGuidanceButton
+                label={"Create"}
+                className={`takebutton ${disableCreateButton ? 'disabled' : ''}`}
+                // type="submit"
+                htmlType="submit"
+                // onClick={createNewEvent}
+                loading={loadingBooking}
+                disabled={disableCreateButton}
+              />)}
+              {isEditing && (<MyCareerGuidanceButton
+                label={"Edit"}
+                className={`takebutton ${disableCreateButton ? 'disabled' : ''}`}
+                // type="submit"
+                htmlType="submit"
+                // onClick={handleEdit}
+                loading={loadingBooking}
+                disabled={disableCreateButton}
+              />)}
+            </div>
           </form>
         </div>
-        
+
       </Modal>
 
 
