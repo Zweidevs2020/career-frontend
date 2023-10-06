@@ -106,7 +106,7 @@ const MyGoal = () => {
   const DownloadBtn = async () => {
     setLoading3(true);
     const res = await getApiWithAuth(API_URL.GETMYGOALPDF);
- 
+ console.log('================res',res)
     if (res.data.status === 200) {
       const data = res.data.data;
 
@@ -120,7 +120,7 @@ const MyGoal = () => {
       // Create a temporary link element
       const link = document.createElement("a");
       link.href = pdfDataUri;
-      link.download = "file.pdf";
+      link.download = `${proffession}.pdf`;
 
       // Simulate a click event to trigger the file download
       link.dispatchEvent(new MouseEvent("click"));
@@ -194,6 +194,7 @@ const MyGoal = () => {
                   name="input"
                   placeholder=" EG: Accountant or save the planet"
                   className="inputCarrer sm:text-[8px] md:text-[10px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
+              
                 />
               </div>
 
@@ -224,6 +225,7 @@ const MyGoal = () => {
                     style={{ border: "2px solid grey", lineHeight: "normal", display: "flex", alignItems: "center" }}
                     className="inputCarrer sm:text-[8px] md:text-[10px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
                     onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Get more organized with a daily planner"
                   >
                   </TextArea>
                 </div>

@@ -21,18 +21,23 @@ const Education = ({ setCurrent, current }) => {
   const [downloadBtn, setDownloadBtn] = useState(false);
   const [educationArray, setEducationArray] = useState([]);
   const [resultArrayData, setResultArrayData] = useState([]);
-  const [savedTotalStep,setSavedTotalStep]=useState();
+  const [savedTotalStep, setSavedTotalStep] = useState();
   const [isCheck, setIsCheck] = useState(true);
   const [nextBtn, setNextBtn] = useState(false);
   const [userData, setUserData] = useState({});
   const [isCurrentCheck, setIsCurrentCheck] = useState(false);
   const [isInputDisabled, setIsInputDisabled] = useState(true);
+  const [subjectCount, setSubjectCount] = useState(0);
+  const [educationCount, setEducationCount] = useState(0);
 
   const { Option } = Select;
 
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETEDUCATION);
+   
 
+    setSubjectCount(response.data.data['junior_data'].length)
+    setEducationCount(response.data.data['education_data'].length)
     if (response.data?.status === 200) {
       setData(response.data.data);
     } else {
@@ -111,14 +116,18 @@ const Education = ({ setCurrent, current }) => {
   ];
 
   const onsubmit = async () => {
+
     let sendDaata = {};
     let data = createArrayData(educationArray);
     let resData = createArrayData(resultArrayData);
+
     !isCheck
       ? (sendDaata = { education_data: data, junior_data: [] })
       : (sendDaata = { education_data: data, junior_data: resData });
+    console.log("ending date", sendDaata)
     const respose = await postApiWithAuth(API_URL.POSTEDUCATION, sendDaata);
     if (respose.data.status === 201) {
+      setSubjectCount(subjectCount + 1);
       setCurrent(current + 1);
     } else {
       message.error(respose.data.message);
@@ -159,14 +168,36 @@ const Education = ({ setCurrent, current }) => {
     }
   };
   const onChangeDate = (name, date, arrayIndex) => {
-    setEducationArray(
-      educationArray.map((item) => {
-        return item.index === arrayIndex
-          ? { ...item, dataValue: { ...item.dataValue, [name]: date } }
-          : item;
-      })
-    );
+    console.log("date chnage", name, date, arrayIndex);
+    if (name === "enddate") {
+      if (dayjs(date, "DD-MM-YYYY").isAfter(dayjs())) {
+        message.error("End date cannot be in future");
+        return;
+      } else {
+        setEducationArray(
+          educationArray.map((item) => {
+            return item.index === arrayIndex
+              ? { ...item, dataValue: { ...item.dataValue, [name]: date } }
+              : item;
+          })
+        );
+      }
+    } else if (name === "year") {
+      if (dayjs(date, "MM/YYYY").isAfter(dayjs())) {
+        message.error("Start date cannot be in future.");
+        return;
+      } else {
+        setEducationArray(
+          educationArray.map((item) => {
+            return item.index === arrayIndex
+              ? { ...item, dataValue: { ...item.dataValue, [name]: date } }
+              : item;
+          })
+        );
+      }
+    }
   };
+
 
   const handleChange = (value, name, arrayIndex) => {
     setResultArrayData(
@@ -213,7 +244,7 @@ const Education = ({ setCurrent, current }) => {
 
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
-
+    console.log("useddd data", response)
     if (response.data.status === 200) {
       if (response.data.data["current_step"] > 1) {
         setNextBtn(true)
@@ -242,7 +273,7 @@ const Education = ({ setCurrent, current }) => {
 
 
   const handleNextClick = () => {
-    if (savedTotalStep >= current) { 
+    if (savedTotalStep >= current) {
       setCurrent(current + 1);
       navigate(`?step=${current + 1}`);
     }
@@ -278,7 +309,7 @@ const Education = ({ setCurrent, current }) => {
           <div className="expFormDoubleItem">
             <Form.Item
               name={`year ${index}`}
-              label="Month/year"
+              label="Start Date"
               className="eduItemLable"
               rules={[
                 {
@@ -341,9 +372,16 @@ const Education = ({ setCurrent, current }) => {
                   onChangeDate("enddate", dateString, index)
                 }
                 format={"DD-MM-YYYY"}
-                value={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
+
+                value={
+                  item?.dataValue.present 
+                    ? dayjs().format("DD-MM-YYYY") 
+                    : dayjs(item?.dataValue.enddate, "DD-MM-YYYY") 
+                }
+             
                 defaultValue={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
-                // disabled={item?.dataValue.present || isInputDisabled}
+                disabled={item?.dataValue.present }
+               
                 className="expDateInputFieldStyle"
               />
             </Form.Item>
@@ -354,6 +392,7 @@ const Education = ({ setCurrent, current }) => {
                 inputValue={item?.dataValue?.present}
                 // disabled={isInputDisabled}
                 onChange={(e) => {
+                  const isChecked = e.target.checked;
                   setEducationArray((prevArray) =>
                     prevArray.map((educationItem) =>
                       educationItem.index === item.index
@@ -362,6 +401,7 @@ const Education = ({ setCurrent, current }) => {
                           dataValue: {
                             ...educationItem.dataValue,
                             present: e.target.checked,
+                            enddate: isChecked ? dayjs().format("DD-MM-YYYY") : educationItem.dataValue.enddate,
                           },
                         }
                         : educationItem
@@ -373,13 +413,13 @@ const Education = ({ setCurrent, current }) => {
               </Checkbox>
 
               <div className="mainContainerDelete">
-
-                <img
-                  className="deleteSubject"
-                  src={Delete}
-                  onClick={() => handleDeleteEducation(item.dataValue.id)}
-                />
-
+                {educationCount > 1 && index > 0 && (
+                  <img
+                    className="deleteSubject"
+                    src={Delete}
+                    onClick={() => handleDeleteEducation(item.dataValue.id)}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -424,6 +464,7 @@ const Education = ({ setCurrent, current }) => {
 
       if (response.data.status === 204) {
         message.success("Junior Cert entry deleted successfully.");
+        setSubjectCount(subjectCount - 1);
       } else {
         message.error("Failed to delete the Junior Cert entry.");
         setResultArrayData((prevArray) => [
@@ -479,11 +520,11 @@ const Education = ({ setCurrent, current }) => {
                 },
               ]}>
               <Select
-                placeholder="Select"
+                placeholder="Select Level"
                 onChange={(event) => handleChange(event, "level", index)}
                 optionLabelProp="label"
                 className="eduSelect eduSelectItem"
-                defaultValue={item?.dataValue?.level}
+                defaultValue={item?.dataValue?.level ? item?.dataValue?.level : null}
               // disabled={isInputDisabled}
               >
                 {levelArray.map((item) => {
@@ -500,18 +541,10 @@ const Education = ({ setCurrent, current }) => {
             </Form.Item>
           </div>
         </div>
-        <div className="mainContainerDelete">
-          {!isInputDisabled && (
-            <img
-              className="deleteSubject"
-              src={Delete}
-              // disabled={isInputDisabled}
-              onClick={() => handleDeleteJuniorCert(item.dataValue.id)}
-            />
-          )}
-        </div>
+
         <div className="expFormDoubleItem">
           <Form.Item
+            defaultValue="Result"
             label="Result"
             name={`result ${index}`}
             className="skillItemLable"
@@ -522,16 +555,16 @@ const Education = ({ setCurrent, current }) => {
               },
             ]}>
             <Select
-              placeholder="Select"
+              placeholder="Select Result"
               onChange={(event) => handleChange(event, "result", index)}
               optionLabelProp="label"
               className="eduSelect eduSelectItem"
-      
-              defaultValue={item?.dataValue?.level}
+
+              defaultValue={item?.dataValue?.level ? item?.dataValue?.level : null}
             // disabled={isInputDisabled}>
             >
               {resultArray.map((item) => {
-              
+
                 return (
                   <Option
                     value={item.value}
@@ -543,6 +576,17 @@ const Education = ({ setCurrent, current }) => {
               })}
             </Select>
           </Form.Item>
+
+        </div>
+        <div className="mainContainerDelete">
+          {subjectCount > 1 && index > 0 && (
+            <img
+              className="deleteSubject"
+              src={Delete}
+              // disabled={isInputDisabled}
+              onClick={() => handleDeleteJuniorCert(item.dataValue.id)}
+            />
+          )}
         </div>
       </>
     );
@@ -594,10 +638,11 @@ const Education = ({ setCurrent, current }) => {
                         display: "flex",
                         alignItems: "center",
                         marginRight: "10px",
+                        color: '#1476b7'
                       }}
                     />
                   </span>{" "}
-                  Add Another Place of Study
+                  <span style={{ color: '#1476b7' }}>Add Another Place of Study</span>
                 </Button>
               </Form.Item>
             </div>
@@ -644,7 +689,7 @@ const Education = ({ setCurrent, current }) => {
                             dataValue: {
                               id: null,
                               subject: "",
-                              level: "",
+                              level: null,
                               result: "",
                             },
                           },
@@ -657,10 +702,11 @@ const Education = ({ setCurrent, current }) => {
                             display: "flex",
                             alignItems: "center",
                             marginRight: "10px",
+                            color: '#1476b7'
                           }}
                         />
                       </span>{" "}
-                      Add Another Subject
+                      <span style={{ color: "#1476b7" }}> Add Another Subject</span>
                     </Button>
                   </Form.Item>
                 </div>
@@ -669,7 +715,7 @@ const Education = ({ setCurrent, current }) => {
               ""
             )}
 
-            <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }} className="mobileResposiveEducation">
               <div className="eduItemButton">
                 <Button className="eduButtonBack me-3" type="primary" onClick={prev}>
                   Back

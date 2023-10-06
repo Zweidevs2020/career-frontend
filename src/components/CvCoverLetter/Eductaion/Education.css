@@ -61,7 +61,7 @@
 }
 
 .eduButton {
-    border: 1px solid grey;
+    /* border: 1px solid grey; */
     width: 144px;
     height: 45px !important;
     background: #1476B7;
@@ -156,3 +156,22 @@
     width: 100% !important;
     padding-top: 30px;
 }
+@media (max-width: 768px) {
+
+    .mobileResposiveEducation{
+display: block !important;
+margin:0px !important;
+    }
+    
+      .eduItemButton {
+        display: block;
+        margin-bottom: 0px;
+    }
+    .eduJunCheckDiv {
+       
+        width: 100%;
+    }
+    .eduItemButton.eduButtonBack{
+        width: 48% !important;
+    }
+  }

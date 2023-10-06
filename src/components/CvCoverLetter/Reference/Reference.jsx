@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Form, Select, Button, message } from "antd";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
 import "./Reference.css";
-import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
+import { deleteApiWithAuth, getApiWithAuth, postApiWithAuth } from "../../../utils/api";
 import { API_URL } from "../../../utils/constants";
 import { useNavigate, useLocation } from "react-router-dom";
+import Delete from "../../../assets/delete.png";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
 
@@ -14,12 +15,15 @@ const Reference = ({ setCurrent, current }) => {
   const [downloadBtn, setDownloadBtn] = useState(false);
   const [referArray, setReferArray] = useState([]);
   const [userData, setUserData] = useState({});
+  const [referenceCount, setReferenceCount] = useState(0);
   const { Option } = Select;
 
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETREFERANCE);
+  
     if (response.data?.status === 200) {
       setData(response.data.data);
+      setReferenceCount(response.data.data.length)
     } else {
       message.error("Fail to load Data");
     }
@@ -64,25 +68,12 @@ const Reference = ({ setCurrent, current }) => {
 
     if (respose.data.status === 201) {
       // setCurrent(1);
-      message.success("Cv Save Successfully");
+      message.success("Your CV is saved successfully");
       navigate("/cover-letter");
     } else {
       message.error(respose.data.message);
     }
   };
-
-  // const SavePdf = async (e) => {
-  //   e.preventDefault();
-  //   let data = createArrayData(referArray);
-
-  //   const respose = await getApiWithAuth(API_URL.SAVEPDF);
-
-  //   if (respose.data.status === 201) {
-
-  //   } else {
-  //     message.error(respose.data.message);
-  //   }
-  // };
 
   const SavePdf = async (e) => {
     e.preventDefault();
@@ -116,7 +107,31 @@ const Reference = ({ setCurrent, current }) => {
     URL.revokeObjectURL(pdfUrl);
   };
 
- 
+  const handleDeleteReference = async (id) => {
+    try {
+      setReferArray((prevArray) =>
+        prevArray.filter((item) => item.dataValue.id !== id)
+      );
+      const response = await deleteApiWithAuth(`${API_URL.DELETE_REFERENCE}/${id}/`);
+    
+      if (response.data.status === 204) {
+        message.success("Reference entry deleted successfully.");
+      } else {
+        message.error("Failed to delete the reference entry.");
+        setReferArray((prevArray) => [
+          ...prevArray,
+          referArray.find((item) => item.dataValue.id === id),
+        ]);
+      }
+    } catch (error) {
+      console.error("Error deleting the reference entry:", error);
+      message.error("An error occurred while deleting the reference entry.");
+      setReferArray((prevArray) => [
+        ...prevArray,
+        referArray.find((item) => item.dataValue.id === id),
+      ]);
+    }
+  };
 
   const createArrayData = (data) => {
     let array = [];
@@ -253,7 +268,19 @@ const Reference = ({ setCurrent, current }) => {
                 />
               </Form.Item>
             </div>
+
           </div>
+          {referenceCount > 1 && index > 0 && (
+          <div className="mainContainerDelete">
+          
+              <img
+                className="deleteSubject"
+                src={Delete}
+                onClick={() => handleDeleteReference(item.dataValue.id)}
+              />
+           
+          </div>
+           )}
         </div>
       </>
     );
@@ -261,6 +288,7 @@ const Reference = ({ setCurrent, current }) => {
 
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
+
     if (response.data.status === 200) {
       setUserData(response.data.data);
       if (response.data.data.cv_completed === true) {
@@ -317,10 +345,11 @@ const Reference = ({ setCurrent, current }) => {
                         display: "flex",
                         alignItems: "center",
                         marginRight: "10px",
+                        color: '#1476b7'
                       }}
                     />
                   </span>{" "}
-                  Add Another Referee
+                  <span style={{ color: '#1476b7' }}>Add Another Referee</span>
                 </Button>
               </Form.Item>
             </div>

@@ -56,6 +56,7 @@ min-height: 140px;
   font-size: 12px;
   line-height: 18px;
   color: #807a7a;
+  text-transform:capitalize;
 }
 
 .takebutton {

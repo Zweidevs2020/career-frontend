@@ -102,7 +102,7 @@ const Signup = () => {
   const onChangeYear = (date) => {
 
     setDobSave({ ...dobSave, year: date });
-    // setDobSave({ ...dobSave, year: date?.$y });
+   
   };
 
   useEffect(() => {
@@ -112,7 +112,7 @@ const Signup = () => {
   const handleSchool = (e) => {
     const { value } = e.target;
     setNewSchools(value);
-    // Check if the "Add New School" input is empty
+  
     setIsAddSchoolValid(!!value.trim());
   };
 
@@ -401,7 +401,21 @@ const Signup = () => {
             <div style={{ width: "30%" }}>
               <Form.Item
                 name="year"
-                rules={[{ required: true, message: "Please Select Year!" }]}
+                rules={[
+                  { required: true, message: 'Please Select Year!' },
+                  {
+                    validator: (_, value) => {
+                    
+                      const selectedYear = moment(value).year();
+                      const currentYear = moment().year();
+                      const age = currentYear - selectedYear;
+                      if (age < 18) {
+                        return Promise.reject('You must be at least 18 years old.');
+                      }
+                      return Promise.resolve();
+                    },
+                  },
+                ]}
               >
                 <DatePicker
                   picker="year"
@@ -473,11 +487,11 @@ const Signup = () => {
           © 2023 My Guidance. All Rights Reserved
         </span>
       </div>
-      <div style={{ borderRadius:'31px',overflow:"hidden",margin:"1em",width:'55%'}}>
-         <img src={sideAuthImage}
-          style={{ objectFit: "cover",height:"100vh",width:"100%" ,borderRadius:'20px'}}
+      <div style={{ borderRadius: '31px', overflow: "hidden", margin: "1em", width: '55%' }}>
+        <img src={sideAuthImage}
+          style={{ objectFit: "cover", height: "100vh", width: "100%", borderRadius: '20px' }}
           alt="img"
-         />
+        />
       </div>
     </div>
   );
