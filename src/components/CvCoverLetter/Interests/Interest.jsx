@@ -141,7 +141,7 @@ const Interest = ({ setCurrent, current }) => {
               </Form.Item>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }} className="mobileLayout">
               <div className="interestItemButton">
                 <Form.Item>
                   <Button

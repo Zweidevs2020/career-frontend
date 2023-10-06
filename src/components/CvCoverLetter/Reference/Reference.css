@@ -47,3 +47,11 @@
 .refFormItem{
     margin-top: 24px;
 }
+
+@media (max-width: 768px) {
+
+.refHead {
+    font-size: 16px;
+    margin-top: 7%;
+}
+}

@@ -58,3 +58,19 @@
     color: #1476B7; 
 }
 
+@media (max-width: 768px) {
+    .interestHead{ 
+        font-size: 14px;
+        margin-top: 4%;
+    }
+    .mobileLayout{
+        display: block;
+    }
+    .interestItemButton {
+        display: block;
+
+
+    }
+    
+}
+
