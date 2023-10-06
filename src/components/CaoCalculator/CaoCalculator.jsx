@@ -243,7 +243,7 @@ const CaoCalculator = () => {
     });
   };
 
-  const isDeleteButtonDisabled = dataLength < 7;
+  let isDeleteButtonDisabled = dataLength < 7;
   console.log("hello", isDeleteButtonDisabled, dataLength);
   useEffect(() => {
     console.log(
@@ -265,6 +265,7 @@ const CaoCalculator = () => {
             value={tableData[record?.No]?.name}
             onChange={(e) => handleFirstDropdownChange(e, record)}
             className="selectFieldStyle"
+            style={{cursor:'pointer'}}
             loading={loadingFirst}
             showSearch
             filterOption={(input, option) =>
@@ -354,21 +355,21 @@ const CaoCalculator = () => {
             )}
             style={{
               color:
-                tableData[record?.No]?.No > 6
+                tableData[record?.No]?.No > 6 || tableData[record?.No]?.No===undefined
                   ? "red"
                   : isDeleteButtonDisabled
                   ? "grey"
                   : "red",
             }}
             onClick={
-              tableData[record?.No]?.No > 6
+              tableData[record?.No]?.No > 6 || tableData[record?.No]?.No===undefined
                 ? () => handleDelete(record.No)
                 : isDeleteButtonDisabled
                 ? null
                 : () => handleDelete(record.No)
             }
             disabled={
-              tableData[record?.No]?.No > 6
+              tableData[record?.No]?.No > 6 || tableData[record?.No]?.No===undefined
                 ? false
                 : isDeleteButtonDisabled
                 ? true
