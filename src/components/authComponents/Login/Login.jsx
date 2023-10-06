@@ -89,7 +89,7 @@ const Login = () => {
                   /^(?=.*\d)(?=.*?[@$!%*#?&^_.,-])(?=.*[a-z])(?=.*[A-Z]).{8,}$/
                 ),
                 message:
-                  "Must contain Number , Special Character , upper case letter, lower case letter, min length 8",
+                  "Invalid Credentials",
                   validateTrigger:['onSubmit']
               },
             

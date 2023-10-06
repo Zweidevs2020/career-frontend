@@ -77,7 +77,8 @@
     border-radius: 12px;
 }
 
-.expButtonBack,.expButtonNext {
+.expButtonBack,
+.expButtonNext {
     border: 1px solid #1476B7;
     width: 144px;
     height: 45px !important;
@@ -117,36 +118,42 @@
 }
 
 @media (max-width: 768px) {
-    .expButton{
-display: block;
-    }
-    .buttonEducation{
+    .expButton {
         display: block;
     }
-    .mobileLayout{
+
+    .buttonEducation {
+        display: block;
+    }
+
+    .mobileLayout {
         display: block !important;
         margin-bottom: 0px;
     }
+
     .expHead {
-      
+
         font-size: 14px;
-       
+
         margin-top: 4%;
     }
+
     .expItemButton {
-        background: #1476B7;
+        /* background: #1476B7; */
         display: block;
         justify-content: space-between;
         margin-bottom: -1rem;
     }
+
     .expButtonBack {
-    margin-bottom: -12px;
-    color: white;
-    background: #1476B7;
+        margin-bottom: -12px;
+        color: white;
+        background: #1476B7;
     }
+
     .expButtonNext {
         margin-bottom: -3px;
         border-radius: 12px;
-        }
+    }
 
 }
