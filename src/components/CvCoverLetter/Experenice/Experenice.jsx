@@ -509,7 +509,7 @@ const Experenice = ({ setCurrent, current }) => {
             </div>
 
 
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }} className="mobileLayout">
               <div className="eduItemButton">
                 <Form.Item>
                   <Button className="eduButtonBack me-3" type="primary" onClick={prev}>

@@ -17,3 +17,49 @@ margin: 0px 37px 0px 37px;
 .ant-form-item .ant-form-item-label >label {
 font-family: poppins;
 }
+
+  
+ 
+  @media (max-width: 768px) {
+    
+    .responsive-image {
+      height: 22px;
+    }
+    .step-item-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Poppins";
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    .profileFormEmail {
+        display: block;
+        width: 100%;
+        margin-bottom: -2%;
+    }
+    .text-\[24px\] {
+        font-size: 17px;
+    }
+   
+    .steps {
+        height: 100%;
+        width: 60%;
+    }
+    .step-item-content-active {
+        color: #1476b7;
+        cursor: pointer;
+       
+    }
+    .step-item-content {
+        font-size: 10px !important;
+    }
+    .step-icon-style-active {
+        font-size: 10px !important;
+    }
+   .ant-form-item .ant-form-item-label >label {
+        font-size: 12px;
+    }
+    
+  }

@@ -34,7 +34,7 @@ const Education = ({ setCurrent, current }) => {
 
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETEDUCATION);
-    console.log("hanlde getttt ", response.data.data)
+   
 
     setSubjectCount(response.data.data['junior_data'].length)
     setEducationCount(response.data.data['education_data'].length)
@@ -715,7 +715,7 @@ const Education = ({ setCurrent, current }) => {
               ""
             )}
 
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }} className="mobileResposiveEducation">
               <div className="eduItemButton">
                 <Button className="eduButtonBack me-3" type="primary" onClick={prev}>
                   Back

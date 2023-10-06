@@ -58,4 +58,11 @@
     font-style: normal !important;
 }
 
+@media (max-width: 768px) {
 
+    .skillsButton {
+        /* border: 1px solid grey; */
+        width: 48%;
+    }
+
+}

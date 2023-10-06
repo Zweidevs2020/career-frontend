@@ -31,12 +31,14 @@
   justify-content: space-between;
   margin-bottom: -2%;
 }
+
 .personalItemButton {
- 
+
   display: flex;
   justify-content: space-between;
   margin-bottom: 2rem;
 }
+
 .profileFormEmailItem {
   width: 49%
 }
@@ -57,7 +59,7 @@
   border: 1px solid #d3d3d3;
   border-radius: 12px;
   height: 50px;
-  width: "100%";
+  width: 100%;
   font-family: "Poppins";
   font-style: normal;
   font-weight: 400;
@@ -83,7 +85,8 @@
   border-radius: 12px;
 }
 
-.disabledBtn,.profileItemButton .disabledBtn:hover {
+.disabledBtn,
+.profileItemButton .disabledBtn:hover {
   background-color: gray;
   cursor: not-allowed;
   border: 1px solid grey;
@@ -92,4 +95,38 @@
   font-size: 14px;
   border-radius: 12px;
 
+}
+
+@media (max-width: 768px) {
+
+  .profileFormEmailItem {
+    width: 100%
+  }
+
+  .mobileLayout {
+    width: 100% !important;
+  }
+
+  .profileHead {
+    margin-top: 4%;
+    font-size: 14px;
+  }
+
+  .personalItemButton {
+    display: block;
+  }
+  .eduButton {
+    /* border: 1px solid grey; */
+    width: 48% !important;
+  }
+  .eduButtonBack,
+  .eduButtonNext {
+    margin-bottom: 12px;
+    width: 100% !important;
+  }
+
+  .buttonEducation {
+    display: flex;
+    justify-content: inherit !important;
+  }
 }

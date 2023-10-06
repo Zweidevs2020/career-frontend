@@ -30,7 +30,7 @@ const ForgetPassword = () => {
 
       navigate("/email-verification", { state: { data } });
     } else {
-      message.error(response.data[0]);
+      message.error(response.data.message);
       setLoading(false);
     }
   };

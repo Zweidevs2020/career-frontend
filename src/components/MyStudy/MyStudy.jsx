@@ -246,11 +246,11 @@ const MyStudy = () => {
 
   const handleDeleteEvent = async (event) => {
     const eventId = event.extendedProps.selectID;
-    console.log("event", eventId)
+   
     setEventToDelete(eventId);
    
       const response = await deleteApiWithAuth(`timetable/delete-timeslot/${eventId}`);
-      console.log("reposneeeeee", response)
+     
       if (response.data['status']===204) {
         message.success("Event deleted successfully.");
         setDatatime([]);

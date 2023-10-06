@@ -20,7 +20,7 @@ const Reference = ({ setCurrent, current }) => {
 
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETREFERANCE);
-    console.log("get res", response.data.data.length)
+  
     if (response.data?.status === 200) {
       setData(response.data.data);
       setReferenceCount(response.data.data.length)
@@ -113,7 +113,7 @@ const Reference = ({ setCurrent, current }) => {
         prevArray.filter((item) => item.dataValue.id !== id)
       );
       const response = await deleteApiWithAuth(`${API_URL.DELETE_REFERENCE}/${id}/`);
-      console.log("respose dele",response)
+    
       if (response.data.status === 204) {
         message.success("Reference entry deleted successfully.");
       } else {

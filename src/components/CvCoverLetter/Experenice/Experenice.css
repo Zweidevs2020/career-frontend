@@ -114,3 +114,16 @@
 
 
 }
+
+@media (max-width: 768px) {
+    .expButton{
+display: block;
+    }
+    .buttonEducation{
+        display: block;
+    }
+    .mobileLayout{
+        display: block !important;
+        margin-bottom: 0px;
+    }
+}
