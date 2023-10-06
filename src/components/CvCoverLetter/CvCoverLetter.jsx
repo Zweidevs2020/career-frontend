@@ -91,7 +91,7 @@ const CvCoverLetter = () => {
         <div className="cv-Data">
           <div className="ml-2">
        
-          <Steps current={response} setCurrent={setCurrent} currentStep={response+1} />
+          <Steps current={response} setCurrent={setCurrent} currentStep={current} />
           </div>
           {current === 1 ? (
             <PersonalProfile setCurrent={setCurrent}  current={current} />

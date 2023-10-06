@@ -361,7 +361,8 @@ const Signup = () => {
                             ? dayArray28
                             : dayArray31
                   }
-                  className="inputSelectFieldStyle"
+                  // className="inputSelectFieldStyle"
+                  className="eduSelect eduSelectItem"
                   onSelect={handleSelectDay}
                   bordered={false}
                   suffixIcon={
@@ -384,7 +385,8 @@ const Signup = () => {
                   placeholder="Month"
                   name="month"
                   options={dobSave.day === '31' ? monthArray31Days : dobSave.day === '30' ? monthArray30Days : monthArray}
-                  className="inputSelectFieldStyle"
+                  // className="inputSelectFieldStyle"
+                  className="eduSelect eduSelectItem"
                   onSelect={handleSelectMonth}
                   bordered={false}
                   suffixIcon={
