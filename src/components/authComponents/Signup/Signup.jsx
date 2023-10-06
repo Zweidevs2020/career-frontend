@@ -299,7 +299,8 @@ const Signup = () => {
                       setData({ ...data, school: newSchools });
                     }
                   }}
-                  style={{ background: "#1476b7" }}
+                  className="calculateButton"
+                  // style={{ background: "#1476b7" }}
                   disabled={!isAddSchoolValid}
 
                 >
@@ -491,7 +492,7 @@ const Signup = () => {
       </div>
       <div style={{ borderRadius: '31px', overflow: "hidden", margin: "1em", width: '55%' }}>
         <img src={sideAuthImage}
-          style={{ objectFit: "cover", height: "100vh", width: "100%", borderRadius: '20px' }}
+          style={{ objectFit: "cover" , height: "100%", width: "100%", borderRadius: '20px' }}
           alt="img"
         />
       </div>

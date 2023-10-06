@@ -347,7 +347,7 @@ const Skill = ({ setCurrent, current }) => {
                 </Select>
               </Form.Item>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+            <div style={{ display: 'flex', justifyContent: 'space-between'}} className="mobileLayout">
             <div className="skillsItemButton">
               <Form.Item>
                 <Button

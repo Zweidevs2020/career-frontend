@@ -13,6 +13,8 @@
   line-height: 24px;
   background-color: #ffffff;
   box-shadow: 0px 5px 11px rgba(0, 0, 0, 0.07);
+  cursor: pointer !important;
+
 }
 
 .backgroundF4F6F8 {
@@ -39,12 +41,21 @@
   width: 102%;
 }
 .clearAllButton {
-  color: #a8a8a8;
+  /* color: #a8a8a8;
   border-radius: 8px solid;
   background: #ffffff;
   border: 0.770492px solid #e0e0e0;
   width: 130px;
   height: 36px;
+  margin-top: 10px;
+  font-weight: 500; */
+
+  color: white;
+  border-radius: 8px;
+  background: #1476b7;
+  border: 0.770492px solid #1476b7;
+  width: 130px;
+  height: 40px;
   margin-top: 10px;
   font-weight: 500;
 }
@@ -59,6 +70,7 @@
   font-weight: 500;
   display:flex;
   align-items: center;
+  justify-content: center;
 }
 
 .addSubjectButton:hover {
@@ -68,12 +80,12 @@
 }
 
 .calculateButton {
-  color: #1476b7;
+  color: white;
   border-radius: 8px;
-  background: #ffffff;
+  background: #1476b7;
   border: 0.770492px solid #1476b7;
   width: 130px;
-  height: 33px;
+  height: 40px;
   margin-top: 10px;
   font-weight: 500;
 }
@@ -158,7 +170,7 @@
   box-shadow: none;
 }
 
-button.ant-btn.ant-btn-primary.clearAllButton,
+/* button.ant-btn.ant-btn-primary.clearAllButton,
 button.ant-btn.ant-btn-primary.calculateButton {
   color: white !important;
 }
@@ -166,7 +178,7 @@ button.ant-btn.ant-btn-primary.calculateButton {
 button.ant-btn.css-ed5zg0.ant-btn-primary.clearAllButton,
 button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   color: white !important;
-}
+} */
 
 /* .coaSubjectWidth td.ant-table-cell {
   max-width: 163px !important;

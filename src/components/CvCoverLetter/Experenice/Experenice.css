@@ -126,4 +126,24 @@ display: block;
         display: block !important;
         margin-bottom: 0px;
     }
+    .expHead {
+      
+        font-size: 14px;
+       
+        margin-top: 4%;
+    }
+    .expItemButton {
+        margin-top: 3%;
+        display: block;
+        justify-content: space-between;
+        margin-bottom: -1rem;
+    }
+    .expButtonBack {
+    margin-bottom: -12px;
+    }
+    .expButtonNext {
+        margin-bottom: -3px;
+        border-radius: 12px;
+        }
+
 }

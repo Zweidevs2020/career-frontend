@@ -61,8 +61,21 @@
 @media (max-width: 768px) {
 
     .skillsButton {
-        /* border: 1px solid grey; */
-        width: 48%;
+        width: 100%;
+        margin-top: 10px !important;
+    }
+    .skillsItemButton {
+        margin-bottom: -15px;
+        display: block;
     }
 
+
+.skillsHead {
+   font-size: 14px;
+    margin-top: 4%;
+}
+.interestItemButton {
+   
+    margin-bottom: -18px;
+}
 }

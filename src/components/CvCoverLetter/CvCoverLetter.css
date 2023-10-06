@@ -59,7 +59,26 @@ font-family: poppins;
         font-size: 10px !important;
     }
    .ant-form-item .ant-form-item-label >label {
-        font-size: 12px;
+        font-size: 11px;
     }
-    
+   .ant-btn-primary:not(:disabled) {
+        background: #1476b7;
+        width: 100%;
+   }
+   .ant-btn-primary,.ant-btn-primary:not(:disabled){
+    margin-top: 8px;
+    background: #1476b7;
+    width: 100% !important;
+   }
+   .inputFieldStyle {
+    font-size: 12px;
+   
+   }
+   .ant-picker .ant-picker-input >input {
+    font-size: 12px;
+   }
+   .ant-select-single .ant-select-selector {
+   
+    font-size: 12px;
+   }
   }

@@ -510,14 +510,14 @@ const Experenice = ({ setCurrent, current }) => {
 
 
             <div style={{ display: 'flex', justifyContent: 'space-between' }} className="mobileLayout">
-              <div className="eduItemButton">
+              <div className="expItemButton">
                 <Form.Item>
-                  <Button className="eduButtonBack me-3" type="primary" onClick={prev}>
+                  <Button className="expButtonBack me-3" type="primary" onClick={prev}>
                     Back
                   </Button>
                 </Form.Item>
                 {nextBtn && <Form.Item>
-                  <Button className="eduButtonNext me-3" type="primary" onClick={handleNextClick}>
+                  <Button className="expButtonNext me-3" type="primary" onClick={handleNextClick}>
                     Next
                   </Button>
                 </Form.Item>
