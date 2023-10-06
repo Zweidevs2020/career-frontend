@@ -71,7 +71,7 @@ const Signup = () => {
       navigate("/");
     } else {
       setLoading(false);
-      console.log("error", response.data.message)
+   
       message.error(response.data.message);
     }
   };
@@ -299,8 +299,7 @@ const Signup = () => {
                       setData({ ...data, school: newSchools });
                     }
                   }}
-                  className="calculateButton"
-                  // style={{ background: "#1476b7" }}
+                  style={{ background: "#1476b7" }}
                   disabled={!isAddSchoolValid}
 
                 >
@@ -362,8 +361,7 @@ const Signup = () => {
                             ? dayArray28
                             : dayArray31
                   }
-                  // className="inputSelectFieldStyle"
-                  className="eduSelect eduSelectItem"
+                  className="inputSelectFieldStyle"
                   onSelect={handleSelectDay}
                   bordered={false}
                   suffixIcon={
@@ -386,8 +384,7 @@ const Signup = () => {
                   placeholder="Month"
                   name="month"
                   options={dobSave.day === '31' ? monthArray31Days : dobSave.day === '30' ? monthArray30Days : monthArray}
-                  // className="inputSelectFieldStyle"
-                  className="eduSelect eduSelectItem"
+                  className="inputSelectFieldStyle"
                   onSelect={handleSelectMonth}
                   bordered={false}
                   suffixIcon={
@@ -406,18 +403,7 @@ const Signup = () => {
                 name="year"
                 rules={[
                   { required: true, message: 'Please Select Year!' },
-                  {
-                    validator: (_, value) => {
-                    
-                      const selectedYear = moment(value).year();
-                      const currentYear = moment().year();
-                      const age = currentYear - selectedYear;
-                      if (age < 18) {
-                        return Promise.reject('You must be at least 18 years old.');
-                      }
-                      return Promise.resolve();
-                    },
-                  },
+                 
                 ]}
               >
                 <DatePicker
@@ -492,7 +478,7 @@ const Signup = () => {
       </div>
       <div style={{ borderRadius: '31px', overflow: "hidden", margin: "1em", width: '55%' }}>
         <img src={sideAuthImage}
-          style={{ objectFit: "cover" , height: "100%", width: "100%", borderRadius: '20px' }}
+          style={{ objectFit: "cover", height: "100vh", width: "100%", borderRadius: '20px' }}
           alt="img"
         />
       </div>
