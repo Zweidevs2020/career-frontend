@@ -518,12 +518,13 @@ const CaoCalculator = () => {
 
   const getCurrectSelectedValues = async () => {
     setLoadingSub(true);
+    setGradeId([])
     let filterGrade = [];
     let newData = [];
 
     try {
       const response = await getApiWithAuth(`calculator/user-points/`);
-      console.log("reponseeee", response.data.data.length);
+      console.log("reponseeee=======",tableData,response, response.data.data.length);
       setDataLength(response.data.data.length);
       setDataId(response.data.data[0].id);
 
@@ -602,6 +603,8 @@ const CaoCalculator = () => {
       setLoadingSub(false);
     }
   };
+
+
 
   return (
     <div className="caoMainDiv">
