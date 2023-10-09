@@ -265,7 +265,7 @@ const CaoCalculator = () => {
             value={tableData[record?.No]?.name}
             onChange={(e) => handleFirstDropdownChange(e, record)}
             className="selectFieldStyle"
-            style={{cursor:'pointer'}}
+            style={{ cursor: "pointer" }}
             loading={loadingFirst}
             showSearch
             filterOption={(input, option) =>
@@ -355,21 +355,24 @@ const CaoCalculator = () => {
             )}
             style={{
               color:
-                tableData[record?.No]?.No > 6 || tableData[record?.No]?.No===undefined
+                tableData[record?.No]?.No > 6 ||
+                tableData[record?.No]?.No === undefined
                   ? "red"
                   : isDeleteButtonDisabled
                   ? "grey"
                   : "red",
             }}
             onClick={
-              tableData[record?.No]?.No > 6 || tableData[record?.No]?.No===undefined
+              tableData[record?.No]?.No > 6 ||
+              tableData[record?.No]?.No === undefined
                 ? () => handleDelete(record.No)
                 : isDeleteButtonDisabled
                 ? null
                 : () => handleDelete(record.No)
             }
             disabled={
-              tableData[record?.No]?.No > 6 || tableData[record?.No]?.No===undefined
+              tableData[record?.No]?.No > 6 ||
+              tableData[record?.No]?.No === undefined
                 ? false
                 : isDeleteButtonDisabled
                 ? true
@@ -608,14 +611,8 @@ const CaoCalculator = () => {
 
           {screenSize.width > "748" ? (
             <div className="coaSubjectDiv p-3">
-              <div className="coaSubjectWidth">
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                ></div>
-
+              {/* <div className="coaSubjectWidth"> */}
+              <div style={{ display: "flex", flexDirection: "column" }}>
                 <Table
                   dataSource={tableData}
                   columns={columns}
@@ -636,6 +633,7 @@ const CaoCalculator = () => {
                   />
                 </div>
               </div>
+              {/* </div> */}
               <div className="coaPointsWidth coaPointsWidth">
                 <div
                   style={{
