@@ -2,14 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Form, Select, Button, message } from "antd";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
 import "./Reference.css";
-import { deleteApiWithAuth, getApiWithAuth, postApiWithAuth } from "../../../utils/api";
+import {
+  deleteApiWithAuth,
+  getApiWithAuth,
+  postApiWithAuth,
+} from "../../../utils/api";
 import { API_URL } from "../../../utils/constants";
 import { useNavigate, useLocation } from "react-router-dom";
 import Delete from "../../../assets/delete.png";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
 
-const Reference = ({ setCurrent, current }) => {
+const Reference = ({ setCurrent, current,isCvComplete }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [downloadBtn, setDownloadBtn] = useState(false);
@@ -20,10 +24,10 @@ const Reference = ({ setCurrent, current }) => {
 
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETREFERANCE);
-  
+
     if (response.data?.status === 200) {
       setData(response.data.data);
-      setReferenceCount(response.data.data.length)
+      setReferenceCount(response.data.data.length);
     } else {
       message.error("Fail to load Data");
     }
@@ -112,8 +116,10 @@ const Reference = ({ setCurrent, current }) => {
       setReferArray((prevArray) =>
         prevArray.filter((item) => item.dataValue.id !== id)
       );
-      const response = await deleteApiWithAuth(`${API_URL.DELETE_REFERENCE}/${id}/`);
-    
+      const response = await deleteApiWithAuth(
+        `${API_URL.DELETE_REFERENCE}/${id}/`
+      );
+
       if (response.data.status === 204) {
         message.success("Reference entry deleted successfully.");
       } else {
@@ -190,7 +196,8 @@ const Reference = ({ setCurrent, current }) => {
                     required: item?.dataValue.name ? false : true,
                     message: "Please input name!",
                   },
-                ]}>
+                ]}
+              >
                 <MyCareerGuidanceInputField
                   placeholder="Danial Brot"
                   type="input"
@@ -212,7 +219,8 @@ const Reference = ({ setCurrent, current }) => {
                     message: "Please input position!",
                   },
                 ]}
-                style={{ marginBottom: "20px" }}>
+                style={{ marginBottom: "20px" }}
+              >
                 <MyCareerGuidanceInputField
                   placeholder="e.g H&M"
                   type="input"
@@ -235,7 +243,8 @@ const Reference = ({ setCurrent, current }) => {
                     required: item?.dataValue.contact_number ? false : true,
                     message: "Please input Contact!",
                   },
-                ]}>
+                ]}
+              >
                 <MyCareerGuidanceInputField
                   placeholder="+xx-xxx-xxx-xxxx"
                   type="input"
@@ -257,7 +266,8 @@ const Reference = ({ setCurrent, current }) => {
                     message: "Please input Contact Email!",
                   },
                 ]}
-                style={{ marginBottom: "20px" }}>
+                style={{ marginBottom: "20px" }}
+              >
                 <MyCareerGuidanceInputField
                   placeholder="xyz@gmail.com"
                   type="email"
@@ -268,38 +278,35 @@ const Reference = ({ setCurrent, current }) => {
                 />
               </Form.Item>
             </div>
-
           </div>
           {referenceCount > 1 && index > 0 && (
-          <div className="mainContainerDelete">
-          
+            <div className="mainContainerDelete">
               <img
                 className="deleteSubject"
                 src={Delete}
                 onClick={() => handleDeleteReference(item.dataValue.id)}
               />
-           
-          </div>
-           )}
+            </div>
+          )}
         </div>
       </>
     );
   };
 
-  const getUserData = async () => {
-    const response = await getApiWithAuth(API_URL.GETUSER2);
+  // const getUserData = async () => {
+  //   const response = await getApiWithAuth(API_URL.GETUSER2);
 
-    if (response.data.status === 200) {
-      setUserData(response.data.data);
-      if (response.data.data.cv_completed === true) {
-        setDownloadBtn(true);
-      }
-    }
-  };
+  //   if (response.data.status === 200) {
+  //     setUserData(response.data.data);
+  //     if (response.data.data.cv_completed === true) {
+  //       setDownloadBtn(true);
+  //     }
+  //   }
+  // };
 
-  useEffect(() => {
-    getUserData();
-  }, []);
+  // useEffect(() => {
+  //   getUserData();
+  // }, []);
 
   return (
     <>
@@ -337,7 +344,8 @@ const Reference = ({ setCurrent, current }) => {
                         },
                       },
                     ])
-                  }>
+                  }
+                >
                   <span>
                     <PlusCircleOutlined
                       style={{
@@ -345,11 +353,11 @@ const Reference = ({ setCurrent, current }) => {
                         display: "flex",
                         alignItems: "center",
                         marginRight: "10px",
-                        color: '#1476b7'
+                        color: "#1476b7",
                       }}
                     />
                   </span>{" "}
-                  <span style={{ color: '#1476b7' }}>Add Another Referee</span>
+                  <span style={{ color: "#1476b7" }}>Add Another Referee</span>
                 </Button>
               </Form.Item>
             </div>
@@ -358,28 +366,28 @@ const Reference = ({ setCurrent, current }) => {
                 <Button
                   className="skillsButtonBack"
                   type="primary"
-                  onClick={prev}>
+                  onClick={prev}
+                >
                   Back
                 </Button>
               </Form.Item>
 
               <Form.Item>
                 <Button
-                  className={
-                    downloadBtn === false
-                      ? "disabledBtn me-3"
-                      : "skillsButton me-3 "
-                  }
+                  className={"skillsButton me-3 "}
                   type="primary"
+                  disabled={!isCvComplete}
                   htmlType="submit"
-                  onClick={(e) => SavePdf(e)}>
+                  onClick={(e) => SavePdf(e)}
+                >
                   Download CV
                 </Button>
                 <Button
                   className="skillsButton"
                   type="primary"
                   htmlType="submit"
-                  onClick={(e) => onsubmit(e)}>
+                  onClick={(e) => onsubmit(e)}
+                >
                   Save
                 </Button>
               </Form.Item>

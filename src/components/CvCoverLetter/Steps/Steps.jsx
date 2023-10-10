@@ -1,8 +1,8 @@
 import React from "react";
 import "./Steps.css";
 
-const Steps = ({ current, setCurrent, currentStep }) => {
-console.log("curremt setcurrent",current,currentStep)
+const Steps = ({ current, setCurrent, currentStep,isCvComplete }) => {
+console.log("curremt setcurrent",current,setCurrent,currentStep,isCvComplete)
 
 
   return (
@@ -34,7 +34,7 @@ console.log("curremt setcurrent",current,currentStep)
           </div>
           <div
             className={
-              currentStep >= 1
+              currentStep >= 1 
                 ? "step-item-content step-item-content-active"
                 : "step-item-content step-item-content-nonActive"
             }
@@ -57,7 +57,7 @@ console.log("curremt setcurrent",current,currentStep)
               className="step-item"
               key={index + 2}
               onClick={() => {
-                if (currentStep >= index + 2) {
+                if (currentStep >= index + 2 || isCvComplete) {
                   setCurrent(index + 2);
                 }
               }}

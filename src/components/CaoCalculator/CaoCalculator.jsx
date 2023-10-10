@@ -415,8 +415,8 @@ const CaoCalculator = () => {
     );
     const filteredTable = tableData.filter((item) => item.No == id);
     if (
-      filteredTable[0]?.name == null &&
-      filteredTable[0]?.grades == null &&
+      filteredTable[0]?.name == null ||
+      filteredTable[0]?.grades == null ||
       filteredTable[0]?.level === null
     ) {
       console.log("t==================table data lenght empty", filteredTable);
@@ -456,6 +456,7 @@ const CaoCalculator = () => {
   };
 
   const clearAllData = async () => {
+    console.log('==========dataId',dataId)
     const response = await deleteApiWithAuth(
       `calculator/user-points/delete/${dataId}/`
     );
