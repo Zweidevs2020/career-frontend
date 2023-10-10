@@ -64,21 +64,21 @@ console.log("curremt setcurrent",current,setCurrent,currentStep,isCvComplete)
             >
               <div
                 className={
-                  currentStep >= index + 2 || isCvComplete
+                  currentStep >= index + 2
                     ? "step-item-line  step-item-line-active"
                     : "step-item-line  step-item-line-nonActive"
                 }
               />
               <div
                 className={
-                  currentStep >= index + 2 || isCvComplete
+                  currentStep >= index + 2
                     ? "step-icon-style step-icon-style-active"
                     : "step-icon-style step-icon-style-nonActive"
                 }
               >
                 <span
                   className={
-                    currentStep >= index + 2 || isCvComplete
+                    currentStep >= index + 2
                       ? "step-icon-text step-icon-text-active"
                       : "step-icon-text step-icon-text-nonActive"
                   }
@@ -88,7 +88,7 @@ console.log("curremt setcurrent",current,setCurrent,currentStep,isCvComplete)
               </div>
               <div
                 className={
-                  currentStep >= index + 2 || isCvComplete
+                  currentStep >= index + 2
                     ? "step-item-content step-item-content-active"
                     : "step-item-content step-item-content-nonActive"
                 }
