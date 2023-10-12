@@ -346,33 +346,37 @@ const Experenice = ({ setCurrent, current }) => {
 
                   <div className="expFormDouble">
                     <div className="expFormDoubleItem">
-                      <Form.Item
+                    <Form.Item
                         label="Start Date"
                         name={`startdate ${index}`}
                         className="expItemLable"
                         rules={[
                           {
                             required: item?.dataValue.startdate ? false : true,
-                            message: "Please input start date!",
+                            message: "Please input start Date!",
                           },
-                        ]}
-                      >
+                        ]}>
                         <DatePicker
                           onChange={(date, dateString) =>
                             onChangeDate("startdate", dateString, index)
                           }
+                          format={"DD-MM-YYYY"}
+
+                          value={
+                            item?.dataValue.present
+                              ? dayjs().format("DD-MM-YYYY")
+                              : dayjs(item?.dataValue.startdate, "DD-MM-YYYY")
+                          }
+
+                          defaultValue={dayjs(item?.dataValue.startdate, "DD-MM-YYYY")}
+                         
+
                           className="expDateInputFieldStyle"
-                          placeholder="Select Start Date"
-                          format="DD-MM-YYYY" // Format the selected date
-                          value={dayjs(item?.dataValue.startdate, "DD-MM-YYYY")}
-                        // defaultValue={dayjs(
-                        //   item?.dataValue.startdate,
-                        //   "DD-MM-YYYY"
-                        // )}
                         />
                       </Form.Item>
                     </div>
                     <div className="expFormDoubleItem">
+
                       <Form.Item
                         label="End Date"
                         name={`enddate ${index}`}
@@ -382,23 +386,26 @@ const Experenice = ({ setCurrent, current }) => {
                             required: item?.dataValue.enddate ? false : true,
                             message: "Please input end Date!",
                           },
-                        ]}
-                      >
+                        ]}>
                         <DatePicker
                           onChange={(date, dateString) =>
                             onChangeDate("enddate", dateString, index)
                           }
-                          format="DD-MM-YYYY" // Format the selected date
-                          value={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
-                          // defaultValue={dayjs(
-                          //   item?.dataValue.enddate,
-                          //   "DD-MM-YYYY"
-                          // )}
-                          placeholder="Select End Date"
+                          format={"DD-MM-YYYY"}
+
+                          value={
+                            item?.dataValue.present
+                              ? dayjs().format("DD-MM-YYYY")
+                              : dayjs(item?.dataValue.enddate, "DD-MM-YYYY")
+                          }
+
+                          defaultValue={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
+                         
                           className="expDateInputFieldStyle"
-                          disabled={isCurrentCheck}
                         />
                       </Form.Item>
+
+
                       <div>
                         <Checkbox
                           className="expCheckBox"
@@ -423,7 +430,7 @@ const Experenice = ({ setCurrent, current }) => {
                             setIsCurrentCheck(!isCurrentCheck);
                           }}
                         >
-                          I Currently Work here
+                         I am currently working here
                         </Checkbox>
                       </div>
                     </div>
@@ -503,7 +510,7 @@ const Experenice = ({ setCurrent, current }) => {
                       }}
                     />
                   </span>{" "}
-                  <span style={{ color: '#1476b7' }}>Add Another Position</span>
+                  <span style={{ color: '#1476b7',fontFamily:'Poppins' }}>Add Another Position</span>
                 </Button>
               </Form.Item>
             </div>
