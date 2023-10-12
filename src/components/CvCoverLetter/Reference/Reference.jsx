@@ -357,7 +357,7 @@ const Reference = ({ setCurrent, current,isCvComplete }) => {
                       }}
                     />
                   </span>{" "}
-                  <span style={{ color: "#1476b7" }}>Add Another Referee</span>
+                  <span style={{ color: '#1476b7' ,fontFamily:'Poppins'}}>Add Another Referee</span>
                 </Button>
               </Form.Item>
             </div>

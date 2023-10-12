@@ -646,7 +646,7 @@ const Education = ({ setCurrent, current }) => {
                       }}
                     />
                   </span>{" "}
-                  <span style={{ color: '#1476b7' }}>Add Another Place of Study</span>
+                  <span style={{ color: '#1476b7' ,fontFamily:'Poppins'}}>Add Another Place of Study</span>
                 </Button>
               </Form.Item>
             </div>
@@ -710,7 +710,7 @@ const Education = ({ setCurrent, current }) => {
                           }}
                         />
                       </span>{" "}
-                      <span style={{ color: "#1476b7" }}> Add Another Subject</span>
+                      <span style={{ color: "#1476b7",fontFamily:'Poppins' }}> Add Another Subject</span>
                     </Button>
                   </Form.Item>
                 </div>
