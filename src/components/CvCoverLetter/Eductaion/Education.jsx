@@ -651,7 +651,7 @@ const Education = ({ setCurrent, current }) => {
               </Form.Item>
             </div>
 
-            <div className="eduJunDiv">Include Junior Cert Results *</div>
+            <div className="eduJunDiv" style={{fontFamily:'Poppins'}}>Include Junior Cert Results *</div>
             <div className="eduJunCheckDiv">
               <Form.Item>
                 <Checkbox
