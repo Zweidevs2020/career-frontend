@@ -31,6 +31,7 @@ const TakeSelfTest = () => {
 
   useEffect(() => {
     getQuizData();
+    document.getElementById('targetSectionId')?.scrollIntoView({ behavior: 'smooth' });
   }, [data]);
 
  
@@ -88,9 +89,10 @@ const TakeSelfTest = () => {
       setSpinnerLoading(false);
     }
   };
+
   return (
     <>
-      <div className="educationalGuidanceMainDiv">
+      <div className="educationalGuidanceMainDiv" id="targetSectionId">
         <div className="welcomeHaddingText pb-4">{quizData.name}</div>
         <div className="textDescription pb-4">{quizData.intro}</div>
         <div className="educationalGuidanceSecondDiv">

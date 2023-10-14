@@ -91,6 +91,9 @@ const EducationalGuidance = () => {
                         <div className="quizDetailsStyle">{item.description}</div>
                       </div>
                     </div>
+                    {
+                      console.log('=========item',item)
+                    }
                     {!item.complete ? (
                       <div className="takeTestMobile">
                         <MyCareerGuidanceButton
