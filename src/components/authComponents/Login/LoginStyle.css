@@ -109,9 +109,15 @@
 .rightImageStyle img.ant-image-img {
   border-radius: 3%;
 }
+.mobileScreenImage{
+  border-radius:31px;
+  overflow:hidden;
+  margin:1em;
+  width:55%
+}
 
 @media only screen and (min-width: 0px) and (max-width: 650px) {
-  .rightImageStyle {
+  .mobileScreenImage {
     display: none;
   }
 
@@ -119,10 +125,14 @@
     display: flex;
     justify-content: center;
   }
+  .formStyle {
+    width: 85%;
+  }
 
   .leftDiv {
     width: 100%;
     padding-top: 20px;
+    padding-left: 0px;
 
     padding-bottom: 20px;
   }

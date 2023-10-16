@@ -189,6 +189,7 @@ const MyChoicesEdit = () => {
   };
 
   const handleUpdate = async (record) => {
+    console.log('========handle upadte', record)
     const row = dataRef.current.filter((item) => item.id === record?.id);
 
     if (row) {
@@ -355,7 +356,7 @@ const MyChoicesEdit = () => {
   );
 
   const onDragEnd = async ({ active, over }) => {
-    if (isMobile && !isDragInProgress) {
+    if ( !isDragInProgress) {
       return;
     }
 
@@ -655,6 +656,7 @@ const MyChoicesEdit = () => {
                 ) : (
                   <div className="mobile-table">
                     <div className="mobile-table">
+                      {console.log('==========data',data)}
                       <DndContext
                         sensors={sensors}
                         modifiers={[restrictToVerticalAxis]}
@@ -720,7 +722,7 @@ const MyChoicesEdit = () => {
                                       style={{ width: "100%" }}
                                     >
                                       <span className="rowHeadingMobile">
-                                        No. {row.rowNo}
+                                        No. {row.rowNo+1}
                                       </span>
                                     </div>
                                   </div>

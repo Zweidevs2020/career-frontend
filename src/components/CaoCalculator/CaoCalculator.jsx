@@ -20,6 +20,8 @@ import {
   PlusCircleOutlined,
   PlusOutlined,
   DeleteOutlined,
+  ClearOutlined,
+  RollbackOutlined,
 } from "@ant-design/icons";
 import Column from "antd/es/table/Column";
 
@@ -95,12 +97,6 @@ const CaoCalculator = () => {
     },
     {
       No: 5,
-      name: null,
-      level: null,
-      grades: null,
-    },
-    {
-      No: 6,
       name: null,
       level: null,
       grades: null,
@@ -243,7 +239,7 @@ const CaoCalculator = () => {
     });
   };
 
-  let isDeleteButtonDisabled = dataLength < 7;
+  let isDeleteButtonDisabled = dataLength < 6;
   console.log("hello", isDeleteButtonDisabled, dataLength);
   useEffect(() => {
     console.log(
@@ -346,16 +342,16 @@ const CaoCalculator = () => {
       key: "action",
       render: (text, record) => (
         <Space size="middle">
-          <DeleteOutlined
+          {/* <RollbackOutlined
             {...console.log(
               "i am good",
               isDeleteButtonDisabled,
               tableData[record?.No]?.No,
-              tableData[record?.No]?.No > 6 && isDeleteButtonDisabled
+              tableData[record?.No]?.No > 5 && isDeleteButtonDisabled
             )}
             style={{
               color:
-                tableData[record?.No]?.No > 6 ||
+                tableData[record?.No]?.No > 5 ||
                 tableData[record?.No]?.No === undefined
                   ? "red"
                   : isDeleteButtonDisabled
@@ -363,7 +359,7 @@ const CaoCalculator = () => {
                   : "red",
             }}
             onClick={
-              tableData[record?.No]?.No > 6 ||
+              tableData[record?.No]?.No > 5 ||
               tableData[record?.No]?.No === undefined
                 ? () => handleDelete(record.No)
                 : isDeleteButtonDisabled
@@ -371,13 +367,19 @@ const CaoCalculator = () => {
                 : () => handleDelete(record.No)
             }
             disabled={
-              tableData[record?.No]?.No > 6 ||
+              tableData[record?.No]?.No > 5 ||
               tableData[record?.No]?.No === undefined
                 ? false
                 : isDeleteButtonDisabled
                 ? true
                 : false
             }
+          /> */}
+          <RollbackOutlined
+            style={{
+              color: "red",
+            }}
+            onClick={() => handleDelete(record.No)}
           />
         </Space>
       ),
@@ -399,6 +401,62 @@ const CaoCalculator = () => {
     // },
   ];
 
+  // const handleDelete = async (id) => {
+  //   console.log(
+  //     "==================table data lenght",
+  //     dataLength,
+  //     tableData,
+  //     id
+  //   );
+  //   const idExistsLength = tableData.filter(
+  //     (item) => item.id !== undefined
+  //   ).length;
+  //   console.log(
+  //     'Length of tableData elements with "id" property:',
+  //     idExistsLength
+  //   );
+  //   const filteredTable = tableData.filter((item) => item.No == id);
+  //   if (
+  //     filteredTable[0]?.name == null ||
+  //     filteredTable[0]?.grades == null ||
+  //     filteredTable[0]?.level === null
+  //   ) {
+  //     console.log("t==================table data lenght empty", filteredTable);
+
+  //     const filteredTableData = tableData.filter((item) => item.No !== id);
+  //     setTableData(filteredTableData);
+  //   } else {
+  //     if (idExistsLength >= 6) {
+  //       console.log(
+  //         "t==================table data lenght not empty",
+  //         filteredTable.name == null,
+  //         filteredTable.name == null &&
+  //           filteredTable.grades == null &&
+  //           filteredTable.level === null
+  //       );
+
+  //       const targetIndex = tableData.findIndex((item) => item.No === id);
+  //       const deletedRowData = tableData[targetIndex];
+
+  //       const body = {
+  //         id: dataId,
+  //         subjectId: deletedRowData.id,
+  //       };
+
+  //       const response = await postApiWithAuth(
+  //         `calculator/remove-subject-grade/`,
+  //         body
+  //       );
+
+  //       if (response?.data?.status === 200) {
+  //         // setData(response.data.data);
+  //         getCurrectSelectedValues();
+  //         // window.location.reload();
+  //       }
+  //     }
+  //   }
+  // };
+
   const handleDelete = async (id) => {
     console.log(
       "==================table data lenght",
@@ -419,44 +477,44 @@ const CaoCalculator = () => {
       filteredTable[0]?.grades == null ||
       filteredTable[0]?.level === null
     ) {
-      console.log("t==================table data lenght empty", filteredTable);
-
+      console.log("t==================table data lenght empty",tableData, filteredTable);
+      if( tableData?.length > 6)
+      {
       const filteredTableData = tableData.filter((item) => item.No !== id);
       setTableData(filteredTableData);
+      }
     } else {
-      if (idExistsLength >= 7) {
-        console.log(
-          "t==================table data lenght not empty",
-          filteredTable.name == null,
-          filteredTable.name == null &&
-            filteredTable.grades == null &&
-            filteredTable.level === null
-        );
+      console.log(
+        "t==================table data lenght not empty",
+        filteredTable.name == null,
+        filteredTable.name == null &&
+          filteredTable.grades == null &&
+          filteredTable.level === null
+      );
 
-        const targetIndex = tableData.findIndex((item) => item.No === id);
-        const deletedRowData = tableData[targetIndex];
+      const targetIndex = tableData.findIndex((item) => item.No === id);
+      const deletedRowData = tableData[targetIndex];
 
-        const body = {
-          id: dataId,
-          subjectId: deletedRowData.id,
-        };
+      const body = {
+        id: dataId,
+        subjectId: deletedRowData.id,
+      };
 
-        const response = await postApiWithAuth(
-          `calculator/remove-subject-grade/`,
-          body
-        );
+      const response = await postApiWithAuth(
+        `calculator/remove-subject-grade/`,
+        body
+      );
 
-        if (response?.data?.status === 200) {
-          // setData(response.data.data);
-          getCurrectSelectedValues();
-          // window.location.reload();
-        }
+      if (response?.data?.status === 200) {
+        // setData(response.data.data);
+        getCurrectSelectedValues();
+        // window.location.reload();
       }
     }
   };
 
   const clearAllData = async () => {
-    console.log('==========dataId',dataId)
+    console.log("==========dataId", dataId);
     const response = await deleteApiWithAuth(
       `calculator/user-points/delete/${dataId}/`
     );
@@ -519,13 +577,18 @@ const CaoCalculator = () => {
 
   const getCurrectSelectedValues = async () => {
     setLoadingSub(true);
-    setGradeId([])
+    setGradeId([]);
     let filterGrade = [];
     let newData = [];
 
     try {
       const response = await getApiWithAuth(`calculator/user-points/`);
-      console.log("reponseeee=======",tableData,response, response.data.data.length);
+      console.log(
+        "reponseeee=======",
+        tableData,
+        response,
+        response.data.data.length
+      );
       setDataLength(response.data.data.length);
       setDataId(response.data.data[0].id);
 
@@ -604,8 +667,6 @@ const CaoCalculator = () => {
       setLoadingSub(false);
     }
   };
-
-
 
   return (
     <div className="caoMainDiv">
@@ -743,6 +804,24 @@ const CaoCalculator = () => {
                         </div>
                       </div>
                       <hr />
+                      <hr />
+
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          marginTop: 10,
+                        }}
+                      >
+                        <div className="textStyle18"> Bonus Points</div>
+                        <div className="">
+                          <div>
+                            {finalData.bonus_points
+                              ? finalData.bonus_points
+                              : 0}
+                          </div>
+                        </div>
+                      </div>
 
                       <hr />
 

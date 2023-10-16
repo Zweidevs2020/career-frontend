@@ -66,7 +66,7 @@ const CvCoverLetter = () => {
         >
           <div>
             <h1 class="font-bold text-[24px] text-[#474749] ">
-              CV/Cover Letter
+              CV
             </h1>
             {/* <p class="text-[#737373] text-[12px] mt-1">
               Lorem ipsum is a placeholder text commonly used to demonstrate.

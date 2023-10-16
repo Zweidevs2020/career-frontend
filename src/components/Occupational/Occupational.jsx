@@ -13,33 +13,28 @@ const Occupational = () => {
   const [educationGuidance, setEducationGuidance] = useState([]);
 
   const { data } = location.state || {};
- 
+
   useEffect(() => {
     if (data.name || data.test_name) {
-    
       getViewResult(data);
-    } 
-    else {
-     
+    } else {
       getQuizData();
     }
   }, [data]);
 
-
   const getViewResult = async (data) => {
     setLoading(true);
-    if(data.name){
-    const response = await getApiWithAuth(
-      `/psychometric/result?name=${data.name}`
-    );
-    if (response.data.status === 200) {
-      setEducationGuidance(response?.data?.data);
-      setLoading(false);
-    } else {
-      setLoading(false);
-    }
-    }
-    else if(data.test_name){
+    if (data.name) {
+      const response = await getApiWithAuth(
+        `/psychometric/result?name=${data.name}`
+      );
+      if (response.data.status === 200) {
+        setEducationGuidance(response?.data?.data);
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
+    } else if (data.test_name) {
       const response1 = await getApiWithAuth(
         `/psychometric/result?name=${data.test_name}`
       );
@@ -50,15 +45,11 @@ const Occupational = () => {
         setLoading(false);
       }
     }
-
-  
-
   };
 
   const getQuizData = async () => {
-  
     setLoading(true);
-    const response = await getApiWithAuth(`/psychometric/result/${data}/`);   
+    const response = await getApiWithAuth(`/psychometric/result/${data}/`);
     if (response.data.status === 200) {
       setEducationGuidance(response.data.data);
       setLoading(false);
@@ -66,7 +57,6 @@ const Occupational = () => {
       setLoading(false);
     }
   };
- 
 
   const sortByScoreDescending = (a, b) => b.score - a.score;
   const sortedData = educationGuidance.slice().sort(sortByScoreDescending);
@@ -75,15 +65,16 @@ const Occupational = () => {
   const questionTypes = sortedData.map((item) => item.question_type);
   let chartColor;
 
-  if (educationGuidance[0]?.test_name == 'Occupational Values Assesment') {
-   
-    chartColor = '#87aded';
-  } else if (educationGuidance[0]?.test_name == 'Occupational Interest Assesment') {
-    chartColor = '#b9bab8';
+  if (educationGuidance[0]?.test_name == "Occupational Values Assesment") {
+    chartColor = "#87aded";
+  } else if (
+    educationGuidance[0]?.test_name == "Occupational Interest Assesment"
+  ) {
+    chartColor = "#b9bab8";
   } else {
-    chartColor = '#a4eba9'; 
+    chartColor = "#a4eba9";
   }
- 
+
   const series = [
     {
       data: scores,
@@ -103,7 +94,6 @@ const Occupational = () => {
         horizontal: true,
         columnWidth: "50%",
         colors: {
-      
           backgroundBarColors: ["white"],
         },
       },
@@ -131,18 +121,18 @@ const Occupational = () => {
     // },
     tooltip: {
       y: {
-        formatter: function(val) {
-          return val
+        formatter: function (val) {
+          return val;
         },
         title: {
           formatter: function (seriesName) {
-            return ''
-          }
-        }
-      }
-    }
+            return "";
+          },
+        },
+      },
+    },
   };
- 
+
   return (
     <>
       <div className="educationalGuidanceMainDiv">
@@ -154,17 +144,15 @@ const Occupational = () => {
           <>
             <div style={{ display: "flex", justifyContent: "flex-start" }}>
               <Button
-                className="viewResultButton"
+                className="skillsButton"
                 type="primary"
                 onClick={() => {
-                  if(data.test_name){
-                    navigate("/dashboard")
-                  }
-                  else{
-                    navigate("/self-assesment")
+                  if (data.test_name) {
+                    navigate("/dashboard");
+                  } else {
+                    navigate("/self-assesment");
                   }
                 }}
-                style={{ color: "white" }}
               >
                 Back
               </Button>
@@ -172,7 +160,6 @@ const Occupational = () => {
             <div className="welcomeHaddingText ">
               {educationGuidance[0]?.test_name}
             </div>
-          
 
             <div className="educationalGuidanceSecondDiv">
               <div

@@ -6,11 +6,13 @@ const YoutubePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { data, videoId } = location.state || {};
-
+  console.log("===============data", data, videoId);
   return (
     <>
       <div className="youtubeContainerStyle">
-        <div className="dashboardRightHeadingDiv">YouTube Video</div>
+        <div className="dashboardRightHeadingDiv">
+          {data.youtube_title ? data.youtube_title : "YouTube Video"}{" "}
+        </div>
         <iframe
           width="90%"
           height="500"
@@ -20,7 +22,7 @@ const YoutubePage = () => {
           allowFullScreen
         ></iframe>
         <MyCareerGuidanceButton
-          label="Continue Test"
+          label="Test Yourself"
           className="resultDataButton"
           type="button"
           htmlType="button"
