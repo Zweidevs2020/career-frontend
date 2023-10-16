@@ -743,6 +743,21 @@ const CaoCalculator = () => {
                         </div>
                       </div>
                       <hr />
+                      <hr />
+
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          marginTop:10
+                        }}
+                      >
+                        <div className="textStyle18"> Bonus Points</div>
+                        <div className="">
+                          <div>{finalData.bonus_points ? finalData.bonus_points : 0}</div>
+                        </div>
+                      </div>
+                      
 
                       <hr />
 

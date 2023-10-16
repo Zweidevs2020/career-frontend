@@ -145,7 +145,7 @@ const Login = () => {
           © 2023 My Guidance. All Rights Reserved
         </span>
       </div>
-      <div style={{ borderRadius:'31px',overflow:"hidden",margin:"1em",width:'55%'}}>
+      <div className="mobileScreenImage" >
          <img src={sideAuthImage}
           style={{ objectFit: "cover",height:"100vh",width:"100%" ,borderRadius:'20px'}}
           alt="img"
