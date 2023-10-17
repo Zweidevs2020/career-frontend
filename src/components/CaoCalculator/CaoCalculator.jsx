@@ -473,8 +473,8 @@ const CaoCalculator = () => {
     );
     const filteredTable = tableData.filter((item) => item.No == id);
     if (
-      filteredTable[0]?.name == null ||
-      filteredTable[0]?.grades == null ||
+      filteredTable[0]?.name == null &&
+      filteredTable[0]?.grades == null &&
       filteredTable[0]?.level === null
     ) {
       console.log(
@@ -489,6 +489,7 @@ const CaoCalculator = () => {
     } else {
       console.log(
         "t==================table data lenght not empty",
+        filteredTable,
         filteredTable.name == null,
         filteredTable.name == null &&
           filteredTable.grades == null &&
@@ -502,16 +503,28 @@ const CaoCalculator = () => {
         id: dataId,
         subjectId: deletedRowData.id,
       };
-
-      const response = await postApiWithAuth(
-        `calculator/remove-subject-grade/`,
-        body
+      console.log(
+        "t==================table data lenght not empty 2",
+        dataId,
+        filteredTable,
+        tableData,
+        targetIndex,
+        deletedRowData,
+        deletedRowData.id
       );
+      if (deletedRowData.id) {
+        const response = await postApiWithAuth(
+          `calculator/remove-subject-grade/`,
+          body
+        );
 
-      if (response?.data?.status === 200) {
-        // setData(response.data.data);
+        if (response?.data?.status === 200) {
+          // setData(response.data.data);
+          getCurrectSelectedValues();
+          // window.location.reload();
+        }
+      } else {
         getCurrectSelectedValues();
-        // window.location.reload();
       }
     }
   };
