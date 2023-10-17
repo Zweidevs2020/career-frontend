@@ -477,11 +477,14 @@ const CaoCalculator = () => {
       filteredTable[0]?.grades == null ||
       filteredTable[0]?.level === null
     ) {
-      console.log("t==================table data lenght empty",tableData, filteredTable);
-      if( tableData?.length > 6)
-      {
-      const filteredTableData = tableData.filter((item) => item.No !== id);
-      setTableData(filteredTableData);
+      console.log(
+        "t==================table data lenght empty",
+        tableData,
+        filteredTable
+      );
+      if (tableData?.length > 6) {
+        const filteredTableData = tableData.filter((item) => item.No !== id);
+        setTableData(filteredTableData);
       }
     } else {
       console.log(
@@ -974,7 +977,7 @@ const CaoCalculator = () => {
                               ))}
                             </Select>
                           </div>
-                          <DeleteOutlined
+                          {/* <DeleteOutlined
                             style={{
                               color: isDeleteButtonDisabled ? "grey" : "red",
                               display: "flex",
@@ -983,6 +986,14 @@ const CaoCalculator = () => {
                             onClick={() => handleDelete(item.No)}
                             disabled={!isDeleteButtonDisabled}
                             className={isDeleteButtonDisabled ? "disabled" : ""}
+                          /> */}
+                          <RollbackOutlined
+                            style={{
+                              color: "red",
+                              display: "flex",
+                              justifyContent: "center",
+                            }}
+                            onClick={() => handleDelete(item.No)}
                           />
                         </div>
                       </div>
