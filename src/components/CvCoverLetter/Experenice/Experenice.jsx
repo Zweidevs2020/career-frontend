@@ -12,9 +12,13 @@ import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceI
 import "./Experenice.css";
 import { DeleteColumnOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { deleteApiWithAuth, getApiWithAuth, postApiWithAuth } from "../../../utils/api";
+import {
+  deleteApiWithAuth,
+  getApiWithAuth,
+  postApiWithAuth,
+} from "../../../utils/api";
 import Delete from "../../../assets/delete.png";
 import { API_URL } from "../../../utils/constants";
 
@@ -71,8 +75,8 @@ const Experenice = ({ setCurrent, current }) => {
               company: "",
               country: "",
               city: "",
-              startdate: dayjs().format("DD-MM-YYYY"),
-              enddate: dayjs(dayjs()).add(1, "day").format("DD-MM-YYYY"),
+              startdate: dayjs(dayjs()).subtract(1, "day").format("DD-MM-YYYY"),
+              enddate: dayjs().format("DD-MM-YYYY"),
               description: "",
               is_current_work: false,
             },
@@ -129,11 +133,8 @@ const Experenice = ({ setCurrent, current }) => {
     );
   };
   const onChangeDate = (name, date, arrayIndex) => {
-
-
     if (name === "enddate") {
       if (dayjs(date, "DD-MM-YYYY").isAfter(dayjs())) {
-
         message.error("End date cannot be in the future.");
         return;
       }
@@ -180,13 +181,12 @@ const Experenice = ({ setCurrent, current }) => {
     URL.revokeObjectURL(pdfUrl);
   };
 
-
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
     if (response.data.status === 200) {
       if (response.data.data["current_step"] > 1) {
-        setNextBtn(true)
-        setSavedTotalStep(response.data.data["current_step"])
+        setNextBtn(true);
+        setSavedTotalStep(response.data.data["current_step"]);
       }
       setUserData(response.data.data);
       if (response.data.data.current_step !== 3) {
@@ -204,32 +204,45 @@ const Experenice = ({ setCurrent, current }) => {
     getUserData();
   }, []);
   const handleDeleteExperience = async (id) => {
-
     try {
       setExpereniceArray((prevArray) =>
         prevArray.filter((item) => item.dataValue.id !== id)
       );
 
-      const response = await deleteApiWithAuth(`${API_URL.DELETE_EXPERIENCE}/${id}/`);
+      const response = await deleteApiWithAuth(
+        `${API_URL.DELETE_EXPERIENCE}/${id}/`
+      );
 
       if (response.data.status === 204) {
         message.success("Experience entry deleted successfully.");
       } else {
         message.error("Failed to delete the experience entry.");
-        setExpereniceArray((prevArray) => [...prevArray, expereniceArray.find(item => item.dataValue.id === id)]);
+        setExpereniceArray((prevArray) => [
+          ...prevArray,
+          expereniceArray.find((item) => item.dataValue.id === id),
+        ]);
       }
     } catch (error) {
       console.error("Error deleting the experience entry:", error);
       message.error("An error occurred while deleting the experience entry.");
-      setExpereniceArray((prevArray) => [...prevArray, expereniceArray.find(item => item.dataValue.id === id)]);
+      setExpereniceArray((prevArray) => [
+        ...prevArray,
+        expereniceArray.find((item) => item.dataValue.id === id),
+      ]);
     }
-  }
+  };
   const handleNextClick = () => {
     if (savedTotalStep >= current) {
       setCurrent(current + 1);
       navigate(`?step=${current + 1}`);
     }
   };
+  const disabledDate = (current) => {
+    const today = dayjs().startOf("day");
+
+    return current < today;
+  };
+
   return (
     <>
       <div className="flex flex-col justify-center">
@@ -260,13 +273,16 @@ const Experenice = ({ setCurrent, current }) => {
                         ]}
                       >
                         <MyCareerGuidanceInputField
-                          placeholder={item?.dataValue?.job_title || "e.g Retail Sales Associate"}
+                          placeholder={
+                            item?.dataValue?.job_title ||
+                            "e.g Retail Sales Associate"
+                          }
                           type="input"
                           name="job_title"
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue?.job_title}
                           isPrefix={true}
-                        // disabled={isInputDisabled}
+                          // disabled={isInputDisabled}
                         />
                       </Form.Item>
                     </div>
@@ -289,7 +305,7 @@ const Experenice = ({ setCurrent, current }) => {
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue?.company}
                           isPrefix={true}
-                        // disabled={isInputDisabled}
+                          // disabled={isInputDisabled}
                         />
                       </Form.Item>
                     </div>
@@ -315,7 +331,7 @@ const Experenice = ({ setCurrent, current }) => {
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue.city}
                           isPrefix={true}
-                        // disabled={isInputDisabled}
+                          // disabled={isInputDisabled}
                         />
                       </Form.Item>
                     </div>
@@ -338,7 +354,6 @@ const Experenice = ({ setCurrent, current }) => {
                           onChange={(event) => onChangeHandle(event, index)}
                           inputValue={item?.dataValue?.country}
                           isPrefix={true}
-
                         />
                       </Form.Item>
                     </div>
@@ -346,7 +361,7 @@ const Experenice = ({ setCurrent, current }) => {
 
                   <div className="expFormDouble">
                     <div className="expFormDoubleItem">
-                    <Form.Item
+                      <Form.Item
                         label="Start Date"
                         name={`startdate ${index}`}
                         className="expItemLable"
@@ -355,28 +370,34 @@ const Experenice = ({ setCurrent, current }) => {
                             required: item?.dataValue.startdate ? false : true,
                             message: "Please input start Date!",
                           },
-                        ]}>
+                        ]}
+                      >
                         <DatePicker
                           onChange={(date, dateString) =>
                             onChangeDate("startdate", dateString, index)
                           }
                           format={"DD-MM-YYYY"}
-
+                          disabledDate={(current) => {
+                            let customDate = dayjs().format("DD-MM-YYYY");
+                            return (
+                              current &&
+                              current > dayjs(customDate, "DD-MM-YYYY")
+                            );
+                          }}
                           value={
                             item?.dataValue.present
                               ? dayjs().format("DD-MM-YYYY")
                               : dayjs(item?.dataValue.startdate, "DD-MM-YYYY")
                           }
-
-                          defaultValue={dayjs(item?.dataValue.startdate, "DD-MM-YYYY")}
-                         
-
+                          defaultValue={dayjs(
+                            item?.dataValue.startdate,
+                            "DD-MM-YYYY"
+                          )}
                           className="expDateInputFieldStyle"
                         />
                       </Form.Item>
                     </div>
                     <div className="expFormDoubleItem">
-
                       <Form.Item
                         label="End Date"
                         name={`enddate ${index}`}
@@ -386,51 +407,63 @@ const Experenice = ({ setCurrent, current }) => {
                             required: item?.dataValue.enddate ? false : true,
                             message: "Please input end Date!",
                           },
-                        ]}>
+                        ]}
+                      >
                         <DatePicker
                           onChange={(date, dateString) =>
                             onChangeDate("enddate", dateString, index)
                           }
                           format={"DD-MM-YYYY"}
-
+                          // disabledDate={(current) => {
+                          //   let customDate = item.dataValue.startdate;
+                          //   return (
+                          //     current &&
+                          //     current < dayjs(customDate, "DD-MM-YYYY")
+                          //   );
+                          // }}
+                          disabledDate={(current) => {
+                            let customDate = dayjs().format("DD-MM-YYYY");
+                            return (
+                              current &&
+                              current > dayjs(customDate, "DD-MM-YYYY") || current < dayjs(item.dataValue.startdate, "DD-MM-YYYY")
+                            );
+                          }}
                           value={
                             item?.dataValue.present
                               ? dayjs().format("DD-MM-YYYY")
                               : dayjs(item?.dataValue.enddate, "DD-MM-YYYY")
                           }
-
-                          defaultValue={dayjs(item?.dataValue.enddate, "DD-MM-YYYY")}
-                         
+                          defaultValue={dayjs(
+                            item?.dataValue.enddate,
+                            "DD-MM-YYYY"
+                          )}
                           className="expDateInputFieldStyle"
                         />
                       </Form.Item>
-
 
                       <div>
                         <Checkbox
                           className="expCheckBox"
                           name="is_current_work"
                           inputValue={item?.dataValue?.is_current_work}
-
                           onChange={(e) => {
                             setExpereniceArray(
                               expereniceArray.map((item) => {
                                 return item.index === index
                                   ? {
-                                    ...item,
-                                    dataValue: {
-                                      ...item.dataValue,
-                                      is_current_work: e.target.checked,
-                                    },
-
-                                  }
+                                      ...item,
+                                      dataValue: {
+                                        ...item.dataValue,
+                                        is_current_work: e.target.checked,
+                                      },
+                                    }
                                   : item;
                               })
                             );
                             setIsCurrentCheck(!isCurrentCheck);
                           }}
                         >
-                         I am currently working here
+                          I am currently working here
                         </Checkbox>
                       </div>
                     </div>
@@ -455,20 +488,19 @@ const Experenice = ({ setCurrent, current }) => {
                         className="inputFieldStyle"
                         defaultValue={item?.dataValue?.description}
                         onChange={(event) => onChangeHandle(event, index)}
-                      // disabled={isInputDisabled}
+                        // disabled={isInputDisabled}
                       />
                     </Form.Item>
                     <div className="mainContainerDelete">
-
                       <img
                         className="deleteSubject"
                         src={Delete}
-                        onClick={() => handleDeleteExperience(item.dataValue.id)}
+                        onClick={() =>
+                          handleDeleteExperience(item.dataValue.id)
+                        }
                       />
-
                     </div>
                   </div>
-
                 </>
               );
             })}
@@ -488,10 +520,10 @@ const Experenice = ({ setCurrent, current }) => {
                           company: "",
                           country: "",
                           city: "",
-                          startdate: dayjs().format("DD-MM-YYYY"),
-                          enddate: dayjs(dayjs())
-                            .add(1, "day")
+                          startdate: dayjs(dayjs())
+                            .subtract(1, "day")
                             .format("DD-MM-YYYY"),
+                          enddate: dayjs().format("DD-MM-YYYY"),
                           description: "",
                           is_current_work: false,
                         },
@@ -506,57 +538,70 @@ const Experenice = ({ setCurrent, current }) => {
                         display: "flex",
                         alignItems: "center",
                         marginRight: "10px",
-                        color: '#1476b7'
+                        color: "#1476b7",
                       }}
                     />
                   </span>{" "}
-                  <span style={{ color: '#1476b7',fontFamily:'Poppins' }}>Add Another Position</span>
+                  <span style={{ color: "#1476b7", fontFamily: "Poppins" }}>
+                    Add Another Position
+                  </span>
                 </Button>
               </Form.Item>
             </div>
 
-
-            <div style={{ display: 'flex', justifyContent: 'space-between' }} className="mobileLayout">
+            <div
+              style={{ display: "flex", justifyContent: "space-between" }}
+              className="mobileLayout"
+            >
               <div className="expItemButton">
                 <Form.Item>
-                  <Button className="expButtonBack me-3" type="primary" onClick={prev}>
+                  <Button
+                    className="expButtonBack me-3"
+                    type="primary"
+                    onClick={prev}
+                  >
                     Back
                   </Button>
                 </Form.Item>
-                {nextBtn && <Form.Item>
-                  <Button className="expButtonNext me-3" type="primary" onClick={handleNextClick}>
-                    Next
-                  </Button>
-                </Form.Item>
-                }
+                {nextBtn && (
+                  <Form.Item>
+                    <Button
+                      className="expButtonNext me-3"
+                      type="primary"
+                      onClick={handleNextClick}
+                    >
+                      Next
+                    </Button>
+                  </Form.Item>
+                )}
               </div>
               <Form.Item>
-
                 <div className="buttonEducation">
-                  {downloadBtn && (<Button
-                    className={
-                      downloadBtn === false
-                        ? "disabledBtn me-3"
-                        : "skillsButton me-3 "
-                    }
-                    type="primary"
-                    htmlType="submit"
-                    onClick={(e) => SavePdf(e)}>
-                    Download CV
-                  </Button>)}
+                  {downloadBtn && (
+                    <Button
+                      className={
+                        downloadBtn === false
+                          ? "disabledBtn me-3"
+                          : "skillsButton me-3 "
+                      }
+                      type="primary"
+                      htmlType="submit"
+                      onClick={(e) => SavePdf(e)}
+                    >
+                      Download CV
+                    </Button>
+                  )}
                   <Button
                     className="expButton"
                     type="primary"
                     htmlType="submit"
-                  // disabled={isInputDisabled}
+                    // disabled={isInputDisabled}
                   >
                     Save
                   </Button>
                 </div>
               </Form.Item>
             </div>
-
-
           </Form>
         </div>
       </div>
