@@ -103,6 +103,8 @@ const CaoCalculator = () => {
     },
   ]);
 
+  console.log("tableData", tableData);
+
   useEffect(() => {
     const idExistsLength = tableData.filter(
       (item) => item.id !== undefined
@@ -458,12 +460,7 @@ const CaoCalculator = () => {
   // };
 
   const handleDelete = async (id) => {
-    console.log(
-      "==================table data lenght",
-      dataLength,
-      tableData,
-      id
-    );
+    console.log(" ", dataLength, tableData, id);
     const idExistsLength = tableData.filter(
       (item) => item.id !== undefined
     ).length;
@@ -484,7 +481,10 @@ const CaoCalculator = () => {
       );
       if (tableData?.length > 6) {
         const filteredTableData = tableData.filter((item) => item.No !== id);
-        setTableData(filteredTableData);
+        const saveData = filteredTableData.map((item, index) => {
+          return { ...item, No: index };
+        });
+        setTableData(saveData);
       }
     } else {
       console.log(
@@ -524,10 +524,23 @@ const CaoCalculator = () => {
           // window.location.reload();
         }
       } else {
-        getCurrectSelectedValues();
+        let data = tableData.map((item) => {
+          if (item.No === targetIndex) {
+            return { No: targetIndex, name: null, level: null, grades: null };
+          } else {
+            return item;
+          }
+        });
+        console.log(data, "[tableData tableData ]");
+
+        setTableData(data);
+        // getCurrectSelectedValues();
       }
     }
   };
+  useEffect(() => {
+    console.log("============tableData", tableData);
+  }, [tableData]);
 
   const clearAllData = async () => {
     console.log("==========dataId", dataId);

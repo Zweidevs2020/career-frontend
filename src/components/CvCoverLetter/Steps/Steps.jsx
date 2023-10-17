@@ -1,9 +1,14 @@
 import React from "react";
 import "./Steps.css";
 
-const Steps = ({ current, setCurrent, currentStep,isCvComplete }) => {
-console.log("curremt setcurrent",current,setCurrent,currentStep,isCvComplete)
-
+const Steps = ({ current, setCurrent, currentStep, isCvComplete }) => {
+  console.log(
+    "curremt setcurrent",
+    current,
+    setCurrent,
+    currentStep,
+    isCvComplete
+  );
 
   return (
     <>
@@ -34,7 +39,7 @@ console.log("curremt setcurrent",current,setCurrent,currentStep,isCvComplete)
           </div>
           <div
             className={
-              currentStep >= 1 
+              currentStep >= 1
                 ? "step-item-content step-item-content-active"
                 : "step-item-content step-item-content-nonActive"
             }
@@ -50,10 +55,8 @@ console.log("curremt setcurrent",current,setCurrent,currentStep,isCvComplete)
           `Interests`,
           "References",
         ].map((item, index) => {
-          
           return (
             <div
-
               className="step-item"
               key={index + 2}
               onClick={() => {
@@ -66,21 +69,27 @@ console.log("curremt setcurrent",current,setCurrent,currentStep,isCvComplete)
                 className={
                   currentStep >= index + 2
                     ? "step-item-line  step-item-line-active"
-                    : "step-item-line  step-item-line-nonActive"
+                    : `step-item-line  step-item-line-nonActive ${
+                        isCvComplete ? "step-item-content-CvComplete" : ""
+                      }`
                 }
               />
               <div
                 className={
                   currentStep >= index + 2
                     ? "step-icon-style step-icon-style-active"
-                    : "step-icon-style step-icon-style-nonActive"
+                    : `step-icon-style step-icon-style-nonActive ${
+                      isCvComplete ? "step-item-content-CvComplete" : ""
+                    }`
                 }
               >
                 <span
                   className={
                     currentStep >= index + 2
                       ? "step-icon-text step-icon-text-active"
-                      : "step-icon-text step-icon-text-nonActive"
+                      : `step-icon-text step-icon-text-nonActive ${
+                        isCvComplete ? "step-item-content-CvComplete" : ""
+                      }`
                   }
                 >
                   {`0${index + 2}`}
@@ -90,7 +99,9 @@ console.log("curremt setcurrent",current,setCurrent,currentStep,isCvComplete)
                 className={
                   currentStep >= index + 2
                     ? "step-item-content step-item-content-active"
-                    : "step-item-content step-item-content-nonActive"
+                    : `step-item-content step-item-content-nonActive ${
+                      isCvComplete ? "step-item-content-CvComplete" : ""
+                    }`
                 }
               >
                 {item}
@@ -104,4 +115,3 @@ console.log("curremt setcurrent",current,setCurrent,currentStep,isCvComplete)
 };
 
 export default Steps;
-

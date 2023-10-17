@@ -66,6 +66,11 @@
 .step-item-content-nonActive {
   color: #cac9cf;
 }
+.step-item-content-CvComplete {
+  color: #cac9cf;
+  cursor: pointer;
+
+}
 
 .step-item-line {
   border-top-width: 2px;
