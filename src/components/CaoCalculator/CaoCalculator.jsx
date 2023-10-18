@@ -542,6 +542,7 @@ const CaoCalculator = () => {
       bonus_points: 0,
       total_points: 0,
     });
+    getFiltersData()
   };
   useEffect(() => {
     console.log("============tableData", tableData);
@@ -559,6 +560,7 @@ const CaoCalculator = () => {
         bonus_points: 0,
         total_points: 0,
       });
+      getFiltersData()
       getCurrectSelectedValues();
       // window.location.reload();
     }
@@ -573,6 +575,7 @@ const CaoCalculator = () => {
     if (response.data.data.success) {
       setFinalData(response.data.data.data);
       // getCurrectSelectedValues()
+      getFiltersData()
       getCurrectSelectedValues();
       setLoading(false);
     } else {
