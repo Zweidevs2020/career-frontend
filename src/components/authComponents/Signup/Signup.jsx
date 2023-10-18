@@ -190,7 +190,7 @@ const Signup = () => {
               inputValue={data.email}
             />
           </Form.Item>
-          <Form.Item
+          {/* <Form.Item
             name="number"
             rules={[
               { required: true, message: "Please input your Phone Number!" },
@@ -204,7 +204,7 @@ const Signup = () => {
               type="input"
               onChange={onChangeHandle}
             />
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item
             name="password"
             rules={[

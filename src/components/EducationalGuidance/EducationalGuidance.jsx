@@ -85,7 +85,7 @@ const EducationalGuidance = () => {
                 <div className="quizStyle" key={item.id}>
                   <div className={item.complete ? 'width90' : 'mobileEducationalRow'}> 
                     <div style={{ display: "flex", alignItems: "center", width: "55%" }}>
-                      <img src={bookImage} alt="" />
+                      <img src={item.image} alt="" style={{width:68,height:68}} />
                       <div style={{ marginLeft: 20 }}>
                         <div className="quizHeadingStyle">{item.name}</div>
                         <div className="quizDetailsStyle">{item.description}</div>
