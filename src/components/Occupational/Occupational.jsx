@@ -57,12 +57,13 @@ const Occupational = () => {
       setLoading(false);
     }
   };
+  console.log('==========educationGuidance',educationGuidance)
 
-  const sortByScoreDescending = (a, b) => b.score - a.score;
-  const sortedData = educationGuidance.slice().sort(sortByScoreDescending);
+  // const sortByScoreDescending = (a, b) => b.score - a.score;
+  // const sortedData = educationGuidance.slice().sort(sortByScoreDescending);
 
-  const scores = sortedData.map((item) => item.score);
-  const questionTypes = sortedData.map((item) => item.question_type);
+  const scores = educationGuidance.map((item) => item.score);
+  const questionTypes = educationGuidance.map((item) => item.question_type);
   let chartColor;
 
   if (educationGuidance[0]?.test_name == "Occupational Values Assesment") {
