@@ -72,6 +72,13 @@ button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary.eduButtonBack
   color: white;
 }
 
+.mobileScreenImage{
+  border-radius:31px;
+  overflow:hidden;
+  margin:1em;
+  width:55%
+}
+
 @media only screen and (min-width: 0px) and (max-width: 650px) {
   .signInButtonStyle {
     width:100%;

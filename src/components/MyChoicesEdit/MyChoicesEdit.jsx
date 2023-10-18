@@ -58,7 +58,7 @@ const MyChoicesEdit = () => {
   const [showRowsData, setShowRowsData] = useState(null);
   const dataRef = useRef([]);
   const rowRef = useRef(null);
-  const [loading, setLoading] = useState(false);
+  const inputRefMobile = useRef();
 
   useEffect(() => {
     getChoiceRecord();
@@ -177,6 +177,32 @@ const MyChoicesEdit = () => {
     dataRef.current = [...updatedData];
   };
 
+  const handleChangeTableMobile = (e, rowData) => {
+    const { name, value } = e.target;
+    console.log("============rowData", rowData);
+
+    let updatedData = data.map((item) => {
+      if (item.rowNo === rowData.rowNo) {
+        return {
+          ...item,
+          id: item.id,
+          dataId: item.dataId,
+          rowNo: rowData.rowNo,
+          [name]: value,
+        };
+      } else {
+        return item;
+      }
+    });
+    console.log("============rowData", rowData, updatedData);
+
+    setData(updatedData);
+  };
+
+  useEffect(() => {
+    console.log("============data", data);
+  }, [data]);
+
   const eidtThisRow = (record) => {
     const updatedData = data.map((item) => {
       if (item.rowNo === record.rowNo) {
@@ -189,7 +215,7 @@ const MyChoicesEdit = () => {
   };
 
   const handleUpdate = async (record) => {
-    console.log('========handle upadte', record)
+    console.log("========handle upadte", record);
     const row = dataRef.current.filter((item) => item.id === record?.id);
 
     if (row) {
@@ -224,7 +250,29 @@ const MyChoicesEdit = () => {
       }
     }
   };
+  const handleUpdateMobile = async (record) => {
+    console.log('=============record',record)
+    for (const key in record) {
+      if (key !== "id" && key !=="order_number" && record[key] === null) {
+        message.error(`Please enter the ${key} of the Row`);
+        break;
+      }
+    }
+    const respose = await patchApiWithAuth(
+      `choices/update-${dataa.id}/${record.id}/`,
+      record
+    );
 
+    if (respose.data.status === 200) {
+      message.success("Row update succesfully");
+      setShowRows(null);
+      getChoiceRecord();
+      setSelectedRowId(record.id);
+      getTableRecord();
+    } else {
+      message.error(respose.data.message);
+    }
+  };
   const handleDelete = async (item) => {
     const respose = await deleteApiWithAuth(
       `choices/delete-${dataa.id}/${item.id}/`
@@ -274,6 +322,25 @@ const MyChoicesEdit = () => {
       }
     } else if (!record || !record.code) {
       message.error(`Please enter Code to proceed further`);
+    }
+  };
+  const handleAddRowMobile = async (record) => {
+    for (const key in record) {
+      if (key !== "id" && record[key] === null) {
+        message.error(`Please enter the ${key} of the Row`);
+        break;
+      }
+    }
+    const respose = await postApiWithAuth(`choices/${dataa.id}/`, record);
+
+    if (respose.data.status === 200) {
+      message.success("Row add succesfully");
+      setShowRows(null);
+      getChoiceRecord();
+      getTableRecord();
+      setSelectedRowId(record.id);
+    } else {
+      message.error(respose.data.message);
     }
   };
   const handleTouchStart = () => {
@@ -356,9 +423,9 @@ const MyChoicesEdit = () => {
   );
 
   const onDragEnd = async ({ active, over }) => {
-    if ( !isDragInProgress) {
-      return;
-    }
+    // if ( !isDragInProgress) {
+    //   return;
+    // }
 
     if (active?.id && over?.id) {
       if (active?.id !== over?.id) {
@@ -643,7 +710,7 @@ const MyChoicesEdit = () => {
                                 <EditOutlined />
                               </a>
                             )}
-                            <a >
+                            <a>
                               <DeleteOutlined style={{ color: "grey" }} />
                             </a>
 
@@ -656,8 +723,202 @@ const MyChoicesEdit = () => {
                 ) : (
                   <div className="mobile-table">
                     <div className="mobile-table">
-                      {console.log('==========data',data)}
+                      {console.log("==========data", data)}
                       <DndContext
+                        sensors={sensors}
+                        modifiers={[restrictToVerticalAxis]}
+                        onDragEnd={onDragEnd}
+                      >
+                        <SortableContext
+                          items={data
+                            .filter((item) => item.id !== null)
+                            .map((item) => item.dataId)}
+                          strategy={verticalListSortingStrategy}
+                        >
+                          {data
+                            .filter((item) => item.id !== null)
+                            .map((row) => (
+                              <div className="dragDrop" key={row.dataId}>
+                                <div
+                                  className={`row mobile-row`}
+                                  style={{
+                                    background: "rgb(244, 246, 248)",
+                                    marginBottom: "3rem",
+                                  }}
+                                >
+                                  <div className="menuIconMobile drag-handle">
+                                    <MenuOutlined
+                                      style={{
+                                        touchAction: "none",
+                                        cursor: "move",
+                                      }}
+                                    />
+                                    <div className="actionColumn">
+                                      {/* <span className="rowHeadingMobile">Action</span> */}
+                                      <Space size="middle">
+                                        {row.editable && row.id !== null ? (
+                                          <a
+                                            onClick={() =>
+                                              handleUpdateMobile(row)
+                                            }
+                                          >
+                                            <CheckOutlined
+                                              style={{ color: "#1476b7" }}
+                                            />
+                                          </a>
+                                        ) : row.editable && row.id === null ? (
+                                          <a onClick={() => handleAddRow(row)}>
+                                            <PlusCircleOutlined
+                                              style={{ color: "#1476b7" }}
+                                            />
+                                          </a>
+                                        ) : (
+                                          <a onClick={() => eidtThisRow(row)}>
+                                            <EditOutlined
+                                              style={{ color: "#1476b7" }}
+                                            />
+                                          </a>
+                                        )}
+                                        <a onClick={() => handleDelete(row)}>
+                                          <DeleteOutlined
+                                            style={{ color: "red" }}
+                                          />
+                                        </a>
+                                      </Space>
+                                    </div>
+                                  </div>
+                                  <div className="first-column">
+                                    <div className="column"></div>
+                                    <div
+                                      className="column"
+                                      style={{ width: "100%" }}
+                                    >
+                                      <span className="rowHeadingMobile">
+                                        No. {row.rowNo + 1}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div className="remaining-columns">
+                                    {columns.map((item, index) => (
+                                      <div
+                                        className="column"
+                                        key={`${item.dataId}-${index}`}
+                                      >
+                                        <span className="rowHeadingMobile">
+                                          {capitalizeWords(item)}
+                                        </span>
+                                        <MyCareerGuidanceInputField
+                                          placeholder={row[item]}
+                                          type="input"
+                                          name={item}
+                                          onChange={(e) =>
+                                            handleChangeTableMobile(e, row)
+                                          }
+                                          defaultValue={row[item]}
+                                          isPrefix={false}
+                                          disabled={!row.editable}
+                                        />
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                        </SortableContext>
+                      </DndContext>
+                      {data
+                        .filter((item) => item.id === null)
+                        .map((row) => (
+                          <div className="dragDrop" key={row.dataId}>
+                            <div
+                              className={`row mobile-row`}
+                              style={{
+                                background: "rgb(244, 246, 248)",
+                                marginBottom: "3rem",
+                              }}
+                            >
+                              <div className="menuIconMobile drag-handle">
+                                <MenuOutlined
+                                  style={{
+                                    touchAction: "none",
+                                    cursor: "move",
+                                    color: "transparent",
+                                  }}
+                                />
+                                <div className="actionColumn">
+                                  <Space size="middle">
+                                    {row.editable && row.id !== null ? (
+                                      <a
+                                        onClick={() => handleUpdateMobile(row)}
+                                      >
+                                        <CheckOutlined
+                                          style={{ color: "#1476b7" }}
+                                        />
+                                      </a>
+                                    ) : row.editable && row.id === null ? (
+                                      <a
+                                        onClick={() => handleAddRowMobile(row)}
+                                      >
+                                        <PlusCircleOutlined
+                                          style={{ color: "#1476b7" }}
+                                        />
+                                      </a>
+                                    ) : (
+                                      <a onClick={() => eidtThisRow(row)}>
+                                        <EditOutlined
+                                          style={{ color: "#1476b7" }}
+                                        />
+                                      </a>
+                                    )}
+                                    <a>
+                                      <DeleteOutlined
+                                        style={{ color: "grey" }}
+                                      />
+                                    </a>
+                                  </Space>
+                                </div>
+                              </div>
+                              <div className="first-column">
+                                <div className="column"></div>
+                                <div
+                                  className="column"
+                                  style={{ width: "100%" }}
+                                >
+                                  <span className="rowHeadingMobile">
+                                    No. {row.rowNo + 1}
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="remaining-columns">
+                                {columns.map((item, index) => (
+                                  <div
+                                    className="column"
+                                    key={`${item.dataId}-${index}`}
+                                  >
+                                    <span className="rowHeadingMobile">
+                                      {capitalizeWords(item)}
+                                    </span>
+                                    <MyCareerGuidanceInputField
+                                      ref={inputRef}
+                                      placeholder={row[item]}
+                                      type="input"
+                                      // value={row[item]}
+                                      name={item}
+                                      onChange={(e) =>
+                                        handleChangeTableMobile(e, row)
+                                      }
+                                      defaultValue={row[item]}
+                                      isPrefix={false}
+                                      disabled={!row.editable}
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+
+                      {/* <DndContext
                         sensors={sensors}
                         modifiers={[restrictToVerticalAxis]}
                         onDragEnd={onDragEnd}
@@ -686,7 +947,6 @@ const MyChoicesEdit = () => {
                                       }}
                                     />
                                     <div className="actionColumn">
-                                      {/* <span className="rowHeadingMobile">Action</span> */}
                                       <Space size="middle">
                                         {row.editable && row.id !== null ? (
                                           <a onClick={() => handleUpdate(row)}>
@@ -722,13 +982,13 @@ const MyChoicesEdit = () => {
                                       style={{ width: "100%" }}
                                     >
                                       <span className="rowHeadingMobile">
-                                        No. {row.rowNo+1}
+                                        No. {row.rowNo + 1}
                                       </span>
                                     </div>
                                   </div>
                                   <div className="remaining-columns">
                                     {columns.map((item, index) => (
-                                      <div className="column" key={index}>
+                                      <div className="column" key={item.dataId}>
                                         <span className="rowHeadingMobile">
                                           {capitalizeWords(item)}
                                         </span>
@@ -738,7 +998,7 @@ const MyChoicesEdit = () => {
                                           type="input"
                                           name={item}
                                           onChange={(e) =>
-                                            handleChangeTable(e, row)
+                                            handleChangeTableMobile(e, row)
                                           }
                                           defaultValue={row[item]}
                                           isPrefix={false}
@@ -752,7 +1012,7 @@ const MyChoicesEdit = () => {
                             </Row>
                           ))}
                         </SortableContext>
-                      </DndContext>
+                      </DndContext> */}
                     </div>
                   </div>
                 )}

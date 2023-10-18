@@ -98,11 +98,12 @@ const Reference = ({ setCurrent, current,isCvComplete }) => {
 
     // Create a temporary URL for the blob
     const pdfUrl = URL.createObjectURL(pdfBlob);
+    console.log("======================u",userData);
 
     // Create a link and initiate the download
     const link = document.createElement("a");
     link.href = pdfUrl;
-    link.download = `${userData.full_name}.pdf`; // Set the desired filename
+    link.download = `${userData.full_name}'s.pdf`; // Set the desired filename
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -293,20 +294,17 @@ const Reference = ({ setCurrent, current,isCvComplete }) => {
     );
   };
 
-  // const getUserData = async () => {
-  //   const response = await getApiWithAuth(API_URL.GETUSER2);
+  const getUserData = async () => {
+    const response = await getApiWithAuth(API_URL.GETUSER2);
 
-  //   if (response.data.status === 200) {
-  //     setUserData(response.data.data);
-  //     if (response.data.data.cv_completed === true) {
-  //       setDownloadBtn(true);
-  //     }
-  //   }
-  // };
+    if (response.data.status === 200) {
+      setUserData(response.data.data);
+    }
+  };
 
-  // useEffect(() => {
-  //   getUserData();
-  // }, []);
+  useEffect(() => {
+    getUserData();
+  }, []);
 
   return (
     <>
