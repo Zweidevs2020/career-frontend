@@ -299,6 +299,9 @@ const MyGoal = () => {
                     onChange={handleDateChange}
                     disabledDate={disabledDate} 
                     format="DD-MM-YYYY"
+                    allowClear={false}
+                    
+                
                   />
                 </Space>
               </div>

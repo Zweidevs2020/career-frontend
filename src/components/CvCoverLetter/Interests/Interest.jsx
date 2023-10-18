@@ -70,7 +70,8 @@ const Interest = ({ setCurrent, current }) => {
     // Create a link and initiate the download
     const link = document.createElement("a");
     link.href = pdfUrl;
-    link.download = `${userData.full_name}.pdf`; // Set the desired filename
+       link.download = `${userData.full_name}'s.pdf`; // Set the desired filename
+
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

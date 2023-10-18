@@ -537,6 +537,11 @@ const CaoCalculator = () => {
         // getCurrectSelectedValues();
       }
     }
+    setFinalData({
+      points: 0,
+      bonus_points: 0,
+      total_points: 0,
+    });
   };
   useEffect(() => {
     console.log("============tableData", tableData);

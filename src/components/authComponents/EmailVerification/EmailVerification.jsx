@@ -85,7 +85,7 @@ const EmailVerification = () => {
           © 2023 My Guidance. All Rights Reserved
         </span>
       </div>
-      <div className="rightImageStyle">
+      <div className="mobileScreenImage">
         <Image
           preview={false}
           src={sideAuthImage}
