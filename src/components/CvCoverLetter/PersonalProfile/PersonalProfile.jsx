@@ -4,23 +4,24 @@ import "./PersonalProfile.css";
 import MyCareerGuidanceInputField from "../../commonComponents/MyCareerGuidanceInputField/MyCareerGuidanceInputField";
 import { getApiWithAuth, postApiWithAuth } from "../../../utils/api";
 import { API_URL } from "../../../utils/constants";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { putApiWithAuth } from "../../../utils/api";
+import phoneIcon from "../../../assets/phone.svg";
+
 import axios from "axios";
 
 const { TextArea } = Input;
 
 const PersonalProfile = ({ setCurrent, current }) => {
-
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [profileObject, setProfileObject] = useState({ id: null });
   const [downloadBtn, setDownloadBtn] = useState(false);
   const [nextBtn, setNextBtn] = useState(false);
-  const [savedTotalStep,setSavedTotalStep]=useState()
+  const [savedTotalStep, setSavedTotalStep] = useState();
   const [isInputDisabled, setIsInputDisabled] = useState(true);
   const [userData, setUserData] = useState({});
-  const [enableDownloadCV, setEnableDownloadCV] = useState(false)
+  const [enableDownloadCV, setEnableDownloadCV] = useState(false);
 
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
@@ -60,10 +61,10 @@ const PersonalProfile = ({ setCurrent, current }) => {
 
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
-   
+
     if (response.data.data["current_step"] > 1) {
-      setNextBtn(true)
-      setSavedTotalStep(response.data.data["current_step"])
+      setNextBtn(true);
+      setSavedTotalStep(response.data.data["current_step"]);
     }
     if (response.data.status === 200) {
       setUserData(response.data.data);
@@ -76,10 +77,10 @@ const PersonalProfile = ({ setCurrent, current }) => {
     } else {
       setIsInputDisabled(false);
     }
-  }
+  };
   const edit = () => {
-    setIsInputDisabled(false)
-  }
+    setIsInputDisabled(false);
+  };
 
   useEffect(() => {
     handleGetApi();
@@ -108,7 +109,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
     // Create a link and initiate the download
     const link = document.createElement("a");
     link.href = pdfUrl;
-       link.download = `${userData.full_name}'s.pdf`; // Set the desired filename
+    link.download = `${userData.full_name}'s.pdf`; // Set the desired filename
 
     document.body.appendChild(link);
     link.click();
@@ -119,7 +120,8 @@ const PersonalProfile = ({ setCurrent, current }) => {
   };
 
   const handleNextClick = () => {
-    if (savedTotalStep >= current) { // Assuming you have a total of 6 steps
+    if (savedTotalStep >= current) {
+      // Assuming you have a total of 6 steps
       setCurrent(current + 1);
       navigate(`?step=${current + 1}`);
     }
@@ -147,7 +149,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   rules={[
                     { required: true, message: "Please input your Full Name!" },
                   ]}
-                  style={{ fontFamily: 'YourFontFamily', fontWeight: 'bold' }}
+                  style={{ fontFamily: "YourFontFamily", fontWeight: "bold" }}
                 >
                   <MyCareerGuidanceInputField
                     placeholder="Maria Murphy"
@@ -156,7 +158,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     onChange={onChangeHandle}
                     inputValue={profileObject?.full_name}
                     isPrefix={false}
-                  // disabled={isInputDisabled}
+                    // disabled={isInputDisabled}
                   />
                 </Form.Item>
               </div>
@@ -176,11 +178,32 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     onChange={onChangeHandle}
                     inputValue={profileObject?.email}
                     isPrefix={false}
-                  // disabled={isInputDisabled}
-
+                    // disabled={isInputDisabled}
                   />
                 </Form.Item>
               </div>
+            </div>
+            <div className="profileFormItem">
+              <Form.Item
+                label="Phone Number"
+                className="profileItemLable"
+                name="number"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Phone Number!",
+                  },
+                ]}
+              >
+                <MyCareerGuidanceInputField
+                  placeholder="Phone Number"
+                  isPrefix={false}
+                  name="number"
+                  type="input"
+                  onChange={onChangeHandle}
+                  inputValue={profileObject?.number}
+                />
+              </Form.Item>
             </div>
             <div className="profileFormItem">
               <Form.Item
@@ -201,7 +224,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   onChange={onChangeHandle}
                   inputValue={profileObject?.address}
                   isPrefix={false}
-                // disabled={isInputDisabled}
+                  // disabled={isInputDisabled}
                 />
               </Form.Item>
             </div>
@@ -224,8 +247,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   onChange={onChangeHandle}
                   inputValue={profileObject?.address2}
                   isPrefix={false}
-                // disabled={isInputDisabled}
-
+                  // disabled={isInputDisabled}
                 />
               </Form.Item>
             </div>
@@ -247,8 +269,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     onChange={onChangeHandle}
                     inputValue={profileObject?.town}
                     isPrefix={false}
-                  // disabled={isInputDisabled}
-
+                    // disabled={isInputDisabled}
                   />
                 </Form.Item>
               </div>
@@ -268,8 +289,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     onChange={onChangeHandle}
                     inputValue={profileObject?.city}
                     isPrefix={false}
-                  // disabled={isInputDisabled}
-
+                    // disabled={isInputDisabled}
                   />
                 </Form.Item>
               </div>
@@ -292,8 +312,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
                     onChange={onChangeHandle}
                     inputValue={profileObject?.eircode}
                     isPrefix={false}
-                  // disabled={isInputDisabled}
-
+                    // disabled={isInputDisabled}
                   />
                 </Form.Item>
               </div>
@@ -315,41 +334,45 @@ const PersonalProfile = ({ setCurrent, current }) => {
                   inputValue={profileObject?.objective}
                   name="objective"
                   onChange={onChangeHandle}
-                // disabled={isInputDisabled}
-
+                  // disabled={isInputDisabled}
                 />
               </Form.Item>
             </div>
             <div className="personalItemButton">
-              {nextBtn && (<Button className="eduButtonBack" type="primary" onClick={handleNextClick}>
-                Next
-              </Button>
+              {nextBtn && (
+                <Button
+                  className="eduButtonBack"
+                  type="primary"
+                  onClick={handleNextClick}
+                >
+                  Next
+                </Button>
               )}
               <div className="buttonEducation">
-
-                {downloadBtn && (<Button
-                  className={
-                    downloadBtn === false
-                      ? "disabledBtn me-3"
-                      : "skillsButton me-3 "
-                  }
-                  type="primary"
-                  htmlType="submit"
-                  onClick={(e) => SavePdf(e)}>
-                  Download CV
-                </Button>)}
+                {downloadBtn && (
+                  <Button
+                    className={
+                      downloadBtn === false
+                        ? "disabledBtn me-3"
+                        : "skillsButton me-3 "
+                    }
+                    type="primary"
+                    htmlType="submit"
+                    onClick={(e) => SavePdf(e)}
+                  >
+                    Download CV
+                  </Button>
+                )}
                 <Button
                   className="eduButton"
                   type="primary"
                   htmlType="submit"
-                // disabled={isInputDisabled}>
+                  // disabled={isInputDisabled}>
                 >
                   Save
                 </Button>
               </div>
             </div>
-          
-           
           </Form>
         </div>
       </div>
