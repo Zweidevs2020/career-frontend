@@ -51,7 +51,8 @@ const Occupational = () => {
     setLoading(true);
     const response = await getApiWithAuth(`/psychometric/result/${data}/`);
     if (response.data.status === 200) {
-      setEducationGuidance(response.data.data);
+      let sortedData= response.data.data.sort((a, b) => b.score - a.score);
+      setEducationGuidance(sortedData);
       setLoading(false);
     } else {
       setLoading(false);
