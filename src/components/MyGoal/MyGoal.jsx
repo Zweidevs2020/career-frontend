@@ -72,7 +72,7 @@ const MyGoal = () => {
   const getUserGoals = async () => {
     setLoading(true);
     const res = await getApiWithAuth(API_URL.GETUSERGOAL);
-  
+
     if (res.data.data) {
       setGoal(res.data.data.goal);
       setDescription(res.data.data.description);
@@ -106,15 +106,17 @@ const MyGoal = () => {
   const DownloadBtn = async () => {
     setLoading3(true);
     const res = await getApiWithAuth(API_URL.GETMYGOALPDF);
- console.log('================res',res)
+    console.log("================res", res);
     if (res.data.status === 200) {
       const data = res.data.data;
 
-      const pdfBytes = Uint8Array.from([...data].map((char) => char.charCodeAt(0)));
+      const pdfBytes = Uint8Array.from(
+        [...data].map((char) => char.charCodeAt(0))
+      );
 
       const pdfDoc = await PDFDocument.load(pdfBytes);
       const pages = pdfDoc.getPages();
-     
+
       const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
 
       // Create a temporary link element
@@ -130,25 +132,28 @@ const MyGoal = () => {
     }
   };
 
-
   const SaveInput = async () => {
-    setLoading2(true);
-    const data = {
-      proffession: proffession,
-      goal: goal,
-      description: description,
-      actions: actions,
-      realistic: realistic,
-      date: dayjs(countdown).format("DD-MM-YYYY"),
-    };
-    const response = await postApiWithAuth(API_URL.POSTUSERGOAL, data);
+    if (realistic) {
+      setLoading2(true);
+      const data = {
+        proffession: proffession,
+        goal: goal,
+        description: description,
+        actions: actions,
+        realistic: realistic,
+        date: dayjs(countdown).format("DD-MM-YYYY"),
+      };
+      const response = await postApiWithAuth(API_URL.POSTUSERGOAL, data);
 
-    if (response.data.status === 200) {
-      message.success("Goals set successfully");
-      setLoading2(false);
+      if (response.data.status === 200) {
+        message.success("Goals set successfully");
+        setLoading2(false);
+      } else {
+        setLoading2(false);
+        message.error(response.data.message);
+      }
     } else {
-      setLoading2(false);
-      message.error(response.data.message);
+      message.error("Realistic should be Yes ");
     }
   };
 
@@ -157,9 +162,9 @@ const MyGoal = () => {
     seActions({ ...actions, [name]: value });
   };
 
-  const disabledDate = current => {
-    const today = dayjs().startOf('day');
-    
+  const disabledDate = (current) => {
+    const today = dayjs().startOf("day");
+
     return current < today;
   };
 
@@ -194,7 +199,6 @@ const MyGoal = () => {
                   name="input"
                   placeholder=" EG: Accountant or save the planet"
                   className="inputCarrer sm:text-[8px] md:text-[10px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
-              
                 />
               </div>
 
@@ -220,13 +224,17 @@ const MyGoal = () => {
                 </div>
                 <div className="textAreaMyGoal">
                   <TextArea
-                  placeholder="Get more organized with a daily planner"
+                    placeholder="Get more organized with a daily planner"
                     value={description}
-                    style={{ border: "2px solid grey", lineHeight: "normal", display: "flex", alignItems: "center" }}
+                    style={{
+                      border: "2px solid grey",
+                      lineHeight: "normal",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
                     className="inputCarrer sm:text-[8px] md:text-[10px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
                     onChange={(e) => setDescription(e.target.value)}
-                  >
-                  </TextArea>
+                  ></TextArea>
                 </div>
               </div>
               <div className="inputContainer">
@@ -240,7 +248,7 @@ const MyGoal = () => {
                   placeholder="Action 1"
                   name="action1"
                   value={actions.action1}
-                  style={{width:"97%"}}
+                  style={{ width: "97%" }}
                   className=" sm:text-[8px] md:text-[10px] xl:text-[11px] px-2 mt-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[100%] rounded-md border-solid border-2 border-gray-400 outline-none "
                   onChange={(e) => {
                     onChangeHandle(e);
@@ -251,13 +259,12 @@ const MyGoal = () => {
                   placeholder="Action 2"
                   name="action2"
                   value={actions.action2}
-                  style={{width:"97%"}}
+                  style={{ width: "97%" }}
                   className=" px-2 sm:text-[8px] md:text-[10px] mt-2 h-[50px] xl:text-[11px] w-[100%] sm:w-[30%] sm:h-[35px] md:h-[38px] rounded-md border-solid border-2 border-gray-400 outline-none "
                   onChange={(e) => {
                     onChangeHandle(e);
                   }}
                 />
-
               </div>
               <div className="inputContainer">
                 <h style={{ color: "#111928" }}>Is this realistic ?</h>
@@ -266,7 +273,7 @@ const MyGoal = () => {
                 <div className="h-[40px] w-[50%] flex items-center justify-around ">
                   <input
                     type="checkbox"
-                    style={{cursor:"pointer"}}
+                    style={{ cursor: "pointer" }}
                     checked={realistic ? true : false}
                     onChange={() => setRealistic(true)}
                     className="h-[24px] w-[24px] border-none text-[#fff] bg-[#1476B7] "
@@ -278,7 +285,7 @@ const MyGoal = () => {
                 <div className="h-[40px] w-[50%]  flex items-center justify-around ">
                   <input
                     type="checkbox"
-                    style={{cursor:"pointer"}}
+                    style={{ cursor: "pointer" }}
                     checked={!realistic ? true : false}
                     onChange={() => setRealistic(false)}
                     className="h-[24px] w-[24px] border-none text-[#F4F6F8] bg[#F4F6F8] "
@@ -297,11 +304,9 @@ const MyGoal = () => {
                     className="dateLibr px-2 sm:text-[8px] md:text-[10px] mt-2 h-[50px] xl:text-[11px] w-[100%] sm:w-[30%] sm:h-[35px] md:h-[38px] rounded-md border-solid border-2 border-gray-400 outline-none"
                     value={dayjs(countdown3, "DD-MM-YYYY")}
                     onChange={handleDateChange}
-                    disabledDate={disabledDate} 
+                    disabledDate={disabledDate}
                     format="DD-MM-YYYY"
                     allowClear={false}
-                    
-                
                   />
                 </Space>
               </div>
@@ -364,10 +369,13 @@ const MyGoal = () => {
                   Dowload PDF
                 </Button>
                 <Button
-                loading={loading2}
-                className="saveData"
-                onClick={() => SaveInput()}
-                > Save Data</Button>
+                  loading={loading2}
+                  className="saveData"
+                  onClick={() => SaveInput()}
+                >
+                  {" "}
+                  Save Data
+                </Button>
               </div>
               <br />
             </div>
