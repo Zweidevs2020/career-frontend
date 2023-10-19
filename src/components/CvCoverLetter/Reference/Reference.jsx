@@ -73,7 +73,7 @@ const Reference = ({ setCurrent, current,isCvComplete }) => {
     if (respose.data.status === 201) {
       // setCurrent(1);
       message.success("Your CV is saved successfully");
-      navigate("/cover-letter");
+      handleGetApi()
     } else {
       message.error(respose.data.message);
     }
@@ -118,7 +118,7 @@ const Reference = ({ setCurrent, current,isCvComplete }) => {
         prevArray.filter((item) => item.dataValue.id !== id)
       );
       const response = await deleteApiWithAuth(
-        `${API_URL.DELETE_REFERENCE}/${id}/`
+        `${API_URL.UPDATE_REFERENCE}/${id}/`
       );
 
       if (response.data.status === 204) {

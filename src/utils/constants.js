@@ -37,6 +37,7 @@ export const API_URL = {
   DELETE:'/cv/delete-education',
   DELETE_EXPERIENCE:'/cv/delete-experience',
   DELETE_REFERENCE:'/cv/delete-reference',
+  UPDATE_REFERENCE:'/cv/update-reference',
   DELETE_CAOPOINT:'/cao-calculator/delete-caopoint',
   DELETE_RESULT:'/cv/delete-junior-cert',
   SENDCV:'cv/sendcv/'
