@@ -49,6 +49,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
       form.setFieldsValue({
         full_name: response.data.data[0].full_name,
         email: response.data.data[0].email,
+        number: response.data.data[0].number,
         address: response.data.data[0].address,
         address2: response.data.data[0].address2,
         town: response.data.data[0].town,
