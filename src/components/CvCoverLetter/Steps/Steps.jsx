@@ -51,7 +51,7 @@ const Steps = ({ current, setCurrent, currentStep, isCvComplete }) => {
         {[
           "Education",
           "Work Experience",
-          "Skill's",
+          "Skills",
           `Interests`,
           "References",
         ].map((item, index) => {
