@@ -168,10 +168,12 @@ const Skill = ({ setCurrent, current }) => {
 
     selectOption.forEach((value) => {
       const match = userSkillData.find((obj) => obj.skill_dropdown === value);
+      console.log('========match',match)
       if (match) {
-        result.push(match);
+        result.push({ id: null, skill_dropdown: match.skill_dropdown });
       } else {
         result.push({ id: null, skill_dropdown: value });
+        
       }
     });
     selectOption2.forEach((value) => {
@@ -179,7 +181,8 @@ const Skill = ({ setCurrent, current }) => {
         (obj) => obj.quality_dropdown === value
       );
       if (match) {
-        result2.push(match);
+        result2.push({ id: null, quality_dropdown: match.quality_dropdown });
+
       } else {
         result2.push({ id: null, quality_dropdown: value });
       }
