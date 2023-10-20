@@ -537,12 +537,12 @@ const CaoCalculator = () => {
         // getCurrectSelectedValues();
       }
     }
-    setFinalData({
-      points: 0,
-      bonus_points: 0,
-      total_points: 0,
-    });
-    getFiltersData()
+    // setFinalData({
+    //   points: 0,
+    //   bonus_points: 0,
+    //   total_points: 0,
+    // });
+    getFiltersData();
   };
   useEffect(() => {
     console.log("============tableData", tableData);
@@ -555,12 +555,12 @@ const CaoCalculator = () => {
     );
 
     if (response?.data?.status === 204) {
-      setFinalData({
-        points: 0,
-        bonus_points: 0,
-        total_points: 0,
-      });
-      getFiltersData()
+      // setFinalData({
+      //   points: 0,
+      //   bonus_points: 0,
+      //   total_points: 0,
+      // });
+      getFiltersData();
       getCurrectSelectedValues();
       // window.location.reload();
     }
@@ -575,7 +575,7 @@ const CaoCalculator = () => {
     if (response.data.data.success) {
       setFinalData(response.data.data.data);
       // getCurrectSelectedValues()
-      getFiltersData()
+      getFiltersData();
       getCurrectSelectedValues();
       setLoading(false);
     } else {
@@ -617,7 +617,6 @@ const CaoCalculator = () => {
     setGradeId([]);
     let filterGrade = [];
     let newData = [];
-
     try {
       const response = await getApiWithAuth(`calculator/user-points/`);
       console.log(
@@ -626,8 +625,47 @@ const CaoCalculator = () => {
         response,
         response.data.data.length
       );
-      setDataLength(response.data.data.length);
-      setDataId(response.data.data[0].id);
+      let checkLength = response.data.data[0].grades.map((obj) => ({
+        grade: obj.id,
+      }));
+      if (checkLength.length > 0) {
+        const response2 = await postApiWithAuth(
+          API_URL.CALCULATEDATA,
+          response.data.data[0].grades.map((obj) => ({ grade: obj.id }))
+        );
+
+        console.log(
+          "reponseeee=======2",
+
+          tableData,
+          response2,
+          response.data.data.length
+        );
+        if (response2.data.data.success) {
+          setFinalData(response2.data.data.data);
+          const response = await getApiWithAuth(`calculator/user-points/`);
+          setDataId(response.data.data[0].id);
+          setDataLength(response.data.data.length);
+
+          setLoading(false);
+        } else {
+          setLoading(false);
+        }
+      } else {
+        setFinalData({
+          points: 0,
+          bonus_points: 0,
+          total_points: 0,
+        });
+      }
+
+      // setFinalData({
+      //   points: response?.data?.data[0]?.total_points,
+      //   bonus_points: response?.data?.data[0]?.total_points,
+      //   total_points: response?.data?.data[0]?.total_points,
+      // });
+      // setDataLength(response.data.data.length);
+      // setDataId(response.data.data[0].id);
 
       if (response.data.data.length === 0) {
         for (let i = 0; i < tableData.length; i++) {
