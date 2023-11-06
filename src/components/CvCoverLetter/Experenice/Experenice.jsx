@@ -422,6 +422,8 @@ const Experenice = ({ setCurrent, current }) => {
                           //     current < dayjs(customDate, "DD-MM-YYYY")
                           //   );
                           // }}
+                          disabled={item?.dataValue.is_current_work }
+
                           disabledDate={(current) => {
                             let customDate = dayjs().format("DD-MM-YYYY");
                             return (
@@ -447,6 +449,7 @@ const Experenice = ({ setCurrent, current }) => {
                           className="expCheckBox"
                           name="is_current_work"
                           inputValue={item?.dataValue?.is_current_work}
+                          
                           onChange={(e) => {
                             setExpereniceArray(
                               expereniceArray.map((item) => {
@@ -466,6 +469,8 @@ const Experenice = ({ setCurrent, current }) => {
                         >
                           I am currently working here
                         </Checkbox>
+
+                        
                       </div>
                     </div>
                   </div>
