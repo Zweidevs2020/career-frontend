@@ -21,7 +21,7 @@ const Skill = ({ setCurrent, current }) => {
 
   const optionArray = [
     {
-      label: "SELF STARTER",
+      label: "Self Starter",
       discription:
         "I take initiative and take on projects independently, I can work without supervision",
       value: "1",
