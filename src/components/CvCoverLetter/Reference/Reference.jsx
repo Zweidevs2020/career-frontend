@@ -13,7 +13,7 @@ import Delete from "../../../assets/delete.png";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
 
-const Reference = ({ setCurrent, current,isCvComplete }) => {
+const Reference = ({ setCurrent, current, isCvComplete }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [downloadBtn, setDownloadBtn] = useState(false);
@@ -73,7 +73,8 @@ const Reference = ({ setCurrent, current,isCvComplete }) => {
     if (respose.data.status === 201) {
       // setCurrent(1);
       message.success("Your CV is saved successfully");
-      handleGetApi()
+      handleGetApi();
+      getUserData();
     } else {
       message.error(respose.data.message);
     }
@@ -98,7 +99,7 @@ const Reference = ({ setCurrent, current,isCvComplete }) => {
 
     // Create a temporary URL for the blob
     const pdfUrl = URL.createObjectURL(pdfBlob);
-    console.log("======================u",userData);
+    console.log("======================u", userData);
 
     // Create a link and initiate the download
     const link = document.createElement("a");
@@ -296,16 +297,20 @@ const Reference = ({ setCurrent, current,isCvComplete }) => {
 
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
-
+console.log('=======res',response)
     if (response.data.status === 200) {
       setUserData(response.data.data);
+      setDownloadBtn(response.data.data.cv_completed);
     }
   };
 
   useEffect(() => {
     getUserData();
   }, []);
+  useEffect(() => {
+    console.log('=======resdownloadBtn',downloadBtn)
 
+  }, [downloadBtn]);
   return (
     <>
       <div className="flex flex-col justify-center">
@@ -355,7 +360,9 @@ const Reference = ({ setCurrent, current,isCvComplete }) => {
                       }}
                     />
                   </span>{" "}
-                  <span style={{ color: '#1476b7' ,fontFamily:'Poppins'}}>Add Another Referee</span>
+                  <span style={{ color: "#1476b7", fontFamily: "Poppins" }}>
+                    Add Another Referee
+                  </span>
                 </Button>
               </Form.Item>
             </div>
@@ -374,7 +381,7 @@ const Reference = ({ setCurrent, current,isCvComplete }) => {
                 <Button
                   className={"skillsButton me-3 "}
                   type="primary"
-                  disabled={!isCvComplete}
+                  disabled={!downloadBtn}
                   htmlType="submit"
                   onClick={(e) => SavePdf(e)}
                 >
