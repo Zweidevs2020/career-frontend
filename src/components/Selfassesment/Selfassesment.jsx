@@ -63,6 +63,7 @@ const Selfassesment = () => {
 
     if (response?.data?.status === 200) {
       const psychometricTestData = response.data.data;
+      // let psychometricTestData= response.data.data.sort((a, b) => b.score - a.score);
 
       psychometricTestData.forEach((testData) => {
         if (testData?.test_results?.length > 0) {

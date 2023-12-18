@@ -567,10 +567,6 @@ const Sidebar = ({ children, flags }) => {
                       ></div>
                     </div>
                   </div>
-                  <div className="mt-4">
-                    Lorem ipsum is a placeholder text commonly used to
-                    demonstrate the visual form of a document.
-                  </div>
                   <Row gutter={[16, 16]} justify="center" className="mt-4">
                     <Col xs={24} md={12}>
                       <Input
@@ -983,10 +979,6 @@ const Sidebar = ({ children, flags }) => {
                         }}
                       ></div>
                     </div>
-                  </div>
-                  <div className="mt-4">
-                    Lorem ipsum is a placeholder text commonly used to
-                    demonstrate the visual form of a document.
                   </div>
                   <Row gutter={[16, 16]} justify="center" className="mt-4">
                     <Col xs={24} md={12}>

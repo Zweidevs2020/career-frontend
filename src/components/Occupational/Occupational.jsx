@@ -29,7 +29,9 @@ const Occupational = () => {
         `/psychometric/result?name=${data.name}`
       );
       if (response.data.status === 200) {
-        setEducationGuidance(response?.data?.data);
+        let sortedData= response.data.data.sort((a, b) => b.score - a.score);
+
+        setEducationGuidance(sortedData);
         setLoading(false);
       } else {
         setLoading(false);
@@ -39,7 +41,9 @@ const Occupational = () => {
         `/psychometric/result?name=${data.test_name}`
       );
       if (response1.data.status === 200) {
-        setEducationGuidance(response1?.data?.data);
+        let sortedData= response1.data.data.sort((a, b) => b.score - a.score);
+
+        setEducationGuidance(sortedData);
         setLoading(false);
       } else {
         setLoading(false);
