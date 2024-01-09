@@ -63,6 +63,7 @@ const Sidebar = ({ children, flags }) => {
   const [editMode, setEditMode] = useState(false);
   const [schools, setSchools] = useState([]);
   const [loading2, setLoading2] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); 
   const [screenSize, setScreenSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -135,6 +136,10 @@ const Sidebar = ({ children, flags }) => {
   useEffect(() => {
     getSchools();
   }, []);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword); // Toggling password visibility
+  };
 
   const getSchools = async () => {
     const response = await getApiWithoutAuth(API_URL.GETUSERSCHOOL);
@@ -603,18 +608,21 @@ const Sidebar = ({ children, flags }) => {
                       />
                     </Col>
                     <Col xs={24} md={12}>
-                      <Input
-                        name="password"
-                        type="password"
+                      <Input.Password
+                        name="new_password"
+                        type={showPassword ? 'text' : 'password'} // Show/hide password based on state
+                        onChange={(e) => handleChange(e)}
                         prefix={
-                          <img
-                            src={pass}
-                            style={{ marginRight: "15px" }}
-                            alt=""
-                          />
+                          <Space>
+                            <img
+                              src={pass}
+                              style={{ marginRight: '15px' }}
+                              alt=""
+                            />
+                          </Space>
                         }
-                        disabled={true}
-                        style={{ padding: "15px 10px" }}
+                        disabled={!editMode}
+                        style={{ padding: '15px 10px' }}
                         placeholder="***************"
                       />
                     </Col>
