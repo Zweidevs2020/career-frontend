@@ -99,3 +99,11 @@ code {
 
   width: 100% !important;
 }
+
+
+
+@media only screen and (min-width: 0px) and (max-width: 650px) {
+  .ant-picker-dropdown .ant-picker-year-panel .ant-picker-content{
+    height: 150px 
+  }
+}
