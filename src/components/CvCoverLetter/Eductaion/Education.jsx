@@ -22,22 +22,35 @@ const Education = ({ setCurrent, current }) => {
   const [downloadBtn, setDownloadBtn] = useState(false);
   const [educationArray, setEducationArray] = useState([]);
   const [resultArrayData, setResultArrayData] = useState([]);
+  const [resultArrayDataLeaving, setResultArrayDataLeaving] = useState([]);
+
   const [savedTotalStep, setSavedTotalStep] = useState();
   const [isCheck, setIsCheck] = useState(true);
+  const [isCheckLeaving, setIsCheckLeaving] = useState(true);
   const [nextBtn, setNextBtn] = useState(false);
   const [userData, setUserData] = useState({});
   const [isCurrentCheck, setIsCurrentCheck] = useState(false);
   const [isInputDisabled, setIsInputDisabled] = useState(true);
   const [subjectCount, setSubjectCount] = useState(0);
   const [educationCount, setEducationCount] = useState(0);
+  const [leavingCount, setLeavingCount] = useState(0);
 
   const { Option } = Select;
+
+
+  useEffect(() => {
+   console.log('======================resultArrayDataLeaving,resultArrayData,educationArray',resultArrayDataLeaving,resultArrayData,educationArray)
+  }, [resultArrayDataLeaving,resultArrayData,educationArray]);
+
+
 
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETEDUCATION);
 
     setSubjectCount(response.data.data["junior_data"].length);
     setEducationCount(response.data.data["education_data"].length);
+    setLeavingCount(response?.data?.data["leaving_data"]?.length);
+
     if (response.data?.status === 200) {
       setData(response.data.data);
     } else {
@@ -77,7 +90,7 @@ const Education = ({ setCurrent, current }) => {
         ]);
       }
       if (data.junior_data.length > 0) {
-        console.log('========anees',data.junior_data)
+        console.log("========anees", data.junior_data);
         setResultArrayData(
           data.junior_data.map((item, indexx) => {
             return {
@@ -88,6 +101,29 @@ const Education = ({ setCurrent, current }) => {
         );
       } else {
         setResultArrayData([
+          {
+            index: 0,
+            dataValue: {
+              id: null,
+              subject: "",
+              level: "",
+              result: "",
+            },
+          },
+        ]);
+      }
+      if (data?.leaving_data?.length > 0) {
+        console.log("========anees", data.leaving_data);
+        setResultArrayDataLeaving(
+          data.leaving_data.map((item, indexx) => {
+            return {
+              index: indexx,
+              dataValue: item,
+            };
+          })
+        );
+      } else {
+        setResultArrayDataLeaving([
           {
             index: 0,
             dataValue: {
@@ -116,18 +152,62 @@ const Education = ({ setCurrent, current }) => {
     { label: "NOT GRADED", value: "NOT GRADED" },
   ];
 
+
+  const levelArrayLeaveing = [
+    { label: "Common", value: "Common" },
+    { label: "Higher", value: "Higher" },
+    { label: "Ordinary", value: "Ordinary" },
+  ];
+
+  const resultArrayLeaveing = [
+    { label: "PENDING", value: "PENDING" },
+    { label: "H1", value: "H1" },
+    { label: "H2", value: "H2" },
+    { label: "H3", value: "H3" },
+    { label: "H4", value: "H4" },
+    { label: "H5", value: "H5" },
+    { label: "H6", value: "H6" },
+    { label: "H7", value: "H7" },
+    { label: "O1", value: "O1" },
+    { label: "O2", value: "O2" },
+    { label: "O3", value: "O3" },
+    { label: "O4", value: "O4" },
+    { label: "O5", value: "O5" },
+    { label: "O6", value: "O6" },
+    { label: "O7", value: "O7" },
+  ];
+
   const onsubmit = async () => {
     let sendDaata = {};
     let data = createArrayData(educationArray);
     let resData = createArrayData(resultArrayData);
+    let resDataLeave = createArrayData(resultArrayDataLeaving);
 
-    !isCheck
-      ? (sendDaata = { education_data: data, junior_data: [] })
-      : (sendDaata = { education_data: data, junior_data: resData });
+    // !isCheck
+    //   ? (sendDaata = { education_data: data, junior_data: [], leaving_data:[]  })
+    //   : (sendDaata = { education_data: data, junior_data: resData, leaving_data: resDataLeave  });
+    if (isCheck && isCheckLeaving) {
+      sendDaata = {
+        education_data: data,
+        junior_data: resData,
+        leaving_data: resDataLeave,
+      };
+    } else if (isCheck && !isCheckLeaving) {
+      sendDaata = {
+        education_data: data,
+        junior_data: resData,
+        leaving_data: [],
+      };
+    } else if (!isCheck && isCheckLeaving) {
+      sendDaata = { education_data: data, junior_data: [], leaving_data: resDataLeave };
+    } else {
+      sendDaata = { education_data: data, junior_data: [], leaving_data: [] };
+    }
     console.log("ending date", sendDaata);
     const respose = await postApiWithAuth(API_URL.POSTEDUCATION, sendDaata);
     if (respose.data.status === 201) {
       setSubjectCount(subjectCount + 1);
+      setLeavingCount(leavingCount + 1);
       setCurrent(current + 1);
     } else {
       message.error(respose.data.message);
@@ -157,9 +237,18 @@ const Education = ({ setCurrent, current }) => {
             : item;
         })
       );
-    } else {
+    }
+    else if (type === 2) {
       setResultArrayData(
         resultArrayData.map((item) => {
+          return item.index === arrayIndex
+            ? { ...item, dataValue: { ...item.dataValue, [name]: value } }
+            : item;
+        })
+      );
+    } else {
+      setResultArrayDataLeaving(
+        resultArrayDataLeaving.map((item) => {
           return item.index === arrayIndex
             ? { ...item, dataValue: { ...item.dataValue, [name]: value } }
             : item;
@@ -201,6 +290,18 @@ const Education = ({ setCurrent, current }) => {
   const handleChange = (value, name, arrayIndex) => {
     setResultArrayData(
       resultArrayData.map((item) => {
+        return item.index === arrayIndex
+          ? { ...item, dataValue: { ...item.dataValue, [name]: value } }
+          : item;
+      })
+    );
+  };
+
+  const handleChangeLeaving = (value, name, arrayIndex) => {
+        console.log("================================anees", value,name,arrayIndex);
+
+    setResultArrayDataLeaving(
+      resultArrayDataLeaving.map((item) => {
         return item.index === arrayIndex
           ? { ...item, dataValue: { ...item.dataValue, [name]: value } }
           : item;
@@ -488,6 +589,36 @@ const Education = ({ setCurrent, current }) => {
     }
   };
 
+  const handleDeleteLeaving = async (id) => {
+    try {
+      setResultArrayDataLeaving((prevArray) =>
+        prevArray.filter((item) => item.dataValue.id !== id)
+      );
+
+      const response = await deleteApiWithAuth(
+        `${API_URL.DELETE_LEAVING}/${id}/`
+      );
+
+      if (response.data.status === 204) {
+        message.success("Leaving Cert entry deleted successfully.");
+        setLeavingCount(leavingCount - 1);
+      } else {
+        message.error("Failed to delete the Leaving Cert entry.");
+        setResultArrayDataLeaving((prevArray) => [
+          ...prevArray,
+          resultArrayDataLeaving.find((item) => item.dataValue.id === id),
+        ]);
+      }
+    } catch (error) {
+      console.error("Error deleting the Leaving Cert entry:", error);
+      message.error("An error occurred while deleting the Leaving Cert entry.");
+      setResultArrayDataLeaving((prevArray) => [
+        ...prevArray,
+        resultArrayDataLeaving.find((item) => item.dataValue.id === id),
+      ]);
+    }
+  };
+
   const educationResult = (item, index) => {
     return (
       <>
@@ -573,7 +704,7 @@ const Education = ({ setCurrent, current }) => {
               optionLabelProp="label"
               className="eduSelect eduSelectItem"
               defaultValue={
-                item?.dataValue?.level ? item?.dataValue?.level : null
+                item?.dataValue?.result ? item?.dataValue?.result : null
               }
               // disabled={isInputDisabled}>
             >
@@ -598,6 +729,123 @@ const Education = ({ setCurrent, current }) => {
               src={Delete}
               // disabled={isInputDisabled}
               onClick={() => handleDeleteJuniorCert(item.dataValue.id)}
+            />
+          )}
+        </div>
+      </>
+    );
+  };
+
+  const educationResultLeaving = (item, index) => {
+    return (
+      <>
+        {console.log("=======================item Leaving", item)}
+        <div className="eduFormDouble">
+          <div className="eduFormDoubleItem mt-3">
+            <Form.Item
+              label="Subject"
+              name={`subjectt ${index}`}
+              className="eduItemLable"
+              rules={[
+                {
+                  required: item?.dataValue.subject ? false : true,
+                  message: "Please input your subject",
+                },
+              ]}
+            >
+              <MyCareerGuidanceInputField
+                placeholder="e.g. Subject"
+                type="input"
+                name="subject"
+                onChange={(event) => onChangeHandle(event, index, 3)}
+                inputValue={item?.dataValue?.subject}
+                isPrefix={true}
+                // disabled={isInputDisabled}
+              />
+            </Form.Item>
+          </div>
+          <div className="expFormDoubleItem mt-3">
+            <Form.Item
+              label="Level"
+              name={`levell ${index}`}
+              className="skillItemLable"
+              rules={[
+                {
+                  required: item?.dataValue.level ? false : true,
+                  message: "Please Select 1 Option",
+                },
+              ]}
+            >
+              <Select
+                placeholder="Select Level"
+                onChange={(event) => handleChangeLeaving(event, "level", index)}
+                optionLabelProp="label"
+                className="eduSelect eduSelectItem"
+                defaultValue={
+                  item?.dataValue?.level ? item?.dataValue?.level : null
+                }
+                // disabled={isInputDisabled}
+              >
+                {levelArrayLeaveing.map((item) => {
+                  return (
+                    <Option
+                      value={item.value}
+                      key={item.value}
+                      label={item.label}
+                    >
+                      {item.label}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </div>
+        </div>
+
+        <div className="expFormDoubleItem">
+          <Form.Item
+            defaultValue="Result"
+            label="Result"
+            name={`resultt ${index}`}
+            className="skillItemLable"
+            rules={[
+              {
+                required: item?.dataValue.result ? false : true,
+                message: "Please Select 1 Option",
+              },
+            ]}
+          >
+            <Select
+              placeholder="Select Result"
+              onChange={(event) => handleChangeLeaving(event, "result", index)}
+              optionLabelProp="label"
+              className="eduSelect eduSelectItem"
+              defaultValue={
+                item?.dataValue?.result ? item?.dataValue?.result : null
+              }
+              // disabled={isInputDisabled}>
+            >
+              {resultArrayLeaveing.map((item) => {
+                return (
+                  <Option
+                    value={item.value}
+                    key={item.value}
+                    label={item.label}
+                  >
+                    {item.label}
+                  </Option>
+                );
+              })}
+            </Select>
+          </Form.Item>
+        </div>
+        <div className="mainContainerDelete">
+          {leavingCount > 1 && index > 0 && (
+            <img
+              className="deleteSubject"
+              src={Delete}
+              // disabled={isInputDisabled}
+              onClick={() => handleDeleteLeaving(item.dataValue.id)}
             />
           )}
         </div>
@@ -692,7 +940,6 @@ const Education = ({ setCurrent, current }) => {
             </div>
             {isCheck && educationArray.length > 0 ? (
               <>
-              {console.log('========resultArrayData',resultArrayData)}
                 {resultArrayData.map((item, index) => {
                   return educationResult(item, index);
                 })}
@@ -705,6 +952,82 @@ const Education = ({ setCurrent, current }) => {
                           ...oldarr,
                           {
                             index: resultArrayData.length,
+                            dataValue: {
+                              id: null,
+                              subject: "",
+                              level: null,
+                              result: "",
+                            },
+                          },
+                        ])
+                      }
+                    >
+                      <span>
+                        <PlusCircleOutlined
+                          style={{
+                            fontSize: "20px",
+                            display: "flex",
+                            alignItems: "center",
+                            marginRight: "10px",
+                            color: "#1476b7",
+                          }}
+                        />
+                      </span>{" "}
+                      <span style={{ color: "#1476b7", fontFamily: "Poppins" }}>
+                        {" "}
+                        Add Another Subject
+                      </span>
+                    </Button>
+                  </Form.Item>
+                </div>
+              </>
+            ) : (
+              ""
+            )}
+
+            <div className="eduJunDiv" style={{ fontFamily: "Poppins" }}>
+              Include Leaving Cert Results. *
+            </div>
+            <div className="eduJunCheckDiv">
+              <Form.Item>
+                <Checkbox
+                  className="eduJunCheckBox"
+                  // disabled={isInputDisabled}
+                  checked={isCheckLeaving}
+                  onChange={() => {
+                    setIsCheckLeaving(!isCheckLeaving);
+                  }}
+                >
+                  Yes
+                </Checkbox>
+              </Form.Item>
+              <Form.Item>
+                <Checkbox
+                  className="eduJunCheckBox"
+                  // disabled={isInputDisabled}
+                  checked={!isCheckLeaving}
+                  onChange={() => {
+                    setIsCheckLeaving(!isCheckLeaving);
+                  }}
+                >
+                  No
+                </Checkbox>
+              </Form.Item>
+            </div>
+            {isCheckLeaving && resultArrayDataLeaving.length > 0 ? (
+              <>
+                {resultArrayDataLeaving.map((item, index) => {
+                  return educationResultLeaving(item, index);
+                })}
+                <div>
+                  <Form.Item>
+                    <Button
+                      className="eduAddButton"
+                      onClick={() =>
+                        setResultArrayDataLeaving((oldarr) => [
+                          ...oldarr,
+                          {
+                            index: resultArrayDataLeaving.length,
                             dataValue: {
                               id: null,
                               subject: "",

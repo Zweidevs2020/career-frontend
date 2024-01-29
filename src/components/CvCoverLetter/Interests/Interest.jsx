@@ -14,12 +14,27 @@ const Interest = ({ setCurrent, current }) => {
   const [nextBtn, setNextBtn] = useState(false);
   const [savedTotalStep,setSavedTotalStep]=useState()
   const [textData, setTextData] = useState({ id: null });
+  const [textDataAditinalInformation, setTextDataAditinalInformation] = useState({ id: null });
+
   const [isInputDisabled, setIsInputDisabled] = useState(true);
 
 
   const onsubmit = async () => {
 
     const respose = await postApiWithAuth(API_URL.POSTINTREST, [textData]);
+
+    if (respose.data.status === 201) {
+      onsubmittextDataAditinalInformation()
+      // setCurrent(current + 1);
+    } else {
+      message.error("Error, Please try again");
+    }
+  };
+
+
+  const onsubmittextDataAditinalInformation = async () => {
+
+    const respose = await postApiWithAuth(API_URL.POSTADITINALINFOEMATION, [textDataAditinalInformation]);
 
     if (respose.data.status === 201) {
       setCurrent(current + 1);
@@ -37,12 +52,27 @@ const Interest = ({ setCurrent, current }) => {
     setTextData({ ...textData, [name]: value });
   };
 
+  const handleChangeAditinalInformation = (event) => {
+    const { name, value } = event.target;
+    setTextDataAditinalInformation({ ...textDataAditinalInformation, [name]: value });
+  };
+
   const getIntrest = async () => {
     const response = await getApiWithAuth(API_URL.GETINTREST);
 
     if (response.data?.status === 200) {
       if (response.data.data.length > 0) {
         setTextData(response.data.data[0]);
+      }
+    }
+  };
+
+  const getAditinalInformation = async () => {
+    const response = await getApiWithAuth(API_URL.GETADITINALINFOEMATION);
+
+    if (response.data?.status === 200) {
+      if (response.data.data.length > 0) {
+        setTextDataAditinalInformation(response.data.data[0]);
       }
     }
   };
@@ -105,6 +135,7 @@ const Interest = ({ setCurrent, current }) => {
 
   useEffect(() => {
     getIntrest();
+    getAditinalInformation()
     getUserData();
   }, []);
   const handleNextClick = () => {
@@ -137,6 +168,25 @@ const Interest = ({ setCurrent, current }) => {
                   value={textData.interests}
                   name="interests"
                   onChange={handleChange}
+                // disabled={isInputDisabled}
+                />
+              </Form.Item>
+            </div>
+            <div>
+              <Form.Item
+                label="Additional"
+                className="interestItemLable"
+                rules={[
+                  { required: true, message: "Please input your Additional!" },
+                ]}
+              >
+                <TextArea
+                  rows={4}
+                  placeholder={textDataAditinalInformation?.additional_info || "Write Your Additionals......"}
+                  className="inputFieldStyle"
+                  value={textDataAditinalInformation?.additional_info}
+                  name="additional_info"
+                  onChange={handleChangeAditinalInformation}
                 // disabled={isInputDisabled}
                 />
               </Form.Item>

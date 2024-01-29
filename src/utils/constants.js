@@ -27,6 +27,8 @@ export const API_URL = {
   GETREFERANCE:'cv/get-reference/',
   POSTREFERNACE:'cv/add-reference/',
   GETINTREST:"cv/get-interest/",
+  GETADITINALINFOEMATION:"cv/get-additional-info",
+  POSTADITINALINFOEMATION:"cv/add-additional-info/",
   POSTINTREST:"cv/add-interest/",
   SAVEPDF:'cv/cv',
   ADDSLOTTABLE:'timetable/add-timeslot/',
@@ -40,5 +42,6 @@ export const API_URL = {
   UPDATE_REFERENCE:'/cv/update-reference',
   DELETE_CAOPOINT:'/cao-calculator/delete-caopoint',
   DELETE_RESULT:'/cv/delete-junior-cert',
+  DELETE_LEAVING:'/cv/delete-leaving-cert',
   SENDCV:'cv/sendcv/'
 };

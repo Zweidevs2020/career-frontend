@@ -103,7 +103,7 @@ code {
 
 
 @media only screen and (min-width: 0px) and (max-width: 650px) {
-  .ant-picker-dropdown .ant-picker-year-panel .ant-picker-content{
+  .ant-picker-dropdown .ant-picker-year-panel .ant-picker-content .ant-picker-month-panel{
     height: 150px 
   }
 }
