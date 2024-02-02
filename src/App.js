@@ -28,6 +28,7 @@ import MyChoices from "./components/MyChoices";
 import MyChoicesEdit from "./components/MyChoicesEdit";
 import Occupational from "./components/Occupational";
 import YoutubePage from "./components/CvCoverLetter/YoutubePage";
+import OccupationalOption from "./components/OccupationalOption";
 function App() {
   return (
     <BrowserRouter>
@@ -191,6 +192,16 @@ function App() {
             <PrivateRoute>
               <Sidebar>
                 <MyChoicesEdit />
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+         <Route
+          path="/occupation/:idea"
+          element={
+            <PrivateRoute>
+              <Sidebar>
+                <OccupationalOption />
               </Sidebar>
             </PrivateRoute>
           }

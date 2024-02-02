@@ -174,15 +174,15 @@ const Interest = ({ setCurrent, current }) => {
             </div>
             <div>
               <Form.Item
-                label="Additional"
+                label="Achievements"
                 className="interestItemLable"
                 rules={[
-                  { required: true, message: "Please input your Additional!" },
+                  { required: true, message: "Please input your Achievements!" },
                 ]}
               >
                 <TextArea
                   rows={4}
-                  placeholder={textDataAditinalInformation?.additional_info || "Write Your Additionals......"}
+                  placeholder={textDataAditinalInformation?.additional_info || "Write Your Achievements......"}
                   className="inputFieldStyle"
                   value={textDataAditinalInformation?.additional_info}
                   name="additional_info"

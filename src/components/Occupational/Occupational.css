@@ -1,0 +1,7 @@
+.occupationOptionBackground {
+    border: 1px solid lightblue;
+    border-radius: 15px;
+    background: #fff;
+    padding: 10px;
+    box-shadow: 2px 2px 2px lightblue;
+}

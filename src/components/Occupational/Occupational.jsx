@@ -1,10 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Spin, message, Radio, Button } from "antd";
+import { Spin, message, Radio, Button, Row, Col } from "antd";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import { MyCareerGuidanceButton } from "../commonComponents";
 import Chart from "react-apexcharts";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import "./Occupational.css";
+const btnOptions = [
+  {
+    path: "career-idea",
+    name: "Career Ideas",
+  },
+  {
+    path: "choice-idea",
+    name: "Subject Choices Ideas",
+  },
+  {
+    path: "study-tips",
+    name: "5 Study Tips",
+  },
+];
 const Occupational = () => {
   const navigate = useNavigate();
 
@@ -28,8 +42,9 @@ const Occupational = () => {
       const response = await getApiWithAuth(
         `/psychometric/result?name=${data.name}`
       );
+      console.log("=============res", response);
       if (response.data.status === 200) {
-        let sortedData= response.data.data.sort((a, b) => b.score - a.score);
+        let sortedData = response.data.data.sort((a, b) => b.score - a.score);
 
         setEducationGuidance(sortedData);
         setLoading(false);
@@ -40,8 +55,9 @@ const Occupational = () => {
       const response1 = await getApiWithAuth(
         `/psychometric/result?name=${data.test_name}`
       );
+      console.log("=============res1", response1);
       if (response1.data.status === 200) {
-        let sortedData= response1.data.data.sort((a, b) => b.score - a.score);
+        let sortedData = response1.data.data.sort((a, b) => b.score - a.score);
 
         setEducationGuidance(sortedData);
         setLoading(false);
@@ -54,15 +70,16 @@ const Occupational = () => {
   const getQuizData = async () => {
     setLoading(true);
     const response = await getApiWithAuth(`/psychometric/result/${data}/`);
+    console.log("=============res2", data, response);
     if (response.data.status === 200) {
-      let sortedData= response.data.data.sort((a, b) => b.score - a.score);
+      let sortedData = response.data.data.sort((a, b) => b.score - a.score);
       setEducationGuidance(sortedData);
       setLoading(false);
     } else {
       setLoading(false);
     }
   };
-  console.log('==========educationGuidance',educationGuidance)
+  console.log("==========educationGuidance", educationGuidance);
 
   // const sortByScoreDescending = (a, b) => b.score - a.score;
   // const sortedData = educationGuidance.slice().sort(sortByScoreDescending);
@@ -186,7 +203,7 @@ const Occupational = () => {
                 />
               </div>
               <div className="mt-5 pt-5">
-                {educationGuidance.map((item) => {
+                {educationGuidance?.map((item) => {
                   return (
                     <div>
                       <div
@@ -197,6 +214,40 @@ const Occupational = () => {
                       </div>
                       <div className="textStyle18 pt-1 pb-3">
                         {item.description}
+                      </div>
+                      <div>
+                        <Row
+                          gutter={[4, 8]}
+                          className="occupationOptionBackground"
+                        >
+                          {btnOptions.map((buttonitem, index) => (
+                            <Col span={24} md={8} key={buttonitem.path}>
+                              <Button
+                                className="skillsButton"
+                                type="primary"
+                                key={index}
+                                style={{ width: "100%" }}
+                                // onClick={() => {
+                                //   navigate(`/occupation/}/${buttonitem.name}/${buttonitem.path}/${item.id}`, {
+                                //     preventScrollReset: true,
+                                //   });
+                                // }}
+
+                                onClick={() =>
+                                  navigate(`/occupation/${buttonitem.path}`, {
+                                    state: {
+                                      item: item,
+                                      buttonitem: buttonitem,
+                                    },
+                                    preventScrollReset: true,
+                                  })
+                                }
+                              >
+                                {buttonitem.name}
+                              </Button>
+                            </Col>
+                          ))}
+                        </Row>
                       </div>
                     </div>
                   );
