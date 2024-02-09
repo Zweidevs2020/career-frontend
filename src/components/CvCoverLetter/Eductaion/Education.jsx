@@ -37,12 +37,14 @@ const Education = ({ setCurrent, current }) => {
 
   const { Option } = Select;
 
-
   useEffect(() => {
-   console.log('======================resultArrayDataLeaving,resultArrayData,educationArray',resultArrayDataLeaving,resultArrayData,educationArray)
-  }, [resultArrayDataLeaving,resultArrayData,educationArray]);
-
-
+    console.log(
+      "======================resultArrayDataLeaving,resultArrayData,educationArray",
+      resultArrayDataLeaving,
+      resultArrayData,
+      educationArray
+    );
+  }, [resultArrayDataLeaving, resultArrayData, educationArray]);
 
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETEDUCATION);
@@ -50,7 +52,12 @@ const Education = ({ setCurrent, current }) => {
     setSubjectCount(response.data.data["junior_data"].length);
     setEducationCount(response.data.data["education_data"].length);
     setLeavingCount(response?.data?.data["leaving_data"]?.length);
-
+    setIsCheckLeaving(
+      response?.data?.data["leaving_data"]?.length === 0 ? false : true
+    );
+    setIsCheck(
+      response?.data?.data["junior_data"]?.length === 0 ? false : true
+    );
     if (response.data?.status === 200) {
       setData(response.data.data);
     } else {
@@ -152,7 +159,6 @@ const Education = ({ setCurrent, current }) => {
     { label: "NOT GRADED", value: "NOT GRADED" },
   ];
 
-
   const levelArrayLeaveing = [
     { label: "Common", value: "Common" },
     { label: "Higher", value: "Higher" },
@@ -199,7 +205,11 @@ const Education = ({ setCurrent, current }) => {
         leaving_data: [],
       };
     } else if (!isCheck && isCheckLeaving) {
-      sendDaata = { education_data: data, junior_data: [], leaving_data: resDataLeave };
+      sendDaata = {
+        education_data: data,
+        junior_data: [],
+        leaving_data: resDataLeave,
+      };
     } else {
       sendDaata = { education_data: data, junior_data: [], leaving_data: [] };
     }
@@ -237,8 +247,7 @@ const Education = ({ setCurrent, current }) => {
             : item;
         })
       );
-    }
-    else if (type === 2) {
+    } else if (type === 2) {
       setResultArrayData(
         resultArrayData.map((item) => {
           return item.index === arrayIndex
@@ -298,7 +307,12 @@ const Education = ({ setCurrent, current }) => {
   };
 
   const handleChangeLeaving = (value, name, arrayIndex) => {
-        console.log("================================anees", value,name,arrayIndex);
+    console.log(
+      "================================anees",
+      value,
+      name,
+      arrayIndex
+    );
 
     setResultArrayDataLeaving(
       resultArrayDataLeaving.map((item) => {

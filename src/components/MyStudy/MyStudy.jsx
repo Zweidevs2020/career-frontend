@@ -88,6 +88,7 @@ const MyStudy = () => {
     for (var i = 0; i <= 6; i++) {
       days.push(moment(weekStart).add(i, "days").format("ddd MMMM DD YYYY"));
     }
+
     setDatatime(days);
   };
 
@@ -162,7 +163,7 @@ const MyStudy = () => {
 
       if (response.data.success === true) {
         const arr = [response.data.data];
-        message.success("Booking Updated Successfully");
+        message.success("Updated Successfully");
 
         const updatedCalenderData = arr.map((item) => {
 
@@ -336,7 +337,7 @@ const MyStudy = () => {
     }
   };
 
-  const createNewEvent = async () => {
+  const createNewEvent = async (e) => {
     setLoadingBooking(true);
 
     let startTime = dayjs(selectedTime, "hh:mm A").format("HH:mm:ss");
@@ -368,6 +369,9 @@ const MyStudy = () => {
       message.error(response.data.message[0]);
     }
   };
+  useEffect(() => {
+    console.log('==========================dataTime',data,calenderData,"===",weekDay,dataTime,selectedTime,selectedEndTime)
+  }, [data,calenderData,weekDay,dataTime,selectedTime,selectedEndTime]);
   const isMobile = window.innerWidth <= 768;
 
 
@@ -470,7 +474,7 @@ const MyStudy = () => {
     });
 
     if (response.data.success === true) {
-      message.success("Booking Updated Successfully");
+      message.success("Updated Successfully");
       setUpdateLoading(false);
       setDatatime([]);
       getCalanderData();
