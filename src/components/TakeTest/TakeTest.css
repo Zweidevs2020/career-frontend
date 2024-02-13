@@ -1,0 +1,18 @@
+.quizBoxStyle {
+  background: white;
+  box-shadow: 0px 5px 11px rgba(0, 0, 0, 0.02);
+  border-radius: 10px;
+  margin-top: 10px;
+  height: 100%;
+  padding: 20px;
+}
+
+.questionStyling {
+  color: rgb(20, 118, 183);
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.submitTest {
+  cursor: pointer;
+}

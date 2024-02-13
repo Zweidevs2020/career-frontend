@@ -1,0 +1,209 @@
+.eduHead {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #474749;
+    margin-left: 1.6%;
+    margin-top: 2%;
+}
+
+.eduSubHeading {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    color: #737373;
+    margin-left: 1.6%;
+    margin-top: 0.5%;
+}
+
+.eduForm {
+    padding: 0px 20px 0px 20px;
+}
+
+
+.eduFormDouble {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.eduFormDoubleItem {
+    width: 49%;
+}
+
+.eduItemLable .ant-form-item-label {
+    text-align: start !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    font-family: 'Inter' !important;
+    font-style: normal !important;
+}
+
+.eduFormItem {
+    margin-top: 24px;
+}
+
+.buttonEducation {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 2rem;
+}
+
+.eduItemButton {
+
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+.eduButton {
+    /* border: 1px solid grey; */
+    width: 144px;
+    height: 45px !important;
+    background: #1476B7;
+    font-size: 14px;
+    border-radius: 12px;
+}
+
+.eduButtonBack,
+.eduButtonNext {
+    border: 1px solid #1476B7;
+    width: 144px;
+    height: 45px !important;
+    background-color: #1476B7;
+    font-size: 14px;
+    border-radius: 12px;
+    color: white;
+}
+
+.eduButtonNext {
+    margin-right: 58%;
+}
+
+.eduAddButton {
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border: 1px solid #1984FF;
+    border-radius: 8px;
+    color: #1984FF;
+    height: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 3%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.eduJunDiv {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 150%;
+    color: #111928;
+}
+
+.eduJunCheckDiv {
+    display: flex;
+    width: 14%;
+    justify-content: space-between;
+    margin-left: 0.25%;
+}
+
+.eduJunCheckBox .ant-checkbox .ant-checkbox-inner {
+    border: 1px solid #D1D5DB !important;
+    border-radius: 2.52632px !important;
+    width: 18px !important;
+    height: 18px !important;
+}
+
+.eduSelect .ant-select-selector {
+    height: 50px !important;
+    background: #FFFFFF !important;
+    display: flex !important;
+    align-items: center !important;
+font-size: 16px;
+    border: 1px solid #D1D5DB !important;
+    border-radius: 10px !important;
+}
+
+.eduSelectItem .ant-select-single .ant-select-selector .ant-select-selection-item:after {
+    display: flex !important;
+    align-items: center !important;
+    flex-direction: column;
+}
+
+.deleteSubject {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+
+
+}
+
+.mainContainerDelete {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+
+.hrStyle {
+    width: 100% !important;
+    padding-top: 30px;
+}
+
+@media (max-width: 768px) {
+
+    .mobileResposiveEducation {
+        display: block !important;
+        margin: 0px !important;
+    }
+
+    .eduItemButton {
+        display: block;
+        margin-bottom: 0px;
+    }
+
+    .eduJunCheckDiv {
+
+        width: 100%;
+    }
+
+    .eduItemButton.eduButtonBack {
+        width: 48% !important;
+       
+    }
+
+    .eduHead {
+        font-size: 14px;
+        margin-top: 4%;
+    }
+
+    .expCheckBox {
+        font-size: 12px !important;
+    }
+
+    .deleteSubject {
+        width: 25px;
+        height: 25px;
+    }
+
+    .ant-select-single .ant-select-selector .ant-select-selection-item {
+
+        font-size: 12px;
+    }
+
+    .eduButton {
+        margin-top: 18px !important;
+    }
+
+}

@@ -1,0 +1,650 @@
+.selectFieldStyle {
+  border: 1px solid rgba(224, 224, 224, 0.63);
+  border-radius: 3px;
+  /* width:120px; */
+  min-width: 125px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  background-color: #ffffff;
+  box-shadow: 0px 5px 11px rgba(0, 0, 0, 0.07);
+  cursor: pointer !important;
+
+}
+
+.backgroundF4F6F8 {
+  background-color: #f4f6f8;
+  border-radius: 5px;
+}
+
+.error {
+  border: 1px solid red;
+}
+
+.backgroundF4F6F8 td:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.backgroundF4F6F8 td:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.addSubjectContainer{
+  display: flex;
+  justify-content: flex-end;
+  width: 102%;
+}
+.clearAllButton {
+  /* color: #a8a8a8;
+  border-radius: 8px solid;
+  background: #ffffff;
+  border: 0.770492px solid #e0e0e0;
+  width: 130px;
+  height: 36px;
+  margin-top: 10px;
+  font-weight: 500; */
+
+  color: white;
+  border-radius: 8px;
+  background: #1476b7;
+  border: 0.770492px solid #1476b7;
+  width: 130px;
+  height: 40px;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.addSubjectButton {
+  color: white;
+  border: none;
+  background: #1476b7;
+  width: 130px;
+  height: 45px !important;
+  margin-top: 10px;
+  font-weight: 500;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addSubjectButton:hover {
+  color: white !important;
+  background: #1476b7 !important;
+  border: none !important;
+}
+
+.calculateButton {
+  color: white;
+  border-radius: 8px;
+  background: #1476b7;
+  border: 0.770492px solid #1476b7;
+  width: 130px;
+  height: 40px;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.caoMainDiv {
+  min-height: 100vh;
+  width: 100%;
+  background: white;
+}
+
+.cao2ndText {
+  color: #737373;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.coaInnerf8fafcDiv {
+  background: #f8fafc;
+  width: 100%;
+  padding: 20px;
+  height: 80vh;
+}
+
+.coaSubjectDiv {
+  width: 100%;
+  min-height: 50vh;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+}
+
+.coaSubjectWidth {
+  width: 62%;
+}
+
+.coaPointsWidth {
+  width: 35%;
+}
+
+.coaPointTextMain {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
+
+.coaPointTextStyle {
+  font-size: 12px;
+  color: rgba(38, 50, 56, 0.92);
+}
+
+.circularBarMainDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+  border: 0.988391px solid rgba(224, 224, 224, 0.42);
+  box-shadow: 0px 3.95356px 11.8607px rgba(0, 0, 0, 0.1);
+  width: 158px;
+  height: 158px;
+  border-radius: 50%;
+}
+
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  border: none;
+}
+
+.ant-select-focused.ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector {
+  box-shadow: none;
+}
+
+:where(.css-ed5zg0).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  border: none;
+}
+
+:where(.css-ed5zg0).ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer):hover .ant-select-selector {
+  border-color: white;
+}
+
+.ant-select-focused:where(.css-ed5zg0).ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector {
+  border-color: white;
+  box-shadow: none;
+}
+
+/* button.ant-btn.ant-btn-primary.clearAllButton,
+button.ant-btn.ant-btn-primary.calculateButton {
+  color: white !important;
+}
+
+button.ant-btn.css-ed5zg0.ant-btn-primary.clearAllButton,
+button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
+  color: white !important;
+} */
+
+/* .coaSubjectWidth td.ant-table-cell {
+  max-width: 163px !important;
+} */
+.coaSubjectWidth .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow.ant-select-show-search,
+.ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+  width: 290px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: auto;
+}
+
+.ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow,
+.ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow {
+  width: 290px;
+  margin: auto;
+}
+
+/* .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search{
+  width: 235px;
+} */
+@media only screen and (min-width: 0px) and (max-width: 650px) {
+  .caoMainDiv {
+    /* padding: 5px; */
+  }
+ 
+  .coaSubjectDiv {
+    flex-direction: column;
+  }
+
+  .coaSubjectWidth {
+    width: 100%;
+  }
+
+  .coaInnerf8fafcDiv {
+    padding: 5px;
+  }
+
+  .selectFieldStyle {
+    width: 120px;
+    min-width: 25px;
+  }
+
+  .coaPointsWidth {
+    width: 100%;
+  }
+
+  .coaPointTextMain {
+    display: none;
+  }
+
+  .clearAllButton,
+  .calculateButton {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 651px) and (max-width: 1000px) {
+  .caoMainDiv {
+    /* padding: 20px; */
+  }
+  .addSubjectContainer{
+  
+    width: 100%;
+  }
+  .coaSubjectDiv {
+    flex-direction: column !important;
+  }
+
+  .coaSubjectWidth {
+    width: 100%;
+  }
+
+  .coaInnerf8fafcDiv {
+    padding: 10px;
+  }
+
+  .coaPointsWidth {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 1001px) and (max-width: 1400px) {
+  .coaSubjectWidth {
+    width: 60%;
+  }
+  .addSubjectContainer{
+  
+    width: 100%;
+  }
+  .coaInnerf8fafcDiv {
+    padding: 10px;
+  }
+
+  .selectFieldStyle {
+    width: 210px;
+    /* min-width: 25px; */
+  }
+
+  .coaPointsWidth {
+    width: 35%;
+  }
+}
+
+@media (max-width: 1600px) {
+
+  .coaSubjectWidth .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow.ant-select-show-search,
+  .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+    width: 100% !important;
+  }
+  .addSubjectContainer{
+  
+    width: 100%;
+  }
+  .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow,
+  .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow {
+    width: 100%;
+  }
+
+  .coaSubjectWidth {
+    width: 63%;
+  }
+
+  .coaInnerf8fafcDiv {
+    padding: 10px;
+  }
+
+  .selectFieldStyle {
+    width: 210px;
+    /* min-width: 25px; */
+  }
+
+  .coaPointsWidth {
+    width: 35%;
+  }
+}
+@media only screen and (min-width: 1771px) and (max-width: 1950px) {
+  .addSubjectContainer{
+  
+    width: 104%;
+  }
+  .coaPointsWidth {
+    width: 28%;
+  }
+}
+@media only screen and (min-width: 1712px) and (max-width: 1770px) {
+  .addSubjectContainer{
+  
+    width: 110%;
+  }
+  .coaPointsWidth {
+    width: 25%;
+  }
+}
+@media only screen and (min-width: 1561px) and (max-width: 1711px) {
+  .addSubjectContainer{
+  display: flex;
+  justify-content: flex-start;
+    width: 100%;
+  }
+  .coaPointsWidth {
+    width: 19%;
+  }
+}
+@media (max-width: 1540px) {
+
+  .coaSubjectWidth .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow.ant-select-show-search,
+  .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+    width: 100% !important;
+  }
+  .addSubjectContainer{
+  
+    width: 100%;
+  }
+
+  .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow,
+  .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow {
+    width: 180px;
+  }
+  .coaSubjectWidth {
+    width: 63%;
+  }
+
+  .coaInnerf8fafcDiv {
+    padding: 10px;
+  }
+
+  .selectFieldStyle {
+    width: 210px;
+    /* min-width: 25px; */
+  }
+
+  .coaPointsWidth {
+    width: 30%;
+  }
+}
+@media (max-width: 1310px) {
+  .coaSubjectWidth {
+    width: 62%;
+  }
+  .addSubjectContainer{
+  
+    width: 100%;
+  }
+  .coaInnerf8fafcDiv {
+    padding: 7px;
+  }
+
+  .selectFieldStyle {
+    width: 206px;
+    /* min-width: 25px; */
+  }
+
+  .coaPointsWidth {
+    width: 29%;
+  }
+
+
+}
+@media (max-width: 1280px) {
+
+  /* .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+      width: 200px !important;
+    } */
+  .coaSubjectWidth .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow.ant-select-show-search,
+  .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+    width: 100% !important;
+  }
+  .addSubjectContainer{
+  
+    width: 100%;
+  }
+  .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow,
+  .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow {
+    width: 160px;
+  }
+  .coaSubjectWidth {
+    width: 65%;
+  }
+
+  .coaInnerf8fafcDiv {
+    padding: 7px;
+  }
+
+  .selectFieldStyle {
+    width: 205px;
+    /* min-width: 25px; */
+  }
+
+  .coaPointsWidth {
+    width: 32%;
+  }
+}
+@media (max-width: 1196px) {
+  .coaSubjectWidth {
+    width: 55%;
+  }
+  .addSubjectContainer{
+  
+    width: 100%;
+  }
+  .coaInnerf8fafcDiv {
+    padding: 5px;
+  }
+
+  .selectFieldStyle {
+    width: 200px;
+    /* min-width: 25px; */
+  }
+
+  .coaPointsWidth {
+    width: 27.5%;
+  }
+}
+@media (max-width: 1234px) {
+  .coaSubjectDiv {
+    display: block;
+  }
+
+  .coaPointsWidth {
+    width: 100%;
+  }
+  .addSubjectContainer{
+  
+    width: 100%;
+  }
+  .coaSubjectWidth {
+    width: 100%;
+  }
+
+  .coaPointsWidth.coaPointsWidth2 {
+    padding-top: 30px;
+  }
+
+  /* .coaSubjectWidth
+    .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+    width: 210px !important;
+  } */
+  .coaSubjectWidth td.ant-table-cell {
+    max-width: 200px !important;
+  }
+
+  .coaSubjectWidth .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow.ant-select-show-search,
+  .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+    width: 100% !important;
+  }
+
+  .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow,
+  .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+
+  /* .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+      width: 120px !important;
+    } */
+  /*  
+
+  
+      .responsiveTable {
+        display: block;
+        white-space: nowrap;
+        overflow-x: auto;
+      } */
+  .mobileTable {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  } 
+
+  .caoHeadingText {
+    font-size: 19px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+
+  .mobileTableCell {
+    flex: 1;
+  }
+
+  .mobileTableHeader {
+
+    margin-top: 1rem;
+    font-size: 16px;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+    color: #474749;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+
+  .selectFieldStyle {
+    width: 100%;
+  }
+
+
+  .headingStyle {
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .clearAllButton,
+  .calculateButton {
+    width: 60%;
+    border-radius: 12px !important;
+    height: 40px !important;
+  }
+
+  .addSubjectButton {
+    margin-top: 2rem;
+    width: 100%;
+    /* align-items: center; */
+  }
+
+  .coaSubjectWidth td.ant-table-cell {
+    max-width: 100% !important;
+  }
+
+  /* .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+      width: 220px !important;
+    } */
+  .coaSubjectWidth .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow.ant-select-show-search,
+  .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+    width: 100% !important;
+  }
+
+  .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow,
+  .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 425px) {
+  .welcomeHaddingText {
+    font-size: 19px;
+    margin-left: 1rem;
+  }
+
+  .coaSubjectWidth {
+    overflow-y: scroll;
+  }
+
+  /* .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+      width: 125px !important;
+    } */
+  .clearAllButton,
+  .calculateButton {
+    width: 60%;
+  }
+
+  .coaSubjectWidth .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow.ant-select-show-search,
+  .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+    width: 90% !important;
+  }
+
+  .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow,
+  .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow {
+    width: 90% !important;
+  }
+}
+
+.spinner-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobileColumn {
+  padding-bottom: 10px;
+}
+
+.tableHeading {
+  background-color:
+    #FAFAFA;
+  width: 376px;
+  height: 47.6383056640625px;
+  top: 561.6248779296875px;
+  padding-top: 10px;
+
+}
+
+.styleTableHeading {
+  display: flex;
+  align-items: center;
+}
+
+.styleTableHeading {
+  width: 71px;
+  height: 24px;
+  top: 581.13232421875px;
+  left: 20px;
+  color: #474749;
+  font-weight: 600;
+  width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  .ant-layout-sider-children {
+    height: 1900px !important;
+  }
+}

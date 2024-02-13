@@ -1,13 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+.ant-upload-wrapper
+  .ant-upload-list.ant-upload-list-picture
+  .ant-upload-list-item {
+  height: 45px;
+}
+.ant-upload-wrapper
+  .ant-upload-list.ant-upload-list-picture
+  .ant-upload-list-item
+  .ant-upload-list-item-thumbnail {
+  width: 30px;
+  height: 30px;
+}
+
+.ant-form-item {
+  margin-bottom: 20px;
+}
+
+
+
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  border-radius: 5px !important;
+  height: 40px !important;
+  color: #1476b7;
+  width: 244px !important;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 21px;
+  background: none;
+}
+
+.ant-menu-inline .ant-menu-item {
+  height: 40px !important;
+  transition: none !important;
+  width: 244px !important;
+  color: #737373;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
+  background: none;
+}
+.ant-menu-light.ant-menu-root.ant-menu-inline {
+  border-inline-end: none;
+}
+:where(.css-ed5zg0).ant-select:not(.ant-select-customize-input) .ant-select-selector{
+  border: none;
+}
+
+:where(.css-dev-only-do-not-override-ed5zg0).ant-select:not(.ant-select-customize-input) .ant-select-selector{
+  border: none;
+}
+.ant-select-focused:where(.css-dev-only-do-not-override-ed5zg0).ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector {
+  box-shadow: none;
+}
+:where(.css-ed5zg0).ant-select:not(.ant-select-customize-input) .ant-select-selector{
+  border: none;
+}
+:where(.css-ed5zg0).ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer):hover .ant-select-selector {
+  border-color: white;
+}
+.ant-select-focused:where(.css-ed5zg0).ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector {
+  border-color: white;
+  box-shadow: none;
+}
+/* .fc-timegrid-event-harness > .fc-timegrid-event {
+  bottom: 100;
+} */
+
+
+.ant-form-item-has-error .ant-select:not(.ant-select-disabled):not(.ant-select-customize-input) .ant-select-selector {
+  border-color: #ff4d4f !important;
+}
+.ant-select-single {
+  height: 50px !important;
+}
+
+.ant-upload-wrapper .ant-upload-select {
+
+  width: 100% !important;
+}
+
+
+
+@media only screen and (min-width: 0px) and (max-width: 650px) {
+  .ant-picker-dropdown .ant-picker-year-panel .ant-picker-content .ant-picker-month-panel{
+    height: 150px 
+  }
 }

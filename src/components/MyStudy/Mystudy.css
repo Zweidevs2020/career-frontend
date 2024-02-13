@@ -1,0 +1,200 @@
+.showDateData {
+    color: white;
+    background-color: #1476B7;
+    border-radius: 5px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.showDateData2 {
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+.fc-timegrid-event .fc-event-main {
+    padding: 1px 1px 1px;
+}
+
+.fc-timegrid-event-harness {
+    position: absolute;
+    left: 0 !important;
+}
+
+.garage-title {
+    clear: both;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    white-space: nowrap;
+    width: 85%
+}
+
+.fc-direction-ltr .fc-toolbar>*>:not(:first-child) {
+
+    display: none;
+}
+
+.fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+
+    margin-left: 23rem;
+}
+
+.fc .fc-button-primary {
+    background-color: #1476B7;
+    border: none;
+    color: white;
+    width: 5rem;
+}
+
+.fc .fc-button-primary:hover {
+    background-color: #1476B7;
+    border: none;
+    color: white;
+}
+
+
+.fc .fc-button {
+    border-radius: 12px;
+}
+
+.fc-direction-ltr .fc-button-group>.fc-button:not(:last-child) {
+    border-bottom-right-radius: 12px;
+    border-top-right-radius: 12px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    border-bottom-left-radius: 12px;
+    border-top-left-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fc .fc-icon-chevron-left:before,
+.fc .fc-icon-chevron-right:before {
+    display: flex;
+    align-items: center;
+}
+
+.fc-icon-chevron-left:before {
+    content: "\e900 Previous";
+    font-size: 14px;
+    margin-left: -1.5rem;
+}
+
+.fc-icon-chevron-right:before {
+    content: "Next\e901";
+    font-size: 14px;
+    margin-left: -1rem;
+}
+
+.disabledBtnStyle {
+    background-color: gray;
+    cursor: not-allowed;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    height: 40px;
+    width: 130px;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    color: white;
+}
+
+.errorTime {
+    color: red;
+    margin-top: 5px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.takebutton.disabled,
+.takebutton.disabled:hover {
+    background-color: #ccc;
+    cursor: not-allowed;
+    border-color: #ccc !important;
+}
+
+.saveData {
+    background-color: #1476B7;
+    color: white !important;
+    width: 150px;
+    height: 45px;
+    border-radius: 10px;
+}
+
+.download {
+    background-color: #1476B7;
+    color: white !important;
+    width: 200px;
+    height: 45px;
+    border-radius: 10px;
+}
+
+button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-button.viewResultButton.editBtn {
+    background-color: #1476B7;
+    color: white;
+}
+
+.warnText {
+    text-align: center;
+    font-size: 18px;
+    display: block;
+}
+
+button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-button.takebutton.deleteBtn {
+    background: red;
+}
+
+fc-scrollgrid-sync-inner {
+    width: 200px !important;
+}
+
+fc-col-header-cell-cushion {
+    font-size: 2px !important;
+}
+
+@media (max-width: 369px) {
+    .fc .fc-col-header-cell-cushion {
+        font-size: 8px !important;
+    }
+
+    .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+        margin-left: 10rem !important;
+    }
+
+}
+
+@media (max-width: 768px) {
+    .modalStyleClass .ant-modal-content {
+        width: 80% !important;
+        margin: auto;
+    }
+}
+
+@media (min-width: 500px) and (max-width: 670px) {
+    .fc .fc-col-header-cell-cushion {
+        font-size: 10px;
+    }
+
+    .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+
+        margin-left: 28rem !important;
+    }
+
+    .modalStyleClass {
+        width: 30% !important;
+    }
+
+}

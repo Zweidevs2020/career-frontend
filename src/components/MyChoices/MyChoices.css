@@ -1,0 +1,141 @@
+.noDataChoices {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 168px;
+}
+.choicesWithoutBorder {
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  height: 95px;
+  margin-top: 15px;
+  cursor: pointer;
+
+}
+.myChoicesRow{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 95px;
+}
+.mainContainerRow{
+  display: flex;
+  align-items: center;
+}
+
+.choicesWithBorder {
+  background: #ffffff;
+  border: 1px solid rgba(20, 118, 183, 0.76);
+  border-radius: 10px;
+  height: 95px;
+  margin-top: 15px;
+  cursor: pointer;
+
+}
+
+.addChoicesButton {
+  min-width: 100px;
+  max-width: 144px;
+  height: 41px;
+  background: #1476b7;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.removeChoicesButton{
+  width: 91px;
+  height: 41px;
+  background: #ffffff;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 1px solid #1476B7;
+  color: #1476b7;
+
+}
+/* ////////////////// */
+
+@media screen and (max-width: 400px) {
+  .quizHeadingStyle {
+   
+    font-size: 10px;
+    line-height: 17px;
+ 
+}
+.myChoicesRow{
+  display: block;
+ 
+  align-items: center;
+  height: 95px;
+}
+.choicesWithoutBorder {
+  
+  height: 180px;
+}
+.mainContainerRow {
+  width: 14rem;
+  margin-top: 1rem;
+ 
+}
+.addChoicesButton {
+  min-width: 14rem !important;
+  
+}
+.ps-4 {
+  padding-inline-start: 2rem;
+}
+.editButtonMobileView{
+display: flex;
+align-items: center;
+justify-content: center;
+margin-top: 1rem;
+}
+.me-3 {
+  margin-inline-end: 0px !important;
+}
+}
+
+
+/* ////////////////////// */
+
+
+
+/* 401 se 502 pixels ke screens ke liye */
+@media screen and (min-width: 401px) and (max-width: 502px) {
+  .quizHeadingStyle {
+    font-size: 12px;
+    line-height: 17px;
+  }
+  .myChoicesRow {
+    display: block;
+    align-items: center;
+    height: 95px;
+  }
+  .choicesWithoutBorder {
+    height: 180px;
+  }
+  .mainContainerRow {
+    width: 17rem;
+    margin-top: 1rem;
+  }
+  .me-3 {
+    margin-inline-end: 0px !important;
+}
+  .addChoicesButton {
+    min-width: 16rem !important;
+  }
+  .ps-4 {
+    padding-inline-start: 3rem;
+  }
+  .editButtonMobileView {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+}

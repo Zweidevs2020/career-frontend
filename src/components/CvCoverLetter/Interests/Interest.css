@@ -1,0 +1,76 @@
+
+.interestHead{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #474749;
+    margin-left: 1.6%;
+    margin-top: 2%;
+}
+
+.interestSubHeading{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    color: #737373;
+    margin-left: 1.6%;
+    margin-top: 0.5%;
+}
+
+.interestForm{
+    padding: 0px 20px 0px 20px;
+    margin-top: 3%;
+}
+
+.interestItemButton{
+   
+    display: flex;
+    justify-content: space-between;
+}
+
+.interestButton{
+    /* border: 1px solid grey; */
+    width: 144px;
+    height: 45px !important;
+    background: #1476B7;
+    font-size: 14px;
+    border-radius: 12px;
+}
+
+.interestItemLable .ant-form-item-label{
+    text-align: start !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    font-family: 'Inter' !important;
+    font-style: normal !important;
+}
+
+.interestButtonBack{
+    border: 1px solid #1476B7;
+    width: 144px;
+    height: 45px !important;
+    font-size: 14px;
+    border-radius: 12px;
+    color: #1476B7; 
+}
+
+@media (max-width: 768px) {
+    .interestHead{ 
+        font-size: 14px;
+        margin-top: 4%;
+    }
+    .mobileLayout{
+        display: block;
+    }
+    .interestItemButton {
+        display: block;
+
+
+    }
+    
+}
+

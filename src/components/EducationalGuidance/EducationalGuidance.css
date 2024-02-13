@@ -1,0 +1,261 @@
+.educationalGuidanceMainDiv {
+  background-color: white;
+  width: 100%;
+  min-height: 90vh;
+  padding: 20px;
+}
+
+.educationalGuidanceSecondDiv {
+  background: #f8fafc;
+  width: 100%;
+  min-height: 80vh;
+  padding: 20px;
+}
+
+.quizMain {
+
+  background: white;
+  box-shadow: 0px 5px 11px rgba(0, 0, 0, 0.02);
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+min-height: 140px;
+}
+
+.educationalButtonBottom{
+  display: none;
+}
+
+.quizStyle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.width90 {
+  width: 90%;
+  display: flex;
+  margin-top: 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quizHeadingStyle {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  color: #303030;
+}
+
+.quizDetailsStyle {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #807a7a;
+  text-transform:capitalize;
+}
+
+.takebutton {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: #1476b7;
+  border-radius: 10px;
+  height: 40px;
+  width: 130px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.viewResultButtonupdate {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: white;
+  border: 1px solid #1476b7;
+  border-radius: 10px;
+  height: 40px;
+  width: 130px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: white;
+  margin-left: 15px;
+
+}
+
+.viewResultButton {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: white;
+  border: 1px solid #1476b7;
+  border-radius: 10px;
+  height: 40px;
+  width: 130px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #1476b7;
+  margin-left: 15px;
+}
+
+.modalStyleClass {
+  border-radius: 15px;
+  width: 528px;
+  height: 400px;
+}
+
+.totalScoreHadding {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 36px;
+  color: #474749;
+}
+
+.modalInnerStyle {
+  margin-top: 50px;
+  width: 90%;
+}
+
+.resultDataButton {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: #1476b7;
+  border-radius: 10px;
+  height: 40px;
+  width: 210px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #ffffff;
+  letter-spacing: 2px;
+}
+
+.spinStyle {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pointsText {
+  font-weight: 900;
+}
+
+.takeTestMobile {
+  width: 30%;
+  /* border: 2px solid red; */
+}
+.mobileEducationalRow{
+margin-top: 30px;
+}
+
+.retakeChart {
+  width: 50%;
+}
+
+.crossContainer {
+  cursor: pointer;
+}
+
+.quizBoard {
+  width: 100px;
+  height: 100px;
+}
+
+.retakeChart {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 250px;
+}
+
+.retakeButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.retake {
+  display: flex;
+  justify-content: center !important;
+  align-items: center !important;
+}
+.mobileEducationalRow{
+
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  }
+
+@media (max-width: 913px) {
+  .retake {
+    display: none;
+    /* border: 3px solid red; */
+  }
+
+  .retakeChart {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    justify-content: center;
+  }
+
+  .quizHeadingStyle {
+    font-size: 16px;
+  }
+.width90{
+  width: 100%;
+  padding: 8px;
+}
+.mobileEducationalRow{
+justify-content: center;
+}
+
+.educationalButtonBottom{
+  display: block;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.takeTestMobile{
+  display: none;
+  width: 24.5% !important;
+}
+.quizDetailsStyle{
+  text-align: start;
+  font-size: 9px;
+}
+}
+
+@media only screen and (min-width: 651px) and (max-width: 1200px) {
+
+  .takeTestMobile {
+    width: 20.5%;
+   
+}
+}
+@media only screen and (min-width: 1200px) and (max-width: 1280px) {
+
+  .takeTestMobile {
+    width: 14.5%;
+}
+}

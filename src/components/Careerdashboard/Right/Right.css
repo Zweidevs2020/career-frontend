@@ -1,0 +1,214 @@
+.dashboardRightDiv,
+.dashboardRightDivv {
+  margin-top: 10px;
+  margin-left: 1rem;
+}
+
+.parentRightDashboardDiv {
+  height: 7vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  border: 1px solid #e0e0e059;
+}
+
+.parentRightDashboardDivTextDiv {
+  width: 65%;
+}
+
+.chartHeading{
+text-align: center;
+word-wrap: break-word;
+}
+
+.parentRightDashboardDivTextDiv h1 {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.parentRightDashboardDivBtnDiv {
+  height: 4vh;
+  background: #1476b7;
+  display: flex;
+  align-items: center;
+  width: 120px;
+  border-radius: 5px;
+  color: white;
+  justify-content: center;
+  width: 25%;
+}
+
+.parentRightDashboardDivBtnDiv button {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.dashboardRightHeadingDiv {
+  color: #474749;
+  font-family: Poppins;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  margin-left: .7rem;
+  line-height: normal;
+}
+
+.psychometricTestDes{
+  color: #737373;
+  font-family: Poppins;
+  font-size: 12px;
+  /* font-style: normal;
+  font-weight: 400; */
+  margin-left: .7rem;
+  margin-top: .2rem;
+  /* line-height: normal; */
+}
+
+.rightGraphBtn {
+  border: 1px solid #1476b7;
+  border-radius: 5px;
+  height: 4vh;
+  width: 20%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  color: #1476b7;
+}
+
+.rightGraphBtn button {
+  font-size: 12px;
+}
+
+.leftGraphBtn {
+  /* border: 1px solid #1476b7; */
+  border-radius: 5px;
+  height: 4vh;
+  width: 100px;
+  background: #1476b7;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  color: white;
+}
+
+.leftGraphBtn button {
+  font-size: 12px;
+}
+
+.rightContainerStyle {
+  width: 100%;
+  display: flex;
+
+  height: 100%;
+  overflow: auto;
+}
+
+.chartHeadingwBtn {
+  margin: 0 12 0 12;
+}
+
+@media (max-width: 1440px) {
+  .parentRightDashboardDivBtnDiv button {
+    font-size: 12px;
+  }
+
+  .rightGraphBtn,
+  .parentRightDashboardDivBtnDiv {
+    width: 30%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .parentRightDashboardDivTextDiv h1 {
+    font-size: 12px;
+  }
+
+}
+
+@media (max-width: 768px) {
+  .parentRightDashboardDiv {
+    display: block;
+    height: 7vh;
+  }
+
+  .dashboardRightHeadingDiv {
+    margin-left: .8rem;
+    font-size: 14px;
+  }
+
+  .parentRightDashboardDiv {
+    padding-left: 3px;
+    padding-right: 3px;
+    margin-bottom: 10px;
+  }
+
+  .parentRightDashboardDivBtnDiv {
+    width: 60%;
+    margin: auto;
+  }
+
+  .parentRightDashboardDivTextDiv h1 {
+    line-height: 16px;
+    text-align: center;
+    padding-bottom: 8px;
+  }
+
+  .parentRightDashboardDivTextDiv {
+    width: 100%;
+  }
+
+  .chartHeadingwBtn {
+    /* display: block; */
+    height: 60px;
+    margin-top: 10px;
+  }
+
+  .chartHeading {
+    margin-top: 15px;
+    font-size: 11px;
+  }
+
+  .rightGraphBtn {
+    width: 120px
+  }
+  .leftGraphBtn button {
+    font-size: 9px;
+}
+  .rightGraphBtn,
+  .parentRightDashboardDivBtnDiv {
+    height: 3vh;
+  }
+}
+
+@media (max-width: 425px) {
+  .parentRightDashboardDiv {
+    display: flex;
+  }
+
+  .parentRightDashboardDivBtnDiv {
+    width: 50%;
+  }
+
+  .parentRightDashboardDiv {
+    height: 5vh;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .parentRightDashboardDivTextDiv h1 {
+    text-align: start;
+  }
+
+  .chartHeadingwBtn {
+    display: flex;
+  }
+
+  .rightGraphBtn {
+    width: 120px;
+  }
+}
+

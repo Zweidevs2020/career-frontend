@@ -1,0 +1,85 @@
+.cv-Data{
+background-color: #F8FAFC;
+margin: 0px 37px 0px 37px;
+}
+.mybtnGoal{
+    justify-content: end;
+    width: 20%;
+}
+.customBtnGoal{
+    width: 55%;
+}
+.btnDisabled{
+    background-color: gray;
+    cursor: not-allowed;
+    padding: 10px;
+}
+.ant-form-item .ant-form-item-label >label {
+font-family: poppins;
+}
+
+  
+ 
+  @media (max-width: 768px) {
+    
+    .responsive-image {
+      height: 22px;
+    }
+    .step-item-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Poppins";
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    .profileFormEmail {
+        display: block;
+        width: 100%;
+        margin-bottom: -2%;
+    }
+    .text-\[24px\] {
+        font-size: 17px;
+    }
+   
+    .steps {
+        height: 100%;
+        width: 60%;
+    }
+    .step-item-content-active {
+        color: #1476b7;
+        cursor: pointer;
+       
+    }
+    .step-item-content {
+        font-size: 10px !important;
+    }
+    .step-icon-style-active {
+        font-size: 10px !important;
+    }
+   .ant-form-item .ant-form-item-label >label {
+        font-size: 11px;
+    }
+   .ant-btn-primary:not(:disabled) {
+        background: #1476b7;
+        width: 100%;
+   }
+   .ant-btn-primary,.ant-btn-primary:not(:disabled){
+    margin-top: 8px;
+    background: #1476b7;
+    height: 48px;
+    width: 100% !important;
+   }
+   .inputFieldStyle {
+    font-size: 12px;
+   
+   }
+   .ant-picker .ant-picker-input >input {
+    font-size: 12px;
+   }
+   .ant-select-single .ant-select-selector {
+   
+    font-size: 12px;
+   }
+  }

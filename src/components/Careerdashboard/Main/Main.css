@@ -1,0 +1,21 @@
+/* @media(max-width: 330px){ */
+@media only screen and (max-width: 480px) and (min-width: 320px) {
+  img.bg-cover {
+    width: 200px;
+  }
+  .custom-heading h1 {
+    font-size: 12px !important;
+  }
+  main.ant-layout-content.marginContent.css-dev-only-do-not-override-ed5zg0 {
+    /* max-width: 200px; */
+  }
+  .careerGuidenceSearchPDiv{
+    display: block;
+  }
+  .careerGuidenceGrid{
+    margin-top: 40px;
+  }
+  .quizDetailsStyle{
+    text-align: center;
+  }
+}

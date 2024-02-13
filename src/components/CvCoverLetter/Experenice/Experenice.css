@@ -1,0 +1,159 @@
+.expHead {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #474749;
+    margin-left: 1.6%;
+    margin-top: 2%;
+}
+
+.expSubHeading {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    color: #737373;
+    margin-left: 1.6%;
+    margin-top: 0.5%;
+}
+
+.expForm {
+    padding: 0px 20px 0px 20px;
+}
+
+.expFormDouble {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.expFormDoubleItem {
+    width: 49%;
+}
+
+.expItemLable .ant-form-item-label {
+    text-align: start !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    font-family: 'Inter' !important;
+    font-style: normal !important;
+}
+
+.expFormItem {
+    margin-top: 24px;
+}
+
+.expDateInputFieldStyle {
+    border: 1px solid #d3d3d3;
+    border-radius: 12px;
+    height: 50px;
+    width: 100%;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #9d9c9d;
+}
+
+
+
+.expItemButton {
+    /* margin-top: 3%; */
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.expButton {
+    /* border: 1px solid grey; */
+    width: 144px;
+    height: 45px !important;
+    background: #1476B7;
+    font-size: 14px;
+    border-radius: 12px;
+}
+
+.expButtonBack,
+.expButtonNext {
+    border: 1px solid #1476B7;
+    width: 144px;
+    height: 45px !important;
+    font-size: 14px;
+    border-radius: 12px;
+    color: white;
+    background: #1476B7;
+}
+
+.expAddButton {
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border: 1px solid #1984FF;
+    border-radius: 8px;
+    color: #1984FF;
+    height: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 3%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.expCheckBox {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    color: #6B7280;
+    margin-left: 2px;
+
+
+}
+
+@media (max-width: 768px) {
+    .expButton {
+        display: block;
+    }
+
+    .buttonEducation {
+        display: block;
+    }
+
+    .mobileLayout {
+        display: block !important;
+        margin-bottom: 0px;
+    }
+
+    .expHead {
+
+        font-size: 14px;
+
+        margin-top: 4%;
+    }
+
+    .expItemButton {
+        /* background: #1476B7; */
+        display: block;
+        justify-content: space-between;
+        margin-bottom: -1rem;
+    }
+
+    .expButtonBack {
+        margin-bottom: -12px;
+        color: white;
+        background: #1476B7;
+    }
+
+    .expButtonNext {
+        margin-bottom: -3px;
+        border-radius: 12px;
+    }
+
+}

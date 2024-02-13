@@ -1,0 +1,82 @@
+
+.skillsHead{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #474749;
+    margin-left: 1.6%;
+    margin-top: 2%;
+}
+
+.skillsSubHeading{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    color: #737373;
+    margin-left: 1.6%;
+    margin-top: 0.5%;
+}
+
+.skillsForm{
+    padding: 0px 20px 0px 20px;
+    margin-top: 3%;
+}
+
+.skillsItemButton{
+  
+    display: flex;
+    justify-content: space-between;
+}
+
+.skillsButton{
+    /* border: 1px solid grey; */
+    width: 144px;
+    height: 45px !important;
+    background: #1476B7;
+    font-size: 14px;
+    border-radius: 12px;
+}
+
+.skillsButtonBack{
+    border: 1px solid #1476B7;
+    width: 144px;
+    height: 45px !important;
+    font-size: 14px;
+    background: #1476B7;
+    border-radius: 12px;
+    color: white; 
+}
+
+.skillItemLable .ant-form-item-label{
+    text-align: start !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    font-family: 'Inter' !important;
+    font-style: normal !important;
+}
+
+@media (max-width: 768px) {
+
+    .skillsButton {
+        width: 100%;
+        margin-top: 10px !important;
+    }
+    .skillsItemButton {
+        margin-bottom: -15px;
+        display: block;
+    }
+
+
+.skillsHead {
+   font-size: 14px;
+    margin-top: 4%;
+}
+.interestItemButton {
+   
+    margin-bottom: -18px;
+}
+}

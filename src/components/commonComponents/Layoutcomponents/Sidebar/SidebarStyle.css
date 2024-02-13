@@ -1,0 +1,977 @@
+.logoStyle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+.backgroundColorSidebar {
+  background-color: #f8fafc !important;
+  min-width: 244px !important;
+}
+.drawerIcon
+{
+  max-width: 100%;
+  height: auto;
+  position: absolute;
+  z-index: 0;
+  width: 2.3rem;
+  margin-top: -3rem;
+}
+.sideBarStyle {
+  font-style: normal;
+  color: #c2ceed;
+  font-size: 16px;
+  border: none;
+  background-color: #f8fafc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 244px !important;
+}
+
+.textStyling {
+  font-family: Poppins;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 21px;
+  padding-left: 14px;
+  height: 58px !important;
+}
+.firstOption {
+  display: flex;
+  justify-content: center !important;
+  padding-top: 30px;
+}
+
+.firstOption1 {
+  display: flex;
+  justify-content: center !important;
+  padding-right: 20px;
+  padding-top: 10px;
+}
+
+.firstHead {
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #737373;
+}
+
+.sidebarHomeImage {
+  padding-right: 20px;
+}
+
+.mainContainerSideBar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.overviewHead {
+  width: 150px;
+  cursor: pointer;
+}
+
+.overviewHead2 {
+  width: 170px;
+  cursor: pointer;
+}
+
+.cvHead {
+  width: 170px;
+  cursor: pointer;
+}
+
+.selfHead {
+  width: 170px;
+  cursor: pointer;
+}
+
+.studyHead {
+  width: 170px;
+  cursor: pointer;
+}
+
+.study {
+  width: 170px;
+  cursor: pointer;
+}
+
+.dotStyle {
+  height: 5px;
+  width: 5px;
+  border-radius: 5px;
+  background-color: white;
+}
+.Navbar {
+  background-color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 85px;
+  padding-inline: 5px;
+}
+
+.navtext {
+  width: 48%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.nav-text {
+  font-size: 20px;
+  color: #1476b7;
+  font-family: 'Poppins';
+}
+
+.img {
+  width: 48%;
+  height: 60px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.imgcard {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #1476b7;
+  border-radius: 8px;
+  margin-right: 10px;
+  width: 70%;
+  height: 58px;
+  cursor: pointer;
+}
+
+.cardtext {
+  display: flex;
+  flex-direction: column;
+  width: 68%;
+  height: 80px;
+}
+
+.email {
+  font-weight: lighter;
+  color: #fff;
+}
+
+.name {
+  font-weight: bold;
+  color: #fff;
+}
+
+.logoutButton {
+  background: #1476b7;
+  border-radius: 10px;
+  width: 144px;
+  height: 52px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalStyleClass2 {
+  border-radius: 15px;
+  width: 800px;
+  height: 400px;
+}
+
+.cardprofile {
+  height: 40px;
+  width: 40px;
+  border-radius: 10px;
+}
+
+.mobLogoutBtn {
+  background-color: #f8fafc !important;
+  border: 1px solid #1476b7;
+  height: 40px !important;
+  width: 50px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profilestyle {
+  height: 55px !important;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+:where(.css-dev-only-do-not-override-ed5zg0).ant-menu-inline.ant-menu-root .ant-menu-item>.ant-menu-title-content,
+:where(.css-dev-only-do-not-override-ed5zg0).ant-menu-inline.ant-menu-root .ant-menu-submenu-title>.ant-menu-title-content,
+:where(.css-ed5zg0).ant-menu-inline.ant-menu-root .ant-menu-item>.ant-menu-title-content,
+:where(.css-ed5zg0).ant-menu-inline.ant-menu-root .ant-menu-submenu-title>.ant-menu-title-content {
+  text-overflow: unset;
+  overflow: unset;
+}
+
+@media only screen and (max-width: 360px) and (min-width: 320px) {
+  .ant-drawer-content-wrapper {
+    width: 190px !important;
+  }
+
+  .mobLogoutBtn {
+    background-color: #1476b7 !important;
+    border: none;
+    font-size: 12px;
+    width: 85% !important;
+  }
+
+  .careerBtnDiv {
+    width: 106px !important;
+  }
+
+  .ant-drawer .ant-drawer-body {
+    margin-top: -1rem;
+
+  }
+
+  menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 193px !important;
+    margin-left: 2rem;
+  }
+
+  .ant-menu-inline .ant-menu-item,
+  .ant-menu-vertical .ant-menu-item {
+    margin-bottom: 0px;
+    margin-left: -5rem;
+  }
+
+  .logoStyle {
+
+    margin-top: 3rem !important;
+  }
+
+  .email {
+
+    font-size: 9px;
+  }
+
+  .ant-drawer .ant-drawer-close {
+
+    margin-left: 8rem;
+  }
+
+  .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    margin-left: 12rem !important;
+  }
+
+  .menuIconSidebarHide {
+    /* margin-left: 1.1rem;
+    margin-top: -1rem; */
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    margin-top: -0.1rem;
+    margin-left: 1.5rem;
+    height: 20px;
+  }
+
+  .selectTextMain {
+    margin-top: 2rem;
+  }
+
+  .textStyling {
+    font-size: 9px;
+    padding-left: 0;
+    margin-left: 4rem !important;
+  }
+
+  .sideBarStyle,
+  .backgroundColorSidebar,
+  /* .ant-menu-inline .ant-menu-item, */
+
+  .logoStyle,
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 65px !important;
+
+  }
+
+  .ant-menu-inline .ant-menu-item:not(:last-child),
+  .ant-menu-vertical .ant-menu-item:not(:last-child) {
+    margin-bottom: 0px;
+    width: 190px !important;
+  }
+}
+
+@media only screen and (max-width: 375px) and (min-width: 361px) {
+  .ant-drawer-content-wrapper {
+    width: 160px !important;
+  }
+
+  .mobLogoutBtn {
+    background-color: #1476b7 !important;
+    border: none;
+    font-size: 12px;
+    width: 85% !important;
+
+  }
+
+  .careerBtnDiv {
+    width: 106px !important;
+  }
+
+  .ant-menu-inline .ant-menu-item,
+  .ant-menu-vertical .ant-menu-item {
+    margin-bottom: 0px;
+    margin-left: -4rem !important;
+  }
+
+  menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 113px !important;
+  }
+
+  .email {
+
+    font-size: 9px;
+  }
+
+  .ant-drawer-content-wrapper {
+    width: 160px;
+  }
+
+  .ant-drawer .ant-drawer-close {
+
+    margin-left: 6rem;
+  }
+
+  .menuIconSidebarHide {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    margin-top: -0.1rem;
+    margin-left: 1.5rem;
+    height: 20px;
+  }
+
+  .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    margin-left: 11rem !important;
+  }
+
+  .selectTextMain {
+    margin-top: 2rem;
+  }
+
+  .textStyling {
+    font-size: 9px;
+    padding-left: 0 !important;
+    margin-left: 2rem !important;
+  }
+
+  .sideBarStyle,
+  .backgroundColorSidebar,
+  .logoStyle {
+    width: 80px !important;
+
+  }
+
+  .ant-menu-item-selected {
+    width: 100% !important;
+    margin-left: -4.5rem !important;
+  }
+
+  .logoStyle {
+
+    margin-top: 3rem !important;
+  }
+
+  .ant-drawer .ant-drawer-body {
+    margin-top: -1rem;
+
+  }
+}
+
+@media only screen and (max-width: 390px) and (min-width: 376px) {
+  .ant-drawer-content-wrapper {
+    width: 190px !important;
+  }
+
+  .mobLogoutBtn {
+    background-color: #1476b7 !important;
+    border: none;
+    font-size: 12px;
+    width: 85% !important;
+  }
+
+  .careerBtnDiv {
+    width: 106px !important;
+  }
+
+  .ant-drawer .ant-drawer-body {
+    margin-top: -1rem;
+
+  }
+
+  menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 193px !important;
+    margin-left: 2rem;
+  }
+
+  .ant-menu-inline .ant-menu-item,
+  .ant-menu-vertical .ant-menu-item {
+    margin-bottom: 0px;
+    margin-left: -5rem;
+  }
+
+  .logoStyle {
+
+    margin-top: 3rem !important;
+  }
+
+  .email {
+
+    font-size: 9px;
+  }
+
+  .ant-drawer .ant-drawer-close {
+
+    margin-left: 8rem;
+  }
+
+  .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    margin-left: 12rem !important;
+  }
+
+  .menuIconSidebarHide {
+    /* margin-left: 1.1rem;
+    margin-top: -1rem; */
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    margin-top: -0.1rem;
+    margin-left: 1.5rem;
+    height: 20px;
+  }
+
+  .selectTextMain {
+    margin-top: 2rem;
+  }
+
+  .textStyling {
+    font-size: 9px;
+    padding-left: 0;
+    margin-left: 4rem !important;
+  }
+
+  .sideBarStyle,
+  .backgroundColorSidebar,
+
+  .logoStyle,
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 65px !important;
+
+  }
+
+  .ant-menu-inline .ant-menu-item:not(:last-child),
+  .ant-menu-vertical .ant-menu-item:not(:last-child) {
+    margin-bottom: 0px;
+    width: 190px !important;
+  }
+
+}
+
+@media only screen and (max-width: 400px) and (min-width: 391px) {
+  .ant-drawer-content-wrapper {
+    width: 190px !important;
+  }
+
+  .mobLogoutBtn {
+    background-color: #1476b7 !important;
+    border: none;
+    font-size: 12px;
+    width: 85% !important;
+  }
+
+  .careerBtnDiv {
+    width: 106px !important;
+  }
+
+  .ant-drawer .ant-drawer-body {
+    margin-top: -1rem;
+
+  }
+
+  menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 193px !important;
+    margin-left: 2rem;
+  }
+
+  .ant-menu-inline .ant-menu-item,
+  .ant-menu-vertical .ant-menu-item {
+    margin-bottom: 0px;
+    margin-left: -5rem;
+  }
+
+  .logoStyle {
+
+    margin-top: 3rem !important;
+  }
+
+  .email {
+
+    font-size: 9px;
+  }
+
+  .ant-drawer .ant-drawer-close {
+
+    margin-left: 8rem;
+  }
+
+  .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    margin-left: 12rem !important;
+  }
+
+  .menuIconSidebarHide {
+
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    margin-top: -0.1rem;
+    margin-left: 1.5rem;
+    height: 20px;
+  }
+
+  .selectTextMain {
+    margin-top: 2rem;
+  }
+
+  .textStyling {
+    font-size: 9px;
+    padding-left: 0;
+    margin-left: 4rem !important;
+  }
+
+  .sideBarStyle,
+  .backgroundColorSidebar,
+
+  .logoStyle,
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 65px !important;
+
+  }
+
+  .ant-menu-inline .ant-menu-item:not(:last-child),
+  .ant-menu-vertical .ant-menu-item:not(:last-child) {
+    margin-bottom: 0px;
+    width: 190px !important;
+  }
+
+}
+
+@media only screen and (max-width: 520px) and (min-width: 401px) {
+  .ant-drawer-content-wrapper {
+    width: 160px !important;
+  }
+  .drawerIcon
+  {
+    max-width: 100%;
+    height: auto;
+    position: absolute !important;
+    z-index: 0 !important;
+    width: 2.3rem !important;
+    margin-top: -3rem !important;
+  }
+  .mobLogoutBtn {
+    background-color: #1476b7 !important;
+    border: none;
+    font-size: 12px;
+    width: 85% !important;
+  }
+
+  .careerBtnDiv {
+    width: 106px !important;
+  }
+
+  .ant-menu-inline .ant-menu-item,
+  .ant-menu-vertical .ant-menu-item {
+    margin-bottom: 0px;
+    margin-left: -4rem !important;
+  }
+
+  menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 113px !important;
+  }
+
+  .email {
+
+    font-size: 9px;
+  }
+
+  .ant-drawer-content-wrapper {
+    width: 160px;
+  }
+
+  .ant-drawer .ant-drawer-close {
+
+    margin-left: 6rem;
+  }
+
+  .menuIconSidebarHide {
+    /* margin-left: 1.1rem;
+    margin-top: -1rem; */
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    margin-top: -0.1rem;
+    margin-left: 1.5rem;
+    height: 20px;
+  }
+
+  .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    margin-left: 13.2rem !important;
+  }
+
+  .selectTextMain {
+    margin-top: 2rem;
+  }
+
+  .textStyling {
+    font-size: 10px;
+    padding-left: 0 !important;
+    margin-left: 2rem !important;
+  }
+
+  .sideBarStyle,
+  .backgroundColorSidebar,
+
+  .logoStyle {
+    width: 100px !important;
+
+
+  }
+
+  .ant-menu-item-selected {
+    width: 100% !important;
+    margin-left: -4.5rem !important;
+  }
+
+  .logoStyle {
+
+    margin-top: 3rem !important;
+  }
+
+  .ant-drawer .ant-drawer-body {
+    margin-top: -1rem;
+
+  }
+
+
+}
+
+@media only screen and (max-width: 700px) and (min-width: 521px) {
+  .selectTextMain {
+    margin-top: 2rem;
+  }
+
+  .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    margin-left: 28.4rem !important;
+  }
+
+  .ant-drawer .ant-drawer-content-wrapper {
+
+    width: 185px !important;
+  }
+
+  .ant-drawer .ant-drawer-close {
+    margin-left: 6rem;
+  }
+
+  .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    margin-left: 28.4rem !important;
+  }
+
+  .Navbar {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .textStyling {
+    font-size: 10px;
+    padding-left: 0 !important;
+    margin-right: -2rem;
+  }
+  .careerBtnDiv {
+    width: 106px !important;
+  }
+
+  .navtext {
+    width: 80%;
+    margin-left: 5px;
+  }
+
+  .nav-text {
+    font-size: 8px;
+  }
+
+  .img {
+    width: 70%;
+    margin-left: 3rem;
+  }
+
+  .imgcard {
+    width: 100%;
+    height: 45px;
+  }
+
+  .email {
+    font-size: 8px;
+  }
+
+  .name {
+    font-size: 8px;
+  }
+
+  .logoStyle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 45px;
+    width: 100px !important;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+
+  .careerBtnDiv button {
+    background-color: #1476b7 !important;
+    width: 150px !important;
+    margin-left: 2rem;
+  }
+
+  aside.ant-layout-sider.ant-layout-sider-dark.backgroundColorSidebar {
+    max-width: 15% !important;
+    min-width: 20% !important;
+  }
+
+  .ant-layout-header {
+    height: 85px;
+    padding-inline: 5px !important;
+  }
+}
+
+.ant-menu-inline .ant-menu-item:not(:last-child),
+.ant-menu-vertical .ant-menu-item:not(:last-child) {
+  margin-bottom: 0px;
+}
+
+.menuIcon {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  margin-top: 2rem;
+  margin-left: 1.5rem;
+  height: 20px;
+  /* margin-top: 50px;
+  margin-bottom: 50px; */
+}
+
+
+@media only screen and (max-width: 740px) and (min-width: 541px) {
+  .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    margin-left: 32.4rem !important;
+  }
+  .addSubjectButton {
+    width: 200px;
+  }
+
+  .menuIconSidebarHide {
+    /* margin-left: 1.1rem;
+    margin-top: -1rem; */
+
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    margin-top: 2rem;
+    margin-left: 1.5rem;
+    height: 20px;
+  }
+  .logoStyle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 48px;
+    width: 70px !important;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+
+  .sideBarStyle,
+  .backgroundColorSidebar,
+  .ant-menu-inline .ant-menu-item,
+  .careerBtnDiv,
+  /* .logoStyle, */
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 65px !important;
+    /* min-width: 65px !important; */
+    padding-left: 3px !important;
+    min-width: 235px !important;
+    max-width: 65px !important;
+  }
+
+  .navtext {
+    width: 100%;
+    margin-left: 5px;
+  }
+
+  .nav-text {
+    font-size: 14px;
+  }
+
+  .img {
+    width: 70%;
+  }
+
+  .imgcard {
+    width: 100%;
+    height: 50px;
+  }
+
+  .Navbar {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .ant-menu-inline .ant-menu-item:not(:last-child),
+  .ant-menu-vertical .ant-menu-item:not(:last-child) {
+    margin-bottom: 0px;
+  }
+
+}
+@media only screen and (max-width: 890px) and (min-width: 741px) {
+
+
+  .addSubjectButton {
+    width: 200px;
+  }
+
+  .menuIconSidebarHide {
+    /* margin-left: 1.1rem;
+    margin-top: -1rem; */
+
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    margin-top: 2rem;
+    margin-left: 1.5rem;
+    height: 20px;
+  }
+
+
+  .sideBarStyle,
+  .backgroundColorSidebar,
+  .ant-menu-inline .ant-menu-item,
+  .careerBtnDiv,
+  /* .logoStyle, */
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    width: 65px !important;
+    /* min-width: 65px !important; */
+    padding-left: 3px !important;
+    min-width: 235px !important;
+    max-width: 65px !important;
+  }
+
+  .navtext {
+    width: 100%;
+    margin-left: 5px;
+  }
+
+  .nav-text {
+    font-size: 14px;
+  }
+
+  .img {
+    width: 70%;
+  }
+
+  .imgcard {
+    width: 100%;
+    height: 50px;
+  }
+
+  .Navbar {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .ant-menu-inline .ant-menu-item:not(:last-child),
+  .ant-menu-vertical .ant-menu-item:not(:last-child) {
+    margin-bottom: 0px;
+  }
+  .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    margin-left: 25.4rem !important;
+  }
+}
+
+@media only screen and (max-width: 900px) and (min-width: 891px) {
+  .Navbar {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .navtext {
+    width: 100%;
+    margin-left: 5px;
+  }
+  .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    margin-left: 28.4rem !important;
+  }
+  .nav-text {
+    font-size: 12px;
+  }
+
+  .img {
+    width: 70%;
+    margin-right: 8%;
+  }
+
+  .imgcard {
+    width: 100%;
+    height: 50px;
+  }
+  .email{
+    font-size: 8px;
+  }
+}
+
+@media only screen and (max-width: 1200px) and (min-width: 901px) {
+  .Navbar {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .navtext {
+    width: 100%;
+    margin-left: 5px;
+  }
+  .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+    margin-left: 29.4rem !important;
+  }
+  .nav-text {
+    font-size: 12px;
+  }
+
+  .img {
+    width: 70%;
+    margin-right: 8%;
+  }
+
+  .imgcard {
+    width: 100%;
+    height: 50px;
+  }
+  .email{
+    font-size: 8px;
+  }
+}
+
+
+
