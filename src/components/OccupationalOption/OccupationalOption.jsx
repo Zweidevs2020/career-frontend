@@ -13,7 +13,6 @@ const OccupationalOption = () => {
   const infoData = location.state || {};
 
   useEffect(() => {
-    console.log("====================res22", param, location, infoData);
 
     getData(infoData);
   }, [infoData]);
@@ -23,7 +22,6 @@ const OccupationalOption = () => {
     const response = await getApiWithAuth(
       `/psychometric/${infoData.buttonitem.path}/${infoData.item.id}/`
     );
-    console.log("=============res222", response);
     if (response.data.status === 200) {
       if (infoData.buttonitem.path === "study-tips") {
         setIdDataArray(response.data.data);

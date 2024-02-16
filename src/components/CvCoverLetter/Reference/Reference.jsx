@@ -99,8 +99,6 @@ const Reference = ({ setCurrent, current, isCvComplete }) => {
 
     // Create a temporary URL for the blob
     const pdfUrl = URL.createObjectURL(pdfBlob);
-    console.log("======================u", userData);
-
     // Create a link and initiate the download
     const link = document.createElement("a");
     link.href = pdfUrl;
@@ -297,7 +295,6 @@ const Reference = ({ setCurrent, current, isCvComplete }) => {
 
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
-console.log('=======res',response)
     if (response.data.status === 200) {
       setUserData(response.data.data);
       setDownloadBtn(response.data.data.cv_completed);
@@ -307,10 +304,6 @@ console.log('=======res',response)
   useEffect(() => {
     getUserData();
   }, []);
-  useEffect(() => {
-    console.log('=======resdownloadBtn',downloadBtn)
-
-  }, [downloadBtn]);
   return (
     <>
       <div className="flex flex-col justify-center">

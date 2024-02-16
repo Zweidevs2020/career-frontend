@@ -369,9 +369,6 @@ const MyStudy = () => {
       message.error(response.data.message[0]);
     }
   };
-  useEffect(() => {
-    console.log('==========================dataTime',data,calenderData,"===",weekDay,dataTime,selectedTime,selectedEndTime)
-  }, [data,calenderData,weekDay,dataTime,selectedTime,selectedEndTime]);
   const isMobile = window.innerWidth <= 768;
 
 

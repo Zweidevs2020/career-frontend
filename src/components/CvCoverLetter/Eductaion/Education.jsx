@@ -37,14 +37,6 @@ const Education = ({ setCurrent, current }) => {
 
   const { Option } = Select;
 
-  useEffect(() => {
-    console.log(
-      "======================resultArrayDataLeaving,resultArrayData,educationArray",
-      resultArrayDataLeaving,
-      resultArrayData,
-      educationArray
-    );
-  }, [resultArrayDataLeaving, resultArrayData, educationArray]);
 
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETEDUCATION);
@@ -97,7 +89,6 @@ const Education = ({ setCurrent, current }) => {
         ]);
       }
       if (data.junior_data.length > 0) {
-        console.log("========anees", data.junior_data);
         setResultArrayData(
           data.junior_data.map((item, indexx) => {
             return {
@@ -120,7 +111,6 @@ const Education = ({ setCurrent, current }) => {
         ]);
       }
       if (data?.leaving_data?.length > 0) {
-        console.log("========anees", data.leaving_data);
         setResultArrayDataLeaving(
           data.leaving_data.map((item, indexx) => {
             return {
@@ -182,7 +172,6 @@ const Education = ({ setCurrent, current }) => {
     { label: "O6", value: "O6" },
     { label: "O7", value: "O7" },
   ];
-
   const onsubmit = async () => {
     let sendDaata = {};
     let data = createArrayData(educationArray);
@@ -213,7 +202,6 @@ const Education = ({ setCurrent, current }) => {
     } else {
       sendDaata = { education_data: data, junior_data: [], leaving_data: [] };
     }
-    console.log("ending date", sendDaata);
     const respose = await postApiWithAuth(API_URL.POSTEDUCATION, sendDaata);
     if (respose.data.status === 201) {
       setSubjectCount(subjectCount + 1);
@@ -266,7 +254,6 @@ const Education = ({ setCurrent, current }) => {
     }
   };
   const onChangeDate = (name, date, arrayIndex) => {
-    console.log("date chnage", name, date, arrayIndex);
     if (name === "enddate") {
       if (dayjs(date, "DD-MM-YYYY").isAfter(dayjs())) {
         message.error("End date cannot be in future");
@@ -307,13 +294,6 @@ const Education = ({ setCurrent, current }) => {
   };
 
   const handleChangeLeaving = (value, name, arrayIndex) => {
-    console.log(
-      "================================anees",
-      value,
-      name,
-      arrayIndex
-    );
-
     setResultArrayDataLeaving(
       resultArrayDataLeaving.map((item) => {
         return item.index === arrayIndex
@@ -358,7 +338,6 @@ const Education = ({ setCurrent, current }) => {
 
   const getUserData = async () => {
     const response = await getApiWithAuth(API_URL.GETUSER2);
-    console.log("useddd data", response);
     if (response.data.status === 200) {
       if (response.data.data["current_step"] > 1) {
         setNextBtn(true);
@@ -602,6 +581,7 @@ const Education = ({ setCurrent, current }) => {
       ]);
     }
   };
+  
 
   const handleDeleteLeaving = async (id) => {
     try {
@@ -636,7 +616,6 @@ const Education = ({ setCurrent, current }) => {
   const educationResult = (item, index) => {
     return (
       <>
-        {console.log("=======================item", item)}
         <div className="eduFormDouble">
           <div className="eduFormDoubleItem mt-3">
             <Form.Item
@@ -753,7 +732,6 @@ const Education = ({ setCurrent, current }) => {
   const educationResultLeaving = (item, index) => {
     return (
       <>
-        {console.log("=======================item Leaving", item)}
         <div className="eduFormDouble">
           <div className="eduFormDoubleItem mt-3">
             <Form.Item

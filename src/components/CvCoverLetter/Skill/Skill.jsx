@@ -168,7 +168,6 @@ const Skill = ({ setCurrent, current }) => {
 
     selectOption.forEach((value) => {
       const match = userSkillData.find((obj) => obj.skill_dropdown === value);
-      console.log('========match',match)
       if (match) {
         result.push({ id: null, skill_dropdown: match.skill_dropdown });
       } else {
@@ -192,7 +191,6 @@ const Skill = ({ setCurrent, current }) => {
       skill_data: result,
       quality_data: result2,
     });
-    console.log('==========================res',respose)
     if (respose.data.status === 201 || respose.data.status === 200) {
     
       setCurrent(current + 1);
