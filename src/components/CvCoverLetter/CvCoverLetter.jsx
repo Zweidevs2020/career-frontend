@@ -8,12 +8,14 @@ import Interest from "./Interests/Interest";
 import Reference from "./Reference/Reference";
 import Education from "./Eductaion/Education";
 import emailIcon from "../../assets/image 2.png";
+import docxIcon from "../../assets/images.png";
+
 import Experenice from "./Experenice/Experenice";
 import { getApiWithAuth } from "../../utils/api";
 import { API_URL } from "../../utils/constants";
 import { useLocation } from "react-router-dom";
 import { MailOutlined } from "@ant-design/icons";
-
+import axios from "axios";
 const CvCoverLetter = () => {
   const location = useLocation();
   const initialStep = new URLSearchParams(location.search).get("step") || 1;
@@ -50,9 +52,32 @@ const CvCoverLetter = () => {
 
   const sendToEmail = async () => {
     const res = await getApiWithAuth(API_URL.SENDCV);
-    console.log("ress".res);
   };
+  const downloadDocs = async (e) => {
+    var token = localStorage.getItem("access_token", "");
 
+    const response = await axios.get(
+      `${process.env.REACT_APP_LINK_BASE_URL}cv/doc-cv
+      `,
+      {
+        responseType: "blob", // Set the response type to 'blob'
+        headers: {
+          Authorization: `Bearer ${token}`, // Set the Authorization header
+        },
+      }
+    );
+    const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+    var link = document.createElement('a');                     
+    var URL = window.URL || window.webkitURL;
+    var downloadUrl = URL.createObjectURL(blob);
+    link.href = downloadUrl;
+    link.style = "display: none";
+    link.download = "filename.docx";
+    document.body.appendChild(link)
+    link.click()
+    link.remove() 
+
+  };
   return (
     <>
       <div class="h-[100%] w-[100%] bg-white mt-3">
@@ -65,32 +90,51 @@ const CvCoverLetter = () => {
           }}
         >
           <div>
-            <h1 class="font-bold text-[24px] text-[#474749] ">
-              CV
-            </h1>
+            <h1 class="font-bold text-[24px] text-[#474749] w-[50%] ">CV</h1>
             {/* <p class="text-[#737373] text-[12px] mt-1">
               Lorem ipsum is a placeholder text commonly used to demonstrate.
             </p> */}
           </div>
-          {downloadBtn && (
-            <span
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                sendToEmail();
-              }}
-            >
-              <img
-                src={emailIcon}
-                className="responsive-image"
-                style={{ marginRight: "1rem" }}
-              />
-              <span style={{ marginRight: "2.5rem" }}> Send to Email</span>
-            </span>
-          )}
+          <div style={{ display: "flex"}} className="w-[40%]">
+            {downloadBtn && (
+              <span
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  downloadDocs();
+                }}
+              >
+                <img
+                  src={docxIcon}
+                  className="responsive-image"
+                  style={{ marginRight: "1rem",width:25,height:25 }}
+                />
+                <span style={{ marginRight: "2.5rem",width:'100%' }}> DownLoad a Docs</span>
+              </span>
+            )}
+            {downloadBtn && (
+              <span
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  sendToEmail();
+                }}
+              >
+                <img
+                  src={emailIcon}
+                  className="responsive-image"
+                  style={{ marginRight: "1rem",width:20,height:20 }}
+                />
+                <span style={{ width:'100%' }}> Send to Email</span>
+              </span>
+            )}
+          </div>
         </div>
 
         <div className="cv-Data">
@@ -113,7 +157,11 @@ const CvCoverLetter = () => {
           ) : current === 5 ? (
             <Interest setCurrent={setCurrent} current={current} />
           ) : current === 6 ? (
-            <Reference setCurrent={setCurrent} current={current} isCvComplete={isCvComplete} />
+            <Reference
+              setCurrent={setCurrent}
+              current={current}
+              isCvComplete={isCvComplete}
+            />
           ) : (
             ""
           )}

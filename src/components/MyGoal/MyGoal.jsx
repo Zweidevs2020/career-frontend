@@ -106,7 +106,6 @@ const MyGoal = () => {
   const DownloadBtn = async () => {
     setLoading3(true);
     const res = await getApiWithAuth(API_URL.GETMYGOALPDF);
-    console.log("================res", res);
     if (res.data.status === 200) {
       const data = res.data.data;
 

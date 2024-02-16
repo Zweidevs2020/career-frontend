@@ -2,13 +2,6 @@ import React from "react";
 import "./Steps.css";
 
 const Steps = ({ current, setCurrent, currentStep, isCvComplete }) => {
-  console.log(
-    "curremt setcurrent",
-    current,
-    setCurrent,
-    currentStep,
-    isCvComplete
-  );
 
   return (
     <>

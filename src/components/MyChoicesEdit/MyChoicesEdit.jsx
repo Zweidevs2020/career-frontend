@@ -179,7 +179,6 @@ const MyChoicesEdit = () => {
 
   const handleChangeTableMobile = (e, rowData) => {
     const { name, value } = e.target;
-    console.log("============rowData", rowData);
 
     let updatedData = data.map((item) => {
       if (item.rowNo === rowData.rowNo) {
@@ -194,14 +193,9 @@ const MyChoicesEdit = () => {
         return item;
       }
     });
-    console.log("============rowData", rowData, updatedData);
-
     setData(updatedData);
   };
 
-  useEffect(() => {
-    console.log("============data", data);
-  }, [data]);
 
   const eidtThisRow = (record) => {
     const updatedData = data.map((item) => {
@@ -215,7 +209,6 @@ const MyChoicesEdit = () => {
   };
 
   const handleUpdate = async (record) => {
-    console.log("========handle upadte", record);
     const row = dataRef.current.filter((item) => item.id === record?.id);
 
     if (row) {
@@ -251,7 +244,6 @@ const MyChoicesEdit = () => {
     }
   };
   const handleUpdateMobile = async (record) => {
-    console.log("=============record", record);
     for (const key in record) {
       if (key !== "id" && key !== "order_number" && record[key] === null) {
         message.error(`Please enter the ${key} of the Row`);
@@ -773,7 +765,6 @@ const MyChoicesEdit = () => {
                 ) : (
                   <div className="mobile-table">
                     <div className="mobile-table">
-                      {console.log("==========data", data)}
                       <DndContext
                         sensors={sensors}
                         modifiers={[restrictToVerticalAxis]}
