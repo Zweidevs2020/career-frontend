@@ -16,7 +16,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import "./LoginStyle.css";
 
-
 const Login = () => {
   const navigate = useNavigate();
 
@@ -29,9 +28,11 @@ const Login = () => {
   };
 
   const handlerSubmit = async () => {
-
     setLoading(true);
-    const response = await postApiWithoutAuth(API_URL.SIGNIN, data);
+    const response = await postApiWithoutAuth(API_URL.SIGNIN, {
+      ...data,
+      email: data.email.toLowerCase(),
+    });
 
     if (response?.status === 200) {
       message.success("Login Successfully");
@@ -78,7 +79,7 @@ const Login = () => {
               inputValue={data.email}
             />
           </Form.Item>
-        
+
           <Form.Item
             name="password"
             rules={[
@@ -88,11 +89,9 @@ const Login = () => {
                 pattern: new RegExp(
                   /^(?=.*\d)(?=.*?[@$!%*#?&^_.,-])(?=.*[a-z])(?=.*[A-Z]).{8,}$/
                 ),
-                message:
-                  "Invalid Credentials",
-                  validateTrigger:['onSubmit']
+                message: "Invalid Credentials",
+                validateTrigger: ["onSubmit"],
               },
-            
             ]}
           >
             <MyCareerGuidanceInputField
@@ -145,13 +144,17 @@ const Login = () => {
           © 2023 My Guidance. All Rights Reserved
         </span>
       </div>
-      <div className="mobileScreenImage" >
-         <img src={sideAuthImage}
-          style={{ objectFit: "cover",height:"100vh",width:"100%" ,borderRadius:'20px'}}
+      <div className="mobileScreenImage">
+        <img
+          src={sideAuthImage}
+          style={{
+            objectFit: "cover",
+            height: "100vh",
+            width: "100%",
+            borderRadius: "20px",
+          }}
           alt="img"
-         />
-
-      
+        />
       </div>
     </div>
   );

@@ -564,7 +564,7 @@ const MyStudy = () => {
               eventContent={renderEventContent}
               eventClick={handleDateSelect}
 
-              longPressDelay={1}
+              longPressDelay={100}
               select={(arg) => {
                 handleDateSelect(arg.start, arg.end);
               }}

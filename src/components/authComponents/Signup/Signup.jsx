@@ -59,10 +59,14 @@ const Signup = () => {
   };
   const handlerSaveSubmit = async () => {
     setLoading(true);
+    setLoading(false);
+
+    console.log('=========data',data,)
     const response = await postApiWithoutAuth(API_URL.SINGUPUSER, {
 
       ...data,
       dob: `${dobSave.year}-${dobSave.month}-${dobSave.day}`,
+      email:data.email.toLowerCase()
     });
 
     if (response.status === 200) {
