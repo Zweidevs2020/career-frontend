@@ -127,7 +127,7 @@ const CvCoverLetter = () => {
         
           </div>
           <div style={{ display: "flex",justifyContent:'flex-start' }} className=" sm:flex-col flex-wrap ">
-            {/* {downloadBtn && (
+            {downloadBtn && (
               <span
                 style={{
                   display: "flex",
@@ -147,7 +147,7 @@ const CvCoverLetter = () => {
                   Download a PDF
                 </span>
               </span>
-            )} */}
+            )}
             {downloadBtn && (
               <span
                 style={{
