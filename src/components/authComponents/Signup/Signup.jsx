@@ -65,7 +65,7 @@ const Signup = () => {
     const response = await postApiWithoutAuth(API_URL.SINGUPUSER, {
 
       ...data,
-      dob: `${dobSave.year}-${dobSave.month}-${dobSave.day}`,
+      dob: null,
       email:data.email.toLowerCase()
     });
 
