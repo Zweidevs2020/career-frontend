@@ -30,10 +30,13 @@ import { useNavigate } from "react-router-dom";
 import { Modal } from "antd";
 import countyImg from "../../../assets/county.png";
 import schoolImg from "../../../assets/schoolimg.png";
-import { ClockCircleOutlined, CloseCircleOutlined, CloseOutlined } from "@ant-design/icons";
+import {
+  ClockCircleOutlined,
+  CloseCircleOutlined,
+  CloseOutlined,
+} from "@ant-design/icons";
 
 const Signup = () => {
-
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
@@ -61,21 +64,21 @@ const Signup = () => {
     setLoading(true);
     setLoading(false);
 
-    console.log('=========data',data,)
+    console.log("=========data", data);
     const response = await postApiWithoutAuth(API_URL.SINGUPUSER, {
-
       ...data,
       dob: `${dobSave.year}-${dobSave.month}-${dobSave.day}`,
-      email:data.email.toLowerCase()
+      email: data.email.toLowerCase(),
     });
 
     if (response.status === 200) {
-
-      message.success("Congratulations! You've successfully signed up. You're now ready to log in and explore our platform. Welcome aboard!");
+      message.success(
+        "Congratulations! You've successfully signed up. You're now ready to log in and explore our platform. Welcome aboard!"
+      );
       navigate("/");
     } else {
       setLoading(false);
-   
+
       message.error(response.data.message);
     }
   };
@@ -93,20 +96,14 @@ const Signup = () => {
     setData({ ...data, school: schoolName[0].label });
   };
 
-
   const handleSelectDay = (d) => {
-
     setDobSave({ ...dobSave, day: d });
   };
 
-  useEffect(() => {
-
-  }, [dobSave]);
+  useEffect(() => {}, [dobSave]);
 
   const onChangeYear = (date) => {
-
     setDobSave({ ...dobSave, year: date });
-   
   };
 
   useEffect(() => {
@@ -116,20 +113,19 @@ const Signup = () => {
   const handleSchool = (e) => {
     const { value } = e.target;
     setNewSchools(value);
-  
+
     setIsAddSchoolValid(!!value.trim());
   };
 
   const getSchools = async () => {
     const response = await getApiWithoutAuth(API_URL.GETUSERSCHOOL);
 
-
     if (response?.data?.success) {
       const school = response.data.data?.map((item) => {
         return {
           value: item.pk,
           label: item.school,
-          county: item.county
+          county: item.county,
         };
       });
       setSchools(school);
@@ -139,29 +135,31 @@ const Signup = () => {
     }
   };
   const handleSelectMonth = (m) => {
-
     setDobSave({ ...dobSave, month: m });
     if (dobSave.day) {
       const isValidDayForMonth =
-        (m === "02" && dobSave.day >= '01' && dobSave.day <= '28') ||
+        (m === "02" && dobSave.day >= "01" && dobSave.day <= "28") ||
         (["04", "06", "09", "11"].includes(m) &&
-          dobSave.day >= '01' &&
-          dobSave.day <= '30') ||
+          dobSave.day >= "01" &&
+          dobSave.day <= "30") ||
         (["01", "03", "05", "07", "08", "10", "12"].includes(m) &&
-          dobSave.day >= '01' &&
-          dobSave.day <= '31');
+          dobSave.day >= "01" &&
+          dobSave.day <= "31");
       if (!isValidDayForMonth) {
         setDobSave((prevDobSave) => ({ ...prevDobSave, day: "" }));
       }
     }
   };
 
-
   return (
     <div className="mainDiv">
       <div className="leftDiv">
         <Image preview={false} src={myCareerGuidanceIcon} width={207} />
-        <Form onFinish={handlerSaveSubmit} className="formStyle">
+        <Form
+          onFinish={handlerSaveSubmit}
+          className="formStyle"
+          autoComplete={false}
+        >
           <div className="welcomeHaddingText">Hello</div>
           <div className="textStyle18" style={{ marginBottom: 15 }}>
             Signup to Get Started
@@ -212,7 +210,6 @@ const Signup = () => {
           <Form.Item
             name="password"
             rules={[
-
               {
                 required: true,
                 pattern: new RegExp(
@@ -233,7 +230,6 @@ const Signup = () => {
             />
           </Form.Item>
           <Form.Item
-
             rules={[{ required: true, message: "Please select a school!" }]}
             style={{ marginBottom: "12px" }}
           >
@@ -259,7 +255,6 @@ const Signup = () => {
               }
             >
               {schools.map((school) => (
-
                 <Select.Option key={school.value} value={school.value}>
                   {`${school.label}, ${school.county}`}
                 </Select.Option>
@@ -267,7 +262,7 @@ const Signup = () => {
             </Select>
           </Form.Item>
 
-          <span >If your school is not listed above</span>
+          <span>If your school is not listed above</span>
           {/* <span
             style={{ cursor: "pointer", color: "#1476b7", paddingLeft: "5px" }}
             onClick={() => setOpen(true)}
@@ -427,10 +422,7 @@ const Signup = () => {
               </Form.Item>
             </div>
           </div> */}
-          <Form.Item
-            name="profile_image"
-            style={{marginTop:"10px"}}
-          >
+          <Form.Item name="profile_image" style={{ marginTop: "10px" }}>
             <Upload
               beforeUpload={() => false}
               listType="picture"
@@ -479,9 +471,15 @@ const Signup = () => {
           © 2023 My Guidance. All Rights Reserved
         </span>
       </div>
-      <div className="mobileScreenImage" >
-        <img src={sideAuthImage}
-          style={{ objectFit: "cover", height: "100vh", width: "100%", borderRadius: '20px' }}
+      <div className="mobileScreenImage">
+        <img
+          src={sideAuthImage}
+          style={{
+            objectFit: "cover",
+            height: "100vh",
+            width: "100%",
+            borderRadius: "20px",
+          }}
           alt="img"
         />
       </div>

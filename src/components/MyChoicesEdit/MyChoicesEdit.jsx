@@ -196,7 +196,6 @@ const MyChoicesEdit = () => {
     setData(updatedData);
   };
 
-
   const eidtThisRow = (record) => {
     const updatedData = data.map((item) => {
       if (item.rowNo === record.rowNo) {
@@ -417,7 +416,9 @@ const MyChoicesEdit = () => {
     } = useSortable({
       id: props["data-row-key"],
     });
+
     const rowId = props["data-row-key"];
+    console.log(rowId, "row");
     const row = data.find((item) => item.dataId === rowId);
     const isIdNotNull = row && row.id !== null;
     const style = {
@@ -459,7 +460,9 @@ const MyChoicesEdit = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 10,
+        // distance: ,
+        delay: 100,
+        tolerance: 2,
       },
     })
   );
@@ -468,7 +471,7 @@ const MyChoicesEdit = () => {
     // if ( !isDragInProgress) {
     //   return;
     // }
-
+    console.log(active, over, "active,over");
     if (active?.id && over?.id) {
       if (active?.id !== over?.id) {
         setData((prev) => {

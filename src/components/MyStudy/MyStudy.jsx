@@ -1,5 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Spin, message, Button, TimePicker, Modal, Select } from "antd";
+import {
+  Spin,
+  message,
+  Button,
+  TimePicker,
+  Modal,
+  Select,
+  ColorPicker,
+} from "antd";
 import dayjs from "dayjs";
 import {
   getApiWithAuth,
@@ -364,14 +372,15 @@ const MyStudy = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    // console.log(hexString, "inside hex");
     if (isEditing) {
-      handleEdit();
+      handleEdit(hexString);
     } else {
-      createNewEvent();
+      createNewEvent(hexString);
     }
   };
 
-  const createNewEvent = async (e) => {
+  const createNewEvent = async (bgColor) => {
     setLoadingBooking(true);
 
     let startTime = dayjs(selectedTime, "hh:mm A").format("HH:mm:ss");
@@ -382,7 +391,7 @@ const MyStudy = () => {
       endslot: endTime,
       day: weekDay,
       title: title,
-      color: backgroundColor,
+      color: bgColor,
     });
 
     if (response.data.status === 201) {
@@ -496,7 +505,7 @@ const MyStudy = () => {
       eventToDelete
     );
   }, [weekDay, selectedTime, selectedEndTime, eventToDelete]);
-  const handleEdit = async (id) => {
+  const handleEdit = async (bgColor) => {
     setUpdateLoading(true);
 
     const formattedStartTime = dayjs(selectedTime, "hh:mm A").format(
@@ -515,7 +524,7 @@ const MyStudy = () => {
         endslot: formattedEndTime,
         day: weekDay,
         title: title,
-        color: backgroundColor,
+        color: bgColor,
       }
     );
     console.log("=====================weekDay response", response);
@@ -567,6 +576,61 @@ const MyStudy = () => {
     handleTimeChange(selectedTime, value);
   }
 
+  const [colorHex, setColorHex] = useState("#1677ff");
+  const [formatHex, setFormatHex] = useState("hex");
+
+  const hexString = React.useMemo(
+    () => (typeof colorHex === "string" ? colorHex : colorHex?.toHexString()),
+    [colorHex]
+  );
+  // setBackgroundColor(hexString);
+  console.log(colorHex, "Colorhex", hexString, backgroundColor);
+
+  // const [calendarReady, setCalendarReady] = useState(false);
+  // const calendarRef = useRef();
+
+  // useEffect(() => {
+  //   console.log(calendarReady, "wds");
+  //   // if (!calendarReady) return;
+  //   const func = () => {
+  //     console.log(calendarRef, "soso");
+  //     const el = calendarRef.current.elRef.current;
+  //     console.log(calendarRef.current.elRef, "sdsdsd", calendarRef);
+  //     let startX = 0;
+  //     const handleTouchStart = (e) => {
+  //       startX = e.touches[0].clientX;
+  //     };
+
+  //     const handleTouchMove = (e) => {
+  //       e.preventDefault();
+  //     };
+
+  //     const handleTouchEnd = (e) => {
+  //       const endX = e.changedTouches[0].clientX;
+  //       if (startX - endX > 50) {
+  //         calendarRef.current.getApi().next();
+  //       } else if (startX - endX < -50) {
+  //         calendarRef.current.getApi().prev();
+  //       }
+  //     };
+
+  //     el?.addEventListener("touchstart", handleTouchStart, { passive: false });
+  //     el?.addEventListener("touchmove", handleTouchMove, { passive: false });
+  //     el?.addEventListener("touchend", handleTouchEnd);
+  //   };
+  //   setTimeout(() => {
+  //     func();
+  //   }, 5000);
+
+  //   // return () => {
+  //   //   el.removeEventListener("touchstart", handleTouchStart);
+  //   //   el.removeEventListener("touchmove", handleTouchMove);
+  //   //   el.removeEventListener("touchend", handleTouchEnd);
+  //   // };
+  // }, [calendarReady]); // Depend on calendarReady
+
+  // // useEffect;
+  // console.log(calendarRef, "calendarRef");
   return (
     <>
       <div className="educationalGuidanceMainDiv">
@@ -592,6 +656,7 @@ const MyStudy = () => {
         ) : (
           <>
             <FullCalendar
+              // ref={calendarRef}
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
               headerToolbar={
                 isMobile
@@ -614,6 +679,11 @@ const MyStudy = () => {
               select={(arg) => {
                 handleDateSelect(arg.start, arg.end);
               }}
+              viewDidMount={() =>
+                setTimeout(() => {
+                  setCalendarReady(true);
+                }, 5000)
+              }
               selectable={true}
               editable={true}
               weekends={true}
@@ -626,7 +696,7 @@ const MyStudy = () => {
                   ? moment().startOf("week").add(weekDay, "days").toDate()
                   : null
               }
-              dayMaxEventRows={isMobile ? 1 : 5}
+              dayMaxEventRows={isMobile ? 5 : 5}
               dayHeaderContent={(args) => {
                 const date = args.date;
 
@@ -654,14 +724,32 @@ const MyStudy = () => {
       >
         <div className="mt-5 pt-5 ps-2">
           <form onSubmit={handleSubmit}>
+            <div
+              style={{
+                marginBottom: "10px",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <ColorPicker
+                format={formatHex}
+                value={colorHex}
+                onChange={setColorHex}
+                onFormatChange={setFormatHex}
+              />
+              <span style={{ marginLeft: "10px" }}>Color</span>
+            </div>
+
             <MyCareerGuidanceInputField
               placeholder="Add Title"
               type="input"
               name="full_name"
               onChange={(e) => setTitle(e.target.value)}
               inputValue={title}
+              style={{ marginTop: "10px" }}
             />
-            <Select
+
+            {/* <Select
               // placeholder="Select end Time"
               // onChange={handleChange2}
               onChange={(e) => setBackgroundColor(e)}
@@ -675,7 +763,7 @@ const MyStudy = () => {
                   {option.label}
                 </Option>
               ))}
-            </Select>
+            </Select> */}
             <div
               style={{
                 display: "flex",
@@ -720,8 +808,8 @@ const MyStudy = () => {
                 width: "100%",
                 display: "flex",
                 justifyContent: "center",
-                flexDirection:'column',
-                alignItems:'center'
+                flexDirection: "column",
+                alignItems: "center",
               }}
             >
               {!isEditing && (
