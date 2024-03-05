@@ -20,7 +20,7 @@ const EmailVerification = () => {
   const handlerSubmit = async () => {
     setLoading(true);
     const response = await postApiWithoutAuth(API_URL.OTPCONFIRM, {
-      email: data.email,
+      email: data.email.toLowerCase(),
       otp: otp,
     });
     if (response.status === 200) {

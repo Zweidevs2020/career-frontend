@@ -1,5 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Spin, message, Button, TimePicker, Modal, Select } from "antd";
+import {
+  Spin,
+  message,
+  Button,
+  TimePicker,
+  Modal,
+  Select,
+  ColorPicker,
+} from "antd";
 import dayjs from "dayjs";
 import {
   getApiWithAuth,
@@ -25,7 +33,18 @@ import { DeleteOutlined } from "@ant-design/icons";
 const isMobile = window.innerWidth <= 768;
 const MyStudy = () => {
   const { Option } = Select;
-
+  const colorArray = [
+    { label: "Blue", value: "#3498db" },
+    { label: "Green", value: "#2ecc71" },
+    { label: "Red", value: "#e74c3c" },
+    { label: "Orange", value: "#f39c12" },
+    { label: "Purple", value: "#9b59b6" },
+    { label: "Turquoise", value: "#1abc9c" },
+    { label: "Orange-ish", value: "#e67e22" },
+    { label: "Dark Slate Gray", value: "#34495e" },
+    { label: "Burnt Orange", value: "#d35400" },
+    { label: "Gray", value: "#7f8c8d" },
+  ];
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
@@ -37,6 +56,8 @@ const MyStudy = () => {
   const [weekDay, setWeekDay] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState("");
+  const [backgroundColor, setBackgroundColor] = useState("#e74c3c");
+
   const [loadingBooking, setLoadingBooking] = useState(false);
   const [openBooking, setOpenBooking] = useState(false);
   const [deleteBooking, setDeleteBooking] = useState(false);
@@ -55,7 +76,6 @@ const MyStudy = () => {
   const [eventId, setEventId] = useState(0);
   const [weekId, setWeekId] = useState(0);
   const [selectedEvent, setSelectedEvent] = useState(null);
-
 
   const [eventToDelete, setEventToDelete] = useState(null);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -82,12 +102,16 @@ const MyStudy = () => {
   }, []);
 
   const getCurrentWeek = () => {
+    console.log("===================res", data);
+
     var currentDate = moment();
     var weekStart = currentDate.clone().startOf("week");
+    console.log("===================res what ", currentDate, "====", weekStart);
     var days = [];
     for (var i = 0; i <= 6; i++) {
       days.push(moment(weekStart).add(i, "days").format("ddd MMMM DD YYYY"));
     }
+    console.log("===================res days", data, days);
 
     setDatatime(days);
   };
@@ -114,7 +138,6 @@ const MyStudy = () => {
 
         event.event.setProp("start", start);
         event.event.setProp("end", end);
-
       } catch (error) {
         // Handle error
       }
@@ -122,10 +145,7 @@ const MyStudy = () => {
   };
 
   const handleEventResize = async (event) => {
-
     const { id, start, end } = event.event;
-
-
 
     if (start && end) {
       const viewData = {
@@ -140,18 +160,15 @@ const MyStudy = () => {
           event.event._def.extendedProps.selectID,
           viewData
         );
-
-      } catch (error) { }
+      } catch (error) {}
     }
   };
 
   const handleEditCalender = async (id, viewData) => {
-
     setUpdateLoading(true);
 
     const startTime = dayjs(viewData?.start).format("HH:mm:ss");
     const endTime = dayjs(viewData?.end).format("HH:mm:ss");
-
 
     try {
       const response = await putApiWithAuth(`timetable/update-timeslot/${id}`, {
@@ -166,7 +183,6 @@ const MyStudy = () => {
         message.success("Updated Successfully");
 
         const updatedCalenderData = arr.map((item) => {
-
           return {
             ...item,
             title: viewData.title,
@@ -205,6 +221,8 @@ const MyStudy = () => {
   };
 
   useEffect(() => {
+    console.log("===================res days data time", dataTime, data);
+
     let check = [];
     check = data.map((item) => {
       return {
@@ -212,7 +230,9 @@ const MyStudy = () => {
         id: item.day,
         start: new Date(`${setShowData(item.day, dataTime)} ${item.timeslot}`),
         end: new Date(`${setShowData(item.day, dataTime)} ${item.endslot}`),
-        backgroundColor: "rgba(41, 204, 57, 0.05)",
+        // backgroundColor: "rgba(41, 204, 57, 0.05)",
+        backgroundColor: item.color ? item.color : "rgba(41, 204, 57, 0.05)",
+
         extendedProps: {
           title: item.title,
           id: item.day,
@@ -224,13 +244,14 @@ const MyStudy = () => {
         },
       };
     });
+    console.log("===================res days data time check", check);
     setCalenderData(check);
   }, [dataTime]);
 
   const getCalanderData = async () => {
     setLoading(true);
     const response = await getApiWithAuth(`timetable/list-timeslot/`);
-
+    console.log("===================res", response);
     if (response?.data.status === 200) {
       setData(response.data.data);
       setLoading(false);
@@ -244,100 +265,122 @@ const MyStudy = () => {
     }
   }, [data]);
 
-
   const handleDeleteEvent = async (event) => {
-    const eventId = event.extendedProps.selectID;
+    console.log("=====event", event);
+    // const eventId = event.extendedProps.selectID;
 
-    setEventToDelete(eventId);
+    // setEventToDelete(eventId);
 
-    const response = await deleteApiWithAuth(`timetable/delete-timeslot/${eventId}`);
+    const response = await deleteApiWithAuth(
+      `timetable/delete-timeslot/${eventId}`
+    );
 
-    if (response.data['status'] === 204) {
+    if (response.data["status"] === 204) {
       message.success("Event deleted successfully.");
+      setUpdateLoading(false);
       setDatatime([]);
       getCalanderData();
-
-
+      setOpenViewBooking(false);
+      setOpenBooking(false);
     } else {
       message.error(response.data.message);
     }
-  }
-
-
-
+  };
 
   function renderEventContent(eventInfo) {
-
     return (
       <>
-        <div className="showDateData">
+        <div
+          className="showDateData"
+          style={{ background: eventInfo.backgroundColor }}
+        >
           <div className="showDateData2">
-            {eventInfo.event._def.title.length > 10 ? `${eventInfo.event._def.title.slice(0, 15)}...` : eventInfo.event._def.title}
+            {eventInfo.event._def.title.length > 10
+              ? `${eventInfo.event._def.title.slice(0, 15)}...`
+              : eventInfo.event._def.title}
           </div>
-          <button
+          {/* <button
             onClick={() => handleDeleteEvent(eventInfo.event)}
             data-event-id={eventInfo.event._def.extendedProps.selectID}
-            style={{ background: "none", border: "none", cursor: "pointer", position: "absolute", top: 0, right: 3 }}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              position: "absolute",
+              top: 0,
+              right: 3,
+            }}
           >
             <DeleteOutlined style={{ color: "white" }} />
-          </button>
+          </button> */}
         </div>
       </>
     );
   }
 
   const handleDateSelect = (selectInfo, b) => {
+    console.log("=====================handleDateSelect", selectInfo, "===", b);
     if (b !== undefined) {
       setIsEditing(false);
       const selectedStart = new Date(selectInfo);
 
       setWeekDay(selectedStart.getDay().toString());
-      setSelectedTime(selectedStart.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }));
+      setSelectedTime(
+        selectedStart.toLocaleString("en-US", {
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+        })
+      );
 
       setSelectedEndTime(selectedTime);
-      setTitle('')
+      setTitle("");
       const selectedEnd = new Date(selectedStart.getTime() + 30 * 60 * 1000);
-      setSelectedEndTime(selectedEnd.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }));
+      setSelectedEndTime(
+        selectedEnd.toLocaleString("en-US", {
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+        })
+      );
       handleOpenBooking();
-    }
-    else {
-
+    } else {
       setIsEditing(true);
 
-      const selectedStart = new Date(selectInfo.event._def.extendedProps['start']);
+      const selectedStart = new Date(
+        selectInfo.event._def.extendedProps["start"]
+      );
 
       setWeekDay(selectedStart.getDay().toString());
-      setTitle(selectInfo?.event?._def?.extendedProps.title)
+      setTitle(selectInfo?.event?._def?.extendedProps.title);
       const startTime = selectInfo?.event?._def?.extendedProps.start;
       const originalDateStart = moment(startTime, "ddd MMM D YYYY HH:mm:ss ZZ");
       const formattedDateStart = originalDateStart.format("hh:mm A");
       setSelectedTime(formattedDateStart);
-      setEventId(selectInfo?.event?._def?.extendedProps.selectID)
-      setWeekId()
+      setEventId(selectInfo?.event?._def?.extendedProps.selectID);
+      setWeekId();
       const endTime = selectInfo?.event?._def?.extendedProps.end;
       const originalDateEnd = moment(endTime, "ddd MMM D YYYY HH:mm:ss ZZ");
       const formattedDateEnd = originalDateEnd.format("hh:mm A");
 
       setSelectedEndTime(formattedDateEnd);
       {
-        !eventToDelete &&
-          handleOpenBooking();
+        !eventToDelete && handleOpenBooking();
       }
     }
-
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    // console.log(hexString, "inside hex");
     if (isEditing) {
-      handleEdit();
-    }
-    else {
-      createNewEvent()
+      handleEdit(hexString);
+    } else {
+      createNewEvent(hexString);
     }
   };
 
-  const createNewEvent = async (e) => {
+  const createNewEvent = async (bgColor) => {
     setLoadingBooking(true);
 
     let startTime = dayjs(selectedTime, "hh:mm A").format("HH:mm:ss");
@@ -348,29 +391,26 @@ const MyStudy = () => {
       endslot: endTime,
       day: weekDay,
       title: title,
+      color: bgColor,
     });
 
     if (response.data.status === 201) {
-
       message.success("Booking Added");
       setSelectedTime("");
       setSelectedEndTime("");
-      setWeekDay("");
       setTitle("");
+      setBackgroundColor("#e74c3c");
       setOpenBooking(false);
       setLoadingBooking(false);
       setData([]);
       setDatatime([]);
       getCalanderData();
-
-
     } else {
       setLoadingBooking(false);
       message.error(response.data.message[0]);
     }
   };
   const isMobile = window.innerWidth <= 768;
-
 
   const handleDelete = async () => {
     setDeleteHandler(true);
@@ -452,23 +492,42 @@ const MyStudy = () => {
     setBtnDisabled(false);
     setViewData({ ...viewData, end: e?.$d });
   };
-
-  const handleEdit = async (id) => {
+  useEffect(() => {
+    console.log(
+      "=====================weekDayy",
+      moment().startOf("week").add(2, "days").toDate(),
+      weekDay,
+      "===",
+      selectedTime,
+      "===",
+      selectedEndTime,
+      "====",
+      eventToDelete
+    );
+  }, [weekDay, selectedTime, selectedEndTime, eventToDelete]);
+  const handleEdit = async (bgColor) => {
     setUpdateLoading(true);
 
-
-    const formattedStartTime = dayjs(selectedTime, "hh:mm A").format("HH:mm:ss");
-    const formattedEndTime = dayjs(selectedEndTime, "hh:mm A").format("HH:mm:ss");
-
+    const formattedStartTime = dayjs(selectedTime, "hh:mm A").format(
+      "HH:mm:ss"
+    );
+    const formattedEndTime = dayjs(selectedEndTime, "hh:mm A").format(
+      "HH:mm:ss"
+    );
 
     setBtnDisabled(true);
 
-    const response = await putApiWithAuth(`timetable/update-timeslot/${eventId}`, {
-      timeslot: formattedStartTime,
-      endslot: formattedEndTime,
-      day: weekDay,
-      title: title,
-    });
+    const response = await putApiWithAuth(
+      `timetable/update-timeslot/${eventId}`,
+      {
+        timeslot: formattedStartTime,
+        endslot: formattedEndTime,
+        day: weekDay,
+        title: title,
+        color: bgColor,
+      }
+    );
+    console.log("=====================weekDay response", response);
 
     if (response.data.success === true) {
       message.success("Updated Successfully");
@@ -476,13 +535,11 @@ const MyStudy = () => {
       setDatatime([]);
       getCalanderData();
       setOpenViewBooking(false);
-      setOpenBooking(false)
-
+      setOpenBooking(false);
     }
     if (response.data.success === false) {
       message.error(response.data.message);
     }
-
   };
 
   const handleTimeChange = (start, end) => {
@@ -519,6 +576,61 @@ const MyStudy = () => {
     handleTimeChange(selectedTime, value);
   }
 
+  const [colorHex, setColorHex] = useState("#1677ff");
+  const [formatHex, setFormatHex] = useState("hex");
+
+  const hexString = React.useMemo(
+    () => (typeof colorHex === "string" ? colorHex : colorHex?.toHexString()),
+    [colorHex]
+  );
+  // setBackgroundColor(hexString);
+  console.log(colorHex, "Colorhex", hexString, backgroundColor);
+
+  // const [calendarReady, setCalendarReady] = useState(false);
+  // const calendarRef = useRef();
+
+  // useEffect(() => {
+  //   console.log(calendarReady, "wds");
+  //   // if (!calendarReady) return;
+  //   const func = () => {
+  //     console.log(calendarRef, "soso");
+  //     const el = calendarRef.current.elRef.current;
+  //     console.log(calendarRef.current.elRef, "sdsdsd", calendarRef);
+  //     let startX = 0;
+  //     const handleTouchStart = (e) => {
+  //       startX = e.touches[0].clientX;
+  //     };
+
+  //     const handleTouchMove = (e) => {
+  //       e.preventDefault();
+  //     };
+
+  //     const handleTouchEnd = (e) => {
+  //       const endX = e.changedTouches[0].clientX;
+  //       if (startX - endX > 50) {
+  //         calendarRef.current.getApi().next();
+  //       } else if (startX - endX < -50) {
+  //         calendarRef.current.getApi().prev();
+  //       }
+  //     };
+
+  //     el?.addEventListener("touchstart", handleTouchStart, { passive: false });
+  //     el?.addEventListener("touchmove", handleTouchMove, { passive: false });
+  //     el?.addEventListener("touchend", handleTouchEnd);
+  //   };
+  //   setTimeout(() => {
+  //     func();
+  //   }, 5000);
+
+  //   // return () => {
+  //   //   el.removeEventListener("touchstart", handleTouchStart);
+  //   //   el.removeEventListener("touchmove", handleTouchMove);
+  //   //   el.removeEventListener("touchend", handleTouchEnd);
+  //   // };
+  // }, [calendarReady]); // Depend on calendarReady
+
+  // // useEffect;
+  // console.log(calendarRef, "calendarRef");
   return (
     <>
       <div className="educationalGuidanceMainDiv">
@@ -544,31 +656,34 @@ const MyStudy = () => {
         ) : (
           <>
             <FullCalendar
+              // ref={calendarRef}
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
               headerToolbar={
                 isMobile
                   ? {
-                    left: "prev,next",
-                    center: "",
-                    right: "",
-                  }
+                      left: "prev,next",
+                      center: "",
+                      right: "",
+                    }
                   : {
-                    left: "",
-                    center: "",
-                    right: "",
-                  }
+                      left: "",
+                      center: "",
+                      right: "",
+                    }
               }
-
               initialView={isMobile ? "timeGridDay" : "timeGridWeek"}
               events={calenderData}
               eventContent={renderEventContent}
               eventClick={handleDateSelect}
-
-              longPressDelay={1}
+              longPressDelay={100}
               select={(arg) => {
                 handleDateSelect(arg.start, arg.end);
               }}
-
+              viewDidMount={() =>
+                setTimeout(() => {
+                  setCalendarReady(true);
+                }, 5000)
+              }
               selectable={true}
               editable={true}
               weekends={true}
@@ -576,7 +691,12 @@ const MyStudy = () => {
               eventResize={handleEventResize}
               allDaySlot={false}
               height="100vh"
-              dayMaxEventRows={isMobile ? 1 : 5}
+              initialDate={
+                weekDay
+                  ? moment().startOf("week").add(weekDay, "days").toDate()
+                  : null
+              }
+              dayMaxEventRows={isMobile ? 5 : 5}
               dayHeaderContent={(args) => {
                 const date = args.date;
 
@@ -588,8 +708,8 @@ const MyStudy = () => {
               }}
               slotMinTime="06:00:00"
             />
-          </>)}
-
+          </>
+        )}
       </div>
 
       <Modal
@@ -602,20 +722,52 @@ const MyStudy = () => {
         onCancel={handleCloseBooking}
         footer={[]}
       >
-
         <div className="mt-5 pt-5 ps-2">
           <form onSubmit={handleSubmit}>
+            <div
+              style={{
+                marginBottom: "10px",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <ColorPicker
+                format={formatHex}
+                value={colorHex}
+                onChange={setColorHex}
+                onFormatChange={setFormatHex}
+              />
+              <span style={{ marginLeft: "10px" }}>Color</span>
+            </div>
+
             <MyCareerGuidanceInputField
               placeholder="Add Title"
               type="input"
               name="full_name"
               onChange={(e) => setTitle(e.target.value)}
               inputValue={title}
+              style={{ marginTop: "10px" }}
             />
+
+            {/* <Select
+              // placeholder="Select end Time"
+              // onChange={handleChange2}
+              onChange={(e) => setBackgroundColor(e)}
+              style={{ marginTop: "10px" }}
+              value={backgroundColor}
+              bordered={false}
+              className="inputFieldStyleSelect"
+            >
+              {colorArray.map((option) => (
+                <Option key={option.value} value={option.value}>
+                  {option.label}
+                </Option>
+              ))}
+            </Select> */}
             <div
               style={{
                 display: "flex",
-                width: '100%',
+                width: "100%",
                 justifyContent: "space-between",
                 marginTop: 20,
               }}
@@ -626,7 +778,7 @@ const MyStudy = () => {
                 value={selectedTime}
                 bordered={false}
                 className="inputFieldStyleSelect"
-                style={{ flex: 1, marginRight: '10px' }}
+                style={{ flex: 1, marginRight: "10px" }}
               >
                 {optionArray.map((option) => (
                   <Option key={option.value} value={option.value}>
@@ -638,7 +790,7 @@ const MyStudy = () => {
               <Select
                 placeholder="Select end Time"
                 onChange={handleChange2}
-                style={{ marginLeft: '10px', flex: 1 }}
+                style={{ marginLeft: "10px", flex: 1 }}
                 value={selectedEndTime}
                 bordered={false}
                 className="inputFieldStyleSelect"
@@ -650,42 +802,61 @@ const MyStudy = () => {
                 ))}
               </Select>
             </div>
-            <div className="errorTime" >{errorMessage}</div>
+            <div className="errorTime">{errorMessage}</div>
             <div
               style={{
                 width: "100%",
                 display: "flex",
                 justifyContent: "center",
+                flexDirection: "column",
+                alignItems: "center",
               }}
             >
-              {!isEditing && (<MyCareerGuidanceButton
-                label={"Create"}
-                className={`takebutton ${disableCreateButton ? 'disabled' : ''}`}
-                // type="submit"
-                htmlType="submit"
-                // onClick={createNewEvent}
-                loading={loadingBooking}
-                disabled={disableCreateButton}
-              />)}
-              {isEditing && (<MyCareerGuidanceButton
-                label={"Edit"}
-                className={`takebutton ${disableCreateButton ? 'disabled' : ''}`}
-                // type="submit"
-                htmlType="submit"
-                // onClick={handleEdit}
-                loading={loadingBooking}
-                disabled={disableCreateButton}
-              />)}
+              {!isEditing && (
+                <MyCareerGuidanceButton
+                  label={"Create"}
+                  className={`takebutton ${
+                    disableCreateButton ? "disabled" : ""
+                  }`}
+                  // type="submit"
+                  htmlType="submit"
+                  // onClick={createNewEvent}
+                  loading={loadingBooking}
+                  disabled={disableCreateButton}
+                />
+              )}
+              {isEditing && (
+                <MyCareerGuidanceButton
+                  label={"Edit"}
+                  className={`takebutton ${
+                    disableCreateButton ? "disabled" : ""
+                  }`}
+                  // type="submit"
+                  htmlType="submit"
+                  // onClick={handleEdit}
+                  loading={loadingBooking}
+                  disabled={disableCreateButton}
+                />
+              )}
+              {isEditing && (
+                <MyCareerGuidanceButton
+                  label={"Delete"}
+                  className={`takebutton ${
+                    disableCreateButton ? "disabled" : ""
+                  }`}
+                  // type="submit"
+                  htmlType="button"
+                  // onClick={handleEdit}
+                  loading={loadingBooking}
+                  disabled={disableCreateButton}
+                  onClick={(e) => handleDeleteEvent(e)}
+                />
+              )}
             </div>
           </form>
         </div>
-
       </Modal>
-
-
-
     </>
-
   );
 };
 

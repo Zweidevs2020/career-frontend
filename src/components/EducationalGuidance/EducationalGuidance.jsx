@@ -69,7 +69,6 @@ const EducationalGuidance = () => {
 
     }
   }, [data?.obtained_score]);
-
   return (
     <>
       <div className="educationalGuidanceMainDiv">
@@ -80,7 +79,10 @@ const EducationalGuidance = () => {
           ) : quizz.length === 0 ? (
             <div className="quizDetailsStyle">No Data Found</div>
           ) : (
-            quizz.map((item) => (
+            quizz.sort((a, b) => {
+              const getNumericPart = (str) => parseInt(str.match(/\d+/)[0]);
+              return getNumericPart(a.name) - getNumericPart(b.name);
+            }).map((item) => (
               <div className="quizMain">
                 <div className="quizStyle" key={item.id}>
                   <div className={item.complete ? 'width90' : 'mobileEducationalRow'}> 

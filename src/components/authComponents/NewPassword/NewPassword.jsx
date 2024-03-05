@@ -28,7 +28,7 @@ const NewPasword = () => {
     setLoading(true);
     const response = await patchApiWithOutAuth(API_URL.NEWPASSWORD, {
       ...data,
-      email: email.data.email,
+      email: email.data.email.toLowerCase(),
     });
 
     if (response.data.success) {
