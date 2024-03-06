@@ -675,7 +675,7 @@ const MyStudy = () => {
               events={calenderData}
               eventContent={renderEventContent}
               eventClick={handleDateSelect}
-              longPressDelay={100}
+              longPressDelay={300}
               select={(arg) => {
                 handleDateSelect(arg.start, arg.end);
               }}
@@ -684,7 +684,7 @@ const MyStudy = () => {
                   // setCalendarReady(true);
                 }, 5000)
               }
-              selectable={true}
+              selectable={false}
               editable={true}
               weekends={true}
               eventDrop={handleEventDrop}
