@@ -681,7 +681,7 @@ const MyStudy = () => {
               }}
               viewDidMount={() =>
                 setTimeout(() => {
-                  setCalendarReady(true);
+                  // setCalendarReady(true);
                 }, 5000)
               }
               selectable={true}
