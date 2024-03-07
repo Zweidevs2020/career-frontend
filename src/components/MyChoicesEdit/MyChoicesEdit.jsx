@@ -196,7 +196,6 @@ const MyChoicesEdit = () => {
     setData(updatedData);
   };
 
-
   const eidtThisRow = (record) => {
     const updatedData = data.map((item) => {
       if (item.rowNo === record.rowNo) {
@@ -417,11 +416,15 @@ const MyChoicesEdit = () => {
     } = useSortable({
       id: props["data-row-key"],
     });
+
     const rowId = props["data-row-key"];
+    console.log(rowId, "row");
+    const { row: comingRow } = props;
     const row = data.find((item) => item.dataId === rowId);
     const isIdNotNull = row && row.id !== null;
     const style = {
       ...props.style,
+
       transform: CSS.Transform.toString(
         transform && {
           ...transform,
@@ -431,6 +434,7 @@ const MyChoicesEdit = () => {
 
       transition,
       cursor: "move",
+      // touchAction: "none",
 
       ...(isDragging
         ? {
@@ -447,11 +451,50 @@ const MyChoicesEdit = () => {
           ref={setNodeRef}
           className={isIdNotNull ? "old-data" : "new-data"}
           style={style}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-          {...attributes}
-          {...listeners}
-        ></div>
+        >
+          <div
+            className={`row mobile-row`}
+            style={{
+              background: "rgb(244, 246, 248)",
+              marginBottom: "3rem",
+            }}
+          >
+            <div className="menuIconMobile drag-handle">
+              <MenuOutlined
+                style={{
+                  touchAction: "none",
+                  cursor: "move",
+                }}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+                {...attributes}
+                {...listeners}
+              />
+              <div className="actionColumn">
+                {/* <span className="rowHeadingMobile">Action</span> */}
+                <Space size="middle">
+                  {comingRow.editable && comingRow.id !== null ? (
+                    <a onClick={() => handleUpdateMobile(comingRow)}>
+                      <CheckOutlined style={{ color: "#1476b7" }} />
+                    </a>
+                  ) : row.editable && row.id === null ? (
+                    <a onClick={() => handleAddRow(comingRow)}>
+                      <PlusCircleOutlined style={{ color: "#1476b7" }} />
+                    </a>
+                  ) : (
+                    <a onClick={() => eidtThisRow(comingRow)}>
+                      <EditOutlined style={{ color: "#1476b7" }} />
+                    </a>
+                  )}
+                  <a onClick={() => handleDelete(comingRow)}>
+                    <DeleteOutlined style={{ color: "red" }} />
+                  </a>
+                </Space>
+              </div>
+            </div>
+            {props.children}
+          </div>
+        </div>
       </>
     );
   };
@@ -459,7 +502,9 @@ const MyChoicesEdit = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 10,
+        // distance: ,
+        delay: 50,
+        tolerance: 2,
       },
     })
   );
@@ -468,7 +513,7 @@ const MyChoicesEdit = () => {
     // if ( !isDragInProgress) {
     //   return;
     // }
-
+    console.log(active, over, "active,over");
     if (active?.id && over?.id) {
       if (active?.id !== over?.id) {
         setData((prev) => {
@@ -784,92 +829,47 @@ const MyChoicesEdit = () => {
                                   className="dragDrop"
                                   key={row.dataId}
                                   data-row-key={row.dataId}
+                                  handleUpdateMobile={(row) =>
+                                    handleUpdateMobile(row)
+                                  }
+                                  handleAddRow={(row) => handleAddRow(row)}
+                                  eidtThisRow={(row) => eidtThisRow(row)}
+                                  handleDelete={(row) => handleDelete(row)}
+                                  row={row}
                                 >
-                                  <div
-                                    className={`row mobile-row`}
-                                    style={{
-                                      background: "rgb(244, 246, 248)",
-                                      marginBottom: "3rem",
-                                    }}
-                                  >
-                                    <div className="menuIconMobile drag-handle">
-                                      <MenuOutlined
-                                        style={{
-                                          touchAction: "none",
-                                          cursor: "move",
-                                        }}
-                                      />
-                                      <div className="actionColumn">
-                                        {/* <span className="rowHeadingMobile">Action</span> */}
-                                        <Space size="middle">
-                                          {row.editable && row.id !== null ? (
-                                            <a
-                                              onClick={() =>
-                                                handleUpdateMobile(row)
-                                              }
-                                            >
-                                              <CheckOutlined
-                                                style={{ color: "#1476b7" }}
-                                              />
-                                            </a>
-                                          ) : row.editable &&
-                                            row.id === null ? (
-                                            <a
-                                              onClick={() => handleAddRow(row)}
-                                            >
-                                              <PlusCircleOutlined
-                                                style={{ color: "#1476b7" }}
-                                              />
-                                            </a>
-                                          ) : (
-                                            <a onClick={() => eidtThisRow(row)}>
-                                              <EditOutlined
-                                                style={{ color: "#1476b7" }}
-                                              />
-                                            </a>
-                                          )}
-                                          <a onClick={() => handleDelete(row)}>
-                                            <DeleteOutlined
-                                              style={{ color: "red" }}
-                                            />
-                                          </a>
-                                        </Space>
-                                      </div>
+                                  <div className="first-column">
+                                    <div className="column"></div>
+                                    <div
+                                      className="column"
+                                      style={{ width: "100%" }}
+                                    >
+                                      <span className="rowHeadingMobile">
+                                        No. {row.rowNo + 1}
+                                      </span>
                                     </div>
-                                    <div className="first-column">
-                                      <div className="column"></div>
+                                  </div>
+                                  <div className="remaining-columns">
+                                    {columns.map((item, index) => (
                                       <div
                                         className="column"
-                                        style={{ width: "100%" }}
+                                        key={`${item.dataId}-${index}`}
                                       >
                                         <span className="rowHeadingMobile">
-                                          No. {row.rowNo + 1}
+                                          {capitalizeWords(item)}
                                         </span>
+                                        <MyCareerGuidanceInputField
+                                          placeholder={row[item]}
+                                          type="input"
+                                          name={item}
+                                          onChange={(e) =>
+                                            handleChangeTableMobile(e, row)
+                                          }
+                                          defaultValue={row[item]}
+                                          isPrefix={false}
+                                          disabled={!row.editable}
+                                        />
                                       </div>
-                                    </div>
-                                    <div className="remaining-columns">
-                                      {columns.map((item, index) => (
-                                        <div
-                                          className="column"
-                                          key={`${item.dataId}-${index}`}
-                                        >
-                                          <span className="rowHeadingMobile">
-                                            {capitalizeWords(item)}
-                                          </span>
-                                          <MyCareerGuidanceInputField
-                                            placeholder={row[item]}
-                                            type="input"
-                                            name={item}
-                                            onChange={(e) =>
-                                              handleChangeTableMobile(e, row)
-                                            }
-                                            defaultValue={row[item]}
-                                            isPrefix={false}
-                                            disabled={!row.editable}
-                                          />
-                                        </div>
-                                      ))}
-                                    </div>
+                                    ))}
                                   </div>
                                 </MobileRow>
                               ) : (

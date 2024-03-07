@@ -56,7 +56,11 @@ const Login = () => {
     <div className="mainDiv">
       <div className="leftDiv">
         <Image preview={false} src={myCareerGuidanceIcon} width={207} />
-        <Form onFinish={handlerSubmit} className="formStyle">
+        <Form
+          onFinish={handlerSubmit}
+          className="formStyle"
+          autoComplete={false}
+        >
           <div className="welcomeHaddingText">Welcome to My Guidance.</div>
           <div className="welcomeHaddingText" style={{ fontWeight: "normal" }}>
             Please login or register an account.
