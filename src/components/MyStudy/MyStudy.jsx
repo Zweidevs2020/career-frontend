@@ -319,7 +319,7 @@ const MyStudy = () => {
   }
 
   const handleDateSelect = (selectInfo, b) => {
-    console.log("=====================handleDateSelect", selectInfo, "===", b);
+    console.log("=====================handleDat", selectInfo, "===", b);
     if (b !== undefined) {
       setIsEditing(false);
       const selectedStart = new Date(selectInfo);
