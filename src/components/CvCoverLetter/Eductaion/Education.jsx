@@ -147,6 +147,7 @@ const Education = ({ setCurrent, current }) => {
     { label: "ACHIEVED", value: "ACHIEVED" },
     { label: "PARTIALLY ACHIEVED", value: "PARTIALLY ACHIEVED" },
     { label: "NOT GRADED", value: "NOT GRADED" },
+    { label: "DISTINCTION", value: "DISTINCTION" },
   ];
 
   const levelArrayLeaveing = [
