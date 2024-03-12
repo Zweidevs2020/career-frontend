@@ -492,6 +492,7 @@ const MyChoicesEdit = () => {
                 </Space>
               </div>
             </div>
+
             {props.children}
           </div>
         </div>
