@@ -319,7 +319,7 @@ const MyStudy = () => {
   }
 
   const handleDateSelect = (selectInfo, b) => {
-    console.log("=====================handleDateSelect", selectInfo, "===", b);
+    console.log("=====================handleDat", selectInfo, "===", b);
     if (b !== undefined) {
       setIsEditing(false);
       const selectedStart = new Date(selectInfo);
@@ -675,16 +675,16 @@ const MyStudy = () => {
               events={calenderData}
               eventContent={renderEventContent}
               eventClick={handleDateSelect}
-              longPressDelay={100}
+              longPressDelay={300}
               select={(arg) => {
                 handleDateSelect(arg.start, arg.end);
               }}
               viewDidMount={() =>
                 setTimeout(() => {
-                  setCalendarReady(true);
+                  // setCalendarReady(true);
                 }, 5000)
               }
-              selectable={true}
+              selectable={false}
               editable={true}
               weekends={true}
               eventDrop={handleEventDrop}
