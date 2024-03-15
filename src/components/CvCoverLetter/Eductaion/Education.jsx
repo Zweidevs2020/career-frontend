@@ -142,12 +142,12 @@ const Education = ({ setCurrent, current }) => {
   ];
 
   const resultArray = [
+    { label: "DISTINCTION", value: "DISTINCTION" },
     { label: "HIGHER MERIT", value: "HIGHER MERIT" },
     { label: "MERIT", value: "MERIT" },
     { label: "ACHIEVED", value: "ACHIEVED" },
     { label: "PARTIALLY ACHIEVED", value: "PARTIALLY ACHIEVED" },
     { label: "NOT GRADED", value: "NOT GRADED" },
-    { label: "DISTINCTION", value: "DISTINCTION" },
   ];
 
   const levelArrayLeaveing = [
