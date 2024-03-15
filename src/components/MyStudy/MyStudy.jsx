@@ -656,7 +656,6 @@ const MyStudy = () => {
         ) : (
           <>
             <FullCalendar
-              // ref={calendarRef}
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
               headerToolbar={
                 isMobile
@@ -679,12 +678,7 @@ const MyStudy = () => {
               select={(arg) => {
                 handleDateSelect(arg.start, arg.end);
               }}
-              viewDidMount={() =>
-                setTimeout(() => {
-                  // setCalendarReady(true);
-                }, 5000)
-              }
-              selectable={false}
+              selectable={true}
               editable={true}
               weekends={true}
               eventDrop={handleEventDrop}
