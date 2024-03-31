@@ -84,7 +84,7 @@ const MyChoicesEdit = () => {
     const response = await getApiWithAuth(
       `choices/column-names/?choice=${dataa.id}`
     );
-
+    console.log("================resgetChoiceRecord",response)
     if (response.data.status === 200) {
       const columnsData = response.data.data.data;
       const columnsWithoutOrderNumber = columnsData.slice(
@@ -102,7 +102,7 @@ const MyChoicesEdit = () => {
 
   const getTableRecord = async () => {
     const response = await getApiWithAuth(`choices/${dataa.id}/`);
-
+    console.log("================res",response)
     if (response.data.status === 200) {
       setOldData(response.data.data);
       // setData(response.data.data);
@@ -197,6 +197,7 @@ const MyChoicesEdit = () => {
   };
 
   const eidtThisRow = (record) => {
+    console.log("================res eidtThisRow",data,"=====",record)
     const updatedData = data.map((item) => {
       if (item.rowNo === record.rowNo) {
         return { ...item, editable: true };
@@ -204,13 +205,17 @@ const MyChoicesEdit = () => {
         return item;
       }
     });
+    console.log("================res eidtThisRow updatedData",updatedData)
+
     setData(updatedData);
   };
 
   const handleUpdate = async (record) => {
+    console.log("================res handleUpdate in",record,"====",dataRef)
     const row = dataRef.current.filter((item) => item.id === record?.id);
+    console.log("================res handleUpdate row",row)
 
-    if (row) {
+    if (row.length != 0) {
       const checkNullValue = (row, key) => {
         if (row[0][key] === null || row[0][key] === "") {
           return key;
@@ -243,6 +248,7 @@ const MyChoicesEdit = () => {
     }
   };
   const handleUpdateMobile = async (record) => {
+    console.log("=================check",record)
     for (const key in record) {
       if (key !== "id" && key !== "order_number" && record[key] === null) {
         message.error(`Please enter the ${key} of the Row`);
@@ -702,7 +708,7 @@ const MyChoicesEdit = () => {
                                     </a>
                                   ) : (
                                     <a onClick={() => eidtThisRow(record)}>
-                                      <EditOutlined />
+                                      <EditOutlined style={{ color: "green" }}  />
                                     </a>
                                   )}
                                   <a onClick={() => handleDelete(record)}>
