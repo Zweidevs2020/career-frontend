@@ -145,8 +145,9 @@ const CaoCalculator = () => {
     setLoadingThird(true);
     setCurrectState(index);
     setThirdDropdownOptions([]);
+    const encodedLevel = encodeURIComponent(tableData[index].name);
     const response = await getApiWithAuth(
-      `calculator/check-level-grade/?level=${tableData[index].level}&subject=${tableData[index].name}`
+      `calculator/check-level-grade/?level=${tableData[index].level}&subject=${encodedLevel}`
     );
     if (response?.data?.status === 200) {
       setLoadingThird(false);
