@@ -750,7 +750,7 @@ const MyChoicesEdit = () => {
                                 ? "nonEmptyTable"
                                 : "emptyTable"
                             }
-                            rowKey={"dataId"}
+                            rowKey={"dataId"}  
                             components={{
                               body: {
                                 row: Row,
