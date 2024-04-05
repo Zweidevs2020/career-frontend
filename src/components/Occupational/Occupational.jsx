@@ -42,7 +42,6 @@ const Occupational = () => {
       const response = await getApiWithAuth(
         `/psychometric/result?name=${data.name}`
       );
-      console.log("=============res", response);
       if (response.data.status === 200) {
         let sortedData = response.data.data.sort((a, b) => b.score - a.score);
 
@@ -55,7 +54,6 @@ const Occupational = () => {
       const response1 = await getApiWithAuth(
         `/psychometric/result?name=${data.test_name}`
       );
-      console.log("=============res1", response1);
       if (response1.data.status === 200) {
         let sortedData = response1.data.data.sort((a, b) => b.score - a.score);
 
@@ -70,7 +68,6 @@ const Occupational = () => {
   const getQuizData = async () => {
     setLoading(true);
     const response = await getApiWithAuth(`/psychometric/result/${data}/`);
-    console.log("=============res2", data, response);
     if (response.data.status === 200) {
       let sortedData = response.data.data.sort((a, b) => b.score - a.score);
       setEducationGuidance(sortedData);
@@ -79,8 +76,6 @@ const Occupational = () => {
       setLoading(false);
     }
   };
-  console.log("==========educationGuidance", educationGuidance);
-
   // const sortByScoreDescending = (a, b) => b.score - a.score;
   // const sortedData = educationGuidance.slice().sort(sortByScoreDescending);
 

@@ -103,7 +103,6 @@ const CaoCalculator = () => {
     },
   ]);
 
-  console.log("tableData", tableData);
 
   useEffect(() => {
     const idExistsLength = tableData.filter(
@@ -146,8 +145,9 @@ const CaoCalculator = () => {
     setLoadingThird(true);
     setCurrectState(index);
     setThirdDropdownOptions([]);
+    const encodedLevel = encodeURIComponent(tableData[index].name);
     const response = await getApiWithAuth(
-      `calculator/check-level-grade/?level=${tableData[index].level}&subject=${tableData[index].name}`
+      `calculator/check-level-grade/?level=${tableData[index].level}&subject=${encodedLevel}`
     );
     if (response?.data?.status === 200) {
       setLoadingThird(false);
@@ -242,15 +242,6 @@ const CaoCalculator = () => {
   };
 
   let isDeleteButtonDisabled = dataLength < 6;
-  console.log("hello", isDeleteButtonDisabled, dataLength);
-  useEffect(() => {
-    console.log(
-      "=========================tableData",
-      dataLength,
-      tableData,
-      isDeleteButtonDisabled
-    );
-  }, [tableData, isDeleteButtonDisabled]);
   const columns = [
     {
       title: "Subject",
@@ -460,25 +451,16 @@ const CaoCalculator = () => {
   // };
 
   const handleDelete = async (id) => {
-    console.log(" ", dataLength, tableData, id);
     const idExistsLength = tableData.filter(
       (item) => item.id !== undefined
     ).length;
-    console.log(
-      'Length of tableData elements with "id" property:',
-      idExistsLength
-    );
+
     const filteredTable = tableData.filter((item) => item.No == id);
     if (
       filteredTable[0]?.name == null &&
       filteredTable[0]?.grades == null &&
       filteredTable[0]?.level === null
     ) {
-      console.log(
-        "t==================table data lenght empty",
-        tableData,
-        filteredTable
-      );
       if (tableData?.length > 6) {
         const filteredTableData = tableData.filter((item) => item.No !== id);
         const saveData = filteredTableData.map((item, index) => {
@@ -487,14 +469,6 @@ const CaoCalculator = () => {
         setTableData(saveData);
       }
     } else {
-      console.log(
-        "t==================table data lenght not empty",
-        filteredTable,
-        filteredTable.name == null,
-        filteredTable.name == null &&
-          filteredTable.grades == null &&
-          filteredTable.level === null
-      );
 
       const targetIndex = tableData.findIndex((item) => item.No === id);
       const deletedRowData = tableData[targetIndex];
@@ -503,15 +477,6 @@ const CaoCalculator = () => {
         id: dataId,
         subjectId: deletedRowData.id,
       };
-      console.log(
-        "t==================table data lenght not empty 2",
-        dataId,
-        filteredTable,
-        tableData,
-        targetIndex,
-        deletedRowData,
-        deletedRowData.id
-      );
       if (deletedRowData.id) {
         const response = await postApiWithAuth(
           `calculator/remove-subject-grade/`,
@@ -531,8 +496,6 @@ const CaoCalculator = () => {
             return item;
           }
         });
-        console.log(data, "[tableData tableData ]");
-
         setTableData(data);
         // getCurrectSelectedValues();
       }
@@ -544,12 +507,8 @@ const CaoCalculator = () => {
     // });
     getFiltersData();
   };
-  useEffect(() => {
-    console.log("============tableData", tableData);
-  }, [tableData]);
 
   const clearAllData = async () => {
-    console.log("==========dataId", dataId);
     const response = await deleteApiWithAuth(
       `calculator/user-points/delete/${dataId}/`
     );
@@ -570,8 +529,6 @@ const CaoCalculator = () => {
     setLoading(true);
 
     const response = await postApiWithAuth(API_URL.CALCULATEDATA, gradeId);
-    console.log("=============gradeId", gradeId, response.data.data.data);
-
     if (response.data.data.success) {
       setFinalData(response.data.data.data);
       // getCurrectSelectedValues()
@@ -619,12 +576,6 @@ const CaoCalculator = () => {
     let newData = [];
     try {
       const response = await getApiWithAuth(`calculator/user-points/`);
-      console.log(
-        "reponseeee=======",
-        tableData,
-        response,
-        response.data.data.length
-      );
       let checkLength = response.data.data[0].grades.map((obj) => ({
         grade: obj.id,
       }));
@@ -632,14 +583,6 @@ const CaoCalculator = () => {
         const response2 = await postApiWithAuth(
           API_URL.CALCULATEDATA,
           response.data.data[0].grades.map((obj) => ({ grade: obj.id }))
-        );
-
-        console.log(
-          "reponseeee=======2",
-
-          tableData,
-          response2,
-          response.data.data.length
         );
         if (response2.data.data.success) {
           setFinalData(response2.data.data.data);

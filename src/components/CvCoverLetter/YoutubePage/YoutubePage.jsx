@@ -6,7 +6,6 @@ const YoutubePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { data, videoId } = location.state || {};
-  console.log("===============data", data, videoId);
   return (
     <>
       <div className="youtubeContainerStyle">

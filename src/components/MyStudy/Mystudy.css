@@ -11,7 +11,9 @@
 .showDateData2 {
     display: flex;
     justify-content: center;
-    align-items: center
+    align-items: center;
+    width: -webkit-fill-available;
+    height: inherit;
 }
 
 .fc-timegrid-event .fc-event-main {
