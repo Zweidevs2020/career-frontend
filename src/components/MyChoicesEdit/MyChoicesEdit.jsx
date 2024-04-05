@@ -516,6 +516,72 @@ const MyChoicesEdit = () => {
     })
   );
 
+  // const onDragEnd = async ({ active, over }) => {
+  //   // if ( !isDragInProgress) {
+  //   //   return;
+  //   // }
+  //   console.log(active, over, "active,over");
+  //   if (active?.id && over?.id) {
+  //     if (active?.id !== over?.id) {
+  //       setData((prev) => {
+  //         const activeIndex = prev.findIndex((i) => i.dataId === active?.id);
+
+  //         const overIndex = prev.findIndex((i) => i.dataId === over?.id);
+
+  //         const orderUpdate1 = {
+  //           order_number: oldData[overIndex]?.order_number,
+  //         };
+
+  //         const orderUpdate2 = {
+  //           order_number: oldData[activeIndex]?.order_number,
+  //         };
+
+  //         const updateOrder1 = async () => {
+  //           setLoadingFirst(true);
+  //           const respose1 = await patchApiWithAuth(
+  //             `choices/update-${dataa.id}/${oldData[activeIndex].id}/`,
+  //             orderUpdate1
+  //           );
+
+  //           if (respose1.data.status === 200) {
+  //             getTableRecord();
+  //             // setData(respose1.data.data);
+  //           }
+  //           setLoadingFirst(false);
+  //         };
+
+  //         const updateOrder2 = async () => {
+  //           setLoadingFirst(true);
+  //           const respose2 = await patchApiWithAuth(
+  //             `choices/update-${dataa.id}/${oldData[overIndex].id}/`,
+  //             orderUpdate2
+  //           );
+
+  //           if (respose2.data.status === 200) {
+  //             getTableRecord();
+  //             // setData(response.data.data);
+  //           }
+
+  //           setLoadingFirst(false);
+  //         };
+
+  //         updateOrder1();
+  //         updateOrder2();
+
+  //         return arrayMove(prev, activeIndex, overIndex);
+  //       });
+  //     }
+  //   }
+  //   {
+  //     isMobile && window.location.reload();
+  //   }
+  // };
+
+
+
+
+
+
   const onDragEnd = async ({ active, over }) => {
     // if ( !isDragInProgress) {
     //   return;
@@ -535,38 +601,53 @@ const MyChoicesEdit = () => {
           const orderUpdate2 = {
             order_number: oldData[activeIndex]?.order_number,
           };
+          console.log(
+            "====================orderUpdate1",
+            activeIndex,
+            overIndex,
+            active,
+            over,
+            orderUpdate1,
+            orderUpdate2,
+            data,
+            oldData
+          );
+          // const updateOrder1 = async () => {
+          //   setLoadingFirst(true);
+          //   const respose1 = await patchApiWithAuth(
+          //     `choices/update-${dataa.id}/${oldData[activeIndex].id}/`,
+          //     orderUpdate1
+          //   );
 
-          const updateOrder1 = async () => {
-            setLoadingFirst(true);
-            const respose1 = await patchApiWithAuth(
-              `choices/update-${dataa.id}/${oldData[activeIndex].id}/`,
-              orderUpdate1
-            );
+          //   if (respose1.data.status === 200) {
+          //      getTableRecord();
+          //     // setData(respose1.data.data);
+          //   }
+          //   setLoadingFirst(false);
+          // };
 
-            if (respose1.data.status === 200) {
-              getTableRecord();
-              // setData(respose1.data.data);
-            }
-            setLoadingFirst(false);
-          };
+          // const updateOrder2 = async () => {
+          //   setLoadingFirst(true);
+          //   const respose2 = await patchApiWithAuth(
+          //     `choices/update-${dataa.id}/${oldData[overIndex].id}/`,
+          //     orderUpdate2
+          //   );
 
-          const updateOrder2 = async () => {
-            setLoadingFirst(true);
-            const respose2 = await patchApiWithAuth(
-              `choices/update-${dataa.id}/${oldData[overIndex].id}/`,
-              orderUpdate2
-            );
+          //   if (respose2.data.status === 200) {
+          //     getTableRecord();
+          //     // setData(response.data.data);
+          //   }
 
-            if (respose2.data.status === 200) {
-              getTableRecord();
-              // setData(response.data.data);
-            }
+          //   setLoadingFirst(false);
+          // };
 
-            setLoadingFirst(false);
-          };
-
-          updateOrder1();
-          updateOrder2();
+          updateOrder1(
+            dataa.id,
+            oldData[activeIndex].id,
+            oldData[overIndex].id,
+            orderUpdate1,
+            orderUpdate2
+          );
 
           return arrayMove(prev, activeIndex, overIndex);
         });
@@ -577,6 +658,40 @@ const MyChoicesEdit = () => {
     }
   };
 
+  const updateOrder1 = async (
+    id,
+    activeIndexId,
+    overIndexId,
+    orderUpdate1,
+    orderUpdate2
+  ) => {
+    setLoadingFirst(true);
+    const respose1 = await patchApiWithAuth(
+      `choices/update-${id}/${activeIndexId}/`,
+      orderUpdate1
+    );
+
+    if (respose1.data.status === 200) {
+      updateOrder2(id, overIndexId, orderUpdate2);
+      // setData(respose1.data.data);
+    }
+    setLoadingFirst(false);
+  };
+
+  const updateOrder2 = async (id, overIndexId, orderUpdate2) => {
+    setLoadingFirst(true);
+    const respose2 = await patchApiWithAuth(
+      `choices/update-${id}/${overIndexId}/`,
+      orderUpdate2
+    );
+
+    if (respose2.data.status === 200) {
+      getTableRecord();
+      // setData(response.data.data);
+    }
+
+    setLoadingFirst(false);
+  };
   return (
     <>
       {loadingFirst ? (
@@ -708,7 +823,7 @@ const MyChoicesEdit = () => {
                                     </a>
                                   ) : (
                                     <a onClick={() => eidtThisRow(record)}>
-                                      <EditOutlined style={{ color: "green" }}  />
+                                      <EditOutlined style={{ color: "#1476b7" }}  />
                                     </a>
                                   )}
                                   <a onClick={() => handleDelete(record)}>
