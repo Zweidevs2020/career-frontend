@@ -45,6 +45,10 @@ const { Column, ColumnGroup } = Table;
 
 const MyChoicesEdit = () => {
   const inputRef = useRef(null);
+  const handleUpdateRef = useRef(null);
+  const handleAddRowRef = useRef(null);
+  const handleeidtThisRowRef = useRef(null);
+  const handleDeleteRef = useRef(null);
   const navigate = useNavigate();
   const [selectedRowId, setSelectedRowId] = useState(null);
   const location = useLocation();
@@ -379,7 +383,9 @@ const MyChoicesEdit = () => {
       id: props["data-row-key"],
     });
     const rowId = props["data-row-key"];
+    console.log("======Row",rowId)
     const row = data.find((item) => item.dataId === rowId);
+    console.log("======Row row",row)
     const isIdNotNull = row && row.id !== null;
     const style = {
       ...props.style,
@@ -834,11 +840,13 @@ const MyChoicesEdit = () => {
                                     <CheckOutlined
                                       style={{ cursor: "pointer" }}
                                       onClick={() => handleUpdate(record)}
+                                      // ref={handleUpdateRef}
                                     />
                                   ) : record.editable && record.id === null ? (
                                     <PlusCircleOutlined
                                       style={{ cursor: "pointer" }}
                                       onClick={() => handleAddRow(record)}
+                                      // ref={handleAddRowRef}
                                     />
                                   ) : (
                                     <EditOutlined
@@ -847,6 +855,7 @@ const MyChoicesEdit = () => {
                                         cursor: "pointer",
                                       }}
                                       onClick={() => eidtThisRow(record)}
+                                      // ref={handleeidtThisRowRef}
                                     />
                                   )}
                                   <DeleteOutlined
@@ -855,6 +864,7 @@ const MyChoicesEdit = () => {
                                       cursor: "pointer",
                                     }}
                                     onClick={() => handleDelete(record)}
+                                    // ref={handleDeleteRef}
                                   />
                                 </Space>
                               )}
