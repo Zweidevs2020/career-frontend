@@ -519,23 +519,23 @@ const MyChoicesEdit = () => {
         delay: 50,
         tolerance: 2,
       },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        // distance: ,
+        distance: 10,
+        delay: 50,
+        tolerance: 2,
+      },
+    }),
+    useSensor(MouseSensor, {
+      // Require the mouse to move by 10 pixels before activating
+      activationConstraint: {
+        distance: 10,
+        delay: 50,
+        tolerance: 2,
+      },
     })
-    // useSensor(TouchSensor, {
-    //   activationConstraint: {
-    //     // distance: ,
-    //     distance: 10,
-    //     delay: 50,
-    //     tolerance: 2,
-    //   },
-    // }),
-    //  useSensor(MouseSensor, {
-    //   // Require the mouse to move by 10 pixels before activating
-    //   activationConstraint: {
-    //     distance: 10,
-    //     delay: 50,
-    //     tolerance: 2,
-    //   },
-    // })
   );
 
   // const onDragEnd = async ({ active, over }) => {
@@ -831,35 +831,31 @@ const MyChoicesEdit = () => {
                               render={(_, record) => (
                                 <Space size="middle">
                                   {record.editable && record.id !== null ? (
-                                    <a onClick={() => handleUpdate(record)}>
-                                      <CheckOutlined
-                                        style={{ cursor: "pointer" }}
-                                      />
-                                    </a>
+                                    <CheckOutlined
+                                      style={{ cursor: "pointer" }}
+                                      onClick={() => handleUpdate(record)}
+                                    />
                                   ) : record.editable && record.id === null ? (
-                                    <a onClick={() => handleAddRow(record)}>
-                                      <PlusCircleOutlined
-                                        style={{ cursor: "pointer" }}
-                                      />
-                                    </a>
+                                    <PlusCircleOutlined
+                                      style={{ cursor: "pointer" }}
+                                      onClick={() => handleAddRow(record)}
+                                    />
                                   ) : (
-                                    <a onClick={() => eidtThisRow(record)}>
-                                      <EditOutlined
-                                        style={{
-                                          color: "#1476b7",
-                                          cursor: "pointer",
-                                        }}
-                                      />
-                                    </a>
-                                  )}
-                                  <a onClick={() => handleDelete(record)}>
-                                    <DeleteOutlined
+                                    <EditOutlined
                                       style={{
-                                        color: "red",
+                                        color: "#1476b7",
                                         cursor: "pointer",
                                       }}
+                                      onClick={() => eidtThisRow(record)}
                                     />
-                                  </a>
+                                  )}
+                                  <DeleteOutlined
+                                    style={{
+                                      color: "red",
+                                      cursor: "pointer",
+                                    }}
+                                    onClick={() => handleDelete(record)}
+                                  />
                                 </Space>
                               )}
                             />
