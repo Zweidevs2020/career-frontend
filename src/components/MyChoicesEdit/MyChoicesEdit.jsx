@@ -45,10 +45,6 @@ const { Column, ColumnGroup } = Table;
 
 const MyChoicesEdit = () => {
   const inputRef = useRef(null);
-
-  const editTickRef = useRef(null);
-  const editDeleteRef = useRef(null);
-  const editPlusRef = useRef(null);
   const navigate = useNavigate();
   const [selectedRowId, setSelectedRowId] = useState(null);
   const location = useLocation();
@@ -90,7 +86,7 @@ const MyChoicesEdit = () => {
     const response = await getApiWithAuth(
       `choices/column-names/?choice=${dataa.id}`
     );
-    console.log("================resgetChoiceRecord",response)
+    console.log("================resgetChoiceRecord", response);
     if (response.data.status === 200) {
       const columnsData = response.data.data.data;
       const columnsWithoutOrderNumber = columnsData.slice(
@@ -108,7 +104,7 @@ const MyChoicesEdit = () => {
 
   const getTableRecord = async () => {
     const response = await getApiWithAuth(`choices/${dataa.id}/`);
-    console.log("================res",response)
+    console.log("================res", response);
     if (response.data.status === 200) {
       setOldData(response.data.data);
       // setData(response.data.data);
@@ -203,7 +199,7 @@ const MyChoicesEdit = () => {
   };
 
   const eidtThisRow = (record) => {
-    console.log("================res eidtThisRow",data,"=====",record)
+    console.log("================res eidtThisRow", data, "=====", record);
     const updatedData = data.map((item) => {
       if (item.rowNo === record.rowNo) {
         return { ...item, editable: true };
@@ -211,15 +207,15 @@ const MyChoicesEdit = () => {
         return item;
       }
     });
-    console.log("================res eidtThisRow updatedData",updatedData)
+    console.log("================res eidtThisRow updatedData", updatedData);
 
     setData(updatedData);
   };
 
   const handleUpdate = async (record) => {
-    console.log("================res handleUpdate in",record,"====",dataRef)
+    console.log("================res handleUpdate in", record, "====", dataRef);
     const row = dataRef.current.filter((item) => item.id === record?.id);
-    console.log("================res handleUpdate row",row)
+    console.log("================res handleUpdate row", row);
 
     if (row.length != 0) {
       const checkNullValue = (row, key) => {
@@ -251,10 +247,14 @@ const MyChoicesEdit = () => {
           message.error(respose.data.message);
         }
       }
+    } else {
+      setShowRows(null);
+      getChoiceRecord();
+      getTableRecord();
     }
   };
   const handleUpdateMobile = async (record) => {
-    console.log("=================check",record)
+    console.log("=================check", record);
     for (const key in record) {
       if (key !== "id" && key !== "order_number" && record[key] === null) {
         message.error(`Please enter the ${key} of the Row`);
@@ -519,23 +519,23 @@ const MyChoicesEdit = () => {
         delay: 50,
         tolerance: 2,
       },
-    }),
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        // distance: ,
-        distance: 10,
-        delay: 50,
-        tolerance: 2,
-      },
-    }),
-     useSensor(MouseSensor, {
-      // Require the mouse to move by 10 pixels before activating
-      activationConstraint: {
-        distance: 10,
-        delay: 50,
-        tolerance: 2,
-      },
     })
+    // useSensor(TouchSensor, {
+    //   activationConstraint: {
+    //     // distance: ,
+    //     distance: 10,
+    //     delay: 50,
+    //     tolerance: 2,
+    //   },
+    // }),
+    //  useSensor(MouseSensor, {
+    //   // Require the mouse to move by 10 pixels before activating
+    //   activationConstraint: {
+    //     distance: 10,
+    //     delay: 50,
+    //     tolerance: 2,
+    //   },
+    // })
   );
 
   // const onDragEnd = async ({ active, over }) => {
@@ -598,11 +598,6 @@ const MyChoicesEdit = () => {
   //     isMobile && window.location.reload();
   //   }
   // };
-
-
-
-
-
 
   const onDragEnd = async ({ active, over }) => {
     // if ( !isDragInProgress) {
@@ -772,7 +767,7 @@ const MyChoicesEdit = () => {
                                 ? "nonEmptyTable"
                                 : "emptyTable"
                             }
-                            rowKey={"dataId"}  
+                            rowKey={"dataId"}
                             components={{
                               body: {
                                 row: Row,
@@ -836,21 +831,35 @@ const MyChoicesEdit = () => {
                               render={(_, record) => (
                                 <Space size="middle">
                                   {record.editable && record.id !== null ? (
-                                    <div onClick={() => handleUpdate(record)}>
-                                      <CheckOutlined />
-                                    </div>
+                                    <a onClick={() => handleUpdate(record)}>
+                                      <CheckOutlined
+                                        style={{ cursor: "pointer" }}
+                                      />
+                                    </a>
                                   ) : record.editable && record.id === null ? (
-                                    <div onClick={() => handleAddRow(record)}>
-                                      <PlusCircleOutlined />
-                                    </div>
+                                    <a onClick={() => handleAddRow(record)}>
+                                      <PlusCircleOutlined
+                                        style={{ cursor: "pointer" }}
+                                      />
+                                    </a>
                                   ) : (
-                                    <div onClick={() => eidtThisRow(record)}>
-                                      <EditOutlined style={{ color: "#1476b7" }}  />
-                                    </div>
+                                    <a onClick={() => eidtThisRow(record)}>
+                                      <EditOutlined
+                                        style={{
+                                          color: "#1476b7",
+                                          cursor: "pointer",
+                                        }}
+                                      />
+                                    </a>
                                   )}
-                                  <div onClick={() => handleDelete(record)}>
-                                    <DeleteOutlined style={{ color: "red" }} />
-                                  </div>
+                                  <a onClick={() => handleDelete(record)}>
+                                    <DeleteOutlined
+                                      style={{
+                                        color: "red",
+                                        cursor: "pointer",
+                                      }}
+                                    />
+                                  </a>
                                 </Space>
                               )}
                             />
