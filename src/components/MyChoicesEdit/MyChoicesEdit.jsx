@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import {
   DndContext,
   PointerSensor,
+  TouchSensor,
+  MouseSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -510,6 +512,22 @@ const MyChoicesEdit = () => {
     useSensor(PointerSensor, {
       activationConstraint: {
         // distance: ,
+        delay: 50,
+        tolerance: 2,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        // distance: ,
+        distance: 10,
+        delay: 50,
+        tolerance: 2,
+      },
+    }),
+     useSensor(MouseSensor, {
+      // Require the mouse to move by 10 pixels before activating
+      activationConstraint: {
+        distance: 10,
         delay: 50,
         tolerance: 2,
       },
