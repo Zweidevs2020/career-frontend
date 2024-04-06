@@ -45,6 +45,10 @@ const { Column, ColumnGroup } = Table;
 
 const MyChoicesEdit = () => {
   const inputRef = useRef(null);
+
+  const editTickRef = useRef(null);
+  const editDeleteRef = useRef(null);
+  const editPlusRef = useRef(null);
   const navigate = useNavigate();
   const [selectedRowId, setSelectedRowId] = useState(null);
   const location = useLocation();
@@ -832,21 +836,21 @@ const MyChoicesEdit = () => {
                               render={(_, record) => (
                                 <Space size="middle">
                                   {record.editable && record.id !== null ? (
-                                    <a onClick={() => handleUpdate(record)}>
+                                    <div onClick={() => handleUpdate(record)}>
                                       <CheckOutlined />
-                                    </a>
+                                    </div>
                                   ) : record.editable && record.id === null ? (
-                                    <a onClick={() => handleAddRow(record)}>
+                                    <div onClick={() => handleAddRow(record)}>
                                       <PlusCircleOutlined />
-                                    </a>
+                                    </div>
                                   ) : (
-                                    <a onClick={() => eidtThisRow(record)}>
+                                    <div onClick={() => eidtThisRow(record)}>
                                       <EditOutlined style={{ color: "#1476b7" }}  />
-                                    </a>
+                                    </div>
                                   )}
-                                  <a onClick={() => handleDelete(record)}>
+                                  <div onClick={() => handleDelete(record)}>
                                     <DeleteOutlined style={{ color: "red" }} />
-                                  </a>
+                                  </div>
                                 </Space>
                               )}
                             />
