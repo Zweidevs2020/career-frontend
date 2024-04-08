@@ -432,6 +432,10 @@ const MyChoicesEdit = () => {
               />
             )}
           /> */}
+
+          
+
+          {children}
           {row?.id ? (
             <MenuOutlined
               {...attributes}
@@ -439,19 +443,17 @@ const MyChoicesEdit = () => {
               style={{
                 touchAction: "none",
                 cursor: "move",
-                // position: "absolute",
-                //  top: "20px",
-                // left: "2%",
-                display:'flex',
-                justifyContent:'center',
-                height:100,
-                alignItems:'center'
+                // width: 20,
+                // height: 20,
+                marginRight:30,
+                position: "absolute",
+                top: "42%",
+                left: "0px",
+
                 // color: row?.id ? "red" : "transparent",
               }}
             />
           ) : null}
-
-          {children}
         </tr>
       </>
     );
@@ -814,20 +816,12 @@ const MyChoicesEdit = () => {
                               },
                             }}
                           >
-                            {/* <Column
-                              title=""
-                              key="menuIcon"
-                              dataIndex="menuIcon"
-                              render={(text, record) => (
-                                <div style={{ width: "100px" }}></div>
-                              )}
-                            /> */}
                             <Column
                               title="No."
                               dataIndex="rowNo"
                               key="rowNo"
                               className="tableHeadingStyle"
-                              render={(text) => <span>{text + 1}</span>}
+                              render={(text) => <span style={{paddingLeft:10}}>{text + 1}</span>}
                             />
                             {columns.map((item) => {
                               return (
@@ -922,29 +916,8 @@ const MyChoicesEdit = () => {
                         title="No."
                         dataIndex="rowNo"
                         key="rowNo"
-                        className="tableHeadingStyle extraWidth"
-                        render={(text) => (
-                          <MenuOutlined
-                            style={{
-                              touchAction: "none",
-                              cursor: "default",
-                              // position: "absolute",
-                              top: "42%",
-                              left: "2%",
-                              paddingLeft: "5px",
-                              color: "white",
-                              // color: row?.id ? "red" : "black",
-                            }}
-                          />
-                        )}
-                      />
-                      <Column
-                        title="No."
-                        dataIndex="rowNo"
-                        key="rowNo"
-                        className="tableHeadingStyle extraPadding"
-                        style={{ padding: "0 46px" }}
-                        render={(text) => <span>{text + 1}</span>}
+                        className="tableHeadingStyle"
+                        render={(text) => <span style={{paddingLeft:10}}>{text + 1}</span>}
                       />
                       {columns.map((item) => {
                         return (

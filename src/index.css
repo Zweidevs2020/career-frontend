@@ -107,3 +107,7 @@ code {
     height: 150px 
   }
 }
+
+.ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:first-child {
+  width: 50px !important
+}
