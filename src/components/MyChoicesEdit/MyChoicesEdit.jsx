@@ -371,7 +371,7 @@ const MyChoicesEdit = () => {
       .join(" ");
   };
 
-  const Row = (props) => {
+  const Row = ({ children, ...props }) => {
     const {
       attributes,
       listeners,
@@ -383,12 +383,14 @@ const MyChoicesEdit = () => {
       id: props["data-row-key"],
     });
     const rowId = props["data-row-key"];
-    console.log("======Row",rowId)
+    console.log("======Row", rowId, data);
     const row = data.find((item) => item.dataId === rowId);
-    console.log("======Row row",row)
+    const shouldShowIcon = data.find((item) => item.id === rowId);
+    console.log("======Row row", row);
     const isIdNotNull = row && row.id !== null;
     const style = {
       ...props.style,
+      position: "relative",
       transform: CSS.Transform.toString(
         transform && {
           ...transform,
@@ -416,9 +418,37 @@ const MyChoicesEdit = () => {
           style={style}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          {...attributes}
-          {...listeners}
-        ></tr>
+        >
+          {/* <Column
+            title=""
+            key="menuIcon"
+            dataIndex="menuIcon"
+            render={(text, record) => (
+              <MenuOutlined
+                style={{
+                  touchAction: "none",
+                  cursor: "move",
+                }}
+              />
+            )}
+          /> */}
+          {row?.id ? (
+            <MenuOutlined
+              {...attributes}
+              {...listeners}
+              style={{
+                touchAction: "none",
+                cursor: "move",
+                position: "absolute",
+                top: "42%",
+                left: "2%",
+                // color: row?.id ? "red" : "transparent",
+              }}
+            />
+          ) : null}
+
+          {children}
+        </tr>
       </>
     );
   };
@@ -785,12 +815,7 @@ const MyChoicesEdit = () => {
                               key="menuIcon"
                               dataIndex="menuIcon"
                               render={(text, record) => (
-                                <MenuOutlined
-                                  style={{
-                                    touchAction: "none",
-                                    cursor: "move",
-                                  }}
-                                />
+                                <div style={{ width: "100px" }}></div>
                               )}
                             />
                             <Column
@@ -890,12 +915,21 @@ const MyChoicesEdit = () => {
                       }}
                     >
                       <Column
-                        render={() => (
+                        title="No."
+                        dataIndex="rowNo"
+                        key="rowNo"
+                        className="tableHeadingStyle extraWidth"
+                        render={(text) => (
                           <MenuOutlined
                             style={{
                               touchAction: "none",
-                              cursor: "move",
+                              cursor: "default",
+                              // position: "absolute",
+                              top: "42%",
+                              left: "2%",
+                              paddingLeft: "5px",
                               color: "white",
+                              // color: row?.id ? "red" : "black",
                             }}
                           />
                         )}
@@ -904,7 +938,8 @@ const MyChoicesEdit = () => {
                         title="No."
                         dataIndex="rowNo"
                         key="rowNo"
-                        className="tableHeadingStyle"
+                        className="tableHeadingStyle extraPadding"
+                        style={{ padding: "0 46px" }}
                         render={(text) => <span>{text + 1}</span>}
                       />
                       {columns.map((item) => {
