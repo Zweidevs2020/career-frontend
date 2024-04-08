@@ -18,7 +18,12 @@
   color: #5c0404;
 
 }
+.extraPadding
+{padding: 0 23px !important;width:80px}
 
+.extraWidth{
+  width:32px
+}
 .rowHeadingMobile {
   color: #1476b7 !important;
   font-family: poppins;
