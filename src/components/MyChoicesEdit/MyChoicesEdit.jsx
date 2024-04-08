@@ -439,9 +439,13 @@ const MyChoicesEdit = () => {
               style={{
                 touchAction: "none",
                 cursor: "move",
-                position: "absolute",
-                top: "42%",
-                left: "2%",
+                // position: "absolute",
+                //  top: "20px",
+                // left: "2%",
+                display:'flex',
+                justifyContent:'center',
+                height:100,
+                alignItems:'center'
                 // color: row?.id ? "red" : "transparent",
               }}
             />
@@ -810,14 +814,14 @@ const MyChoicesEdit = () => {
                               },
                             }}
                           >
-                            <Column
+                            {/* <Column
                               title=""
                               key="menuIcon"
                               dataIndex="menuIcon"
                               render={(text, record) => (
                                 <div style={{ width: "100px" }}></div>
                               )}
-                            />
+                            /> */}
                             <Column
                               title="No."
                               dataIndex="rowNo"
