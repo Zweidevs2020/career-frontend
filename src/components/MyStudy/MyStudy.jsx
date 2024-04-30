@@ -241,6 +241,7 @@ const MyStudy = () => {
             `${setShowData(item.day, dataTime)} ${item.timeslot}`
           ),
           end: new Date(`${setShowData(item.day, dataTime)} ${item.endslot}`),
+          backgroundColor: item.color ? item.color : "rgba(41, 204, 57, 0.05)",
         },
       };
     });
@@ -358,6 +359,7 @@ const MyStudy = () => {
       const formattedDateStart = originalDateStart.format("hh:mm A");
       setSelectedTime(formattedDateStart);
       setEventId(selectInfo?.event?._def?.extendedProps.selectID);
+      setColorHex(selectInfo?.event?._def?.extendedProps.backgroundColor);
       setWeekId();
       const endTime = selectInfo?.event?._def?.extendedProps.end;
       const originalDateEnd = moment(endTime, "ddd MMM D YYYY HH:mm:ss ZZ");
@@ -381,6 +383,7 @@ const MyStudy = () => {
   };
 
   const createNewEvent = async (bgColor) => {
+    console.log("==========bg new",bgColor)
     setLoadingBooking(true);
 
     let startTime = dayjs(selectedTime, "hh:mm A").format("HH:mm:ss");
@@ -506,6 +509,8 @@ const MyStudy = () => {
     );
   }, [weekDay, selectedTime, selectedEndTime, eventToDelete]);
   const handleEdit = async (bgColor) => {
+    console.log("==========bg handleEdit",bgColor)
+
     setUpdateLoading(true);
 
     const formattedStartTime = dayjs(selectedTime, "hh:mm A").format(
@@ -642,14 +647,14 @@ const MyStudy = () => {
           }}
         >
           <div className="welcomeHaddingText pb-4">My Study Timetable</div>
-          <Button
+          {/* <Button
             className="takebutton"
             type="primary"
             loading={deleteHandler}
             onClick={handleDelete}
           >
             Reset all
-          </Button>
+          </Button> */}
         </div>
         {loading ? (
           <Spin className="spinStyle" />
@@ -821,7 +826,7 @@ const MyStudy = () => {
               )}
               {isEditing && (
                 <MyCareerGuidanceButton
-                  label={"Edit"}
+                  label={"Save"}
                   className={`takebutton ${
                     disableCreateButton ? "disabled" : ""
                   }`}

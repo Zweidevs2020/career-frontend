@@ -368,7 +368,7 @@ const CaoCalculator = () => {
                 : false
             }
           /> */}
-          <RollbackOutlined
+          <DeleteOutlined
             style={{
               color: "red",
             }}
@@ -1002,7 +1002,7 @@ const CaoCalculator = () => {
                             disabled={!isDeleteButtonDisabled}
                             className={isDeleteButtonDisabled ? "disabled" : ""}
                           /> */}
-                          <RollbackOutlined
+                          <DeleteOutlined
                             style={{
                               color: "red",
                               display: "flex",
