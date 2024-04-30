@@ -321,16 +321,16 @@ const PersonalProfile = ({ setCurrent, current }) => {
 
             <div className="profileFormItem">
               <Form.Item
-                label="Objective"
+                label="Personal Statement"
                 name="objective"
                 className="profileItemLable"
                 rules={[
-                  { required: false, message: "Please input your Objective!" },
+                  { required: false, message: "Please input your Personal Statement!" },
                 ]}
               >
                 <TextArea
                   rows={4}
-                  placeholder="Write Your Objective......"
+                  placeholder="Write Your Personal Statement......"
                   className="inputFieldStyle"
                   inputValue={profileObject?.objective}
                   name="objective"

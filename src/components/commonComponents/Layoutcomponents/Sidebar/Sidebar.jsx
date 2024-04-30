@@ -300,7 +300,7 @@ const Sidebar = ({ children, flags }) => {
                   }
                 >
                   <span className="textStyling">
-                    CAO Calculator{" "}
+                    My CAO Calculator{" "}
                     {selectedMenuItem === "CAOCalculator" ? (
                       <span> &nbsp;&nbsp;&#x25cf; </span>
                     ) : null}

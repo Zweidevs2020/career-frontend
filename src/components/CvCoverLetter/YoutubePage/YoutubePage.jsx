@@ -12,14 +12,24 @@ const YoutubePage = () => {
         <div className="dashboardRightHeadingDiv">
           {data.youtube_title ? data.youtube_title : "YouTube Video"}{" "}
         </div>
-        <iframe
+        <div className="container">
+          <iframe
+            className="responsive-iframe"
+            src={videoId}
+            title="YouTube Video"
+            frameBorder="0"
+            allowFullScreen
+          ></iframe>
+        </div>
+        {/* <iframe
           width="90%"
-          height="500"
+          height="500px"
+
           src={videoId}
           title="YouTube Video"
           frameBorder="0"
           allowFullScreen
-        ></iframe>
+        ></iframe> */}
         <MyCareerGuidanceButton
           label="Test Yourself"
           className="resultDataButton"

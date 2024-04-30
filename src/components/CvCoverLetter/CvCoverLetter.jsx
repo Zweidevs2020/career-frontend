@@ -188,7 +188,7 @@ const CvCoverLetter = () => {
                   className="responsive-image"
                   style={{ marginRight: "1rem", width: 20, height: 20 }}
                 />
-                <span style={{ width: "100%" }}> Send to Email</span>
+                <span style={{ width: "100%" }}> Send to My Email</span>
               </span>
             )}
           </div>

@@ -11,9 +11,8 @@ const OccupationalOption = () => {
   const [idDataArray, setIdDataArray] = useState([]);
 
   const infoData = location.state || {};
-
+console.log("=================res",infoData)
   useEffect(() => {
-
     getData(infoData);
   }, [infoData]);
 
@@ -49,21 +48,23 @@ const OccupationalOption = () => {
         </Button>
       </div>
       <div>
-        <div
-          className="textStyle18 pt-5 pb-3"
-          style={{ color: "#1476B7", fontWeight: 600 }}
-        >
-          {infoData.item.question_type} {infoData.buttonitem.name}
-        </div>
+          <div
+            className="textStyle18 pt-5 pb-3"
+            style={{ color: "#1476B7", fontWeight: 600 }}
+          >
+            {infoData.item.question_type} {infoData.buttonitem.name}
+          </div>
+
+
         {infoData.buttonitem.path === "study-tips" ? (
-          idDataArray?.map((item,index) => {
+          idDataArray?.map((item, index) => {
             return (
               <div>
                 <div
                   className="textStyle18 pt-1 pb-3"
                   style={{ fontWeight: 600 }}
                 >
-                  {index+1}: {item.title}
+                  {/* {index + 1}: {item.title} */}
                 </div>
                 <div className="textStyle18 pt-1 pb-3">{item.description}</div>
               </div>

@@ -74,7 +74,7 @@ const MyGoal = () => {
     const res = await getApiWithAuth(API_URL.GETUSERGOAL);
 
     if (res.data.data) {
-      setGoal(res.data.data.goal);
+      // setGoal(res.data.data.goal);
       setDescription(res.data.data.description);
       seActions(res.data.data.action);
       setProffession(res.data.data.proffession);
@@ -136,7 +136,7 @@ const MyGoal = () => {
       setLoading2(true);
       const data = {
         proffession: proffession,
-        goal: goal,
+        // goal: goal,
         description: description,
         actions: actions,
         realistic: realistic,
@@ -201,7 +201,7 @@ const MyGoal = () => {
                 />
               </div>
 
-              <div className="inputContainer">
+              {/* <div className="inputContainer">
                 <h style={{ color: "#111928" }}>
                   Specific goal for week/month/term/year:
                 </h>
@@ -235,7 +235,7 @@ const MyGoal = () => {
                     onChange={(e) => setDescription(e.target.value)}
                   ></TextArea>
                 </div>
-              </div>
+              </div> */}
               <div className="inputContainer">
                 <h style={{ color: "#111928" }}>
                   2 Actions to achieve the above:
@@ -351,7 +351,7 @@ const MyGoal = () => {
                     realistic={realistic}
                     countdown3={countdown}
                     setRealistic={setRealistic}
-                    goal={goal}
+                    // goal={goal}
                     proffession={proffession}
                     actions={actions}
                     countdown2={countdown2}
