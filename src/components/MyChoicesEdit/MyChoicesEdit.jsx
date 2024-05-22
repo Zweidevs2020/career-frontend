@@ -433,8 +433,6 @@ const MyChoicesEdit = () => {
             )}
           /> */}
 
-          
-
           {children}
           {row?.id ? (
             <MenuOutlined
@@ -445,7 +443,7 @@ const MyChoicesEdit = () => {
                 cursor: "move",
                 // width: 20,
                 // height: 20,
-                marginRight:30,
+                marginRight: 30,
                 position: "absolute",
                 top: "42%",
                 left: "0px",
@@ -640,7 +638,33 @@ const MyChoicesEdit = () => {
   //     isMobile && window.location.reload();
   //   }
   // };
+  const reorderArray = (activeIndex, overIndex, array) => {
+    // Ensure the indices are within array bounds
+    if (
+      activeIndex < 0 ||
+      activeIndex >= array.length ||
+      overIndex < 0 ||
+      overIndex >= array.length
+    ) {
+      return;
+    }
 
+    // Copy the array to avoid modifying the original array
+    const newArray = array.slice();
+
+    // Remove the element at activeIndex
+    const [movedElement] = newArray.splice(activeIndex, 1);
+
+    // Adjust overIndex if the element was removed from before the overIndex
+    if (activeIndex < overIndex) {
+      overIndex -= 1;
+    }
+
+    // Insert the moved element at overIndex
+    newArray.splice(overIndex, 0, movedElement);
+
+    return newArray;
+  };
   const onDragEnd = async ({ active, over }) => {
     // if ( !isDragInProgress) {
     //   return;
@@ -660,53 +684,14 @@ const MyChoicesEdit = () => {
           const orderUpdate2 = {
             order_number: oldData[activeIndex]?.order_number,
           };
-          console.log(
-            "====================orderUpdate1",
-            activeIndex,
-            overIndex,
-            active,
-            over,
-            orderUpdate1,
-            orderUpdate2,
-            data,
-            oldData
-          );
-          // const updateOrder1 = async () => {
-          //   setLoadingFirst(true);
-          //   const respose1 = await patchApiWithAuth(
-          //     `choices/update-${dataa.id}/${oldData[activeIndex].id}/`,
-          //     orderUpdate1
-          //   );
-
-          //   if (respose1.data.status === 200) {
-          //      getTableRecord();
-          //     // setData(respose1.data.data);
-          //   }
-          //   setLoadingFirst(false);
-          // };
-
-          // const updateOrder2 = async () => {
-          //   setLoadingFirst(true);
-          //   const respose2 = await patchApiWithAuth(
-          //     `choices/update-${dataa.id}/${oldData[overIndex].id}/`,
-          //     orderUpdate2
-          //   );
-
-          //   if (respose2.data.status === 200) {
-          //     getTableRecord();
-          //     // setData(response.data.data);
-          //   }
-
-          //   setLoadingFirst(false);
-          // };
-
-          updateOrder1(
-            dataa.id,
-            oldData[activeIndex].id,
-            oldData[overIndex].id,
-            orderUpdate1,
-            orderUpdate2
-          );
+          const newArray = reorderArray(activeIndex, overIndex, oldData);
+          const checkArray = arrayMove(prev, activeIndex, overIndex);
+          const swapArray = checkArray.filter((item) => item.id !== null);
+          swapArray.map((item, index) => {
+            updateOrderMultitimes(dataa.id, item.id, {
+              order_number: index + 1,
+            });
+          });
 
           return arrayMove(prev, activeIndex, overIndex);
         });
@@ -715,6 +700,20 @@ const MyChoicesEdit = () => {
     {
       isMobile && window.location.reload();
     }
+  };
+
+  const updateOrderMultitimes = async (id, activeIndexId,swapArrayOrder) => {
+    // setLoadingFirst(true);
+    const respose1 = await patchApiWithAuth(
+      `choices/update-${id}/${activeIndexId}/`,
+      swapArrayOrder
+    );
+
+    if (respose1.data.status === 200) {
+      // updateOrder2(id, overIndexId, orderUpdate2);
+      // setData(respose1.data.data);
+    }
+    // setLoadingFirst(false);
   };
 
   const updateOrder1 = async (
@@ -821,7 +820,11 @@ const MyChoicesEdit = () => {
                               dataIndex="rowNo"
                               key="rowNo"
                               className="tableHeadingStyle"
-                              render={(text) => <span style={{paddingLeft:10}}>{text + 1}</span>}
+                              render={(text) => (
+                                <span style={{ paddingLeft: 10 }}>
+                                  {text + 1}
+                                </span>
+                              )}
                             />
                             {columns.map((item) => {
                               return (
@@ -917,7 +920,9 @@ const MyChoicesEdit = () => {
                         dataIndex="rowNo"
                         key="rowNo"
                         className="tableHeadingStyle"
-                        render={(text) => <span style={{paddingLeft:10}}>{text + 1}</span>}
+                        render={(text) => (
+                          <span style={{ paddingLeft: 10 }}>{text + 1}</span>
+                        )}
                       />
                       {columns.map((item) => {
                         return (
