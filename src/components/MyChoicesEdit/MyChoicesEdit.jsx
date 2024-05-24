@@ -684,14 +684,18 @@ const MyChoicesEdit = () => {
           const orderUpdate2 = {
             order_number: oldData[activeIndex]?.order_number,
           };
-          const newArray = reorderArray(activeIndex, overIndex, oldData);
           const checkArray = arrayMove(prev, activeIndex, overIndex);
           const swapArray = checkArray.filter((item) => item.id !== null);
-          swapArray.map((item, index) => {
+          const check = swapArray.map(async (item, index) => {
             updateOrderMultitimes(dataa.id, item.id, {
               order_number: index + 1,
             });
           });
+          // if(check.length===checkArray.filter((item) => item.id !== null))
+          // {
+          //   getTableRecord()
+          // }
+          Promise.all(check).then(getTableRecord(), getTableRecord());
 
           return arrayMove(prev, activeIndex, overIndex);
         });
@@ -702,7 +706,7 @@ const MyChoicesEdit = () => {
     }
   };
 
-  const updateOrderMultitimes = async (id, activeIndexId,swapArrayOrder) => {
+  const updateOrderMultitimes = async (id, activeIndexId, swapArrayOrder) => {
     // setLoadingFirst(true);
     const respose1 = await patchApiWithAuth(
       `choices/update-${id}/${activeIndexId}/`,
