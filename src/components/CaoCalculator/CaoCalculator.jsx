@@ -525,15 +525,20 @@ const CaoCalculator = () => {
     }
   };
 
+  useEffect(()=>{
+
+    console.log("============cal 0",gradeId)
+  },[gradeId])
   const calCulateData = async () => {
     setLoading(true);
 
     const response = await postApiWithAuth(API_URL.CALCULATEDATA, gradeId);
+    console.log("============cal",gradeId,"===",response)
     if (response.data.data.success) {
       setFinalData(response.data.data.data);
       // getCurrectSelectedValues()
-      getFiltersData();
-      getCurrectSelectedValues();
+      // getFiltersData();
+      // getCurrectSelectedValues();
       setLoading(false);
     } else {
       setLoading(false);
@@ -560,6 +565,7 @@ const CaoCalculator = () => {
   const getFiltersData = async () => {
     setLoadingFirst(true);
     const response = await getApiWithAuth(API_URL.SUBJECTLIST);
+    console.log("============cal 1",response)
 
     if (response?.data?.status === 200) {
       setData(response.data.data);
@@ -571,7 +577,7 @@ const CaoCalculator = () => {
 
   const getCurrectSelectedValues = async () => {
     setLoadingSub(true);
-    setGradeId([]);
+    // setGradeId([]);
     let filterGrade = [];
     let newData = [];
     try {
@@ -579,11 +585,13 @@ const CaoCalculator = () => {
       let checkLength = response.data.data[0].grades.map((obj) => ({
         grade: obj.id,
       }));
+      console.log("============cal 2",response)
       if (checkLength.length > 0) {
         const response2 = await postApiWithAuth(
           API_URL.CALCULATEDATA,
           response.data.data[0].grades.map((obj) => ({ grade: obj.id }))
         );
+        console.log("============cal 3",response2)
         if (response2.data.data.success) {
           setFinalData(response2.data.data.data);
           const response = await getApiWithAuth(`calculator/user-points/`);
