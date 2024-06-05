@@ -508,22 +508,74 @@ const CaoCalculator = () => {
   };
 
   const clearAllData = async () => {
-    const response = await deleteApiWithAuth(
-      `calculator/user-points/delete/${dataId}/`
-    );
+    const response1 = await getApiWithAuth(`calculator/user-points/`);
+    console.log('====anees',response1?.data?.data[0])
+    if (response1?.data?.data[0]) {
+      console.log("===res", response1);
+      const response = await deleteApiWithAuth(
+        `calculator/user-points/delete/${response1?.data?.data[0]?.id}/`
+      );
 
-    if (response?.data?.status === 204) {
-      // setFinalData({
-      //   points: 0,
-      //   bonus_points: 0,
-      //   total_points: 0,
-      // });
-      getFiltersData();
-      getCurrectSelectedValues();
-      // window.location.reload();
+      if (response?.data?.status === 204) {
+        setFinalData({
+          points: 0,
+          bonus_points: 0,
+          total_points: 0,
+        });
+        getFiltersData();
+        getCurrectSelectedValues();
+        // window.location.reload();
+      }
+    } else {
+      setFinalData({
+        points: 0,
+        bonus_points: 0,
+        total_points: 0,
+      });
+      setTableData([
+        {
+          No: 0,
+          name: null,
+          level: null,
+          grades: null,
+        },
+        {
+          No: 1,
+          name: null,
+          level: null,
+          grades: null,
+        },
+        {
+          No: 2,
+          name: null,
+          level: null,
+          grades: null,
+        },
+        {
+          No: 3,
+          name: null,
+          level: null,
+          grades: null,
+        },
+        {
+          No: 4,
+          name: null,
+          level: null,
+          grades: null,
+        },
+        {
+          No: 5,
+          name: null,
+          level: null,
+          grades: null,
+        },
+      ]);
     }
   };
 
+  useEffect(() => {
+    console.log("============cal 0", gradeId);
+  }, [gradeId]);
   const calCulateData = async () => {
     if (loadingSub===false) {
       setLoading(true);
@@ -561,6 +613,7 @@ const CaoCalculator = () => {
   const getFiltersData = async () => {
     setLoadingFirst(true);
     const response = await getApiWithAuth(API_URL.SUBJECTLIST);
+    console.log("============cal 1", response);
 
     if (response?.data?.status === 200) {
       setData(response.data.data);
@@ -572,7 +625,7 @@ const CaoCalculator = () => {
 
   const getCurrectSelectedValues = async () => {
     setLoadingSub(true);
-    setGradeId([]);
+    // setGradeId([]);
     let filterGrade = [];
     let newData = [];
     try {
@@ -580,11 +633,13 @@ const CaoCalculator = () => {
       let checkLength = response.data.data[0].grades.map((obj) => ({
         grade: obj.id,
       }));
+      console.log("============cal 2", checkLength, response);
       if (checkLength.length > 0) {
         const response2 = await postApiWithAuth(
           API_URL.CALCULATEDATA,
           response.data.data[0].grades.map((obj) => ({ grade: obj.id }))
         );
+        console.log("============cal 3", response2);
         if (response2.data.data.success) {
           setFinalData(response2.data.data.data);
           const response = await getApiWithAuth(`calculator/user-points/`);
