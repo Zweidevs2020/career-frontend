@@ -59,6 +59,7 @@ const CaoCalculator = () => {
     bonus_points: 0,
     total_points: 0,
   });
+
   const [screenSize, setScreenSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -102,7 +103,6 @@ const CaoCalculator = () => {
       grades: null,
     },
   ]);
-
 
   useEffect(() => {
     const idExistsLength = tableData.filter(
@@ -469,7 +469,6 @@ const CaoCalculator = () => {
         setTableData(saveData);
       }
     } else {
-
       const targetIndex = tableData.findIndex((item) => item.No === id);
       const deletedRowData = tableData[targetIndex];
 
@@ -526,17 +525,19 @@ const CaoCalculator = () => {
   };
 
   const calCulateData = async () => {
-    setLoading(true);
+    if (loadingSub===false) {
+      setLoading(true);
 
-    const response = await postApiWithAuth(API_URL.CALCULATEDATA, gradeId);
-    if (response.data.data.success) {
-      setFinalData(response.data.data.data);
-      // getCurrectSelectedValues()
-      getFiltersData();
-      getCurrectSelectedValues();
-      setLoading(false);
-    } else {
-      setLoading(false);
+      const response = await postApiWithAuth(API_URL.CALCULATEDATA, gradeId);
+      if (response.data.data.success) {
+        setFinalData(response.data.data.data);
+        // getCurrectSelectedValues()
+        getFiltersData();
+        getCurrectSelectedValues();
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
     }
   };
 
