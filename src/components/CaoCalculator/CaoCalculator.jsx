@@ -59,6 +59,7 @@ const CaoCalculator = () => {
     bonus_points: 0,
     total_points: 0,
   });
+
   const [screenSize, setScreenSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -576,18 +577,19 @@ const CaoCalculator = () => {
     console.log("============cal 0", gradeId);
   }, [gradeId]);
   const calCulateData = async () => {
-    setLoading(true);
+    if (loadingSub===false) {
+      setLoading(true);
 
-    const response = await postApiWithAuth(API_URL.CALCULATEDATA, gradeId);
-    console.log("============cal", gradeId, "===", response);
-    if (response.data.data.success) {
-      setFinalData(response.data.data.data);
-      // getCurrectSelectedValues()
-      // getFiltersData();
-      // getCurrectSelectedValues();
-      setLoading(false);
-    } else {
-      setLoading(false);
+      const response = await postApiWithAuth(API_URL.CALCULATEDATA, gradeId);
+      if (response.data.data.success) {
+        setFinalData(response.data.data.data);
+        // getCurrectSelectedValues()
+        getFiltersData();
+        getCurrectSelectedValues();
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
     }
   };
 
