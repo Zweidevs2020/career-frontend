@@ -153,8 +153,11 @@ const CaoCalculator = () => {
       setLoadingThird(false);
       setCurrectState(-1);
       setGrades(response.data.data);
-      const options = response.data.data.map((e) => ({ value: e.grade }));
-      setThirdDropdownOptions(options);
+      if (response?.data?.data.length > 0) {
+        const options = response?.data?.data?.map((e) => ({ value: e.grade }));
+        setThirdDropdownOptions(options);
+
+      }
     }
   };
 
@@ -509,7 +512,7 @@ const CaoCalculator = () => {
 
   const clearAllData = async () => {
     const response1 = await getApiWithAuth(`calculator/user-points/`);
-    console.log('====anees',response1?.data?.data[0])
+    console.log("====anees", response1?.data?.data[0]);
     if (response1?.data?.data[0]) {
       console.log("===res", response1);
       const response = await deleteApiWithAuth(
@@ -577,7 +580,7 @@ const CaoCalculator = () => {
     console.log("============cal 0", gradeId);
   }, [gradeId]);
   const calCulateData = async () => {
-    if (loadingSub===false) {
+    if (loadingSub === false) {
       setLoading(true);
 
       const response = await postApiWithAuth(API_URL.CALCULATEDATA, gradeId);
@@ -625,7 +628,7 @@ const CaoCalculator = () => {
 
   const getCurrectSelectedValues = async () => {
     setLoadingSub(true);
-    // setGradeId([]);
+    setGradeId([]);
     let filterGrade = [];
     let newData = [];
     try {
