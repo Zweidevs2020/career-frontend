@@ -388,6 +388,7 @@ const MyStudy = () => {
 
     let startTime = dayjs(selectedTime, "hh:mm A").format("HH:mm:ss");
     let endTime = dayjs(selectedEndTime, "hh:mm A").format("HH:mm:ss");
+    console.log("==========create","startTime",startTime,"endTime",endTime,"weekDay",weekDay,"title",title,"bgColor",bgColor)
 
     const response = await postApiWithAuth(API_URL.ADDSLOTTABLE, {
       timeslot: startTime,

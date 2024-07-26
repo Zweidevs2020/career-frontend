@@ -1,4 +1,3 @@
-import { Button } from "antd";
 import { useEffect, useState } from "react";
 import PersonalProfile from "./PersonalProfile/PersonalProfile";
 import Skill from "./Skill/Skill";
@@ -10,12 +9,16 @@ import Education from "./Eductaion/Education";
 import emailIcon from "../../assets/image 2.png";
 import docxIcon from "../../assets/images.png";
 import pdfIcon from "../../assets/images.jpeg";
-
 import Experenice from "./Experenice/Experenice";
 import { getApiWithAuth } from "../../utils/api";
 import { API_URL } from "../../utils/constants";
 import { useLocation } from "react-router-dom";
 import { MailOutlined } from "@ant-design/icons";
+import { Form, message, Popconfirm, Popover } from "antd";
+import {
+  MyCareerGuidanceInputField,
+  MyCareerGuidanceButton,
+} from "../commonComponents";
 import axios from "axios";
 const CvCoverLetter = () => {
   const location = useLocation();
@@ -25,7 +28,20 @@ const CvCoverLetter = () => {
   const [response, setResponse] = useState(null);
   const [isCvComplete, setIsCvComplete] = useState(false);
   const [userData, setUserData] = useState({});
+  const [isEmailSend, setIsEmailSend] = useState(false);
+  const [data, setData] = useState({});
 
+  const [open, setOpen] = useState(false);
+  const hide = () => {
+    setOpen(false);
+  };
+  const onChangeHandle = (e) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+  const handleOpenChange = (newOpen) => {
+    setOpen(newOpen);
+  };
   const getUserData = async () => {
     try {
       const response = await getApiWithAuth(API_URL.GETUSER2);
@@ -55,7 +71,17 @@ const CvCoverLetter = () => {
   }, [current, location]);
 
   const sendToEmail = async () => {
+    setIsEmailSend(true);
     const res = await getApiWithAuth(API_URL.SENDCV);
+    if (res.data.status==200) {
+      message.success("Email send to this");
+      setIsEmailSend(false);
+      setData({});
+      setOpen(false)
+    } else {
+      message.error("error");
+      setIsEmailSend(false);
+    }
   };
   const downloadDocs = async (e) => {
     var token = localStorage.getItem("access_token", "");
@@ -119,21 +145,21 @@ const CvCoverLetter = () => {
   return (
     <>
       <div class="h-[100%] w-[100%] bg-white mt-3">
-        <div
-          class="h-[100%] pt-5 pb-5 ml-9 mr-10 flex flex-wrap justify-between items-center  sm:flex-col sm:items-start"
-        >
+        <div class="h-[100%] pt-5 pb-5 ml-9 mr-10 flex flex-wrap justify-between items-center  sm:flex-col sm:items-start">
           <div>
             <h1 className="font-bold text-[24px] text-[#474749]">CV</h1>
-        
           </div>
-          <div style={{ display: "flex",justifyContent:'flex-start' }} className=" sm:flex-col flex-wrap ">
+          <div
+            style={{ display: "flex", justifyContent: "flex-start" }}
+            className=" sm:flex-col flex-wrap "
+          >
             {downloadBtn && (
               <span
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
                   cursor: "pointer",
-                  marginTop:5
+                  marginTop: 5,
                 }}
                 onClick={(e) => SavePdf(e)}
               >
@@ -154,7 +180,7 @@ const CvCoverLetter = () => {
                   display: "flex",
                   justifyContent: "space-between",
                   cursor: "pointer",
-                  marginTop:5
+                  marginTop: 5,
                 }}
                 onClick={() => {
                   downloadDocs();
@@ -172,24 +198,72 @@ const CvCoverLetter = () => {
               </span>
             )}
             {downloadBtn && (
-              <span
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  cursor: "pointer",
-                  marginTop:5
-                }}
-                onClick={() => {
-                  sendToEmail();
-                }}
+              <Popover
+                placement="leftTop"
+                content={
+                  <Form onFinish={sendToEmail}>
+                    <Form.Item
+                      name="email"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your Email Address!",
+                        },
+                      ]}
+                    >
+                      <MyCareerGuidanceInputField
+                        placeholder="Email Address"
+                        // prefix={usernameIcon}
+                        type="email"
+                        name="email"
+                        onChange={onChangeHandle}
+                        inputValue={data.email}
+                      />
+                    </Form.Item>
+                    <div
+                      className="mt-5"
+                      style={{ display: "flex", justifyContent: "center" }}
+                    >
+                      <MyCareerGuidanceButton
+                        label="Send"
+                        className="takebutton"
+                        type="submit"
+                        htmlType="submit"
+                        loading={isEmailSend}
+                      />
+                      <MyCareerGuidanceButton
+                        label="Cancel"
+                        className="viewResultButton"
+                        type="button"
+                        htmlType="button"
+                        onClick={() => setOpen(false)}
+                      />
+                    </div>
+                  </Form>
+                }
+                title="Enter Email Address"
+                trigger="click"
+                open={open}
+                onOpenChange={handleOpenChange}
               >
-                <img
-                  src={emailIcon}
-                  className="responsive-image"
-                  style={{ marginRight: "1rem", width: 20, height: 20 }}
-                />
-                <span style={{ width: "100%" }}> Send to My Email</span>
-              </span>
+                <span
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    cursor: "pointer",
+                    marginTop: 5,
+                  }}
+                >
+                  <img
+                    src={emailIcon}
+                    className="responsive-image"
+                    style={{ marginRight: "1rem", width: 20, height: 20 }}
+                  />
+                  <span style={{ width: "100%" }}> Send Email</span>
+
+                  {/* <span style={{ width: "100%" }}> Send to My Email</span> */}
+                </span>
+              </Popover>
             )}
           </div>
         </div>
