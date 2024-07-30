@@ -79,16 +79,7 @@ const MyStudy = () => {
 
   const [eventToDelete, setEventToDelete] = useState(null);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [usedColors, setUsedColors] = useState([
-    { label: "Blue", color: "#3498db" },
-    { label: "Green", color: "#2ecc71" },
-    { label: "Red", color: "#e74c3c" },
-    { label: "Orange", color: "#f39c12" },
-    { label: "Purple", color: "#9b59b6" },
-    { label: "Turquoise", color: "#1abc9c" },
-    { label: "Orange-ish", color: "#e67e22" },
-    { label: "Dark Slate Gray", color: "#34495e" },
-  ]);
+  const [usedColors, setUsedColors] = useState([]);
   const [selectedColor, setSelectedColor] = useState(null);
 
   const optionArray = [];
@@ -110,16 +101,17 @@ const MyStudy = () => {
   const handleAvatarClick = (color) => {
     if (selectedColor === color) {
       setSelectedColor(null);
+     getUsedColor()
     } else {
       setSelectedColor(color);
     }
   };
   const getUsedColor = async () => {
-    // const response = await getApiWithAuth(`timetable/list-timeslot/`);
-    // console.log("===================res", response);
-    // if (response?.data.status === 200) {
-    //   setUsedColors(response.data.data);
-    // }
+    const response = await getApiWithAuth(`/timetable/recent-colors/`);
+    console.log("===================res1", response);
+    if (response?.data.status === 200) {
+      setUsedColors(response.data.data.colors);
+    }
   };
 
   useEffect(() => {
@@ -448,6 +440,7 @@ const MyStudy = () => {
       setDatatime([]);
       getCalanderData();
       setSelectedColor(null)
+     getUsedColor()
     } else {
       setLoadingBooking(false);
       message.error(response.data.message[0]);
@@ -582,6 +575,7 @@ const MyStudy = () => {
       setOpenViewBooking(false);
       setOpenBooking(false);
       setSelectedColor(null);
+     getUsedColor()
     }
     if (response.data.success === false) {
       message.error(response.data.message);
@@ -788,16 +782,16 @@ const MyStudy = () => {
                     <Avatar
                       key={index}
                       style={{
-                        backgroundColor: item.color,
+                        backgroundColor: item,
                         marginRight: 6,
                         marginBottom: 6,
                         border:
-                          selectedColor === item.color
+                          selectedColor === item
                             ? "2px solid #000"
                             : "none",
                         cursor: "pointer",
                       }}
-                      onClick={() => handleAvatarClick(item.color)}
+                      onClick={() => handleAvatarClick(item)}
                     />
                   ))}
                 </div>

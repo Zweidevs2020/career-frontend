@@ -262,7 +262,7 @@ const Signup = () => {
             </Select>
           </Form.Item>
 
-          <span>If your school is not listed above</span>
+          {/* <span>If your school is not listed above</span> */}
           {/* <span
             style={{ cursor: "pointer", color: "#1476b7", paddingLeft: "5px" }}
             onClick={() => setOpen(true)}

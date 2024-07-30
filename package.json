@@ -12,6 +12,8 @@
     "@fullcalendar/interaction": "^6.1.6",
     "@fullcalendar/react": "^6.1.6",
     "@fullcalendar/timegrid": "^6.1.6",
+    "@stripe/react-stripe-js": "^2.7.3",
+    "@stripe/stripe-js": "^4.1.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
