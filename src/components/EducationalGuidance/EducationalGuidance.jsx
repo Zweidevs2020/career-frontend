@@ -433,8 +433,8 @@ const EducationalGuidance = () => {
                 styles={buildStyles({
                   // Use the dynamically calculated progress color
                   // pathColor: calculateProgressColor(data?.obtained_score),
-                  pathColor: "#1476b7",
-                  // pathColor: showColor(data?.obtained_score),
+                  // pathColor: "#1476b7",
+                  pathColor: showColor(data?.obtained_score),
                   rotation: 0.99,
                   strokeLinecap: "dashboard",
                   textSize: "19px",
