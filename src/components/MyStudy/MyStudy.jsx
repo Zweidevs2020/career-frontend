@@ -3,7 +3,7 @@ import {
   Spin,
   message,
   Button,
-  TimePicker,
+  Avatar,
   Modal,
   Select,
   ColorPicker,
@@ -79,6 +79,8 @@ const MyStudy = () => {
 
   const [eventToDelete, setEventToDelete] = useState(null);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [usedColors, setUsedColors] = useState([]);
+  const [selectedColor, setSelectedColor] = useState(null);
 
   const optionArray = [];
   const startTime = new Date("2000-01-01T06:00:00");
@@ -96,8 +98,24 @@ const MyStudy = () => {
     const value = label;
     optionArray.push({ label, value });
   }
+  const handleAvatarClick = (color) => {
+    if (selectedColor === color) {
+      setSelectedColor(null);
+     getUsedColor()
+    } else {
+      setSelectedColor(color);
+    }
+  };
+  const getUsedColor = async () => {
+    const response = await getApiWithAuth(`/timetable/recent-colors/`);
+    console.log("===================res1", response);
+    if (response?.data.status === 200) {
+      setUsedColors(response.data.data.colors);
+    }
+  };
 
   useEffect(() => {
+    getUsedColor();
     getCalanderData();
   }, []);
 
@@ -383,18 +401,31 @@ const MyStudy = () => {
   };
 
   const createNewEvent = async (bgColor) => {
-    console.log("==========bg new",bgColor)
+    console.log("==========bg new", bgColor);
     setLoadingBooking(true);
 
     let startTime = dayjs(selectedTime, "hh:mm A").format("HH:mm:ss");
     let endTime = dayjs(selectedEndTime, "hh:mm A").format("HH:mm:ss");
+    console.log(
+      "==========create",
+      "startTime",
+      startTime,
+      "endTime",
+      endTime,
+      "weekDay",
+      weekDay,
+      "title",
+      title,
+      "bgColor",
+      bgColor
+    );
 
     const response = await postApiWithAuth(API_URL.ADDSLOTTABLE, {
       timeslot: startTime,
       endslot: endTime,
       day: weekDay,
       title: title,
-      color: bgColor,
+      color: selectedColor ? selectedColor : bgColor,
     });
 
     if (response.data.status === 201) {
@@ -408,6 +439,8 @@ const MyStudy = () => {
       setData([]);
       setDatatime([]);
       getCalanderData();
+      setSelectedColor(null)
+     getUsedColor()
     } else {
       setLoadingBooking(false);
       message.error(response.data.message[0]);
@@ -509,7 +542,7 @@ const MyStudy = () => {
     );
   }, [weekDay, selectedTime, selectedEndTime, eventToDelete]);
   const handleEdit = async (bgColor) => {
-    console.log("==========bg handleEdit",bgColor)
+    console.log("==========bg handleEdit", bgColor, selectedColor);
 
     setUpdateLoading(true);
 
@@ -529,7 +562,7 @@ const MyStudy = () => {
         endslot: formattedEndTime,
         day: weekDay,
         title: title,
-        color: bgColor,
+        color: selectedColor ? selectedColor : bgColor,
       }
     );
     console.log("=====================weekDay response", response);
@@ -541,6 +574,8 @@ const MyStudy = () => {
       getCalanderData();
       setOpenViewBooking(false);
       setOpenBooking(false);
+      setSelectedColor(null);
+     getUsedColor()
     }
     if (response.data.success === false) {
       message.error(response.data.message);
@@ -730,15 +765,38 @@ const MyStudy = () => {
                 alignItems: "center",
               }}
             >
+              {console.log("===========format Hex", formatHex, colorHex)}
               <ColorPicker
                 format={formatHex}
                 value={colorHex}
                 onChange={setColorHex}
                 onFormatChange={setFormatHex}
               />
-              <span style={{ marginLeft: "10px" }}>Color</span>
+              <span style={{ marginLeft: "10px" }}>Pick New Color</span>
             </div>
-
+            {usedColors.length > 0 ? (
+              <>
+                <div className="welcomeHaddingText mb-1">Recent Colors:</div>
+                <div style={{ display: "flex", flexWrap: "wrap" }}>
+                  {usedColors.map((item, index) => (
+                    <Avatar
+                      key={index}
+                      style={{
+                        backgroundColor: item,
+                        marginRight: 6,
+                        marginBottom: 6,
+                        border:
+                          selectedColor === item
+                            ? "2px solid #000"
+                            : "none",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => handleAvatarClick(item)}
+                    />
+                  ))}
+                </div>
+              </>
+            ) : null}
             <MyCareerGuidanceInputField
               placeholder="Add Title"
               type="input"

@@ -29,6 +29,7 @@ import MyChoicesEdit from "./components/MyChoicesEdit";
 import Occupational from "./components/Occupational";
 import YoutubePage from "./components/CvCoverLetter/YoutubePage";
 import OccupationalOption from "./components/OccupationalOption";
+import CheckoutView from "./components/checkout/checkout";
 function App() {
   return (
     <BrowserRouter>
@@ -38,6 +39,14 @@ function App() {
           element={
             <PublicRoute restricted>
               <Login />
+            </PublicRoute>
+          }
+        />
+         <Route
+          path="/checkout"
+          element={
+            <PublicRoute>
+              <CheckoutView />
             </PublicRoute>
           }
         />
