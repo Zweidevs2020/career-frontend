@@ -782,16 +782,16 @@ const MyStudy = () => {
                     <Avatar
                       key={index}
                       style={{
-                        backgroundColor: item,
+                        backgroundColor: item.color,
                         marginRight: 6,
                         marginBottom: 6,
                         border:
-                          selectedColor === item
+                          selectedColor === item.color
                             ? "2px solid #000"
                             : "none",
                         cursor: "pointer",
                       }}
-                      onClick={() => handleAvatarClick(item)}
+                      onClick={() => handleAvatarClick(item.color)}
                     />
                   ))}
                 </div>
