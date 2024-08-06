@@ -90,7 +90,6 @@ const MyChoicesEdit = () => {
     const response = await getApiWithAuth(
       `choices/column-names/?choice=${dataa.id}`
     );
-    console.log("================resgetChoiceRecord", response);
     if (response.data.status === 200) {
       const columnsData = response.data.data.data;
       const columnsWithoutOrderNumber = columnsData.slice(
@@ -108,10 +107,8 @@ const MyChoicesEdit = () => {
 
   const getTableRecord = async () => {
     const response = await getApiWithAuth(`choices/${dataa.id}/`);
-    console.log("================res", response);
     if (response.data.status === 200) {
       setOldData(response.data.data);
-      // setData(response.data.data);
       setLoadingFirst(false);
     } else {
       setLoadingFirst(true);
@@ -203,7 +200,6 @@ const MyChoicesEdit = () => {
   };
 
   const eidtThisRow = (record) => {
-    console.log("================res eidtThisRow", data, "=====", record);
     const updatedData = data.map((item) => {
       if (item.rowNo === record.rowNo) {
         return { ...item, editable: true };
@@ -211,16 +207,11 @@ const MyChoicesEdit = () => {
         return item;
       }
     });
-    console.log("================res eidtThisRow updatedData", updatedData);
-
     setData(updatedData);
   };
 
   const handleUpdate = async (record) => {
-    console.log("================res handleUpdate in", record, "====", dataRef);
     const row = dataRef.current.filter((item) => item.id === record?.id);
-    console.log("================res handleUpdate row", row);
-
     if (row.length != 0) {
       const checkNullValue = (row, key) => {
         if (row[0][key] === null || row[0][key] === "") {
@@ -258,7 +249,6 @@ const MyChoicesEdit = () => {
     }
   };
   const handleUpdateMobile = async (record) => {
-    console.log("=================check", record);
     for (const key in record) {
       if (key !== "id" && key !== "order_number" && record[key] === null) {
         message.error(`Please enter the ${key} of the Row`);
@@ -383,10 +373,7 @@ const MyChoicesEdit = () => {
       id: props["data-row-key"],
     });
     const rowId = props["data-row-key"];
-    console.log("======Row", rowId, data);
     const row = data.find((item) => item.dataId === rowId);
-    const shouldShowIcon = data.find((item) => item.id === rowId);
-    console.log("======Row row", row);
     const isIdNotNull = row && row.id !== null;
     const style = {
       ...props.style,
@@ -419,19 +406,6 @@ const MyChoicesEdit = () => {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {/* <Column
-            title=""
-            key="menuIcon"
-            dataIndex="menuIcon"
-            render={(text, record) => (
-              <MenuOutlined
-                style={{
-                  touchAction: "none",
-                  cursor: "move",
-                }}
-              />
-            )}
-          /> */}
 
           {children}
           {row?.id ? (
@@ -441,14 +415,11 @@ const MyChoicesEdit = () => {
               style={{
                 touchAction: "none",
                 cursor: "move",
-                // width: 20,
-                // height: 20,
                 marginRight: 30,
                 position: "absolute",
                 top: "42%",
                 left: "0px",
 
-                // color: row?.id ? "red" : "transparent",
               }}
             />
           ) : null}
@@ -470,7 +441,6 @@ const MyChoicesEdit = () => {
     });
 
     const rowId = props["data-row-key"];
-    console.log(rowId, "row");
     const { row: comingRow } = props;
     const row = data.find((item) => item.dataId === rowId);
     const isIdNotNull = row && row.id !== null;
@@ -486,8 +456,6 @@ const MyChoicesEdit = () => {
 
       transition,
       cursor: "move",
-      // touchAction: "none",
-
       ...(isDragging
         ? {
             position: "relative",
@@ -523,7 +491,6 @@ const MyChoicesEdit = () => {
                 {...listeners}
               />
               <div className="actionColumn">
-                {/* <span className="rowHeadingMobile">Action</span> */}
                 <Space size="middle">
                   {comingRow.editable && comingRow.id !== null ? (
                     <a onClick={() => handleUpdateMobile(comingRow)}>
@@ -578,112 +545,13 @@ const MyChoicesEdit = () => {
     })
   );
 
-  // const onDragEnd = async ({ active, over }) => {
-  //   // if ( !isDragInProgress) {
-  //   //   return;
-  //   // }
-  //   console.log(active, over, "active,over");
-  //   if (active?.id && over?.id) {
-  //     if (active?.id !== over?.id) {
-  //       setData((prev) => {
-  //         const activeIndex = prev.findIndex((i) => i.dataId === active?.id);
-
-  //         const overIndex = prev.findIndex((i) => i.dataId === over?.id);
-
-  //         const orderUpdate1 = {
-  //           order_number: oldData[overIndex]?.order_number,
-  //         };
-
-  //         const orderUpdate2 = {
-  //           order_number: oldData[activeIndex]?.order_number,
-  //         };
-
-  //         const updateOrder1 = async () => {
-  //           setLoadingFirst(true);
-  //           const respose1 = await patchApiWithAuth(
-  //             `choices/update-${dataa.id}/${oldData[activeIndex].id}/`,
-  //             orderUpdate1
-  //           );
-
-  //           if (respose1.data.status === 200) {
-  //             getTableRecord();
-  //             // setData(respose1.data.data);
-  //           }
-  //           setLoadingFirst(false);
-  //         };
-
-  //         const updateOrder2 = async () => {
-  //           setLoadingFirst(true);
-  //           const respose2 = await patchApiWithAuth(
-  //             `choices/update-${dataa.id}/${oldData[overIndex].id}/`,
-  //             orderUpdate2
-  //           );
-
-  //           if (respose2.data.status === 200) {
-  //             getTableRecord();
-  //             // setData(response.data.data);
-  //           }
-
-  //           setLoadingFirst(false);
-  //         };
-
-  //         updateOrder1();
-  //         updateOrder2();
-
-  //         return arrayMove(prev, activeIndex, overIndex);
-  //       });
-  //     }
-  //   }
-  //   {
-  //     isMobile && window.location.reload();
-  //   }
-  // };
-  const reorderArray = (activeIndex, overIndex, array) => {
-    // Ensure the indices are within array bounds
-    if (
-      activeIndex < 0 ||
-      activeIndex >= array.length ||
-      overIndex < 0 ||
-      overIndex >= array.length
-    ) {
-      return;
-    }
-
-    // Copy the array to avoid modifying the original array
-    const newArray = array.slice();
-
-    // Remove the element at activeIndex
-    const [movedElement] = newArray.splice(activeIndex, 1);
-
-    // Adjust overIndex if the element was removed from before the overIndex
-    if (activeIndex < overIndex) {
-      overIndex -= 1;
-    }
-
-    // Insert the moved element at overIndex
-    newArray.splice(overIndex, 0, movedElement);
-
-    return newArray;
-  };
   const onDragEnd = async ({ active, over }) => {
-    // if ( !isDragInProgress) {
-    //   return;
-    // }
-    console.log(active, over, "active,over");
     if (active?.id && over?.id) {
       if (active?.id !== over?.id) {
         setData((prev) => {
           const activeIndex = prev.findIndex((i) => i.dataId === active?.id);
 
           const overIndex = prev.findIndex((i) => i.dataId === over?.id);
-
-          const orderUpdate1 = {
-            order_number: oldData[overIndex]?.order_number,
-          };
-
-          const orderUpdate2 = {
-            order_number: oldData[activeIndex]?.order_number,
-          };
           const checkArray = arrayMove(prev, activeIndex, overIndex);
           const swapArray = checkArray.filter((item) => item.id !== null);
           const check = swapArray.map(async (item, index) => {
@@ -691,10 +559,6 @@ const MyChoicesEdit = () => {
               order_number: index + 1,
             });
           });
-          // if(check.length===checkArray.filter((item) => item.id !== null))
-          // {
-          //   getTableRecord()
-          // }
           Promise.all(check).then(getTableRecord(), getTableRecord());
 
           return arrayMove(prev, activeIndex, overIndex);
@@ -707,38 +571,15 @@ const MyChoicesEdit = () => {
   };
 
   const updateOrderMultitimes = async (id, activeIndexId, swapArrayOrder) => {
-    // setLoadingFirst(true);
     const respose1 = await patchApiWithAuth(
       `choices/update-${id}/${activeIndexId}/`,
       swapArrayOrder
     );
 
     if (respose1.data.status === 200) {
-      // updateOrder2(id, overIndexId, orderUpdate2);
-      // setData(respose1.data.data);
     }
-    // setLoadingFirst(false);
   };
 
-  const updateOrder1 = async (
-    id,
-    activeIndexId,
-    overIndexId,
-    orderUpdate1,
-    orderUpdate2
-  ) => {
-    setLoadingFirst(true);
-    const respose1 = await patchApiWithAuth(
-      `choices/update-${id}/${activeIndexId}/`,
-      orderUpdate1
-    );
-
-    if (respose1.data.status === 200) {
-      updateOrder2(id, overIndexId, orderUpdate2);
-      // setData(respose1.data.data);
-    }
-    setLoadingFirst(false);
-  };
 
   const updateOrder2 = async (id, overIndexId, orderUpdate2) => {
     setLoadingFirst(true);
@@ -749,7 +590,6 @@ const MyChoicesEdit = () => {
 
     if (respose2.data.status === 200) {
       getTableRecord();
-      // setData(response.data.data);
     }
 
     setLoadingFirst(false);
@@ -770,7 +610,6 @@ const MyChoicesEdit = () => {
                       navigate("/my-choices");
                     }}
                   >
-                    {/* <LeftOutlined class="h-4" /> */}
                     <span class="ml-1">Back</span>
                   </button>
                 </div>
@@ -870,13 +709,12 @@ const MyChoicesEdit = () => {
                                     <CheckOutlined
                                       style={{ cursor: "pointer" }}
                                       onClick={() => handleUpdate(record)}
-                                      // ref={handleUpdateRef}
+                                     
                                     />
                                   ) : record.editable && record.id === null ? (
                                     <PlusCircleOutlined
                                       style={{ cursor: "pointer" }}
                                       onClick={() => handleAddRow(record)}
-                                      // ref={handleAddRowRef}
                                     />
                                   ) : (
                                     <EditOutlined
@@ -885,7 +723,6 @@ const MyChoicesEdit = () => {
                                         cursor: "pointer",
                                       }}
                                       onClick={() => eidtThisRow(record)}
-                                      // ref={handleeidtThisRowRef}
                                     />
                                   )}
                                   <DeleteOutlined
@@ -894,7 +731,6 @@ const MyChoicesEdit = () => {
                                       cursor: "pointer",
                                     }}
                                     onClick={() => handleDelete(record)}
-                                    // ref={handleDeleteRef}
                                   />
                                 </Space>
                               )}
@@ -981,7 +817,6 @@ const MyChoicesEdit = () => {
                               <DeleteOutlined style={{ color: "grey" }} />
                             </a>
 
-                            {/* <a onClick={() => handleDelete(record)}><DeleteOutlined style={{ color: 'red' }} /></a> */}
                           </Space>
                         )}
                       />
@@ -1073,7 +908,6 @@ const MyChoicesEdit = () => {
                                         }}
                                       />
                                       <div className="actionColumn">
-                                        {/* <span className="rowHeadingMobile">Action</span> */}
                                         <Space size="middle">
                                           {row.editable && row.id !== null ? (
                                             <a
@@ -1225,7 +1059,6 @@ const MyChoicesEdit = () => {
                                       ref={inputRef}
                                       placeholder={row[item]}
                                       type="input"
-                                      // value={row[item]}
                                       name={item}
                                       onChange={(e) =>
                                         handleChangeTableMobile(e, row)
@@ -1240,102 +1073,6 @@ const MyChoicesEdit = () => {
                             </div>
                           </div>
                         ))}
-
-                      {/* <DndContext
-                        sensors={sensors}
-                        modifiers={[restrictToVerticalAxis]}
-                        onDragEnd={onDragEnd}
-                      >
-                        <SortableContext
-                          items={data
-                            .filter((item) => item.id !== null)
-                            .map((item) => item.dataId)}
-                          strategy={verticalListSortingStrategy}
-                        >
-                          {data.map((row) => (
-                            <Row key={row.id} data-row-key={row.dataId}>
-                              <div className="dragDrop" key={row.id}>
-                                <div
-                                  className={`row mobile-row`}
-                                  style={{
-                                    background: "rgb(244, 246, 248)",
-                                    marginBottom: "5rem",
-                                  }}
-                                >
-                                  <div className="menuIconMobile drag-handle">
-                                    <MenuOutlined
-                                      style={{
-                                        touchAction: "none",
-                                        cursor: "move",
-                                      }}
-                                    />
-                                    <div className="actionColumn">
-                                      <Space size="middle">
-                                        {row.editable && row.id !== null ? (
-                                          <a onClick={() => handleUpdate(row)}>
-                                            <CheckOutlined
-                                              style={{ color: "#1476b7" }}
-                                            />
-                                          </a>
-                                        ) : row.editable && row.id === null ? (
-                                          <a onClick={() => handleAddRow(row)}>
-                                            <PlusCircleOutlined
-                                              style={{ color: "#1476b7" }}
-                                            />
-                                          </a>
-                                        ) : (
-                                          <a onClick={() => eidtThisRow(row)}>
-                                            <EditOutlined
-                                              style={{ color: "#1476b7" }}
-                                            />
-                                          </a>
-                                        )}
-                                        <a onClick={() => handleDelete(row)}>
-                                          <DeleteOutlined
-                                            style={{ color: "red" }}
-                                          />
-                                        </a>
-                                      </Space>
-                                    </div>
-                                  </div>
-                                  <div className="first-column">
-                                    <div className="column"></div>
-                                    <div
-                                      className="column"
-                                      style={{ width: "100%" }}
-                                    >
-                                      <span className="rowHeadingMobile">
-                                        No. {row.rowNo + 1}
-                                      </span>
-                                    </div>
-                                  </div>
-                                  <div className="remaining-columns">
-                                    {columns.map((item, index) => (
-                                      <div className="column" key={item.dataId}>
-                                        <span className="rowHeadingMobile">
-                                          {capitalizeWords(item)}
-                                        </span>
-                                        <MyCareerGuidanceInputField
-                                          ref={inputRef}
-                                          placeholder={row[item]}
-                                          type="input"
-                                          name={item}
-                                          onChange={(e) =>
-                                            handleChangeTableMobile(e, row)
-                                          }
-                                          defaultValue={row[item]}
-                                          isPrefix={false}
-                                          disabled={!row.editable}
-                                        />
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-                            </Row>
-                          ))}
-                        </SortableContext>
-                      </DndContext> */}
                     </div>
                   </div>
                 )}

@@ -338,39 +338,7 @@ const CaoCalculator = () => {
       key: "action",
       render: (text, record) => (
         <Space size="middle">
-          {/* <RollbackOutlined
-            {...console.log(
-              "i am good",
-              isDeleteButtonDisabled,
-              tableData[record?.No]?.No,
-              tableData[record?.No]?.No > 5 && isDeleteButtonDisabled
-            )}
-            style={{
-              color:
-                tableData[record?.No]?.No > 5 ||
-                tableData[record?.No]?.No === undefined
-                  ? "red"
-                  : isDeleteButtonDisabled
-                  ? "grey"
-                  : "red",
-            }}
-            onClick={
-              tableData[record?.No]?.No > 5 ||
-              tableData[record?.No]?.No === undefined
-                ? () => handleDelete(record.No)
-                : isDeleteButtonDisabled
-                ? null
-                : () => handleDelete(record.No)
-            }
-            disabled={
-              tableData[record?.No]?.No > 5 ||
-              tableData[record?.No]?.No === undefined
-                ? false
-                : isDeleteButtonDisabled
-                ? true
-                : false
-            }
-          /> */}
+          
           <DeleteOutlined
             style={{
               color: "red",
@@ -380,78 +348,7 @@ const CaoCalculator = () => {
         </Space>
       ),
     },
-    // {
-    //   title: 'Action',
-    //   key: 'action',
-    //   render: (text, record) => (
-    //     <Space size="middle">
-
-    //       <DeleteOutlined
-    //      {... console.log("i am good",isDeleteButtonDisabled)}
-    //         style={{ color: isDeleteButtonDisabled && tableData.length<8 ? 'grey' : 'red' }}
-    //         onClick={() => handleDelete(record.No)}
-    //         disabled={!isDeleteButtonDisabled && tableData.length<8 }
-    //       />
-    //     </Space>
-    //   ),
-    // },
   ];
-
-  // const handleDelete = async (id) => {
-  //   console.log(
-  //     "==================table data lenght",
-  //     dataLength,
-  //     tableData,
-  //     id
-  //   );
-  //   const idExistsLength = tableData.filter(
-  //     (item) => item.id !== undefined
-  //   ).length;
-  //   console.log(
-  //     'Length of tableData elements with "id" property:',
-  //     idExistsLength
-  //   );
-  //   const filteredTable = tableData.filter((item) => item.No == id);
-  //   if (
-  //     filteredTable[0]?.name == null ||
-  //     filteredTable[0]?.grades == null ||
-  //     filteredTable[0]?.level === null
-  //   ) {
-  //     console.log("t==================table data lenght empty", filteredTable);
-
-  //     const filteredTableData = tableData.filter((item) => item.No !== id);
-  //     setTableData(filteredTableData);
-  //   } else {
-  //     if (idExistsLength >= 6) {
-  //       console.log(
-  //         "t==================table data lenght not empty",
-  //         filteredTable.name == null,
-  //         filteredTable.name == null &&
-  //           filteredTable.grades == null &&
-  //           filteredTable.level === null
-  //       );
-
-  //       const targetIndex = tableData.findIndex((item) => item.No === id);
-  //       const deletedRowData = tableData[targetIndex];
-
-  //       const body = {
-  //         id: dataId,
-  //         subjectId: deletedRowData.id,
-  //       };
-
-  //       const response = await postApiWithAuth(
-  //         `calculator/remove-subject-grade/`,
-  //         body
-  //       );
-
-  //       if (response?.data?.status === 200) {
-  //         // setData(response.data.data);
-  //         getCurrectSelectedValues();
-  //         // window.location.reload();
-  //       }
-  //     }
-  //   }
-  // };
 
   const handleDelete = async (id) => {
     const idExistsLength = tableData.filter(
@@ -486,9 +383,7 @@ const CaoCalculator = () => {
         );
 
         if (response?.data?.status === 200) {
-          // setData(response.data.data);
           getCurrectSelectedValues();
-          // window.location.reload();
         }
       } else {
         let data = tableData.map((item) => {
@@ -499,22 +394,14 @@ const CaoCalculator = () => {
           }
         });
         setTableData(data);
-        // getCurrectSelectedValues();
       }
     }
-    // setFinalData({
-    //   points: 0,
-    //   bonus_points: 0,
-    //   total_points: 0,
-    // });
     getFiltersData();
   };
 
   const clearAllData = async () => {
     const response1 = await getApiWithAuth(`calculator/user-points/`);
-    console.log("====anees", response1?.data?.data[0]);
     if (response1?.data?.data[0]) {
-      console.log("===res", response1);
       const response = await deleteApiWithAuth(
         `calculator/user-points/delete/${response1?.data?.data[0]?.id}/`
       );
@@ -527,7 +414,6 @@ const CaoCalculator = () => {
         });
         getFiltersData();
         getCurrectSelectedValues();
-        // window.location.reload();
       }
     } else {
       setFinalData({
@@ -576,9 +462,6 @@ const CaoCalculator = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("============cal 0", gradeId);
-  }, [gradeId]);
   const calCulateData = async () => {
     if (loadingSub === false) {
       setLoading(true);
@@ -616,8 +499,6 @@ const CaoCalculator = () => {
   const getFiltersData = async () => {
     setLoadingFirst(true);
     const response = await getApiWithAuth(API_URL.SUBJECTLIST);
-    console.log("============cal 1", response);
-
     if (response?.data?.status === 200) {
       setData(response.data.data);
       setLoadingFirst(false);
@@ -636,13 +517,11 @@ const CaoCalculator = () => {
       let checkLength = response.data.data[0].grades.map((obj) => ({
         grade: obj.id,
       }));
-      console.log("============cal 2", checkLength, response);
       if (checkLength.length > 0) {
         const response2 = await postApiWithAuth(
           API_URL.CALCULATEDATA,
           response.data.data[0].grades.map((obj) => ({ grade: obj.id }))
         );
-        console.log("============cal 3", response2);
         if (response2.data.data.success) {
           setFinalData(response2.data.data.data);
           const response = await getApiWithAuth(`calculator/user-points/`);
@@ -660,14 +539,6 @@ const CaoCalculator = () => {
           total_points: 0,
         });
       }
-
-      // setFinalData({
-      //   points: response?.data?.data[0]?.total_points,
-      //   bonus_points: response?.data?.data[0]?.total_points,
-      //   total_points: response?.data?.data[0]?.total_points,
-      // });
-      // setDataLength(response.data.data.length);
-      // setDataId(response.data.data[0].id);
 
       if (response.data.data.length === 0) {
         for (let i = 0; i < tableData.length; i++) {
@@ -753,12 +624,10 @@ const CaoCalculator = () => {
 
           {screenSize.width > "748" ? (
             <div className="coaSubjectDiv p-3">
-              {/* <div className="coaSubjectWidth"> */}
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <Table
                   dataSource={tableData}
                   columns={columns}
-                  // loading={true}
                   rowClassName={() => "backgroundF4F6F8"}
                   pagination={false}
                   loading={loadingFirst}
@@ -771,11 +640,9 @@ const CaoCalculator = () => {
                     htmlType="button"
                     onClick={handleAdd}
                     icon={<PlusOutlined />}
-                    // loading={loadingThird}
                   />
                 </div>
               </div>
-              {/* </div> */}
               <div className="coaPointsWidth coaPointsWidth">
                 <div
                   style={{
@@ -1051,16 +918,6 @@ const CaoCalculator = () => {
                               ))}
                             </Select>
                           </div>
-                          {/* <DeleteOutlined
-                            style={{
-                              color: isDeleteButtonDisabled ? "grey" : "red",
-                              display: "flex",
-                              justifyContent: "center",
-                            }}
-                            onClick={() => handleDelete(item.No)}
-                            disabled={!isDeleteButtonDisabled}
-                            className={isDeleteButtonDisabled ? "disabled" : ""}
-                          /> */}
                           <DeleteOutlined
                             style={{
                               color: "red",
@@ -1082,7 +939,6 @@ const CaoCalculator = () => {
                     htmlType="button"
                     onClick={handleAdd}
                     icon={<PlusOutlined />}
-                    // loading={loadingThird}
                   />
                 </div>
               </div>

@@ -11,12 +11,6 @@ import {
   MyCareerGuidanceButton,
 } from "../../commonComponents";
 
-// import {
-//   getApiWithAuth,
-//   getStripeProductsApi,
-//   postApiWithAuth,
-//   postSubscriptionApi,
-// } from "@/Utilities/api";
 
 function CheckoutForm() {
   const stripe = useStripe();
@@ -26,7 +20,6 @@ function CheckoutForm() {
   const [nameOnCard, setNameOnCard] = useState("");
 
   const handlePaymentSubmit = async (payment) => {
-    console.log("=================",payment)
     setIsLoading(true);
   };
 
@@ -57,8 +50,6 @@ function CheckoutForm() {
     });
 
     if (stripeError) {
-      // showAlert({ type: "error", message: `Error during payment procesing"` });
-
       return;
     }
   };

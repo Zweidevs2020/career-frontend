@@ -11,7 +11,6 @@ const OccupationalOption = () => {
   const [idDataArray, setIdDataArray] = useState([]);
 
   const infoData = location.state || {};
-console.log("=================res",infoData)
   useEffect(() => {
     getData(infoData);
   }, [infoData]);
@@ -64,7 +63,6 @@ console.log("=================res",infoData)
                   className="textStyle18 pt-1 pb-3"
                   style={{ fontWeight: 600 }}
                 >
-                  {/* {index + 1}: {item.title} */}
                 </div>
                 <div className="textStyle18 pt-1 pb-3">{item.description}</div>
               </div>
