@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
-import styles from "./azureDashboard.module.css";
+import styles from "./myGuidanceReport.module.css";
 // import AnswerLogo from "/src/assets/answers.png";
 import TypingEffect from "../commonComponents/TypingEffect";
 import { Spin } from "antd";
