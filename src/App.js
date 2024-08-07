@@ -30,6 +30,8 @@ import Occupational from "./components/Occupational";
 import YoutubePage from "./components/CvCoverLetter/YoutubePage";
 import OccupationalOption from "./components/OccupationalOption";
 import CheckoutView from "./components/checkout/checkout";
+import MyGuidanceReport from "./components/MyGuidanceReport";
+
 function App() {
   return (
     <BrowserRouter>
@@ -39,14 +41,6 @@ function App() {
           element={
             <PublicRoute restricted>
               <Login />
-            </PublicRoute>
-          }
-        />
-         <Route
-          path="/checkout"
-          element={
-            <PublicRoute>
-              <CheckoutView />
             </PublicRoute>
           }
         />
@@ -205,12 +199,31 @@ function App() {
             </PrivateRoute>
           }
         />
-         <Route
+        <Route
           path="/occupation/:idea"
           element={
             <PrivateRoute>
               <Sidebar>
                 <OccupationalOption />
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            <PublicRoute>
+              <CheckoutView />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path="/my-guidance-report"
+          element={
+            <PrivateRoute>
+              <Sidebar>
+                <MyGuidanceReport />
               </Sidebar>
             </PrivateRoute>
           }
