@@ -17,7 +17,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { Input, Modal } from "antd";
 import { useLocation } from "react-router-dom";
-import { Space, Table, Col, message, Form } from "antd";
+import { Space, Table, Col, message, Select, Image } from "antd";
 import {
   CheckOutlined,
   DeleteOutlined,
@@ -39,6 +39,8 @@ import {
   patchApiWithAuth,
   deleteApiWithAuth,
 } from "../../utils/api";
+import dropdownIcon from "../../assets/dropdownIcon.svg";
+
 import "./myChoicesEdit.css";
 
 const { Column, ColumnGroup } = Table;
@@ -61,6 +63,7 @@ const MyChoicesEdit = () => {
   const [dragTimer, setDragTimer] = useState(null);
   const [myData, setMyData] = useState([]);
   const [oldData, setOldData] = useState(null);
+  const [dropDownOptions, setDropDownOptions] = useState(null);
   const [showRowsData, setShowRowsData] = useState(null);
   const dataRef = useRef([]);
   const rowRef = useRef(null);
@@ -108,7 +111,9 @@ const MyChoicesEdit = () => {
   const getTableRecord = async () => {
     const response = await getApiWithAuth(`choices/${dataa.id}/`);
     if (response.data.status === 200) {
-      setOldData(response.data.data);
+      setOldData(response.data.data.user_data);
+      setDropDownOptions(response.data.data.level_data);
+
       setLoadingFirst(false);
     } else {
       setLoadingFirst(true);
@@ -212,40 +217,19 @@ const MyChoicesEdit = () => {
 
   const handleUpdate = async (record) => {
     const row = dataRef.current.filter((item) => item.id === record?.id);
-    if (row.length != 0) {
-      const checkNullValue = (row, key) => {
-        if (row[0][key] === null || row[0][key] === "") {
-          return key;
-        }
-        return null;
-      };
+    const respose = await patchApiWithAuth(
+      `choices/update-${dataa.id}/${record.id}/`,
+      record
+    );
 
-      const nullKeys = columns
-        .map((column) => checkNullValue(row, column))
-        .filter(Boolean);
-
-      if (nullKeys.length > 0) {
-        message.error(`Please enter the ${nullKeys[0]} of the Row`);
-      } else {
-        const respose = await patchApiWithAuth(
-          `choices/update-${dataa.id}/${record.id}/`,
-          row[0]
-        );
-
-        if (respose.data.status === 200) {
-          message.success("Row update succesfully");
-          setShowRows(null);
-          getChoiceRecord();
-          setSelectedRowId(record.id);
-          getTableRecord();
-        } else {
-          message.error(respose.data.message);
-        }
-      }
-    } else {
+    if (respose.data.status === 200) {
+      message.success("Row update succesfully");
       setShowRows(null);
       getChoiceRecord();
+      setSelectedRowId(record.id);
       getTableRecord();
+    } else {
+      message.error(respose.data.message);
     }
   };
   const handleUpdateMobile = async (record) => {
@@ -286,39 +270,15 @@ const MyChoicesEdit = () => {
 
   const handleAddRow = async (record) => {
     const row = dataRef.current.filter((item) => item.dataId === record.dataId);
-
-    if (row.length != 0) {
-      const row1 = row[0];
-      const checkNullValue = (row1, key) => {
-        if (row1[key] === undefined || row1[key] === "") {
-          return key;
-        } else {
-          return null;
-        }
-      };
-
-      const nullKeys = columns
-        .map((key) => checkNullValue(row1, key))
-        .filter(Boolean);
-
-      if (nullKeys.length > 0) {
-        message.error(`Please enter the ${nullKeys[0]} of the Row`);
-      } else {
-        row1.order_number = record.rowNo + 1;
-        const respose = await postApiWithAuth(`choices/${dataa.id}/`, row);
-
-        if (respose.data.status === 200) {
-          message.success("Row add succesfully");
-          setShowRows(null);
-          getChoiceRecord();
-          getTableRecord();
-          setSelectedRowId(record.id);
-        } else {
-          message.error(respose.data.message);
-        }
-      }
-    } else if (!record || !record.code) {
-      message.error(`Please enter Code to proceed further`);
+    const respose = await postApiWithAuth(`choices/${dataa.id}/`, record);
+    if (respose.data.status === 200) {
+      message.success("Row add succesfully");
+      setShowRows(null);
+      getChoiceRecord();
+      getTableRecord();
+      setSelectedRowId(record.id);
+    } else {
+      message.error(respose.data.message);
     }
   };
   const handleAddRowMobile = async (record) => {
@@ -406,7 +366,6 @@ const MyChoicesEdit = () => {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-
           {children}
           {row?.id ? (
             <MenuOutlined
@@ -419,7 +378,6 @@ const MyChoicesEdit = () => {
                 position: "absolute",
                 top: "42%",
                 left: "0px",
-
               }}
             />
           ) : null}
@@ -580,7 +538,6 @@ const MyChoicesEdit = () => {
     }
   };
 
-
   const updateOrder2 = async (id, overIndexId, orderUpdate2) => {
     setLoadingFirst(true);
     const respose2 = await patchApiWithAuth(
@@ -593,6 +550,21 @@ const MyChoicesEdit = () => {
     }
 
     setLoadingFirst(false);
+  };
+
+  const handleSelect = async (value, option, rowNum) => {
+    const updatedData = data.map((item) => {
+      if (item.rowNo === rowNum) {
+        const { id, ...rest } = option.row;
+        return {
+          ...item,
+          ...rest,
+          order_number: rowNum,
+        };
+      }
+      return item;
+    });
+    setData(updatedData);
   };
   return (
     <>
@@ -672,28 +644,86 @@ const MyChoicesEdit = () => {
                             {columns.map((item) => {
                               return (
                                 <>
-                                  <Column
-                                    title={capitalizeWords(item)}
-                                    dataIndex={item}
-                                    key={item}
-                                    className="tableHeadingStyle"
-                                    render={(text, record) => (
-                                      <>
-                                        <MyCareerGuidanceInputField
-                                          ref={inputRef}
-                                          placeholder={item}
-                                          type="input"
-                                          name={item}
-                                          defaultValue={text}
-                                          onChange={(e) =>
-                                            handleChangeTable(e, record)
-                                          }
-                                          isPrefix={false}
-                                          disabled={!record.editable}
-                                        />
-                                      </>
-                                    )}
-                                  />
+                                  {item === "code" ||
+                                  item === "title" ||
+                                  item === "college" ? (
+                                    <>
+                                      <Column
+                                        title={capitalizeWords(item)}
+                                        dataIndex={item}
+                                        key={item}
+                                        className="tableHeadingStyle"
+                                        render={(text, record, rowNum) => (
+                                          <>
+                                            <Select
+                                              showSearch
+                                              placeholder={`Select ${item}`}
+                                              name={item}
+                                              value={text}
+                                              optionFilterProp="children"
+                                              className="inputSelectFieldStyle"
+                                              ref={inputRef}
+                                              defaultValue={text}
+                                              bordered={false}
+                                              popupMatchSelectWidth={false}
+                                              disabled={!record.editable}
+                                              suffixIcon={
+                                                <Image
+                                                  preview={false}
+                                                  src={dropdownIcon}
+                                                  width={15}
+                                                  style={{ marginRight: 10 }}
+                                                />
+                                              }
+                                              onSelect={(value, option) =>
+                                                handleSelect(
+                                                  value,
+                                                  option,
+                                                  rowNum
+                                                )
+                                              }
+                                              optionLabelProp="label"
+                                            >
+                                              {dropDownOptions.map((option) => (
+                                                <Select.Option
+                                                  key={option[item]}
+                                                  value={option[item]}
+                                                  code={option.code}
+                                                  row={option}
+                                                  label={option[item]}
+                                                >
+                                                  {`${option.title},${option.code},${option.college}`}
+                                                </Select.Option>
+                                              ))}
+                                            </Select>
+                                          </>
+                                        )}
+                                      />
+                                    </>
+                                  ) : (
+                                    <Column
+                                      title={capitalizeWords(item)}
+                                      dataIndex={item}
+                                      key={item}
+                                      className="tableHeadingStyle"
+                                      render={(text, record) => (
+                                        <>
+                                          <MyCareerGuidanceInputField
+                                            ref={inputRef}
+                                            placeholder={item}
+                                            type="input"
+                                            name={item}
+                                            defaultValue={text}
+                                            onChange={(e) =>
+                                              handleChangeTable(e, record)
+                                            }
+                                            isPrefix={false}
+                                            disabled={!record.editable}
+                                          />
+                                        </>
+                                      )}
+                                    />
+                                  )}
                                 </>
                               );
                             })}
@@ -707,13 +737,16 @@ const MyChoicesEdit = () => {
                                 <Space size="middle">
                                   {record.editable && record.id !== null ? (
                                     <CheckOutlined
-                                      style={{ cursor: "pointer" }}
+                                      style={{
+                                        cursor: "pointer",
+                                      }}
                                       onClick={() => handleUpdate(record)}
-                                     
                                     />
                                   ) : record.editable && record.id === null ? (
                                     <PlusCircleOutlined
-                                      style={{ cursor: "pointer" }}
+                                      style={{
+                                        cursor: "pointer",
+                                      }}
                                       onClick={() => handleAddRow(record)}
                                     />
                                   ) : (
@@ -767,28 +800,89 @@ const MyChoicesEdit = () => {
                       {columns.map((item) => {
                         return (
                           <>
-                            <Column
-                              title={capitalizeWords(item)}
-                              dataIndex={item}
-                              key={item}
-                              className="tableHeadingStyle"
-                              render={(text, record) => (
-                                <>
-                                  <MyCareerGuidanceInputField
-                                    ref={inputRef}
-                                    placeholder={item}
-                                    type="input"
-                                    name={item}
-                                    defaultValue={text}
-                                    onChange={(e) =>
-                                      handleChangeTable(e, record)
-                                    }
-                                    isPrefix={false}
-                                    disabled={!record.editable}
-                                  />
-                                </>
-                              )}
-                            />
+                            {item === "code" ||
+                            item === "title" ||
+                            item === "college" ? (
+                              <>
+                                <Column
+                                  title={capitalizeWords(item)}
+                                  dataIndex={item}
+                                  key={item}
+                                  className="tableHeadingStyle"
+                                  render={(text, record, rowNum) => (
+                                    <>
+                                      <Select
+                                        showSearch
+                                        placeholder={`Select ${item}`}
+                                        name={item}
+                                        value={text}
+                                        optionFilterProp="children"
+                                        className="inputSelectFieldStyle"
+                                        ref={inputRef}
+                                        defaultValue={text}
+                                        bordered={false}
+                                        popupMatchSelectWidth={false}
+                                        disabled={!record.editable}
+                                        suffixIcon={
+                                          <Image
+                                            preview={false}
+                                            src={dropdownIcon}
+                                            width={15}
+                                            style={{ marginRight: 10 }}
+                                          />
+                                        }
+                                        onSelect={(value, option) =>
+                                          handleSelect(
+                                            value,
+                                            option,
+                                            rowNum +
+                                              data.filter(
+                                                (item) => item.id !== null
+                                              ).length
+                                          )
+                                        }
+                                        optionLabelProp="label"
+                                      >
+                                        {dropDownOptions.map((option) => (
+                                          <Select.Option
+                                            key={option[item]}
+                                            value={option[item]}
+                                            code={option.code}
+                                            row={option}
+                                            label={option[item]}
+                                          >
+                                            {`${option.title},${option.code},${option.college}`}
+                                          </Select.Option>
+                                        ))}
+                                      </Select>
+                                    </>
+                                  )}
+                                />
+                              </>
+                            ) : (
+                              <Column
+                                title={capitalizeWords(item)}
+                                dataIndex={item}
+                                key={item}
+                                className="tableHeadingStyle"
+                                render={(text, record) => (
+                                  <>
+                                    <MyCareerGuidanceInputField
+                                      ref={inputRef}
+                                      placeholder={item}
+                                      type="input"
+                                      name={item}
+                                      defaultValue={text}
+                                      onChange={(e) =>
+                                        handleChangeTable(e, record)
+                                      }
+                                      isPrefix={false}
+                                      disabled={!record.editable}
+                                    />
+                                  </>
+                                )}
+                              />
+                            )}
                           </>
                         );
                       })}
@@ -816,7 +910,6 @@ const MyChoicesEdit = () => {
                             <a>
                               <DeleteOutlined style={{ color: "grey" }} />
                             </a>
-
                           </Space>
                         )}
                       />
