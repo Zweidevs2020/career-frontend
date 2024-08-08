@@ -84,14 +84,14 @@ const Main = () => {
             onClick={() => {
               navigate(card.navigateTo);
             }}
-            style={{ width: "100%", height: "200px" }}
+            style={{ width: "100%", height: "160px" }}
           >
             <img
               src={card.src}
               className=" bg-cover "
               style={{
                 width: "100%",
-                height: "200px",
+                height: "160px",
                 cursor: "pointer",
                 borderRadius: "10px",
               }}
