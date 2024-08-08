@@ -15,7 +15,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Input, Modal } from "antd";
+import { ConfigProvider, Input, Modal } from "antd";
 import { useLocation } from "react-router-dom";
 import { Space, Table, Col, message, Select, Image } from "antd";
 import {
@@ -634,7 +634,7 @@ const MyChoicesEdit = () => {
                               title="No."
                               dataIndex="rowNo"
                               key="rowNo"
-                              className="tableHeadingStyle"
+                              className="firstTableHeadingStyle"
                               render={(text) => (
                                 <span style={{ paddingLeft: 10 }}>
                                   {text + 1}
@@ -661,7 +661,7 @@ const MyChoicesEdit = () => {
                                               name={item}
                                               value={text}
                                               optionFilterProp="children"
-                                              className="inputSelectFieldStyle"
+                                              className="selectInputFieldStyle"
                                               ref={inputRef}
                                               defaultValue={text}
                                               bordered={false}
@@ -731,7 +731,7 @@ const MyChoicesEdit = () => {
                             <Column
                               title="Action"
                               key="Object"
-                              className="tableHeadingStyle"
+                              className="firstTableHeadingStyle"
                               dataIndex={"Object"}
                               render={(_, record) => (
                                 <Space size="middle">
@@ -792,7 +792,7 @@ const MyChoicesEdit = () => {
                         title="No."
                         dataIndex="rowNo"
                         key="rowNo"
-                        className="tableHeadingStyle"
+                        className="firstTableHeadingStyle"
                         render={(text) => (
                           <span style={{ paddingLeft: 10 }}>{text + 1}</span>
                         )}
@@ -890,7 +890,7 @@ const MyChoicesEdit = () => {
                       <Column
                         title="Action"
                         key="Object"
-                        className="tableHeadingStyle"
+                        className="firstTableHeadingStyle"
                         dataIndex={"Object"}
                         render={(_, record) => (
                           <Space size="middle">

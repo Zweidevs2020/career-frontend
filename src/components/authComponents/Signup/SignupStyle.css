@@ -14,6 +14,38 @@
   color: #9d9c9d;
 }
 
+.inputSelectFieldStyle:disabled {
+  border: 1px solid red !important;
+  border-radius: 10px;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #9d9c9d;
+}
+
+.selectInputFieldStyle {
+  border: 1px solid #d3d3d3;
+  border-radius: 10px;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #9d9c9d;
+}
+
 .signInButtonStyle {
   background: white;
   border-radius: 15px;
