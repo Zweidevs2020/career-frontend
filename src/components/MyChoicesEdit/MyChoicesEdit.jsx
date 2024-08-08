@@ -564,6 +564,7 @@ const MyChoicesEdit = () => {
       }
       return item;
     });
+
     setData(updatedData);
   };
   return (
@@ -957,27 +958,83 @@ const MyChoicesEdit = () => {
                                     </div>
                                   </div>
                                   <div className="remaining-columns">
-                                    {columns.map((item, index) => (
-                                      <div
-                                        className="column"
-                                        key={`${item.dataId}-${index}`}
-                                      >
-                                        <span className="rowHeadingMobile">
-                                          {capitalizeWords(item)}
-                                        </span>
-                                        <MyCareerGuidanceInputField
-                                          placeholder={row[item]}
-                                          type="input"
-                                          name={item}
-                                          onChange={(e) =>
-                                            handleChangeTableMobile(e, row)
-                                          }
-                                          defaultValue={row[item]}
-                                          isPrefix={false}
-                                          disabled={!row.editable}
-                                        />
-                                      </div>
-                                    ))}
+                                    {columns.map((item, index) =>
+                                      item === "code" ||
+                                      item === "title" ||
+                                      item === "college" ? (
+                                        <>
+                                          <div
+                                            className="column"
+                                            key={`${item.dataId}-${index}`}
+                                          >
+                                            <span className="rowHeadingMobile">
+                                              {capitalizeWords(item)}
+                                            </span>
+                                            <Select
+                                              showSearch
+                                              placeholder={`Select ${row[item]}`}
+                                              name={item}
+                                              value={row[item]}
+                                              optionFilterProp="children"
+                                              className="inputSelectFieldStyle"
+                                              ref={inputRef}
+                                              defaultValue={row[item]}
+                                              bordered={false}
+                                              popupMatchSelectWidth={false}
+                                              disabled={!row.editable}
+                                              suffixIcon={
+                                                <Image
+                                                  preview={false}
+                                                  src={dropdownIcon}
+                                                  width={15}
+                                                  style={{ marginRight: 10 }}
+                                                />
+                                              }
+                                              onSelect={(value, option) =>
+                                                handleSelect(
+                                                  value,
+                                                  option,
+                                                  row.rowNo
+                                                )
+                                              }
+                                              optionLabelProp="label"
+                                            >
+                                              {dropDownOptions.map((option) => (
+                                                <Select.Option
+                                                  key={option[item]}
+                                                  value={option[item]}
+                                                  code={option.code}
+                                                  row={option}
+                                                  label={option[item]}
+                                                >
+                                                  {`${option.title},${option.code},${option.college}`}
+                                                </Select.Option>
+                                              ))}
+                                            </Select>
+                                          </div>
+                                        </>
+                                      ) : (
+                                        <div
+                                          className="column"
+                                          key={`${item.dataId}-${index}`}
+                                        >
+                                          <span className="rowHeadingMobile">
+                                            {capitalizeWords(item)}
+                                          </span>
+                                          <MyCareerGuidanceInputField
+                                            placeholder={row[item]}
+                                            type="input"
+                                            name={item}
+                                            onChange={(e) =>
+                                              handleChangeTableMobile(e, row)
+                                            }
+                                            defaultValue={row[item]}
+                                            isPrefix={false}
+                                            disabled={!row.editable}
+                                          />
+                                        </div>
+                                      )
+                                    )}
                                   </div>
                                 </MobileRow>
                               ) : (
@@ -1049,25 +1106,98 @@ const MyChoicesEdit = () => {
                                     </div>
                                     <div className="remaining-columns">
                                       {columns.map((item, index) => (
-                                        <div
-                                          className="column"
-                                          key={`${item.dataId}-${index}`}
-                                        >
-                                          <span className="rowHeadingMobile">
-                                            {capitalizeWords(item)}
-                                          </span>
-                                          <MyCareerGuidanceInputField
-                                            placeholder={row[item]}
-                                            type="input"
-                                            name={item}
-                                            onChange={(e) =>
-                                              handleChangeTableMobile(e, row)
-                                            }
-                                            defaultValue={row[item]}
-                                            isPrefix={false}
-                                            disabled={!row.editable}
-                                          />
-                                        </div>
+                                        <>
+                                          {item === "code" ||
+                                          item === "title" ||
+                                          item === "college" ? (
+                                            <>
+                                              <div
+                                                className="column"
+                                                key={`${item.dataId}-${index}`}
+                                              >
+                                                <span className="rowHeadingMobile">
+                                                  {capitalizeWords(item)}
+                                                </span>
+                                                <Select
+                                                  showSearch
+                                                  placeholder={`Select ${row[item]}`}
+                                                  name={item}
+                                                  value={row[item]}
+                                                  optionFilterProp="children"
+                                                  className="inputSelectFieldStyle"
+                                                  ref={inputRef}
+                                                  defaultValue={row[item]}
+                                                  bordered={false}
+                                                  popupMatchSelectWidth={false}
+                                                  disabled={!row.editable}
+                                                  suffixIcon={
+                                                    <Image
+                                                      preview={false}
+                                                      src={dropdownIcon}
+                                                      width={15}
+                                                      style={{
+                                                        marginRight: 10,
+                                                      }}
+                                                    />
+                                                  }
+                                                  onSelect={(value, option) =>
+                                                    handleSelect(
+                                                      value,
+                                                      option,
+                                                      row.rowNo
+                                                    )
+                                                  }
+                                                  // onSelect={(value, option) =>
+                                                  //   handleSelect(
+                                                  //     value,
+                                                  //     option,
+                                                  //     row.rowNo
+                                                  //   )
+                                                  // }
+                                                  optionLabelProp="label"
+                                                >
+                                                  {dropDownOptions.map(
+                                                    (option) => (
+                                                      <Select.Option
+                                                        key={option[item]}
+                                                        value={option[item]}
+                                                        code={option.code}
+                                                        row={option}
+                                                        label={option[item]}
+                                                      >
+                                                        {`${option.title},${option.code},${option.college}`}
+                                                      </Select.Option>
+                                                    )
+                                                  )}
+                                                </Select>
+                                              </div>
+                                            </>
+                                          ) : (
+                                            <div
+                                              className="column"
+                                              key={`${item.dataId}-${index}`}
+                                            >
+                                              <span className="rowHeadingMobile">
+                                                {capitalizeWords(item)}
+                                              </span>
+                                              <MyCareerGuidanceInputField
+                                                placeholder={row[item]}
+                                                type="input"
+                                                name={item}
+                                                value={row[item]}
+                                                // onChange={(e) =>
+                                                //   handleChangeTableMobile(
+                                                //     e,
+                                                //     row
+                                                //   )
+                                                // }
+                                                defaultValue={row[item]}
+                                                isPrefix={false}
+                                                disabled={!row.editable}
+                                              />
+                                            </div>
+                                          )}
+                                        </>
                                       ))}
                                     </div>
                                   </div>
@@ -1141,26 +1271,96 @@ const MyChoicesEdit = () => {
                               </div>
                               <div className="remaining-columns">
                                 {columns.map((item, index) => (
-                                  <div
-                                    className="column"
-                                    key={`${item.dataId}-${index}`}
-                                  >
-                                    <span className="rowHeadingMobile">
-                                      {capitalizeWords(item)}
-                                    </span>
-                                    <MyCareerGuidanceInputField
-                                      ref={inputRef}
-                                      placeholder={row[item]}
-                                      type="input"
-                                      name={item}
-                                      onChange={(e) =>
-                                        handleChangeTableMobile(e, row)
-                                      }
-                                      defaultValue={row[item]}
-                                      isPrefix={false}
-                                      disabled={!row.editable}
-                                    />
-                                  </div>
+                                  <>
+                                    {item === "code" ||
+                                    item === "title" ||
+                                    item === "college" ? (
+                                      <>
+                                        <div
+                                          className="column"
+                                          key={`${item.dataId}-${index}`}
+                                        >
+                                          <span className="rowHeadingMobile">
+                                            {capitalizeWords(item)}
+                                          </span>
+                                          <Select
+                                            showSearch
+                                            placeholder={`Select ${item}`}
+                                            name={item}
+                                            value={row[item]}
+                                            optionFilterProp="children"
+                                            className="inputSelectFieldStyle"
+                                            ref={inputRef}
+                                            defaultValue={row[item]}
+                                            bordered={false}
+                                            popupMatchSelectWidth={false}
+                                            disabled={!row.editable}
+                                            suffixIcon={
+                                              <Image
+                                                preview={false}
+                                                src={dropdownIcon}
+                                                width={15}
+                                                style={{
+                                                  marginRight: 10,
+                                                }}
+                                              />
+                                            }
+                                            onSelect={(value, option) =>
+                                              handleSelect(
+                                                value,
+                                                option,
+                                                row.rowNo
+                                              )
+                                            }
+                                            // onSelect={(value, option) =>
+                                            //   handleSelect(
+                                            //     value,
+                                            //     option,
+                                            //     row.rowNo
+                                            //   )
+                                            // }
+                                            optionLabelProp="label"
+                                          >
+                                            {dropDownOptions.map((option) => (
+                                              <Select.Option
+                                                key={option[item]}
+                                                value={option[item]}
+                                                code={option.code}
+                                                row={option}
+                                                label={option[item]}
+                                              >
+                                                {`${option.title},${option.code},${option.college}`}
+                                              </Select.Option>
+                                            ))}
+                                          </Select>
+                                        </div>
+                                      </>
+                                    ) : (
+                                      <div
+                                        className="column"
+                                        key={`${item.dataId}-${index}`}
+                                      >
+                                        <span className="rowHeadingMobile">
+                                          {capitalizeWords(item)}
+                                        </span>
+                                        <MyCareerGuidanceInputField
+                                          placeholder={item}
+                                          type="input"
+                                          name={item}
+                                          value={row[item]}
+                                          // onChange={(e) =>
+                                          //   handleChangeTableMobile(
+                                          //     e,
+                                          //     row
+                                          //   )
+                                          // }
+                                          defaultValue={row[item]}
+                                          isPrefix={false}
+                                          disabled={!row.editable}
+                                        />
+                                      </div>
+                                    )}
+                                  </>
                                 ))}
                               </div>
                             </div>
