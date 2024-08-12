@@ -21,7 +21,7 @@ import { Space, Table, Col, message, Select, Image } from "antd";
 import {
   CheckOutlined,
   DeleteOutlined,
-  EditOutlined,
+  // EditOutlined,
   LeftOutlined,
   MenuOutlined,
   PlusCircleOutlined,
@@ -40,6 +40,10 @@ import {
   deleteApiWithAuth,
 } from "../../utils/api";
 import dropdownIcon from "../../assets/dropdownIcon.svg";
+// import EditOutlined from "../../assets/nimbus_edit.svg";
+ import EditOutlined from "../../assets/uil_edit.svg";
+
+import { Link } from "react-router-dom";
 
 import "./myChoicesEdit.css";
 
@@ -269,16 +273,19 @@ const MyChoicesEdit = () => {
   };
 
   const handleAddRow = async (record) => {
-    const row = dataRef.current.filter((item) => item.dataId === record.dataId);
-    const respose = await postApiWithAuth(`choices/${dataa.id}/`, record);
-    if (respose.data.status === 200) {
-      message.success("Row add succesfully");
-      setShowRows(null);
-      getChoiceRecord();
-      getTableRecord();
-      setSelectedRowId(record.id);
+    if (record.code === null || record.title === null) {
+      message.error("All fields are required");
     } else {
-      message.error(respose.data.message);
+      const respose = await postApiWithAuth(`choices/${dataa.id}/`, record);
+      if (respose.data.status === 200) {
+        message.success("Row add succesfully");
+        setShowRows(null);
+        getChoiceRecord();
+        getTableRecord();
+        setSelectedRowId(record.id);
+      } else {
+        message.error(respose.data.message);
+      }
     }
   };
   const handleAddRowMobile = async (record) => {
@@ -460,7 +467,15 @@ const MyChoicesEdit = () => {
                     </a>
                   ) : (
                     <a onClick={() => eidtThisRow(comingRow)}>
-                      <EditOutlined style={{ color: "#1476b7" }} />
+                      <Image
+                        preview={false}
+                        src={EditOutlined}
+                        style={{
+                          color: "#1476b7",
+                          cursor: "pointer",
+                          width:22,height:'100%'
+                        }}
+                      />
                     </a>
                   )}
                   <a onClick={() => handleDelete(comingRow)}>
@@ -553,19 +568,24 @@ const MyChoicesEdit = () => {
   };
 
   const handleSelect = async (value, option, rowNum) => {
-    const updatedData = data.map((item) => {
-      if (item.rowNo === rowNum) {
-        const { id, ...rest } = option.row;
-        return {
-          ...item,
-          ...rest,
-          order_number: rowNum,
-        };
-      }
-      return item;
-    });
+    const isCodeAvailable = data.some((item) => item.code === option.code);
+    if (isCodeAvailable) {
+      message.error("You already select this Course");
+    } else {
+      const updatedData = data.map((item) => {
+        if (item.rowNo === rowNum) {
+          const { id, ...rest } = option.row;
+          return {
+            ...item,
+            ...rest,
+            order_number: rowNum,
+          };
+        }
+        return item;
+      });
 
-    setData(updatedData);
+      setData(updatedData);
+    }
   };
   return (
     <>
@@ -701,6 +721,24 @@ const MyChoicesEdit = () => {
                                         )}
                                       />
                                     </>
+                                  ) : item === "url" ? (
+                                    <Column
+                                      title={capitalizeWords(item)}
+                                      dataIndex={item}
+                                      key={item}
+                                      className="tableHeadingStyle"
+                                      render={(text, record) => (
+                                        <>
+                                          <Link
+                                            to={text}
+                                            className="linkStyle"
+                                            target={"_blank"}
+                                          >
+                                            {text}
+                                          </Link>
+                                        </>
+                                      )}
+                                    />
                                   ) : (
                                     <Column
                                       title={capitalizeWords(item)}
@@ -751,12 +789,15 @@ const MyChoicesEdit = () => {
                                       onClick={() => handleAddRow(record)}
                                     />
                                   ) : (
-                                    <EditOutlined
+                                    <Image
+                                      preview={false}
+                                      src={EditOutlined}
+                                      onClick={() => eidtThisRow(record)}
                                       style={{
                                         color: "#1476b7",
                                         cursor: "pointer",
+                                        width:22,height:'100%'
                                       }}
-                                      onClick={() => eidtThisRow(record)}
                                     />
                                   )}
                                   <DeleteOutlined
@@ -905,7 +946,11 @@ const MyChoicesEdit = () => {
                               </a>
                             ) : (
                               <a onClick={() => eidtThisRow(record)}>
-                                <EditOutlined />
+                                <Image preview={false} src={EditOutlined} style={{
+                                                  color: "#1476b7",
+                                                  cursor: "pointer",
+                                                  width:22,height:'100%'
+                                                }} />
                               </a>
                             )}
                             <a>
@@ -1013,6 +1058,23 @@ const MyChoicesEdit = () => {
                                             </Select>
                                           </div>
                                         </>
+                                      ) : item === "url" ? (
+                                        <div
+                                          className="column"
+                                          key={`${item.dataId}-${index}`}
+                                        >
+                                          <span className="rowHeadingMobile">
+                                            {capitalizeWords(item)}
+                                          </span>
+
+                                          <Link
+                                            to={row[item]}
+                                            className="linkStyle"
+                                            target={"_blank"}
+                                          >
+                                            {row[item]}
+                                          </Link>
+                                        </div>
                                       ) : (
                                         <div
                                           className="column"
@@ -1080,8 +1142,14 @@ const MyChoicesEdit = () => {
                                             </a>
                                           ) : (
                                             <a onClick={() => eidtThisRow(row)}>
-                                              <EditOutlined
-                                                style={{ color: "#1476b7" }}
+                                              <Image
+                                                preview={false}
+                                                src={EditOutlined}
+                                                style={{
+                                                  color: "#1476b7",
+                                                  cursor: "pointer",
+                                                  width:22,height:'100%'
+                                                }}
                                               />
                                             </a>
                                           )}
@@ -1245,8 +1313,14 @@ const MyChoicesEdit = () => {
                                       </a>
                                     ) : (
                                       <a onClick={() => eidtThisRow(row)}>
-                                        <EditOutlined
-                                          style={{ color: "#1476b7" }}
+                                        <Image
+                                          preview={false}
+                                          src={EditOutlined}
+                                          style={{
+                                            color: "#1476b7",
+                                            cursor: "pointer",
+                                            width:22,height:'100%'
+                                          }}
                                         />
                                       </a>
                                     )}
