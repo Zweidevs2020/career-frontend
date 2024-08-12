@@ -744,6 +744,7 @@ const MyChoicesEdit = () => {
                                       title={capitalizeWords(item)}
                                       dataIndex={item}
                                       key={item}
+                                      disabled
                                       className="tableHeadingStyle"
                                       render={(text, record) => (
                                         <>
