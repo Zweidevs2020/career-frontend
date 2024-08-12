@@ -1,0 +1,13 @@
+.messageArrayAnswer {
+  color: #2e3339;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  font-family: DM Sans;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22.5px; 
+
+}

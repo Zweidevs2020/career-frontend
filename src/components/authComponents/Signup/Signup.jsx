@@ -63,8 +63,6 @@ const Signup = () => {
   const handlerSaveSubmit = async () => {
     setLoading(true);
     setLoading(false);
-
-    console.log("=========data", data);
     const response = await postApiWithoutAuth(API_URL.SINGUPUSER, {
       ...data,
       dob: `${dobSave.year}-${dobSave.month}-${dobSave.day}`,
@@ -192,21 +190,6 @@ const Signup = () => {
               inputValue={data.email}
             />
           </Form.Item>
-          {/* <Form.Item
-            name="number"
-            rules={[
-              { required: true, message: "Please input your Phone Number!" },
-
-            ]}
-          >
-            <MyCareerGuidanceInputField
-              placeholder="Phone Number"
-              prefix={phoneIcon}
-              name="number"
-              type="input"
-              onChange={onChangeHandle}
-            />
-          </Form.Item> */}
           <Form.Item
             name="password"
             rules={[
@@ -262,166 +245,6 @@ const Signup = () => {
             </Select>
           </Form.Item>
 
-          {/* <span>If your school is not listed above</span> */}
-          {/* <span
-            style={{ cursor: "pointer", color: "#1476b7", paddingLeft: "5px" }}
-            onClick={() => setOpen(true)}
-          >
-            Click here to add
-          </span>
-          <div className="schoolModalStyling">
-            <Modal
-              title={
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ textAlign: 'center' }}>Add your school</span>
-                  <button
-                    className="closeButton"
-                    onClick={() => setOpen(false)}
-                  >
-                    <CloseOutlined />
-                  </button>
-                </div>
-              }
-              centered
-              open={open}
-              onOk={() => setOpen(false)}
-              closeIcon={<CloseOutlined />}
-              onCancel={() => setOpen(false)}
-              footer={[
-                <Button
-                  key="submit"
-                  type="primary"
-                  htmlType="submit"
-                  onClick={() => {
-                    if (newSchools.trim()) {
-                      setOpen(false);
-                      setData({ ...data, school: newSchools });
-                    }
-                  }}
-                  style={{ background: "#1476b7" }}
-                  disabled={!isAddSchoolValid}
-
-                >
-                  Update
-                </Button>
-              ]}
-            >
-              <Form>
-                <Form.Item
-                  name="school"
-                  rules={[
-                    { required: true, message: "Please input your School!" },
-                  ]}
-                >
-                  <MyCareerGuidanceInputField
-                    placeholder="School Name"
-                    prefix={schoolImg}
-                    type="input"
-                    name="school"
-                    onChange={handleSchool}
-                  />
-                </Form.Item>
-              </Form>
-
-
-            </Modal>
-          </div>
-
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: 20,
-            }}
-          >
-            <div style={{ width: "33%" }}>
-              <Form.Item
-                name="day"
-                rules={[{ required: true, message: "Please Select Day!" }]}
-              >
-                <Select
-                  placeholder="Day"
-                  name="day"
-                  options={
-                    dobSave.month === "01" &&
-                      "03" &&
-                      "05" &&
-                      "07" &&
-                      "08" &&
-                      "10" &&
-                      "12"
-                      ? dayArray31
-                      : dobSave.month === "02"
-                        ? dayArray28
-                        : dobSave.month === "04" && "06" && "09" && "11"
-                          ? dayArray30
-                          : dobSave.month === "undefined"
-                            ? dayArray28
-                            : dayArray31
-                  }
-                  className="inputSelectFieldStyle"
-                  onSelect={handleSelectDay}
-                  bordered={false}
-                  suffixIcon={
-                    <Image
-                      preview={false}
-                      src={dropdownIcon}
-                      width={15}
-                      style={{ marginRight: 10 }}
-                    />
-                  }
-                />
-              </Form.Item>
-            </div>
-            <div style={{ width: "30%" }}>
-              <Form.Item
-                name="month"
-                rules={[{ required: true, message: "Please Select Month!" }]}
-              >
-                <Select
-                  placeholder="Month"
-                  name="month"
-                  options={dobSave.day === '31' ? monthArray31Days : dobSave.day === '30' ? monthArray30Days : monthArray}
-                  className="inputSelectFieldStyle"
-                  onSelect={handleSelectMonth}
-                  bordered={false}
-                  suffixIcon={
-                    <Image
-                      preview={false}
-                      src={dropdownIcon}
-                      width={15}
-                      style={{ marginRight: 10 }}
-                    />
-                  }
-                />
-              </Form.Item>
-            </div>
-            <div style={{ width: "30%" }}>
-              <Form.Item
-                name="year"
-                rules={[
-                  { required: true, message: 'Please Select Year!' },
-                ]}
-              >
-                <DatePicker
-                  picker="year"
-                  placeholder="Year"
-                  className="inputSelectFieldStyle"
-                  onChange={onChangeYearInternal}
-                  disabledDate={disabledDate}
-                  suffixIcon={
-                    <Image
-                      preview={false}
-                      src={dropdownIcon}
-                      width={15}
-                      style={{ marginRight: 10 }}
-                    />
-                  }
-                />
-              </Form.Item>
-            </div>
-          </div> */}
           <Form.Item name="profile_image" style={{ marginTop: "10px" }}>
             <Upload
               beforeUpload={() => false}
