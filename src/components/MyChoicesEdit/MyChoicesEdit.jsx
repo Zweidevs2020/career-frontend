@@ -41,7 +41,7 @@ import {
 } from "../../utils/api";
 import dropdownIcon from "../../assets/dropdownIcon.svg";
 // import EditOutlined from "../../assets/nimbus_edit.svg";
- import EditOutlined from "../../assets/uil_edit.svg";
+import EditOutlined from "../../assets/uil_edit.svg";
 
 import { Link } from "react-router-dom";
 
@@ -473,7 +473,8 @@ const MyChoicesEdit = () => {
                         style={{
                           color: "#1476b7",
                           cursor: "pointer",
-                          width:22,height:'100%'
+                          width: 22,
+                          height: "100%",
                         }}
                       />
                     </a>
@@ -721,9 +722,16 @@ const MyChoicesEdit = () => {
                                         )}
                                       />
                                     </>
-                                  ) : item === "url" ? (
+                                  ) : item === "course_information" ? (
                                     <Column
-                                      title={capitalizeWords(item)}
+                                      title={item
+                                        .split("_") // Split the string by underscores
+                                        .map(
+                                          (word) =>
+                                            word.charAt(0).toUpperCase() +
+                                            word.slice(1) // Capitalize the first letter of each word
+                                        )
+                                        .join(" ")}
                                       dataIndex={item}
                                       key={item}
                                       className="tableHeadingStyle"
@@ -797,7 +805,8 @@ const MyChoicesEdit = () => {
                                       style={{
                                         color: "#1476b7",
                                         cursor: "pointer",
-                                        width:22,height:'100%'
+                                        width: 22,
+                                        height: "100%",
                                       }}
                                     />
                                   )}
@@ -904,7 +913,14 @@ const MyChoicesEdit = () => {
                               </>
                             ) : (
                               <Column
-                                title={capitalizeWords(item)}
+                              title={item
+                                .split("_") // Split the string by underscores
+                                .map(
+                                  (word) =>
+                                    word.charAt(0).toUpperCase() +
+                                    word.slice(1) // Capitalize the first letter of each word
+                                )
+                                .join(" ")}
                                 dataIndex={item}
                                 key={item}
                                 className="tableHeadingStyle"
@@ -947,11 +963,16 @@ const MyChoicesEdit = () => {
                               </a>
                             ) : (
                               <a onClick={() => eidtThisRow(record)}>
-                                <Image preview={false} src={EditOutlined} style={{
-                                                  color: "#1476b7",
-                                                  cursor: "pointer",
-                                                  width:22,height:'100%'
-                                                }} />
+                                <Image
+                                  preview={false}
+                                  src={EditOutlined}
+                                  style={{
+                                    color: "#1476b7",
+                                    cursor: "pointer",
+                                    width: 22,
+                                    height: "100%",
+                                  }}
+                                />
                               </a>
                             )}
                             <a>
@@ -1059,13 +1080,20 @@ const MyChoicesEdit = () => {
                                             </Select>
                                           </div>
                                         </>
-                                      ) : item === "url" ? (
+                                      ) : item === "course_information" ? (
                                         <div
                                           className="column"
                                           key={`${item.dataId}-${index}`}
                                         >
                                           <span className="rowHeadingMobile">
-                                            {capitalizeWords(item)}
+                                            {item
+                                        .split("_") // Split the string by underscores
+                                        .map(
+                                          (word) =>
+                                            word.charAt(0).toUpperCase() +
+                                            word.slice(1) // Capitalize the first letter of each word
+                                        )
+                                        .join(" ")}
                                           </span>
 
                                           <Link
@@ -1149,7 +1177,8 @@ const MyChoicesEdit = () => {
                                                 style={{
                                                   color: "#1476b7",
                                                   cursor: "pointer",
-                                                  width:22,height:'100%'
+                                                  width: 22,
+                                                  height: "100%",
                                                 }}
                                               />
                                             </a>
@@ -1320,7 +1349,8 @@ const MyChoicesEdit = () => {
                                           style={{
                                             color: "#1476b7",
                                             cursor: "pointer",
-                                            width:22,height:'100%'
+                                            width: 22,
+                                            height: "100%",
                                           }}
                                         />
                                       </a>
