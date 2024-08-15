@@ -43,5 +43,6 @@ export const API_URL = {
   DELETE_CAOPOINT:'/cao-calculator/delete-caopoint',
   DELETE_RESULT:'/cv/delete-junior-cert',
   DELETE_LEAVING:'/cv/delete-leaving-cert',
-  SENDCV:'cv/sendcv/'
+  SENDCV:'cv/sendcv/',
+  CREATEPAYMENT:'user/create-payment/'
 };

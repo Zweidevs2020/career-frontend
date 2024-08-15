@@ -68,7 +68,6 @@ const Signup = () => {
       dob: `${dobSave.year}-${dobSave.month}-${dobSave.day}`,
       email: data.email.toLowerCase(),
     });
-
     if (response.status === 200) {
       message.success(
         "Congratulations! You've successfully signed up. You're now ready to log in and explore our platform. Welcome aboard!"

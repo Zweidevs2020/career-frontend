@@ -33,12 +33,15 @@ const Login = () => {
       ...data,
       email: data.email.toLowerCase(),
     });
-
     if (response?.status === 200) {
       message.success("Login Successfully");
       setLoading(false);
       setToken(response.data.access);
-      navigate("/dashboard");
+      if (response.data.is_subscribed) {
+        navigate("/dashboard");
+      } else {
+        navigate("/checkout");
+      }
     } else if (response?.status === 400) {
       message.error(response.data.message);
       setLoading(false);

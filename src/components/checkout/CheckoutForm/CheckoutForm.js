@@ -7,12 +7,15 @@ import {
   CardCvcElement,
 } from "@stripe/react-stripe-js";
 import styles from "./StripeWrapper.module.css";
-import {
-  MyCareerGuidanceButton,
-} from "../../commonComponents";
-
+import { MyCareerGuidanceButton } from "../../commonComponents";
+import { API_URL } from "../../../utils/constants";
+import { postApiWithAuth } from "../../../utils/api";
+import { message } from "antd";
+import { useNavigate } from "react-router-dom";
 
 function CheckoutForm() {
+  const navigate = useNavigate();
+
   const stripe = useStripe();
   const elements = useElements();
 
@@ -21,6 +24,17 @@ function CheckoutForm() {
 
   const handlePaymentSubmit = async (payment) => {
     setIsLoading(true);
+    const response = await postApiWithAuth(API_URL.CREATEPAYMENT, {
+      payment_method_token: payment.id,
+    });
+    if (response.data.data.success) {
+      message.success(response.data.data.message);
+      setIsLoading(false);
+      navigate("/dashboard");
+    } else {
+      setIsLoading(false);
+      message.error(response.data.data.message);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -45,12 +59,14 @@ function CheckoutForm() {
           cardholder: nameOnCard,
         },
       });
-    handlePaymentSubmit({
-      payment_method: paymentMethod.id,
-    });
+    console.log("=========payment", stripeError, paymentMethod);
 
     if (stripeError) {
-      return;
+      setIsLoading(false);
+
+      message.error(stripeError.message);
+    } else {
+      handlePaymentSubmit(paymentMethod);
     }
   };
 
@@ -63,7 +79,7 @@ function CheckoutForm() {
     }
   };
   return (
-    <div  style={{width:'100%' }}>
+    <div style={{ width: "100%" }}>
       <form onSubmit={handleSubmit}>
         <div className={`${styles.cardNameInputContainer} mt-5`}>
           <input
@@ -138,12 +154,12 @@ function CheckoutForm() {
           </div>
         </div>
         <MyCareerGuidanceButton
-            label="Checkout"
-            className="signInButton"
-            type="primary"
-            htmlType="submit"
-            loading={isLoading}
-          />
+          label="Checkout"
+          className="signInButton"
+          type="primary"
+          htmlType="submit"
+          loading={isLoading}
+        />
       </form>
     </div>
   );

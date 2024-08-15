@@ -30,7 +30,7 @@ import styles from "./CheckoutView.module.css";
 
 function CheckoutView() {
   const stripePromise = loadStripe(
-    `pk_test_51OFps8DNVCeKwCqLpSX4NOCqD3J4pEwYSHVilCTeVtBlB9vryZ6qf2nuM7vNav5h3AD8LsvhbCqWy6FBR7KivMaB00Lex9XSLd`
+    `pk_test_2Q5yG1nFpcg3pb9synVOAENT`
   );
 
   return (
