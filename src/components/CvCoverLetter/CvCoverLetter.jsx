@@ -10,7 +10,7 @@ import emailIcon from "../../assets/image 2.png";
 import docxIcon from "../../assets/images.png";
 import pdfIcon from "../../assets/images.jpeg";
 import Experenice from "./Experenice/Experenice";
-import { getApiWithAuth,postApiWithAuth } from "../../utils/api";
+import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import { API_URL } from "../../utils/constants";
 import { useLocation } from "react-router-dom";
 import { MailOutlined } from "@ant-design/icons";
@@ -72,12 +72,12 @@ const CvCoverLetter = () => {
 
   const sendToEmail = async () => {
     setIsEmailSend(true);
-    const res = await postApiWithAuth(API_URL.SENDCV,data);
-    if (res.data.status==200) {
-      message.success("Email send to this");
+    const res = await postApiWithAuth(API_URL.SENDCV, data);
+    if (res.data.status == 200) {
+      message.success("Email sent");
       setIsEmailSend(false);
       setData({});
-      setOpen(false)
+      setOpen(false);
     } else {
       message.error("Check email again");
       setIsEmailSend(false);
@@ -193,7 +193,7 @@ const CvCoverLetter = () => {
                 />
                 <span style={{ marginRight: "2.5rem", width: "100%" }}>
                   {" "}
-                  Download a Docs
+                  Download Word Doc
                 </span>
               </span>
             )}
