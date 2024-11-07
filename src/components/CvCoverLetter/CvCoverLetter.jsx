@@ -183,10 +183,16 @@ const CvCoverLetter = () => {
                   className="responsive-image"
                   style={{ marginRight: "1rem", width: 25, height: 25 }}
                 />
-                <span style={{ marginRight: "2.5rem", width: "100%" }}>
-                  {" "}
-                  Download a PDF
-                </span>
+                <Popover
+                  title="Download PDF File"
+                  placement="bottom"
+                  style={{ width: "10px" }}
+                >
+                  <span style={{ marginRight: "2.5rem", width: "100%" }}>
+                    {" "}
+                    Download a PDF
+                  </span>
+                </Popover>
               </span>
             )}
             {downloadBtn && (
@@ -206,10 +212,16 @@ const CvCoverLetter = () => {
                   className="responsive-image"
                   style={{ marginRight: "1rem", width: 25, height: 25 }}
                 />
-                <span style={{ marginRight: "2.5rem", width: "100%" }}>
-                  {" "}
-                  Download Word Doc
-                </span>
+                <Popover
+                  title="Download Word Document"
+                  placement="bottom"
+                  style={{ width: "10px" }}
+                >
+                  <span style={{ marginRight: "2.5rem", width: "100%" }}>
+                    {" "}
+                    Download Word Doc
+                  </span>
+                </Popover>
               </span>
             )}
             {downloadBtn && (
@@ -274,7 +286,13 @@ const CvCoverLetter = () => {
                     className="responsive-image"
                     style={{ marginRight: "1rem", width: 20, height: 20 }}
                   />
-                  <span style={{ width: "100%" }}> Send Email</span>
+                  <Popover
+                    title="Send Email"
+                    placement="bottom"
+                    style={{ width: "10px" }}
+                  >
+                    <span style={{ width: "100%" }}> Send Email</span>
+                  </Popover>
 
                   {/* <span style={{ width: "100%" }}> Send to My Email</span> */}
                 </span>
