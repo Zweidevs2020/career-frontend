@@ -84,63 +84,78 @@ const CvCoverLetter = () => {
     }
   };
   const downloadDocs = async (e) => {
-    var token = localStorage.getItem("access_token", "");
+    try {
+      var token = localStorage.getItem("access_token", "");
 
-    const response = await axios.get(
-      `${process.env.REACT_APP_LINK_BASE_URL}cv/doc-cv
-      `,
-      {
-        responseType: "blob", // Set the response type to 'blob'
-        headers: {
-          Authorization: `Bearer ${token}`, // Set the Authorization header
-        },
-      }
-    );
-    const blob = new Blob([response.data], {
-      type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    });
-    var link = document.createElement("a");
-    var URL = window.URL || window.webkitURL;
-    var downloadUrl = URL.createObjectURL(blob);
-    link.href = downloadUrl;
-    link.style = "display: none";
-    link.download = "filename.docx";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
+      const response = await axios.get(
+        `${process.env.REACT_APP_LINK_BASE_URL}cv/doc-cv
+        `,
+        {
+          responseType: "blob", // Set the response type to 'blob'
+          headers: {
+            Authorization: `Bearer ${token}`, // Set the Authorization header
+          },
+        }
+      );
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      });
+      var link = document.createElement("a");
+      var URL = window.URL || window.webkitURL;
+      var downloadUrl = URL.createObjectURL(blob);
+      link.href = downloadUrl;
+      link.style = "display: none";
+      link.download = "filename.docx";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      message.success(
+        "Download initiated! Please choose a location to save the file."
+      );
+    } catch (error) {
+      console.error("Error downloading document:", error);
+      message.error("Failed to download document. Please try again.");
+    }
   };
 
   const SavePdf = async (e) => {
     e.preventDefault();
-    var token = localStorage.getItem("access_token", "");
+    try {
+      var token = localStorage.getItem("access_token", "");
 
-    const response = await axios.get(
-      `${process.env.REACT_APP_LINK_BASE_URL}cv/cv/`,
-      {
-        responseType: "blob", // Set the response type to 'blob'
-        headers: {
-          Authorization: `Bearer ${token}`, // Set the Authorization header
-        },
-      }
-    );
+      const response = await axios.get(
+        `${process.env.REACT_APP_LINK_BASE_URL}cv/cv/`,
+        {
+          responseType: "blob", // Set the response type to 'blob'
+          headers: {
+            Authorization: `Bearer ${token}`, // Set the Authorization header
+          },
+        }
+      );
 
-    // Create a blob from the response data
-    const pdfBlob = new Blob([response.data], { type: "application/pdf" });
+      // Create a blob from the response data
+      const pdfBlob = new Blob([response.data], { type: "application/pdf" });
 
-    // Create a temporary URL for the blob
-    const pdfUrl = URL.createObjectURL(pdfBlob);
+      // Create a temporary URL for the blob
+      const pdfUrl = URL.createObjectURL(pdfBlob);
 
-    // Create a link and initiate the download
-    const link = document.createElement("a");
-    link.href = pdfUrl;
-    link.download = `${userData.full_name}'s.pdf`; // Set the desired filename
+      // Create a link and initiate the download
+      const link = document.createElement("a");
+      link.href = pdfUrl;
+      link.download = `${userData.full_name}'s.pdf`; // Set the desired filename
 
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    // Clean up the temporary URL
-    URL.revokeObjectURL(pdfUrl);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      message.success(
+        "Download initiated! Please choose a location to save the file."
+      );
+      // Clean up the temporary URL
+      URL.revokeObjectURL(pdfUrl);
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+      message.error("Failed to download PDF. Please try again.");
+    }
   };
   return (
     <>
