@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import {
   Modal,
@@ -40,6 +39,7 @@ import {
   AssesmentSvg,
   StudySvg,
   ChoicesSvg,
+  ChatBot,
 } from "../../../../utils/svg";
 import { API_URL } from "../../../../utils/constants";
 import "./SidebarStyle.css";
@@ -49,7 +49,12 @@ import {
   patchApiWithAuth,
 } from "../../../../utils/api";
 import MyCareerGuidanceButton from "../../MyCareerGuidanceButton";
-import { CloseOutlined, MenuFoldOutlined, MenuOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  CloseOutlined,
+  MenuFoldOutlined,
+  MenuOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 const { Content, Sider, Header } = Layout;
 const Sidebar = ({ children, flags }) => {
   const navigate = useNavigate();
@@ -63,16 +68,15 @@ const Sidebar = ({ children, flags }) => {
   const [editMode, setEditMode] = useState(false);
   const [schools, setSchools] = useState([]);
   const [loading2, setLoading2] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
   const [screenSize, setScreenSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-
   const [open, setOpen] = useState(false);
-  const [placement, setPlacement] = useState('left');
+  const [placement, setPlacement] = useState("left");
   const showDrawer = () => {
     setOpen(true);
   };
@@ -126,8 +130,6 @@ const Sidebar = ({ children, flags }) => {
     }
   };
 
-
-
   const handleMenuItemClick = (key) => {
     setSelectedMenuItem(key);
     toggleSidebar();
@@ -170,7 +172,6 @@ const Sidebar = ({ children, flags }) => {
     setLoading2(true);
     const response = await patchApiWithAuth(API_URL.GETUSER2, updateData);
 
-
     if (response.data.status === 200) {
       setIsModalOpen(false);
       getUserData();
@@ -205,6 +206,8 @@ const Sidebar = ({ children, flags }) => {
       navigate("/educational-guidance");
     } else if (key === "MyChoices") {
       navigate("/my-choices");
+    } else if (key === "ChatBot") {
+      navigate("/my-guidance-report");
     } else {
       navigate("/my-study");
     }
@@ -235,11 +238,9 @@ const Sidebar = ({ children, flags }) => {
     ) {
       setSelectedMenuItem("MyChoices");
     }
-
   }, [location]);
 
   const logoutUser = async () => {
-
     removeToken();
     navigate("/");
   };
@@ -258,7 +259,6 @@ const Sidebar = ({ children, flags }) => {
             top: 0,
           }}
         >
-
           <Sider className="backgroundColorSidebar">
             <div className="logoStyle my-2">
               <img src={mycareer} alt="cyberLegendLogo" width="70%" />
@@ -414,6 +414,23 @@ const Sidebar = ({ children, flags }) => {
                     ) : null}
                   </span>
                 </Menu.Item>
+                <Menu.Item
+                  key="ChatBot"
+                  icon={
+                    <ChatBot
+                      fill={
+                        selectedMenuItem === "ChatBot" ? "#1476B7" : "#BDBDBD"
+                      }
+                    />
+                  }
+                >
+                  <span className="textStyling">
+                    My Chat
+                    {selectedMenuItem === "ChatBot" ? (
+                      <span> &nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
+                </Menu.Item>
               </Menu>
               <div
                 style={{
@@ -478,9 +495,7 @@ const Sidebar = ({ children, flags }) => {
                 justifyContent: "center",
               }}
               open={isModalOpen}
-
               footer={[]}
-
               title={
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <Title
@@ -610,19 +625,19 @@ const Sidebar = ({ children, flags }) => {
                     <Col xs={24} md={12}>
                       <Input.Password
                         name="new_password"
-                        type={showPassword ? 'text' : 'password'} // Show/hide password based on state
+                        type={showPassword ? "text" : "password"} // Show/hide password based on state
                         onChange={(e) => handleChange(e)}
                         prefix={
                           <Space>
                             <img
                               src={pass}
-                              style={{ marginRight: '15px' }}
+                              style={{ marginRight: "15px" }}
                               alt=""
                             />
                           </Space>
                         }
                         disabled={!editMode}
-                        style={{ padding: '15px 10px' }}
+                        style={{ padding: "15px 10px" }}
                         placeholder="***************"
                       />
                     </Col>
@@ -664,16 +679,18 @@ const Sidebar = ({ children, flags }) => {
                         prefix={
                           <img
                             src={phoneIcon}
-                            style={{ marginRight: "15px",width:'19px' }}
+                            style={{ marginRight: "15px", width: "19px" }}
                             alt=""
                           />
                         }
                       />
                     </Col>
-
                   </Row>
 
-                  <div className="mt-5" style={{ display: "flex", justifyContent: 'center' }}>
+                  <div
+                    className="mt-5"
+                    style={{ display: "flex", justifyContent: "center" }}
+                  >
                     <MyCareerGuidanceButton
                       label="Update"
                       className="takebutton"
@@ -704,19 +721,19 @@ const Sidebar = ({ children, flags }) => {
             background: "#F8FAFC",
           }}
         >
-
-
           <Drawer
-
             placement={placement}
-
             onClose={onClose}
             open={open}
-
             key={placement}
-
           >
-            <img src={myCareer} style={{ position: 'absolute', zIndex: '0', width: '2.3rem' }} className="drawerIcon" alt="cyberLegendLogo" width="100%" />
+            <img
+              src={myCareer}
+              style={{ position: "absolute", zIndex: "0", width: "2.3rem" }}
+              className="drawerIcon"
+              alt="cyberLegendLogo"
+              width="100%"
+            />
             <Menu
               selectedKeys={selectedMenuItem}
               mode="inline"
@@ -851,25 +868,33 @@ const Sidebar = ({ children, flags }) => {
                 type="primary"
                 htmlType="button"
                 onClick={logoutUser}
-
               />
             </div>
           </Drawer>
 
-
           <Layout className="site-layout">
-
             <Header className="Navbar">
               <div className="menuIconSidebarHide " onClick={showDrawer}>
                 <MenuOutlined />
               </div>
-              <div className={`logoStyle mt-3 ${isSidebarOpen ? 'sidebarOpen' : ''}`} style={{ width: "200px", marginRight: !isSidebarOpen ? '-1rem' : '0' }}>
+              <div
+                className={`logoStyle mt-3 ${
+                  isSidebarOpen ? "sidebarOpen" : ""
+                }`}
+                style={{
+                  width: "200px",
+                  marginRight: !isSidebarOpen ? "-1rem" : "0",
+                }}
+              >
                 <img src={myCareer} alt="cyberLegendLogo" width="50%" />
-
               </div>
 
-              <div style={{ width: "209px" }} className="img" onClick={() => showModal()}>
-                <div className="imgcard" style={{ width: '100%' }}>
+              <div
+                style={{ width: "209px" }}
+                className="img"
+                onClick={() => showModal()}
+              >
+                <div className="imgcard" style={{ width: "100%" }}>
                   <img src={userData.profile_image} className="cardprofile" />
                   <div className="cardtext">
                     <p className="name" style={{ height: 20, color: "white" }}>
@@ -893,9 +918,7 @@ const Sidebar = ({ children, flags }) => {
                 justifyContent: "center",
               }}
               open={isModalOpen}
-
               footer={[]}
-
               title={
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <Title
@@ -971,7 +994,7 @@ const Sidebar = ({ children, flags }) => {
                           borderRadius: "50%",
                           width: "100px",
                           height: "100px",
-                          cursor: "pointer"
+                          cursor: "pointer",
                         }}
                       />
 
@@ -1065,33 +1088,30 @@ const Sidebar = ({ children, flags }) => {
                           }
                         />
                       </Form.Item>
-                      <Col xs={24} md={24} style={{paddingLeft:'0px'}}>
-                      <Input
-                        value={userData.number}
-                        name="number"
-                        onChange={(e) => handleChange(e)}
-                        disabled={!editMode}
-                        style={{ padding: "15px 10px" }}
-                        placeholder="Phone Number"
-                        prefix={
-                          <img
-                            src={phoneIcon}
-                            style={{ marginRight: "15px" ,width:'18px'}}
-                            alt=""
-                          />
-                        }
-                      />
+                      <Col xs={24} md={24} style={{ paddingLeft: "0px" }}>
+                        <Input
+                          value={userData.number}
+                          name="number"
+                          onChange={(e) => handleChange(e)}
+                          disabled={!editMode}
+                          style={{ padding: "15px 10px" }}
+                          placeholder="Phone Number"
+                          prefix={
+                            <img
+                              src={phoneIcon}
+                              style={{ marginRight: "15px", width: "18px" }}
+                              alt=""
+                            />
+                          }
+                        />
+                      </Col>
                     </Col>
-
-                    </Col>
-
-
-
                   </Row>
 
-
-
-                  <div className="mt-5" style={{ display: "flex",justifyContent:'center' }}>
+                  <div
+                    className="mt-5"
+                    style={{ display: "flex", justifyContent: "center" }}
+                  >
                     <MyCareerGuidanceButton
                       label="Update"
                       className="takebutton"
