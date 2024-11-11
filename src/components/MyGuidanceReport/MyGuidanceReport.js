@@ -41,37 +41,48 @@ const MyChoices = () => {
   const messageRef = useRef(null);
   const screens = useBreakpoint();
   const inputRef = useRef();
-
+  const [postResponse, setPostResponse] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   // const [messageArray, setMessageArray] = useState({ questions: [] });
-  const [messageArray, setMessageArray] = useState({ questions: [
-    {
-      question: "What is React?",
-      questionId: 1,
-      answers: [
-        { text: "It is maintained by Facebook and a community of individual developers and companies." }
-      ],
-      lastAnswer: false,
-    },
-    {
-      question: "What is a component in React?",
-      questionId: 2,
-      answers: [
-        { text: "Components are the building blocks of a React application's UI." },
-        { text: "They can be either class-based or functional." }
-      ],
-      lastAnswer: false,
-    },
-    {
-      question: "What is state in React?",
-      questionId: 3,
-      answers: [
-        { text: "State is an object that determines how that component renders & behaves." },
-        { text: "It is managed within the component similar to variables declared within a function. It is managed within the component similar to variables declared within a function. It is managed within the component similar to variables declared within a function. It is managed within the component similar to variables declared within a function." }
-      ],
-      lastAnswer: true,
-    }
-  ] });
+  // const [messageArray, setMessageArray] = useState({
+  //   questions: [
+  //     {
+  //       question: "What is React?",
+  //       questionId: 1,
+  //       answers: [
+  //         {
+  //           text: "It is maintained by Facebook and a community of individual developers and companies.",
+  //         },
+  //       ],
+  //       lastAnswer: false,
+  //     },
+  //     {
+  //       question: "What is a component in React?",
+  //       questionId: 2,
+  //       answers: [
+  //         {
+  //           text: "Components are the building blocks of a React application's UI.",
+  //         },
+  //         { text: "They can be either class-based or functional." },
+  //       ],
+  //       lastAnswer: false,
+  //     },
+  //     {
+  //       question: "What is state in React?",
+  //       questionId: 3,
+  //       answers: [
+  //         {
+  //           text: "State is an object that determines how that component renders & behaves.",
+  //         },
+  //         {
+  //           text: "It is managed within the component similar to variables declared within a function. It is managed within the component similar to variables declared within a function. It is managed within the component similar to variables declared within a function. It is managed within the component similar to variables declared within a function.",
+  //         },
+  //       ],
+  //       lastAnswer: true,
+  //     },
+  //   ],
+  // });
+  const [messageArray, setMessageArray] = useState({});
   const [currentAnswerPrint, setCurrentAnswerPrint] = useState(true);
   const [disableFields, setDisableFields] = useState(false);
   const [regenerateAnswerSpinner, setRegenerateAnswerSpinner] = useState(false);
@@ -86,9 +97,37 @@ const MyChoices = () => {
     setData({ ...data, [name]: value });
   };
 
-  const regenerateAnswer = async (questionRegenerate) => {
+  const getChat = async () => {
+    setIsLoading(true);
+    try {
+      const response = await getApiWithAuth(`ai-report/chatbot/`);
+      console.log("[getChats]", response?.data?.data);
+      if (response?.data?.data?.success) {
+        console.log("[object]", response);
+        const welcomeMessage = {
+          question: response?.data?.data?.message,
+          questionId: 0,
+          answers: [],
+          lastAnswer: false,
+        };
+        console.log("[welcome]", welcomeMessage);
+        setMessageArray({
+          questions: [welcomeMessage],
+        });
+        // setGetChats(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching chatbot welcome message:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    
+  useEffect(() => {
+    getChat();
+  }, []);
+
+  const regenerateAnswer = async (questionRegenerate) => {
     // setDisableFields(true);
     // setRegenerateAnswerSpinner(true);
     // const response = await postApiWithAuth(API_URL.QUESTION_ANSWER, {
@@ -120,7 +159,34 @@ const MyChoices = () => {
   };
 
   const onSend = async (event) => {
-    console.log("=====================messageArray",messageArray,data)
+    console.log(
+      "=====================messageArray",
+      messageArray,
+      data?.question
+    );
+
+    try {
+      const response = await postApiWithAuth(`ai-report/chatbot/`, {
+        message: data.question,
+      });
+      console.log("post", response);
+      if (response?.data?.data?.success) {
+        console.log("[object]", response?.data?.data?.response);
+        setPostResponse(response?.data?.data?.response);
+        const welcomeMessage = {
+          question: response?.data?.data?.message,
+          questionId: 0,
+          answers: [],
+          lastAnswer: false,
+        };
+        setMessageArray({
+          questions: [welcomeMessage],
+        });
+        // setGetChats(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching chatbot welcome message:", error);
+    }
 
     if (data?.question?.length < 1 || disableFields) return;
     if (inputRef.current) {
@@ -135,7 +201,7 @@ const MyChoices = () => {
         {
           question: data.question,
           questionId: messageArray.questions.length + 1,
-          answers: [{ text: "This is a my Guidance Report Using Ai"}],
+          answers: [{ text: postResponse }],
 
           lastAnswer: true,
         },
@@ -182,10 +248,9 @@ const MyChoices = () => {
     //   setIsSpinnerOuter(false);
     // }
   };
-  useEffect(()=>{
-console.log("=====================messageArray",messageArray)
-
-  },[messageArray])
+  useEffect(() => {
+    console.log("=====================messageArray", messageArray);
+  }, [messageArray]);
   return (
     <>
       <div className={styles.educationalGuidanceMainDiv}>
@@ -222,7 +287,9 @@ console.log("=====================messageArray",messageArray)
                         currentAnswerPrint={currentAnswerPrint}
                         setDisableFields={setDisableFields}
                         userEmail={"A"}
-                        isLastIndexChat={messageArray.questions?.length - 1 === index}
+                        isLastIndexChat={
+                          messageArray.questions?.length - 1 === index
+                        }
                       />
                     ))
                   )}
