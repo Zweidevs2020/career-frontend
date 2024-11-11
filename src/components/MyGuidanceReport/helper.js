@@ -172,23 +172,23 @@ const HelperComponent = ({
                   }}
                 >
                   <MyCareerGuidanceButton
-                      // className={styles.responseButton}
-                      // showSpinner={regenerateAnswerSpinner}
-                      // disabled={disableFields}
-                      // onClick={() => {
-                      //   regenerateAnswer(
-                      //     messageArray.questions[
-                      //       messageArray.questions.length - 1
-                      //     ]
-                      //   );
-                      // }}
-                      label={
-                        <span>
-                          {/* <SyncOutlined spin={false} />{" "} */}
-                          {"Download"}
-                        </span>
-                      }
-                    />
+                    // className={styles.responseButton}
+                    // showSpinner={regenerateAnswerSpinner}
+                    // disabled={disableFields}
+                    // onClick={() => {
+                    //   regenerateAnswer(
+                    //     messageArray.questions[
+                    //       messageArray.questions.length - 1
+                    //     ]
+                    //   );
+                    // }}
+                    label={
+                      <span>
+                        {/* <SyncOutlined spin={false} />{" "} */}
+                        {"Download"}
+                      </span>
+                    }
+                  />
                 </div>
               ) : null}
             </div>
