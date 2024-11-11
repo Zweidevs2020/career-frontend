@@ -14,7 +14,6 @@ import {
   message,
   Spin,
 } from "antd";
-
 import { useNavigate } from "react-router-dom";
 import ContentComponent from "../layoutComponents/contentComponent";
 import HelperComponent from "./helper";
@@ -30,7 +29,6 @@ import {
   SyncOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
-
 import styles from "./myGuidanceReport.module.css";
 import "./MyGuidanceReport.css";
 
@@ -43,46 +41,8 @@ const MyChoices = () => {
   const inputRef = useRef();
   const [postResponse, setPostResponse] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  // const [messageArray, setMessageArray] = useState({ questions: [] });
-  // const [messageArray, setMessageArray] = useState({
-  //   questions: [
-  //     {
-  //       question: "What is React?",
-  //       questionId: 1,
-  //       answers: [
-  //         {
-  //           text: "It is maintained by Facebook and a community of individual developers and companies.",
-  //         },
-  //       ],
-  //       lastAnswer: false,
-  //     },
-  //     {
-  //       question: "What is a component in React?",
-  //       questionId: 2,
-  //       answers: [
-  //         {
-  //           text: "Components are the building blocks of a React application's UI.",
-  //         },
-  //         { text: "They can be either class-based or functional." },
-  //       ],
-  //       lastAnswer: false,
-  //     },
-  //     {
-  //       question: "What is state in React?",
-  //       questionId: 3,
-  //       answers: [
-  //         {
-  //           text: "State is an object that determines how that component renders & behaves.",
-  //         },
-  //         {
-  //           text: "It is managed within the component similar to variables declared within a function. It is managed within the component similar to variables declared within a function. It is managed within the component similar to variables declared within a function. It is managed within the component similar to variables declared within a function.",
-  //         },
-  //       ],
-  //       lastAnswer: true,
-  //     },
-  //   ],
-  // });
-  const [messageArray, setMessageArray] = useState({});
+
+  const [messageArray, setMessageArray] = useState({ questions: [] });
   const [currentAnswerPrint, setCurrentAnswerPrint] = useState(true);
   const [disableFields, setDisableFields] = useState(false);
   const [regenerateAnswerSpinner, setRegenerateAnswerSpinner] = useState(false);
@@ -92,29 +52,25 @@ const MyChoices = () => {
     question: "",
     questionId: "",
   });
+
   const onMessageChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
 
+  // Fetch initial chatbot welcome message
   const getChat = async () => {
     setIsLoading(true);
     try {
       const response = await getApiWithAuth(`ai-report/chatbot/`);
-      console.log("[getChats]", response?.data?.data);
       if (response?.data?.data?.success) {
-        console.log("[object]", response);
         const welcomeMessage = {
           question: response?.data?.data?.message,
           questionId: 0,
           answers: [],
-          lastAnswer: false,
+          lastAnswer: true,
         };
-        console.log("[welcome]", welcomeMessage);
-        setMessageArray({
-          questions: [welcomeMessage],
-        });
-        // setGetChats(response.data.message);
+        setMessageArray({ questions: [welcomeMessage] });
       }
     } catch (error) {
       console.error("Error fetching chatbot welcome message:", error);
@@ -124,133 +80,53 @@ const MyChoices = () => {
   };
 
   useEffect(() => {
-    getChat();
+    getChat(); // Fetch the initial chatbot welcome message when the component mounts
   }, []);
 
   const regenerateAnswer = async (questionRegenerate) => {
-    // setDisableFields(true);
-    // setRegenerateAnswerSpinner(true);
-    // const response = await postApiWithAuth(API_URL.QUESTION_ANSWER, {
-    //   question: questionRegenerate.question,
-    //   chatroom: myParamValue,
-    //   questionId: questionRegenerate.questionId,
-    // });
-    // if (response.data.data.success) {
-    //   const updatedQuestions = messageArray.questions.map((question) => {
-    //     if (question.questionId === response.data.data.data.questionId) {
-    //       return {
-    //         ...question,
-    //         answers: response.data.data.data.answers,
-    //         lastAnswer: true,
-    //       };
-    //     } else {
-    //       return question;
-    //     }
-    //   });
-    //   const updatedMessageArray = {
-    //     ...messageArray,
-    //     questions: updatedQuestions,
-    //   };
-    //   setMessageArray(updatedMessageArray);
-    //   setRegenerateAnswerSpinner(false);
-    // } else {
-    //   setRegenerateAnswerSpinner(false);
-    // }
+    // Implement the logic for regenerating the answer
   };
 
+  // Send the user's message to the chatbot and handle response
   const onSend = async (event) => {
-    console.log(
-      "=====================messageArray",
-      messageArray,
-      data?.question
-    );
+    // event.preventDefault(); // Prevent form submission
+    if (data?.question?.length < 1 || disableFields) return; // Ensure valid input
+
+    setIsSpinnerOuter(true); // Show loading spinner
+    setDisableFields(true); // Disable fields while processing
 
     try {
       const response = await postApiWithAuth(`ai-report/chatbot/`, {
         message: data.question,
       });
-      console.log("post", response);
+
       if (response?.data?.data?.success) {
-        console.log("[object]", response?.data?.data?.response);
-        setPostResponse(response?.data?.data?.response);
-        const welcomeMessage = {
-          question: response?.data?.data?.message,
-          questionId: 0,
-          answers: [],
-          lastAnswer: false,
-        };
-        setMessageArray({
-          questions: [welcomeMessage],
-        });
-        // setGetChats(response.data.message);
+        const receivedResponse = response?.data?.data?.response;
+
+        // Update messageArray with the new question and response
+        setMessageArray((prevState) => ({
+          questions: [
+            ...prevState.questions,
+            {
+              question: data.question,
+              questionId: prevState.questions.length + 1,
+              answers: [{ text: receivedResponse }],
+              lastAnswer: true,
+            },
+          ],
+        }));
+
+        // Set the received response for display
+        setPostResponse(receivedResponse);
       }
     } catch (error) {
-      console.error("Error fetching chatbot welcome message:", error);
+      console.error("Error sending message:", error);
+    } finally {
+      setIsSpinnerOuter(false); // Hide loading spinner
+      setData({ question: "" }); // Clear input field
     }
-
-    if (data?.question?.length < 1 || disableFields) return;
-    if (inputRef.current) {
-      inputRef.current.blur();
-    }
-    setIsSpinnerOuter(true);
-    setDisableFields(true);
-    setMessageArray({
-      ...messageArray,
-      questions: [
-        ...messageArray.questions,
-        {
-          question: data.question,
-          questionId: messageArray.questions.length + 1,
-          answers: [{ text: postResponse }],
-
-          lastAnswer: true,
-        },
-      ],
-    });
-
-    // setMessageArray({
-    //   ...messageArray,
-    //   questions: [
-    //     ...messageArray.questions,
-    //     {
-    //       ...response.data.data.data,
-    //       lastAnswer: true,
-    //     },
-    //   ],
-    // });
-
-    setData({
-      question: "",
-    });
-
-    setIsSpinnerOuter(false);
-
-    // const response = await postApiWithAuth(API_URL.QUESTION_ANSWER, {
-    //   data,
-    // });
-    // if (response.data.data.success) {
-    //   setMessageArray({
-    //     ...messageArray,
-    //     questions: [
-    //       ...messageArray.questions,
-    //       {
-    //         ...response.data.data.data,
-    //         lastAnswer: true,
-    //       },
-    //     ],
-    //   });
-
-    //   setData({
-    //     question: "",
-    //   });
-    //   setIsSpinnerOuter(false);
-    // } else {
-    //   setIsSpinnerOuter(false);
-    // }
   };
-  useEffect(() => {
-    console.log("=====================messageArray", messageArray);
-  }, [messageArray]);
+
   return (
     <>
       <div className={styles.educationalGuidanceMainDiv}>
@@ -288,7 +164,7 @@ const MyChoices = () => {
                         setDisableFields={setDisableFields}
                         userEmail={"A"}
                         isLastIndexChat={
-                          messageArray.questions?.length - 1 === index
+                          messageArray?.questions?.length - 1 === index
                         }
                       />
                     ))
@@ -346,8 +222,8 @@ const MyChoices = () => {
                       disabled={disableFields}
                       onClick={() => {
                         regenerateAnswer(
-                          messageArray.questions[
-                            messageArray.questions.length - 1
+                          messageArray?.questions[
+                            messageArray?.questions.length - 1
                           ]
                         );
                       }}
