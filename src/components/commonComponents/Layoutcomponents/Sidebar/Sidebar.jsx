@@ -237,6 +237,8 @@ const Sidebar = ({ children, flags }) => {
       location.pathname === "/my-choice-edit"
     ) {
       setSelectedMenuItem("MyChoices");
+    } else if (location.pathname === "/my-guidance-report") {
+      setSelectedMenuItem("ChatBot");
     }
   }, [location]);
 

@@ -170,26 +170,7 @@ const HelperComponent = ({
                     width: "100%",
                     marginTop: 20,
                   }}
-                >
-                  <MyCareerGuidanceButton
-                    // className={styles.responseButton}
-                    // showSpinner={regenerateAnswerSpinner}
-                    // disabled={disableFields}
-                    // onClick={() => {
-                    //   regenerateAnswer(
-                    //     messageArray.questions[
-                    //       messageArray.questions.length - 1
-                    //     ]
-                    //   );
-                    // }}
-                    label={
-                      <span>
-                        {/* <SyncOutlined spin={false} />{" "} */}
-                        {"Download"}
-                      </span>
-                    }
-                  />
-                </div>
+                ></div>
               ) : null}
             </div>
           ) : (
