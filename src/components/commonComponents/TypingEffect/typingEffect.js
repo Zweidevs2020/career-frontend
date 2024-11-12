@@ -1,17 +1,22 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./typingEffectStyle.module.css";
 
-const TypingEffect = ({ text, setDisableFields, setTesting,isLastIndex }) => {
+const TypingEffect = ({ text, setDisableFields, setTesting, isLastIndex }) => {
   const [displayedText, setDisplayedText] = useState("");
   const [showCursor, setShowCursor] = useState(true);
 
+  // Ensure that `text` is a string before performing split
+  const safeText = text ? String(text) : "";
+
+  console.log("safeText:", safeText); // Log the incoming text
+
   useEffect(() => {
-    let words = text.split(" ");
+    let words = safeText.split(" ");
     let currentIndex = 0;
     const interval = setInterval(() => {
       if (currentIndex >= words.length) {
         clearInterval(interval);
-        setDisableFields((pre) => false);
+        setDisableFields(false);
         return;
       }
       setDisplayedText((prevText) => {
@@ -19,10 +24,11 @@ const TypingEffect = ({ text, setDisableFields, setTesting,isLastIndex }) => {
         currentIndex++;
         return newText;
       });
-    }, 60);
-  }, [text]);
+    }, 60); // 60ms interval for typing effect
+  }, [safeText]); // Re-run effect if safeText changes
 
   useEffect(() => {
+    console.log("displayedText:", displayedText); // Log the displayedText
     setTesting(displayedText);
   }, [displayedText]);
 
@@ -38,7 +44,7 @@ const TypingEffect = ({ text, setDisableFields, setTesting,isLastIndex }) => {
         }}
       >
         {displayedText}
-        </code>
+      </code>
     </pre>
   );
 };

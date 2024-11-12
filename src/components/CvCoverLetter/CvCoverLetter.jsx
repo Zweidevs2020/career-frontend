@@ -10,7 +10,7 @@ import emailIcon from "../../assets/image 2.png";
 import docxIcon from "../../assets/images.png";
 import pdfIcon from "../../assets/images.jpeg";
 import Experenice from "./Experenice/Experenice";
-import { getApiWithAuth,postApiWithAuth } from "../../utils/api";
+import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import { API_URL } from "../../utils/constants";
 import { useLocation } from "react-router-dom";
 import { MailOutlined } from "@ant-design/icons";
@@ -72,75 +72,90 @@ const CvCoverLetter = () => {
 
   const sendToEmail = async () => {
     setIsEmailSend(true);
-    const res = await postApiWithAuth(API_URL.SENDCV,data);
-    if (res.data.status==200) {
-      message.success("Email send to this");
+    const res = await postApiWithAuth(API_URL.SENDCV, data);
+    if (res.data.status == 200) {
+      message.success("Email sent");
       setIsEmailSend(false);
       setData({});
-      setOpen(false)
+      setOpen(false);
     } else {
       message.error("Check email again");
       setIsEmailSend(false);
     }
   };
   const downloadDocs = async (e) => {
-    var token = localStorage.getItem("access_token", "");
+    try {
+      var token = localStorage.getItem("access_token", "");
 
-    const response = await axios.get(
-      `${process.env.REACT_APP_LINK_BASE_URL}cv/doc-cv
-      `,
-      {
-        responseType: "blob", // Set the response type to 'blob'
-        headers: {
-          Authorization: `Bearer ${token}`, // Set the Authorization header
-        },
-      }
-    );
-    const blob = new Blob([response.data], {
-      type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    });
-    var link = document.createElement("a");
-    var URL = window.URL || window.webkitURL;
-    var downloadUrl = URL.createObjectURL(blob);
-    link.href = downloadUrl;
-    link.style = "display: none";
-    link.download = "filename.docx";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
+      const response = await axios.get(
+        `${process.env.REACT_APP_LINK_BASE_URL}cv/doc-cv
+        `,
+        {
+          responseType: "blob", // Set the response type to 'blob'
+          headers: {
+            Authorization: `Bearer ${token}`, // Set the Authorization header
+          },
+        }
+      );
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      });
+      var link = document.createElement("a");
+      var URL = window.URL || window.webkitURL;
+      var downloadUrl = URL.createObjectURL(blob);
+      link.href = downloadUrl;
+      link.style = "display: none";
+      link.download = "filename.docx";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      message.success(
+        "Download initiated! Please choose a location to save the file."
+      );
+    } catch (error) {
+      console.error("Error downloading document:", error);
+      message.error("Failed to download document. Please try again.");
+    }
   };
 
   const SavePdf = async (e) => {
     e.preventDefault();
-    var token = localStorage.getItem("access_token", "");
+    try {
+      var token = localStorage.getItem("access_token", "");
 
-    const response = await axios.get(
-      `${process.env.REACT_APP_LINK_BASE_URL}cv/cv/`,
-      {
-        responseType: "blob", // Set the response type to 'blob'
-        headers: {
-          Authorization: `Bearer ${token}`, // Set the Authorization header
-        },
-      }
-    );
+      const response = await axios.get(
+        `${process.env.REACT_APP_LINK_BASE_URL}cv/cv/`,
+        {
+          responseType: "blob", // Set the response type to 'blob'
+          headers: {
+            Authorization: `Bearer ${token}`, // Set the Authorization header
+          },
+        }
+      );
 
-    // Create a blob from the response data
-    const pdfBlob = new Blob([response.data], { type: "application/pdf" });
+      // Create a blob from the response data
+      const pdfBlob = new Blob([response.data], { type: "application/pdf" });
 
-    // Create a temporary URL for the blob
-    const pdfUrl = URL.createObjectURL(pdfBlob);
+      // Create a temporary URL for the blob
+      const pdfUrl = URL.createObjectURL(pdfBlob);
 
-    // Create a link and initiate the download
-    const link = document.createElement("a");
-    link.href = pdfUrl;
-    link.download = `${userData.full_name}'s.pdf`; // Set the desired filename
+      // Create a link and initiate the download
+      const link = document.createElement("a");
+      link.href = pdfUrl;
+      link.download = `${userData.full_name}'s.pdf`; // Set the desired filename
 
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    // Clean up the temporary URL
-    URL.revokeObjectURL(pdfUrl);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      message.success(
+        "Download initiated! Please choose a location to save the file."
+      );
+      // Clean up the temporary URL
+      URL.revokeObjectURL(pdfUrl);
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+      message.error("Failed to download PDF. Please try again.");
+    }
   };
   return (
     <>
@@ -168,10 +183,16 @@ const CvCoverLetter = () => {
                   className="responsive-image"
                   style={{ marginRight: "1rem", width: 25, height: 25 }}
                 />
-                <span style={{ marginRight: "2.5rem", width: "100%" }}>
-                  {" "}
-                  Download a PDF
-                </span>
+                <Popover
+                  title="Download PDF File"
+                  placement="bottom"
+                  style={{ width: "10px" }}
+                >
+                  <span style={{ marginRight: "2.5rem", width: "100%" }}>
+                    {" "}
+                    Download a PDF
+                  </span>
+                </Popover>
               </span>
             )}
             {downloadBtn && (
@@ -191,10 +212,16 @@ const CvCoverLetter = () => {
                   className="responsive-image"
                   style={{ marginRight: "1rem", width: 25, height: 25 }}
                 />
-                <span style={{ marginRight: "2.5rem", width: "100%" }}>
-                  {" "}
-                  Download a Docs
-                </span>
+                <Popover
+                  title="Download Word Document"
+                  placement="bottom"
+                  style={{ width: "10px" }}
+                >
+                  <span style={{ marginRight: "2.5rem", width: "100%" }}>
+                    {" "}
+                    Download Word Doc
+                  </span>
+                </Popover>
               </span>
             )}
             {downloadBtn && (
@@ -259,7 +286,13 @@ const CvCoverLetter = () => {
                     className="responsive-image"
                     style={{ marginRight: "1rem", width: 20, height: 20 }}
                   />
-                  <span style={{ width: "100%" }}> Send Email</span>
+                  <Popover
+                    title="Send Email"
+                    placement="bottom"
+                    style={{ width: "10px" }}
+                  >
+                    <span style={{ width: "100%" }}> Send Email</span>
+                  </Popover>
 
                   {/* <span style={{ width: "100%" }}> Send to My Email</span> */}
                 </span>

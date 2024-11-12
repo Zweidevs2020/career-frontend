@@ -37,7 +37,6 @@ const Education = ({ setCurrent, current }) => {
 
   const { Option } = Select;
 
-
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETEDUCATION);
 
@@ -582,7 +581,6 @@ const Education = ({ setCurrent, current }) => {
       ]);
     }
   };
-  
 
   const handleDeleteLeaving = async (id) => {
     try {
