@@ -40,6 +40,7 @@ import {
   StudySvg,
   ChoicesSvg,
   ChatBot,
+  ReportIcon,
 } from "../../../../utils/svg";
 import { API_URL } from "../../../../utils/constants";
 import "./SidebarStyle.css";
@@ -419,7 +420,7 @@ const Sidebar = ({ children, flags }) => {
                 <Menu.Item
                   key="ChatBot"
                   icon={
-                    <ChatBot
+                    <ReportIcon
                       fill={
                         selectedMenuItem === "ChatBot" ? "#1476B7" : "#BDBDBD"
                       }
@@ -427,7 +428,7 @@ const Sidebar = ({ children, flags }) => {
                   }
                 >
                   <span className="textStyling">
-                    My Chat
+                    My Guidance Report
                     {selectedMenuItem === "ChatBot" ? (
                       <span> &nbsp;&#x25cf; </span>
                     ) : null}

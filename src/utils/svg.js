@@ -178,6 +178,29 @@ export const ChatBot = ({ fill }) => {
     </svg>
   );
 };
+export const ReportIcon = ({ fill = "#BDBDBD", lineColor = "#ffff" }) => {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {/* Document Outline */}
+      <path
+        d="M6 2H14L20 8V22C20 22.55 19.55 23 19 23H5C4.45 23 4 22.55 4 22V4C4 3.45 4.45 3 5 3H6Z"
+        fill={fill}
+      />
+      {/* Document Fold */}
+      <path d="M13 2V7H18" fill={fill} />
+      {/* Horizontal Bars for Text */}
+      <rect x="7" y="10" width="10" height="1.5" fill={lineColor} />
+      <rect x="7" y="13" width="8" height="1.5" fill={lineColor} />
+      <rect x="7" y="16" width="6" height="1.5" fill={lineColor} />
+    </svg>
+  );
+};
 
 export const EducationalSvg = ({ fill }) => {
   return (

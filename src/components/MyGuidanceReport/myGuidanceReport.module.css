@@ -32,7 +32,6 @@
   text-transform: capitalize;
   font-family: DM Sans;
   font-style: normal;
-
 }
 
 .siderComponentChatMenuSelected {
@@ -49,7 +48,6 @@
   text-transform: capitalize;
   font-family: DM Sans;
   font-style: normal;
-
 }
 
 .siderComponentChatMenuTitle {
@@ -141,18 +139,17 @@
   min-height: 50px;
   display: flex;
   justify-content: center;
-  
 }
 .educationalGuidanceMainDiv {
   background-color: white;
   width: 100%;
-  min-height: 90vh;
-  padding: 20px;
+  min-height: 80vh;
+  padding: 0.5rem;
 }
 .educationalGuidanceSecondDiv {
   background: #f8fafc;
   width: 100%;
-  min-height: 80vh;
+  min-height: 85vh;
   padding: 20px;
 }
 .messageArrayAnswerWrapper {
@@ -175,10 +172,8 @@
   font-size: 15px;
   font-style: normal;
   font-weight: 400;
-  line-height: 22.5px; 
+  line-height: 22.5px;
   margin-top: 10px;
-
-
 }
 
 .modalText {
@@ -200,10 +195,8 @@
   }
   .messageArrayQuestion {
     width: 75%;
-
   }
   .messageArrayAnswer {
     width: 75%;
-  
   }
 }

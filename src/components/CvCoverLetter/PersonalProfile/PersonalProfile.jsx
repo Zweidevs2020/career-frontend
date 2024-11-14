@@ -256,15 +256,15 @@ const PersonalProfile = ({ setCurrent, current }) => {
             <div className="profileFormEmail profileFormItem">
               <div style={{ width: "48%" }} className="mobileLayout">
                 <Form.Item
-                  label="Town/Area"
+                  label="County"
                   name="town"
                   className="profileItemLable"
                   rules={[
-                    { required: true, message: "Please input your Town/Area!" },
+                    { required: true, message: "Please input your County!" },
                   ]}
                 >
                   <MyCareerGuidanceInputField
-                    placeholder="Clonmel/Coolock"
+                    placeholder="EG:Kildare"
                     type="input"
                     name="town"
                     onChange={onChangeHandle}
@@ -276,15 +276,18 @@ const PersonalProfile = ({ setCurrent, current }) => {
               </div>
               <div style={{ width: "24%" }} className="mobileLayout">
                 <Form.Item
-                  label="County"
+                  label="Town/Area/City"
                   name="city"
                   className="profileItemLable"
                   rules={[
-                    { required: true, message: "Please input your County!" },
+                    {
+                      required: true,
+                      message: "Please input your Town/Area/City!",
+                    },
                   ]}
                 >
                   <MyCareerGuidanceInputField
-                    placeholder="EG:Kildare"
+                    placeholder="Clonmel/Coolock"
                     type="input"
                     name="city"
                     onChange={onChangeHandle}
@@ -325,7 +328,10 @@ const PersonalProfile = ({ setCurrent, current }) => {
                 name="objective"
                 className="profileItemLable"
                 rules={[
-                  { required: false, message: "Please input your Personal Statement!" },
+                  {
+                    required: false,
+                    message: "Please input your Personal Statement!",
+                  },
                 ]}
               >
                 <TextArea

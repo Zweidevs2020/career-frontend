@@ -7,7 +7,6 @@ const MyCareerGuidanceInputField = (props) => {
   const isPassword = props.type === "password";
   return (
     <>
-
       <label>{props.label}</label>
       {isPassword ? (
         <Input.Password
@@ -54,7 +53,7 @@ const MyCareerGuidanceInputField = (props) => {
         />
       ) : props.isPrefix == undefined || props.isPrefix ? (
         <Input
-          placeholder={props.placeholder} 
+          placeholder={props.placeholder}
           value={props.inputValue}
           type={props.type}
           autoComplete={props.autoComplete}
@@ -68,7 +67,14 @@ const MyCareerGuidanceInputField = (props) => {
           name={props.name}
           prefix={
             props.prefix ? (
-              <div style={{ color: "#D3D3D3" ,display:'flex',alignContent:'center',alignItems:'center'}}>
+              <div
+                style={{
+                  color: "#D3D3D3",
+                  display: "flex",
+                  alignContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <Image
                   preview={false}
                   src={props.prefix}
@@ -79,12 +85,10 @@ const MyCareerGuidanceInputField = (props) => {
               </div>
             ) : null
           }
-
-
         />
       ) : (
         <Input
-          placeholder={props.placeholder} 
+          placeholder={props.placeholder}
           value={props.inputValue}
           type={props.type}
           autoComplete={props.autoComplete}
@@ -96,7 +100,7 @@ const MyCareerGuidanceInputField = (props) => {
           suffix={props.suffix}
           onKeyDown={props.onKeyDown}
           disabled={props.disabled}
-        {...props}
+          {...props}
         />
       )}
     </>
