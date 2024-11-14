@@ -43,7 +43,7 @@ const MyChoices = () => {
   const inputRef = useRef();
   const [postResponse, setPostResponse] = useState(false);
   const [gptResponse, setGptResponse] = useState("");
-  const [welcome, setWelcome] = useState();
+  const [isCodeVisible, setIsCodeVisible] = useState(true);
   const [messageArray, setMessageArray] = useState({ questions: [] });
   const [currentAnswerPrint, setCurrentAnswerPrint] = useState(true);
   const [disableFields, setDisableFields] = useState(false);
@@ -170,7 +170,7 @@ const MyChoices = () => {
         }));
         setPostResponse(receivedResponse);
         message.success(
-          "Data submitted successfully,click generate report to download"
+          "Data submitted successfully,please click download report"
         );
       }
     } catch (error) {
@@ -350,7 +350,21 @@ const MyChoices = () => {
       .from(element) // Pass the element with the formatted HTML
       .save(); // Save the PDF
   };
-
+  const handleReset = () => {
+    setGptResponse("");
+    setCheckboxes({
+      predictedPointsYes: false,
+      predictedPointsNo: false,
+      subjectYes: false,
+      subjectNo: false,
+      myStatedGoalsYes: false,
+      myStatedGoalsNo: false,
+      otherOption1: false,
+      otherOption2: false,
+      otherOption3: false,
+    });
+    setIsCodeVisible(true);
+  };
   const handleSubmit = async () => {
     setLoading(true);
 
@@ -389,8 +403,9 @@ const MyChoices = () => {
         payload
       );
 
-      if (response) {
+      if (response?.data?.data?.success) {
         message.success("Data submitted successfully!");
+        setIsCodeVisible(false);
 
         const responseGptData = response?.data?.data?.gpt_response;
         setGptResponse(responseGptData); // Update the state
@@ -427,15 +442,27 @@ const MyChoices = () => {
                       <Title level={4}>Please Choose Options Below:</Title>
                       <Text>Choose options to generate the report.</Text>
                     </Col>
-                    <Col>
-                      <Button
-                        className="saveData"
-                        onClick={handleSubmit}
-                        loading={loading}
-                      >
-                        Generate Report
-                      </Button>
-                    </Col>
+                    {isCodeVisible ? (
+                      <Col>
+                        <Button
+                          className="saveData"
+                          onClick={handleSubmit}
+                          loading={loading}
+                        >
+                          Generate Report
+                        </Button>
+                      </Col>
+                    ) : (
+                      <Col>
+                        <Button
+                          className="saveData"
+                          onClick={handleReset}
+                          loading={loading}
+                        >
+                          Reset Report
+                        </Button>
+                      </Col>
+                    )}
                   </Row>
 
                   <Row gutter={[16, 16]} style={{ marginTop: "1rem" }}>
@@ -595,40 +622,9 @@ const MyChoices = () => {
                     </Col>
                   </Row>
                 </Form>
-
-                {/* <div className={styles.contentComponentSection}>
-                  {isLoading ? (
-                    <Spin
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        height: "60vh",
-                      }}
-                    />
-                  ) : (
-                    messageArray?.questions?.map((item, index) => (
-                      <HelperComponent
-                        key={index}
-                        index={index}
-                        messageRef={messageRef}
-                        item={item}
-                        setCurrentAnswerPrint={setCurrentAnswerPrint}
-                        currentAnswerPrint={currentAnswerPrint}
-                        setDisableFields={setDisableFields}
-                        userEmail={"A"}
-                        isLastIndexChat={
-                          messageArray?.questions?.length - 1 === index
-                        }
-                        // Apply conditional styling for bold text
-                        isBold={isBoldMessage(item.answers[0]?.text)}
-                      />
-                    ))
-                  )}
-                </div> */}
               </section>
             </ContentComponent>
-            {!gptResponse ? (
+            {isCodeVisible ? (
               ""
             ) : (
               <Footer
@@ -639,8 +635,51 @@ const MyChoices = () => {
                   justifyContent: "center",
                 }}
               >
-                <Row align={"center"} style={{ width: "90%" }} gutter={16}>
+                <Row className="align-middle justify-around">
+                  <Col className="w-[65rem] mr-3">
+                    <Form onFinish={onSend}>
+                      <MyCareerGuidanceInputField
+                        className={styles.messageInput}
+                        ref={inputRef}
+                        placeholder="Send a message"
+                        onChange={onMessageChange}
+                        name="question"
+                        autoFocus
+                        inputValue={data.question}
+                        suffix={
+                          disableFields ? (
+                            <Spin className="spinStyle" />
+                          ) : (
+                            <SendOutlined
+                              style={{
+                                color: "grey",
+                              }}
+                              onClick={() => onSend()}
+                            />
+                          )
+                        }
+                      />
+                    </Form>
+                  </Col>
+                  <Col>
+                    {!isCodeVisible ? (
+                      <Col>
+                        <Button
+                          className="saveData"
+                          onClick={handleSubmit}
+                          loading={loading}
+                        >
+                          Download Report
+                        </Button>
+                      </Col>
+                    ) : (
+                      ""
+                    )}
+                  </Col>
+                </Row>
+                {/* <Row align={"center"} style={{ width: "50%" }} gutter={16}>
                   <Col
+                    span={12}
                     xs={
                       messageArray?.questions?.length === 0
                         ? 24
@@ -661,7 +700,7 @@ const MyChoices = () => {
                         inputValue={data.question}
                         suffix={
                           disableFields ? (
-                            <EllipsisOutlined />
+                            <Spin className="spinStyle" />
                           ) : (
                             <SendOutlined
                               style={{
@@ -674,10 +713,350 @@ const MyChoices = () => {
                       />
                     </Form>
                   </Col>
-                </Row>
+                  {!isCodeVisible ? (
+                    <Col>
+                      <Button
+                        className="saveData"
+                        onClick={handleSubmit}
+                        loading={loading}
+                      >
+                        Update Report
+                      </Button>
+                    </Col>
+                  ) : (
+                    ""
+                  )}
+                </Row> */}
               </Footer>
             )}
           </Layout>
+          {/* {isCodeVisible ? (
+            <Layout>
+              <ContentComponent>
+                <section
+                  style={{
+                    minHeight: "55vh",
+                    paddingTop: 20,
+                    height: "100%",
+                    // overflow: "auto",
+                  }}
+                >
+                  <Form layout="vertical">
+                    <Row className="justify-between">
+                      <Col>
+                        <Title level={4}>Please Choose Options Below:</Title>
+                        <Text>Choose options to generate the report.</Text>
+                      </Col>
+                      <Col>
+                        <Button
+                          className="saveData"
+                          onClick={handleSubmit}
+                          loading={loading}
+                        >
+                          Generate Report
+                        </Button>
+                      </Col>
+                    </Row>
+
+                    <Row gutter={[16, 16]} style={{ marginTop: "1rem" }}>
+                      <Col span={12}>
+                        <Title level={5}>Predicted Points and Subject</Title>
+                        <Checkbox
+                          name="predictedPointsYes"
+                          checked={checkboxes.predictedPointsYes}
+                          onChange={handleCheckboxChange}
+                        >
+                          Yes
+                        </Checkbox>
+                        <Checkbox
+                          name="predictedPointsNo"
+                          checked={checkboxes.predictedPointsNo}
+                          onChange={handleCheckboxChange}
+                        >
+                          No
+                        </Checkbox>
+                      </Col>
+                      <Col span={12}>
+                        <Title level={5}>My Stated Goals</Title>
+                        <Checkbox
+                          name="statedGoalsYes"
+                          checked={checkboxes.statedGoalsYes}
+                          onChange={handleCheckboxChange}
+                        >
+                          Yes
+                        </Checkbox>
+                        <Checkbox
+                          name="statedGoalsNo"
+                          checked={checkboxes.statedGoalsNo}
+                          onChange={handleCheckboxChange}
+                        >
+                          No
+                        </Checkbox>
+                      </Col>
+                    </Row>
+
+                    <Title level={5} style={{ marginTop: "1rem" }}>
+                      From My CV
+                    </Title>
+                    <Row gutter={[16, 16]}>
+                      <Col span={4}>
+                        <Checkbox
+                          name="address"
+                          checked={checkboxes.address}
+                          onChange={handleCheckboxChange}
+                        >
+                          Address
+                        </Checkbox>
+                      </Col>
+                      <Col span={4}>
+                        <Checkbox
+                          name="personalStatement"
+                          checked={checkboxes.personalStatement}
+                          onChange={handleCheckboxChange}
+                        >
+                          Personal Statement
+                        </Checkbox>
+                      </Col>
+                      <Col span={4}>
+                        <Checkbox
+                          name="workExperience"
+                          checked={checkboxes.workExperience}
+                          onChange={handleCheckboxChange}
+                        >
+                          Work Experience
+                        </Checkbox>
+                      </Col>
+                      <Col span={4}>
+                        <Checkbox
+                          name="skills"
+                          checked={checkboxes.skills}
+                          onChange={handleCheckboxChange}
+                        >
+                          Skills
+                        </Checkbox>
+                      </Col>
+                      <Col span={4}>
+                        <Checkbox
+                          name="interests"
+                          checked={checkboxes.interests}
+                          onChange={handleCheckboxChange}
+                        >
+                          Interests
+                        </Checkbox>
+                      </Col>
+                      <Col span={4}>
+                        <Checkbox
+                          name="intelligenceScore"
+                          checked={checkboxes.intelligenceScore}
+                          onChange={handleCheckboxChange}
+                        >
+                          Multiple Intelligence Score
+                        </Checkbox>
+                      </Col>
+                      <Col span={4}>
+                        <Checkbox
+                          name="valuesAssessment"
+                          checked={checkboxes.valuesAssessment}
+                          onChange={handleCheckboxChange}
+                        >
+                          Values Assessment
+                        </Checkbox>
+                      </Col>
+                      <Col span={4}>
+                        <Checkbox
+                          name="interestAssessment"
+                          checked={checkboxes.interestAssessment}
+                          onChange={handleCheckboxChange}
+                        >
+                          Interest Assessment
+                        </Checkbox>
+                      </Col>
+                    </Row>
+
+                    <Title level={5} style={{ marginTop: "1rem" }}>
+                      Choose One or More Education Options
+                    </Title>
+                    <Row gutter={[16, 16]}>
+                      <Col span={4}>
+                        <Checkbox
+                          name="level5"
+                          checked={checkboxes.level5}
+                          onChange={handleCheckboxChange}
+                        >
+                          Level 5 (PLC)
+                        </Checkbox>
+                      </Col>
+                      <Col span={4}>
+                        <Checkbox
+                          name="level6_7"
+                          checked={checkboxes.level6_7}
+                          onChange={handleCheckboxChange}
+                        >
+                          Level 6/7
+                        </Checkbox>
+                      </Col>
+                      <Col span={4}>
+                        <Checkbox
+                          name="level8"
+                          checked={checkboxes.level8}
+                          onChange={handleCheckboxChange}
+                        >
+                          Level 8
+                        </Checkbox>
+                      </Col>
+                      <Col span={4}>
+                        <Checkbox
+                          name="apprenticeship"
+                          checked={checkboxes.apprenticeship}
+                          onChange={handleCheckboxChange}
+                        >
+                          Apprenticeship
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                  </Form>
+                </section>
+              </ContentComponent>
+              {!gptResponse ? (
+                ""
+              ) : (
+                <Footer
+                  style={{
+                    background: "rgb(250, 248, 253)",
+                    padding: "24px 0px",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Row align={"center"} style={{ width: "90%" }} gutter={16}>
+                    <Col
+                      xs={
+                        messageArray?.questions?.length === 0
+                          ? 24
+                          : screens.xs
+                          ? 20
+                          : 18
+                      }
+                    >
+                      <p>Feedback:</p>
+                      <Form onFinish={onSend}>
+                        <MyCareerGuidanceInputField
+                          className={styles.messageInput}
+                          ref={inputRef}
+                          placeholder="Send a message"
+                          onChange={onMessageChange}
+                          name="question"
+                          autoFocus
+                          inputValue={data.question}
+                          suffix={
+                            disableFields ? (
+                              <Spin className="spinStyle" />
+                            ) : (
+                              <SendOutlined
+                                style={{
+                                  color: "grey",
+                                }}
+                                onClick={() => onSend()}
+                              />
+                            )
+                          }
+                        />
+                      </Form>
+                    </Col>
+                  </Row>
+                </Footer>
+              )}
+            </Layout>
+          ) : (
+            <Layout>
+              <ContentComponent>
+                <section
+                  style={{
+                    minHeight: "30vh",
+                    paddingTop: 20,
+                    height: "100%",
+                    // overflow: "auto",
+                  }}
+                >
+                  <Row className="justify-between">
+                    <Col>
+                      <Title level={4}>Update Report</Title>
+                    </Col>
+                    <Col>
+                      <Button
+                        className="saveData"
+                        onClick={handleSubmit}
+                        loading={loading}
+                      >
+                        Generate Report
+                      </Button>
+                    </Col>
+                  </Row>
+                </section>
+                {/* <div className="text-center ">
+                  <p
+                    style={{
+                      color: "#1476b7",
+                      fontSize: "1rem",
+                      fontWeight: "bold",
+                      marginBottom: "4rem",
+                    }}
+                  >
+                    Please type the feedback to edit report
+                  </p>
+                </div> *
+              </ContentComponent>
+              {!gptResponse ? (
+                ""
+              ) : (
+                <Footer
+                  style={{
+                    background: "rgb(250, 248, 253)",
+                    padding: "24px 0px",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Row align={"center"} style={{ width: "90%" }} gutter={16}>
+                    <Col
+                      xs={
+                        messageArray?.questions?.length === 0
+                          ? 24
+                          : screens.xs
+                          ? 20
+                          : 18
+                      }
+                    >
+                      <p>Feedback:</p>
+                      <Form onFinish={onSend}>
+                        <MyCareerGuidanceInputField
+                          className={styles.messageInput}
+                          ref={inputRef}
+                          placeholder="Send a feedback"
+                          onChange={onMessageChange}
+                          name="question"
+                          autoFocus
+                          inputValue={data.question}
+                          suffix={
+                            disableFields ? (
+                              <Spin className="spinStyle" />
+                            ) : (
+                              <SendOutlined
+                                style={{
+                                  color: "grey",
+                                }}
+                                onClick={() => onSend()}
+                              />
+                            )
+                          }
+                        />
+                      </Form>
+                    </Col>
+                  </Row>
+                </Footer>
+              )}
+            </Layout>
+          )} */}
         </div>
       </div>
     </>
