@@ -83,7 +83,7 @@ const CvCoverLetter = () => {
       setIsEmailSend(false);
     }
   };
-  const downloadDocs = async (e) => {
+  const downloadDocs = async () => {
     try {
       var token = localStorage.getItem("access_token", "");
 
@@ -168,7 +168,7 @@ const CvCoverLetter = () => {
             style={{ display: "flex", justifyContent: "flex-start" }}
             className=" sm:flex-col flex-wrap "
           >
-            {downloadBtn && (
+            {/* {downloadBtn && (
               <span
                 style={{
                   display: "flex",
@@ -194,7 +194,7 @@ const CvCoverLetter = () => {
                   </span>
                 </Popover>
               </span>
-            )}
+            )} */}
             {downloadBtn && (
               <span
                 style={{
@@ -325,6 +325,7 @@ const CvCoverLetter = () => {
               setCurrent={setCurrent}
               current={current}
               isCvComplete={isCvComplete}
+              downloadDocs={downloadDocs}
             />
           ) : (
             ""
