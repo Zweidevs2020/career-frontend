@@ -296,25 +296,10 @@ const MyChoices = () => {
     // Apply styles to all tags based on the defined styles
     Object.keys(styles).forEach((tag) => {
       const elements = tempDiv.querySelectorAll(tag);
-
       elements.forEach((element, index) => {
-        // Apply the styles to each element
         const tagStyles = styles[tag];
         for (const [key, value] of Object.entries(tagStyles)) {
           element.style[key] = value;
-        }
-
-        // Check if this is the last element in the iteration
-        if (index === elements.length - 1) {
-          // Create a blank element for adding space
-          const spacer = document.createElement("div");
-          spacer.style.height = "20px"; // Adjust the height as needed
-          spacer.style.breakInside = "auto";
-          spacer.style.breakAfter = "auto";
-          spacer.style.breakBefore = "auto";
-
-          // Append the spacer element to tempDiv after the last element
-          tempDiv.appendChild(spacer);
         }
       });
     });
