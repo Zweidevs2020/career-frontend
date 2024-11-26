@@ -178,6 +178,47 @@ export const ChatBot = ({ fill }) => {
     </svg>
   );
 };
+export const WorkDiaryIcon = ({ fill, lineColor = "#ffff" }) => {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {/* Book Outline (Diary Shape) */}
+      <path
+        d="M4 3C3.45 3 3 3.45 3 4V20C3 20.55 3.45 21 4 21H20C20.55 21 21 20.55 21 20V4C21 3.45 20.55 3 20 3H4Z"
+        fill={fill}
+      />
+      {/* Diary Spine */}
+      <path d="M12 3V21" stroke={lineColor} strokeWidth="1.5" />
+
+      {/* Pen Icon (Writing Tool) */}
+      <path
+        d="M14.71 9.29L16.71 7.29C17.1 6.9 17.1 6.26 16.71 5.87C16.32 5.48 15.68 5.48 15.29 5.87L13.29 7.87L14.71 9.29Z"
+        fill={lineColor}
+      />
+      <path
+        d="M12.71 7.29L14.71 9.29L7.71 16.29L5.71 14.29C5.32 13.9 5.32 13.26 5.71 12.87L12.71 7.29Z"
+        fill={lineColor}
+      />
+
+      {/* Magnifying Glass Icon */}
+      <circle cx="18" cy="16" r="4" stroke={lineColor} strokeWidth="1.5" />
+      <line
+        x1="20.5"
+        y1="18.5"
+        x2="22"
+        y2="20"
+        stroke={lineColor}
+        strokeWidth="1.5"
+      />
+    </svg>
+  );
+};
+
 export const ReportIcon = ({ fill = "#BDBDBD", lineColor = "#ffff" }) => {
   return (
     <svg

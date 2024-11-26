@@ -39,8 +39,8 @@ import {
   AssesmentSvg,
   StudySvg,
   ChoicesSvg,
-  ChatBot,
   ReportIcon,
+  WorkDiaryIcon,
 } from "../../../../utils/svg";
 import { API_URL } from "../../../../utils/constants";
 import "./SidebarStyle.css";
@@ -209,6 +209,8 @@ const Sidebar = ({ children, flags }) => {
       navigate("/my-choices");
     } else if (key === "ChatBot") {
       navigate("/my-guidance-report");
+    } else if (key === "Work") {
+      navigate("/work-diary");
     } else {
       navigate("/my-study");
     }
@@ -240,6 +242,8 @@ const Sidebar = ({ children, flags }) => {
       setSelectedMenuItem("MyChoices");
     } else if (location.pathname === "/my-guidance-report") {
       setSelectedMenuItem("ChatBot");
+    } else if (location.pathname === "/work-diary") {
+      setSelectedMenuItem("Work");
     }
   }, [location]);
 
@@ -430,6 +434,21 @@ const Sidebar = ({ children, flags }) => {
                   <span className="textStyling">
                     My Guidance Report
                     {selectedMenuItem === "ChatBot" ? (
+                      <span> &nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
+                </Menu.Item>
+                <Menu.Item
+                  key="Work"
+                  icon={
+                    <WorkDiaryIcon
+                      fill={selectedMenuItem === "Work" ? "#1476B7" : "#BDBDBD"}
+                    />
+                  }
+                >
+                  <span className="textStyling">
+                    My Work Diary
+                    {selectedMenuItem === "Work" ? (
                       <span> &nbsp;&#x25cf; </span>
                     ) : null}
                   </span>

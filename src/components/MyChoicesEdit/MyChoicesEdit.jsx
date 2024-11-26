@@ -117,7 +117,7 @@ const MyChoicesEdit = () => {
     if (response.data.status === 200) {
       setOldData(response.data.data.user_data);
       setDropDownOptions(response.data.data.level_data);
-
+      console.log(response.data.data.level_data);
       setLoadingFirst(false);
     } else {
       setLoadingFirst(true);
@@ -714,7 +714,14 @@ const MyChoicesEdit = () => {
                                                   row={option}
                                                   label={option[item]}
                                                 >
-                                                  {`${option.title},${option.code},${option.college}`}
+                                                  {/* {`${option.title},${option.code},${option.college}`} */}
+                                                  {/* Conditionally render based on the current 'item' */}
+                                                  {item === "title" &&
+                                                    option.title}
+                                                  {item === "code" &&
+                                                    option.code}
+                                                  {item === "college" &&
+                                                    option.college}
                                                 </Select.Option>
                                               ))}
                                             </Select>
@@ -761,7 +768,8 @@ const MyChoicesEdit = () => {
                                             placeholder={item}
                                             type="input"
                                             name={item}
-                                            defaultValue={text}
+                                            // defaultValue={text}
+                                            defaultValue={Math.round(text)}
                                             onChange={(e) =>
                                               handleChangeTable(e, record)
                                             }
@@ -856,7 +864,7 @@ const MyChoicesEdit = () => {
                             item === "title" ||
                             item === "college" ? (
                               <>
-                                <Column
+                                {/* <Column
                                   title={capitalizeWords(item)}
                                   dataIndex={item}
                                   key={item}
@@ -909,18 +917,132 @@ const MyChoicesEdit = () => {
                                       </Select>
                                     </>
                                   )}
+                                /> */}
+                                {/* <Column
+                                  title={capitalizeWords(item)}
+                                  dataIndex={item}
+                                  key={item}
+                                  className="tableHeadingStyle"
+                                  render={(text, record, rowNum) => (
+                                    <>
+                                      <Select
+                                        showSearch
+                                        placeholder={`Select ${item}`}
+                                        name={item}
+                                        value={text}
+                                        optionFilterProp="children"
+                                        className="inputSelectFieldStyle"
+                                        ref={inputRef}
+                                        defaultValue={text}
+                                        bordered={false}
+                                        popupMatchSelectWidth={false}
+                                        disabled={!record.editable}
+                                        suffixIcon={
+                                          <Image
+                                            preview={false}
+                                            src={dropdownIcon}
+                                            width={15}
+                                            style={{ marginRight: 10 }}
+                                          />
+                                        }
+                                        onSelect={(value, option) =>
+                                          handleSelect(
+                                            value,
+                                            option,
+                                            rowNum +
+                                              data.filter(
+                                                (item) => item.id !== null
+                                              ).length
+                                          )
+                                        }
+                                        optionLabelProp="label"
+                                      >
+                                        {dropDownOptions.map((option) => (
+                                          <Select.Option
+                                            key={option[item]}
+                                            value={option[item]}
+                                            code={option.code}
+                                            row={option}
+                                            label={option[item]}
+                                          >
+                                            {item === "code" && option.code}
+                                            {item === "title" && option.title}
+                                            {item === "college" &&
+                                              option.college}
+                                          </Select.Option>
+                                        ))}
+                                      </Select>
+                                    </>
+                                  )}
+                                /> */}
+                                <Column
+                                  title={capitalizeWords(item)}
+                                  dataIndex={item}
+                                  key={item}
+                                  className="tableHeadingStyle"
+                                  render={(text, record, rowNum) => (
+                                    <>
+                                      <Select
+                                        showSearch
+                                        placeholder={`Select ${item}`}
+                                        name={item}
+                                        value={text}
+                                        optionFilterProp="children" // Enables search on the dropdown content
+                                        className="inputSelectFieldStyle"
+                                        ref={inputRef}
+                                        defaultValue={text}
+                                        bordered={false}
+                                        popupMatchSelectWidth={false}
+                                        disabled={!record.editable}
+                                        suffixIcon={
+                                          <Image
+                                            preview={false}
+                                            src={dropdownIcon}
+                                            width={15}
+                                            style={{ marginRight: 10 }}
+                                          />
+                                        }
+                                        onSelect={(value, option) =>
+                                          handleSelect(
+                                            value,
+                                            option,
+                                            rowNum +
+                                              data.filter(
+                                                (item) => item.id !== null
+                                              ).length
+                                          )
+                                        }
+                                        optionLabelProp="label"
+                                      >
+                                        {dropDownOptions.map((option) => (
+                                          <Select.Option
+                                            key={option[item]}
+                                            value={option[item]}
+                                            code={option.code}
+                                            row={option}
+                                            label={option[item]}
+                                          >
+                                            {item === "code" && option.code}
+                                            {item === "title" && option.title}
+                                            {item === "college" &&
+                                              option.college}
+                                          </Select.Option>
+                                        ))}
+                                      </Select>
+                                    </>
+                                  )}
                                 />
                               </>
                             ) : (
                               <Column
-                              title={item
-                                .split("_") // Split the string by underscores
-                                .map(
-                                  (word) =>
-                                    word.charAt(0).toUpperCase() +
-                                    word.slice(1) // Capitalize the first letter of each word
-                                )
-                                .join(" ")}
+                                title={item
+                                  .split("_") // Split the string by underscores
+                                  .map(
+                                    (word) =>
+                                      word.charAt(0).toUpperCase() +
+                                      word.slice(1) // Capitalize the first letter of each word
+                                  )
+                                  .join(" ")}
                                 dataIndex={item}
                                 key={item}
                                 className="tableHeadingStyle"
@@ -1087,13 +1209,13 @@ const MyChoicesEdit = () => {
                                         >
                                           <span className="rowHeadingMobile">
                                             {item
-                                        .split("_") // Split the string by underscores
-                                        .map(
-                                          (word) =>
-                                            word.charAt(0).toUpperCase() +
-                                            word.slice(1) // Capitalize the first letter of each word
-                                        )
-                                        .join(" ")}
+                                              .split("_") // Split the string by underscores
+                                              .map(
+                                                (word) =>
+                                                  word.charAt(0).toUpperCase() +
+                                                  word.slice(1) // Capitalize the first letter of each word
+                                              )
+                                              .join(" ")}
                                           </span>
 
                                           <Link
@@ -1245,13 +1367,6 @@ const MyChoicesEdit = () => {
                                                       row.rowNo
                                                     )
                                                   }
-                                                  // onSelect={(value, option) =>
-                                                  //   handleSelect(
-                                                  //     value,
-                                                  //     option,
-                                                  //     row.rowNo
-                                                  //   )
-                                                  // }
                                                   optionLabelProp="label"
                                                 >
                                                   {dropDownOptions.map(
@@ -1375,7 +1490,7 @@ const MyChoicesEdit = () => {
                                 </div>
                               </div>
                               <div className="remaining-columns">
-                                {columns.map((item, index) => (
+                                {/* {columns.map((item, index) => (
                                   <>
                                     {item === "code" ||
                                     item === "title" ||
@@ -1466,7 +1581,7 @@ const MyChoicesEdit = () => {
                                       </div>
                                     )}
                                   </>
-                                ))}
+                                ))} */}
                               </div>
                             </div>
                           </div>

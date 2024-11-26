@@ -36,7 +36,7 @@ const Login = () => {
     if (response?.status === 200) {
       message.success("Login Successfully");
       setLoading(false);
-      setToken(response.data.access);
+      setToken(response?.data?.access);
       if (response.data.is_subscribed) {
         navigate("/dashboard");
       } else {

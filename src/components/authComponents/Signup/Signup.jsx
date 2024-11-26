@@ -35,6 +35,7 @@ import {
   CloseCircleOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
+import { setToken } from "../../../utils/LocalStorage";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -72,7 +73,8 @@ const Signup = () => {
       message.success(
         "Congratulations! You've successfully signed up. You're now ready to log in and explore our platform. Welcome aboard!"
       );
-      navigate("/");
+      setToken(response.data.access_token);
+      navigate("/checkout");
     } else {
       setLoading(false);
 
