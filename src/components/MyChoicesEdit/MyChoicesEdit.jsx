@@ -117,7 +117,7 @@ const MyChoicesEdit = () => {
     if (response.data.status === 200) {
       setOldData(response.data.data.user_data);
       setDropDownOptions(response.data.data.level_data);
-      console.log(response.data.data.level_data);
+
       setLoadingFirst(false);
     } else {
       setLoadingFirst(true);
@@ -218,9 +218,14 @@ const MyChoicesEdit = () => {
     });
     setData(updatedData);
   };
-
+  // Update function for desktop
   const handleUpdate = async (record) => {
-    const row = dataRef.current.filter((item) => item.id === record?.id);
+    const [title] = record.title.split(",");
+    const [college] = record.college.split(",");
+
+    record.title = title;
+    record.college = college;
+
     const respose = await patchApiWithAuth(
       `choices/update-${dataa.id}/${record.id}/`,
       record
@@ -276,6 +281,10 @@ const MyChoicesEdit = () => {
     if (record.code === null || record.title === null) {
       message.error("All fields are required");
     } else {
+      let [title] = record.title.split(",");
+      let [college] = record.college.split(",");
+      record.title = title;
+      record.college = college;
       const respose = await postApiWithAuth(`choices/${dataa.id}/`, record);
       if (respose.data.status === 200) {
         message.success("Row add succesfully");
@@ -623,6 +632,7 @@ const MyChoicesEdit = () => {
               <div className="w-100 p-3">
                 {!isMobile ? (
                   <div className="w-100" style={{ overflowX: "auto" }}>
+                    {/* Desktop view with drag and drop feature */}
                     <DndContext
                       sensors={sensors}
                       modifiers={[restrictToVerticalAxis]}
@@ -681,19 +691,27 @@ const MyChoicesEdit = () => {
                                               showSearch
                                               placeholder={`Select ${item}`}
                                               name={item}
-                                              value={text}
+                                              value={
+                                                item === "code"
+                                                  ? text
+                                                  : `${text},${record.code}`
+                                              }
                                               optionFilterProp="children"
                                               className="selectInputFieldStyle"
                                               ref={inputRef}
-                                              defaultValue={text}
+                                              defaultValue={
+                                                item === "code"
+                                                  ? text
+                                                  : `${text},${record.code}`
+                                              }
                                               bordered={false}
                                               popupMatchSelectWidth={false}
+                                              disabled={!record.editable}
                                               onClick={() => {
                                                 if (!record.editable) {
                                                   eidtThisRow(record);
                                                 }
                                               }}
-                                              disabled={!record.editable}
                                               suffixIcon={
                                                 <Image
                                                   preview={false}
@@ -711,24 +729,23 @@ const MyChoicesEdit = () => {
                                               }
                                               optionLabelProp="label"
                                             >
-                                              {dropDownOptions.map((option) => (
-                                                <Select.Option
-                                                  key={option[item]}
-                                                  value={option[item]}
-                                                  code={option.code}
-                                                  row={option}
-                                                  label={option[item]}
-                                                >
-                                                  {/* {`${option.title},${option.code},${option.college}`} */}
-                                                  {/* Conditionally render based on the current 'item' */}
-                                                  {item === "title" &&
-                                                    option.title}
-                                                  {item === "code" &&
-                                                    option.code}
-                                                  {item === "college" &&
-                                                    option.college}
-                                                </Select.Option>
-                                              ))}
+                                              {dropDownOptions.map((option) => {
+                                                return (
+                                                  <Select.Option
+                                                    key={option?.id}
+                                                    value={
+                                                      item === "code"
+                                                        ? option[item]
+                                                        : `${option[item]},${option.code}`
+                                                    }
+                                                    code={option.code}
+                                                    row={option}
+                                                    label={option[item]}
+                                                  >
+                                                    {`${option.title}, ${option.code}, ${option.college}`}
+                                                  </Select.Option>
+                                                );
+                                              })}
                                             </Select>
                                           </>
                                         )}
@@ -766,23 +783,34 @@ const MyChoicesEdit = () => {
                                       key={item}
                                       disabled
                                       className="tableHeadingStyle"
-                                      render={(text, record) => (
-                                        <>
-                                          <MyCareerGuidanceInputField
-                                            ref={inputRef}
-                                            placeholder={item}
-                                            type="input"
-                                            name={item}
-                                            // defaultValue={text}
-                                            defaultValue={Math.round(text)}
-                                            onChange={(e) =>
-                                              handleChangeTable(e, record)
-                                            }
-                                            isPrefix={false}
-                                            disabled={!record.editable}
-                                          />
-                                        </>
-                                      )}
+                                      render={(text, record) => {
+                                        let parseText = parseInt(text);
+                                        parseText = isNaN(parseText)
+                                          ? text
+                                          : parseText;
+                                        return (
+                                          <div
+                                            onClick={() => {
+                                              if (!record.editable) {
+                                                eidtThisRow(record);
+                                              }
+                                            }}
+                                          >
+                                            <MyCareerGuidanceInputField
+                                              ref={inputRef}
+                                              placeholder={item}
+                                              type="input"
+                                              name={item}
+                                              defaultValue={parseText}
+                                              onChange={(e) =>
+                                                handleChangeTable(e, record)
+                                              }
+                                              isPrefix={false}
+                                              disabled={!record.editable}
+                                            />
+                                          </div>
+                                        );
+                                      }}
                                     />
                                   )}
                                 </>
@@ -810,18 +838,7 @@ const MyChoicesEdit = () => {
                                       }}
                                       onClick={() => handleAddRow(record)}
                                     />
-                                  ) : // <Image
-                                  //   preview={false}
-                                  //   src={EditOutlined}
-                                  //   onClick={() => eidtThisRow(record)}
-                                  //   style={{
-                                  //     color: "#1476b7",
-                                  //     cursor: "pointer",
-                                  //     width: 22,
-                                  //     height: "100%",
-                                  //   }}
-                                  // />
-                                  null}
+                                  ) : null}
                                   <DeleteOutlined
                                     style={{
                                       color: "red",
@@ -837,6 +854,7 @@ const MyChoicesEdit = () => {
                       </SortableContext>
                     </DndContext>
 
+                    {/* Desktop view for empty rows */}
                     <Table
                       pagination={false}
                       dataSource={data.filter((item) => item.id === null)}
@@ -846,15 +864,6 @@ const MyChoicesEdit = () => {
                           : "emptyTable"
                       }
                       rowKey={"dataId"}
-                      // onRow={(row) => {
-                      //   return {
-                      //     onClick: () => {
-                      //       if (!row.editable) {
-                      //         eidtThisRow(row);
-                      //       }
-                      //     },
-                      //   };
-                      // }}
                       components={{
                         body: {
                           row: Row,
@@ -877,117 +886,6 @@ const MyChoicesEdit = () => {
                             item === "title" ||
                             item === "college" ? (
                               <>
-                                {/* <Column
-                                  title={capitalizeWords(item)}
-                                  dataIndex={item}
-                                  key={item}
-                                  className="tableHeadingStyle"
-                                  render={(text, record, rowNum) => (
-                                    <>
-                                      <Select
-                                        showSearch
-                                        placeholder={`Select ${item}`}
-                                        name={item}
-                                        value={text}
-                                        optionFilterProp="children"
-                                        className="inputSelectFieldStyle"
-                                        ref={inputRef}
-                                        defaultValue={text}
-                                        bordered={false}
-                                        popupMatchSelectWidth={false}
-                                        disabled={!record.editable}
-                                        suffixIcon={
-                                          <Image
-                                            preview={false}
-                                            src={dropdownIcon}
-                                            width={15}
-                                            style={{ marginRight: 10 }}
-                                          />
-                                        }
-                                        onSelect={(value, option) =>
-                                          handleSelect(
-                                            value,
-                                            option,
-                                            rowNum +
-                                              data.filter(
-                                                (item) => item.id !== null
-                                              ).length
-                                          )
-                                        }
-                                        optionLabelProp="label"
-                                      >
-                                        {dropDownOptions.map((option) => (
-                                          <Select.Option
-                                            key={option[item]}
-                                            value={option[item]}
-                                            code={option.code}
-                                            row={option}
-                                            label={option[item]}
-                                          >
-                                            {`${option.title},${option.code},${option.college}`}
-                                          </Select.Option>
-                                        ))}
-                                      </Select>
-                                    </>
-                                  )}
-                                /> */}
-                                {/* <Column
-                                  title={capitalizeWords(item)}
-                                  dataIndex={item}
-                                  key={item}
-                                  className="tableHeadingStyle"
-                                  render={(text, record, rowNum) => (
-                                    <>
-                                      <Select
-                                        showSearch
-                                        placeholder={`Select ${item}`}
-                                        name={item}
-                                        value={text}
-                                        optionFilterProp="children"
-                                        className="inputSelectFieldStyle"
-                                        ref={inputRef}
-                                        defaultValue={text}
-                                        bordered={false}
-                                        popupMatchSelectWidth={false}
-                                        disabled={!record.editable}
-                                        suffixIcon={
-                                          <Image
-                                            preview={false}
-                                            src={dropdownIcon}
-                                            width={15}
-                                            style={{ marginRight: 10 }}
-                                          />
-                                        }
-                                        onSelect={(value, option) =>
-                                          handleSelect(
-                                            value,
-                                            option,
-                                            rowNum +
-                                              data.filter(
-                                                (item) => item.id !== null
-                                              ).length
-                                          )
-                                        }
-                                        optionLabelProp="label"
-                                      >
-                                        {dropDownOptions.map((option) => (
-                                          <Select.Option
-                                            key={option[item]}
-                                            value={option[item]}
-                                            code={option.code}
-                                            row={option}
-                                            label={option[item]}
-                                          >
-                                            {item === "code" && option.code}
-                                            {item === "title" && option.title}
-                                            {item === "college" &&
-                                              option.college}
-                                          </Select.Option>
-                                        ))}
-                                      </Select>
-                                    </>
-                                  )}
-                                /> */}
                                 <Column
                                   title={capitalizeWords(item)}
                                   dataIndex={item}
@@ -999,14 +897,34 @@ const MyChoicesEdit = () => {
                                         showSearch
                                         placeholder={`Select ${item}`}
                                         name={item}
-                                        value={text}
-                                        optionFilterProp="children" // Enables search on the dropdown content
+                                        value={
+                                          item === "code"
+                                            ? text
+                                            : !text
+                                            ? undefined
+                                            : `${text ?? ""},${
+                                                record.code ?? ""
+                                              }`
+                                        }
+                                        optionFilterProp="children"
                                         className="inputSelectFieldStyle"
                                         ref={inputRef}
-                                        defaultValue={text}
+                                        defaultValue={
+                                          item === "code"
+                                            ? text
+                                            : !text
+                                            ? undefined
+                                            : `${text ?? ""},${
+                                                record.code ?? ""
+                                              }`
+                                        }
                                         bordered={false}
                                         popupMatchSelectWidth={false}
-                                        // disabled={!record.editable}
+                                        onClick={() => {
+                                          if (!record.editable) {
+                                            eidtThisRow(record);
+                                          }
+                                        }}
                                         suffixIcon={
                                           <Image
                                             preview={false}
@@ -1027,20 +945,23 @@ const MyChoicesEdit = () => {
                                         }
                                         optionLabelProp="label"
                                       >
-                                        {dropDownOptions.map((option) => (
-                                          <Select.Option
-                                            key={option[item]}
-                                            value={option[item]}
-                                            code={option.code}
-                                            row={option}
-                                            label={option[item]}
-                                          >
-                                            {item === "code" && option.code}
-                                            {item === "title" && option.title}
-                                            {item === "college" &&
-                                              option.college}
-                                          </Select.Option>
-                                        ))}
+                                        {dropDownOptions.map((option) => {
+                                          return (
+                                            <Select.Option
+                                              key={option["id"]}
+                                              value={
+                                                item === "code"
+                                                  ? option[item]
+                                                  : `${option[item]},${option.code}`
+                                              }
+                                              code={option.code}
+                                              row={option}
+                                              label={option[item]}
+                                            >
+                                              {`${option.title}, ${option.code}, ${option.college}`}
+                                            </Select.Option>
+                                          );
+                                        })}
                                       </Select>
                                     </>
                                   )}
@@ -1059,22 +980,34 @@ const MyChoicesEdit = () => {
                                 dataIndex={item}
                                 key={item}
                                 className="tableHeadingStyle"
-                                render={(text, record) => (
-                                  <>
-                                    <MyCareerGuidanceInputField
-                                      ref={inputRef}
-                                      placeholder={item}
-                                      type="input"
-                                      name={item}
-                                      defaultValue={text}
-                                      onChange={(e) =>
-                                        handleChangeTable(e, record)
-                                      }
-                                      isPrefix={false}
-                                      // disabled={!record.editable}
-                                    />
-                                  </>
-                                )}
+                                render={(text, record) => {
+                                  let parseText = parseInt(text);
+                                  parseText = isNaN(parseText)
+                                    ? text
+                                    : parseText;
+                                  return (
+                                    <div
+                                      onClick={() => {
+                                        if (!record.editable) {
+                                          eidtThisRow(record);
+                                        }
+                                      }}
+                                    >
+                                      <MyCareerGuidanceInputField
+                                        ref={inputRef}
+                                        placeholder={item}
+                                        type="input"
+                                        name={item}
+                                        defaultValue={parseText}
+                                        onChange={(e) =>
+                                          handleChangeTable(e, record)
+                                        }
+                                        isPrefix={false}
+                                        // disabled={!record.editable}
+                                      />
+                                    </div>
+                                  );
+                                }}
                               />
                             )}
                           </>
@@ -1088,28 +1021,15 @@ const MyChoicesEdit = () => {
                         dataIndex={"Object"}
                         render={(_, record) => (
                           <Space size="middle">
-                            {/* record.editable && */}
-                            {record.id !== null ? (
+                            {record.editable && record.id !== null ? (
                               <a onClick={() => handleUpdate(record)}>
                                 <CheckOutlined />
                               </a>
-                            ) : record.id === null ? (
+                            ) : record.editable && record.id === null ? (
                               <a onClick={() => handleAddRow(record)}>
                                 <PlusCircleOutlined />
                               </a>
-                            ) : // <a onClick={() => eidtThisRow(record)}>
-                            //   <Image
-                            //     preview={false}
-                            //     src={EditOutlined}
-                            //     style={{
-                            //       color: "#1476b7",
-                            //       cursor: "pointer",
-                            //       width: 22,
-                            //       height: "100%",
-                            //     }}
-                            //   />
-                            // </a>
-                            null}
+                            ) : null}
                             <a>
                               <DeleteOutlined style={{ color: "grey" }} />
                             </a>
@@ -1201,22 +1121,19 @@ const MyChoicesEdit = () => {
                                               }
                                               optionLabelProp="label"
                                             >
-                                              {dropDownOptions.map((option) => (
-                                                <Select.Option
-                                                  key={option[item]}
-                                                  value={option[item]}
-                                                  code={option.code}
-                                                  row={option}
-                                                  label={option[item]}
-                                                >
-                                                  {item === "code" &&
-                                                    option.code}
-                                                  {item === "title" &&
-                                                    option.title}
-                                                  {item === "college" &&
-                                                    option.college}
-                                                </Select.Option>
-                                              ))}
+                                              {dropDownOptions.map((option) => {
+                                                return (
+                                                  <Select.Option
+                                                    key={option?.id}
+                                                    value={option[item]}
+                                                    code={option.code}
+                                                    row={option}
+                                                    label={option[item]}
+                                                  >
+                                                    {`${option.title}, ${option.code}, ${option.college}`}
+                                                  </Select.Option>
+                                                );
+                                              })}
                                             </Select>
                                           </div>
                                         </>
@@ -1368,11 +1285,6 @@ const MyChoicesEdit = () => {
                                                   bordered={false}
                                                   popupMatchSelectWidth={false}
                                                   disabled={!row.editable}
-                                                  // onClick={() => {
-                                                  //   if (!row.editable) {
-                                                  //     eidtThisRow(row);
-                                                  //   }
-                                                  // }}
                                                   suffixIcon={
                                                     <Image
                                                       preview={false}
@@ -1390,25 +1302,33 @@ const MyChoicesEdit = () => {
                                                       row.rowNo
                                                     )
                                                   }
+                                                  // onSelect={(value, option) =>
+                                                  //   handleSelect(
+                                                  //     value,
+                                                  //     option,
+                                                  //     row.rowNo
+                                                  //   )
+                                                  // }
                                                   optionLabelProp="label"
                                                 >
                                                   {dropDownOptions.map(
-                                                    (option) => (
-                                                      <Select.Option
-                                                        key={option[item]}
-                                                        value={option[item]}
-                                                        code={option.code}
-                                                        row={option}
-                                                        label={option[item]}
-                                                      >
-                                                        {item === "code" &&
-                                                          option.code}
-                                                        {item === "title" &&
-                                                          option.title}
-                                                        {item === "college" &&
-                                                          option.college}
-                                                      </Select.Option>
-                                                    )
+                                                    (option) => {
+                                                      console.log(
+                                                        option,
+                                                        "[option if 4]"
+                                                      );
+                                                      return (
+                                                        <Select.Option
+                                                          key={option[item]}
+                                                          value={option[item]}
+                                                          code={option.code}
+                                                          row={option}
+                                                          label={option[item]}
+                                                        >
+                                                          {`${option.title}, ${option.code}, ${option.college}`}
+                                                        </Select.Option>
+                                                      );
+                                                    }
                                                   )}
                                                 </Select>
                                               </div>
@@ -1447,7 +1367,6 @@ const MyChoicesEdit = () => {
                             )}
                         </SortableContext>
                       </DndContext>
-                      {/* EMPTY */}
                       {data
                         .filter((item) => item.id === null)
                         .map((row) => (
@@ -1469,7 +1388,7 @@ const MyChoicesEdit = () => {
                                 />
                                 <div className="actionColumn">
                                   <Space size="middle">
-                                    {row.id !== null ? (
+                                    {row.editable && row.id !== null ? (
                                       <a
                                         onClick={() => handleUpdateMobile(row)}
                                       >
@@ -1477,7 +1396,7 @@ const MyChoicesEdit = () => {
                                           style={{ color: "#1476b7" }}
                                         />
                                       </a>
-                                    ) : row.id === null ? (
+                                    ) : row.editable && row.id === null ? (
                                       <a
                                         onClick={() => handleAddRowMobile(row)}
                                       >
@@ -1543,7 +1462,7 @@ const MyChoicesEdit = () => {
                                             defaultValue={row[item]}
                                             bordered={false}
                                             popupMatchSelectWidth={false}
-                                            // disabled={!row.editable}
+                                            disabled={!row.editable}
                                             suffixIcon={
                                               <Image
                                                 preview={false}
@@ -1570,22 +1489,23 @@ const MyChoicesEdit = () => {
                                             // }
                                             optionLabelProp="label"
                                           >
-                                            {dropDownOptions.map((option) => (
-                                              <Select.Option
-                                                key={option[item]}
-                                                value={option[item]}
-                                                code={option.code}
-                                                row={option}
-                                                label={option[item]}
-                                              >
-                                                {/* {`${option.title},${option.code},${option.college}`} */}
-                                                {item === "code" && option.code}
-                                                {item === "title" &&
-                                                  option.title}
-                                                {item === "college" &&
-                                                  option.college}
-                                              </Select.Option>
-                                            ))}
+                                            {dropDownOptions.map((option) => {
+                                              console.log(
+                                                option,
+                                                "[option if ]"
+                                              );
+                                              return (
+                                                <Select.Option
+                                                  key={option[item]}
+                                                  value={option[item]}
+                                                  code={option.code}
+                                                  row={option}
+                                                  label={option[item]}
+                                                >
+                                                  {`${option.title}, ${option.code}, ${option.college}`}
+                                                </Select.Option>
+                                              );
+                                            })}
                                           </Select>
                                         </div>
                                       </>
@@ -1610,7 +1530,7 @@ const MyChoicesEdit = () => {
                                           // }
                                           defaultValue={row[item]}
                                           isPrefix={false}
-                                          // disabled={!row.editable}
+                                          disabled={!row.editable}
                                         />
                                       </div>
                                     )}
