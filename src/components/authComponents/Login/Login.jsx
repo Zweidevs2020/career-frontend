@@ -15,10 +15,11 @@ import {
 } from "../../commonComponents";
 import { useNavigate } from "react-router-dom";
 import "./LoginStyle.css";
+import { useSubscribe } from "../../../context/subscribe";
 
 const Login = () => {
   const navigate = useNavigate();
-
+  const { setSubscribe } = useSubscribe();
   const [loading, setLoading] = useState(false);
 
   const [data, setData] = useState({});
@@ -37,6 +38,8 @@ const Login = () => {
       message.success("Login Successfully");
       setLoading(false);
       setToken(response?.data?.access);
+      setSubscribe(response.data.is_subscribed);
+
       if (response.data.is_subscribed) {
         navigate("/dashboard");
       } else {

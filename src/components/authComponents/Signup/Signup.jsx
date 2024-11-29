@@ -36,9 +36,11 @@ import {
   CloseOutlined,
 } from "@ant-design/icons";
 import { setToken } from "../../../utils/LocalStorage";
+import { useSubscribe } from "../../../context/subscribe";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const { setSubscribe } = useSubscribe();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
   const [schools, setSchools] = useState([]);
@@ -69,10 +71,12 @@ const Signup = () => {
       dob: `${dobSave.year}-${dobSave.month}-${dobSave.day}`,
       email: data.email.toLowerCase(),
     });
+
     if (response.status === 200) {
       message.success(
         "Congratulations! You've successfully signed up. You're now ready to log in and explore our platform. Welcome aboard!"
       );
+      setSubscribe(false);
       setToken(response.data.access_token);
       navigate("/checkout");
     } else {

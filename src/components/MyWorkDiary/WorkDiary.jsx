@@ -15,8 +15,8 @@ import QuizTime from "./QuizTime";
 const WorkDiary = () => {
   const [loading, setLoading] = useState(false);
   const [activeDay, setActiveDay] = useState("");
-  const [isEditMode, setIsEditMode] = useState(false);
   const [currentDay, setCurrentDay] = useState(1);
+  const [hoveredDay, setHoveredDay] = useState(null); // Track which day is being hovered
 
   const dayComponents = [
     { label: "Day 1", key: "DayOne", component: <DayOne /> },
@@ -33,23 +33,21 @@ const WorkDiary = () => {
   ];
 
   useEffect(() => {
-    // Calculate the current day based on today's date
-    const startDate = new Date(); // Start from today
+    // Set the start date of Day 1
+    const startDate = new Date("2024-11-01"); // Change this to your desired start date
     const today = new Date();
-    const diffInDays =
-      Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) % 11; // Loop back to Day 1 after Quiz
-    const dayIndex = diffInDays === 0 ? 0 : diffInDays;
+
+    // Calculate the difference in days between today and the start date
+    const diffInDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+
+    // Determine the active day based on the difference
+    const dayIndex = diffInDays % dayComponents.length; // Loop back to Day 1 after Day 10
     setCurrentDay(dayIndex + 1);
     setActiveDay(dayComponents[dayIndex].key);
-  }, []);
+  }, [dayComponents.length]);
 
-  const handleEditMode = () => {
-    setIsEditMode(!isEditMode);
-    if (!isEditMode) {
-      // Move back to the current day when disabling Edit Mode
-      const todayIndex = currentDay - 1;
-      setActiveDay(dayComponents[todayIndex].key);
-    }
+  const handleButtonClick = (dayKey) => {
+    setActiveDay(dayKey);
   };
 
   const renderActiveComponent = () => {
@@ -93,48 +91,31 @@ const WorkDiary = () => {
                       backgroundColor:
                         activeDay === day.key ? "#1890ff" : "transparent",
                       color: activeDay === day.key ? "#fff" : "#000",
-                      borderColor: isEditMode
-                        ? "#1890ff" // Blue border in Edit Mode
-                        : currentDay === index + 1
-                        ? "#1890ff" // Blue border for the current day
-                        : "#ccc", // Gray border for non-current days
+                      borderColor:
+                        currentDay === index + 1 ? "#1890ff" : "#ccc", // Highlight current day
                       opacity:
-                        !isEditMode && currentDay !== index + 1 ? 0.5 : 1, // Grayed-out disabled buttons
+                        hoveredDay === day.key || activeDay === day.key
+                          ? 1
+                          : 0.5, // Show button at full opacity on hover or if active
                       cursor:
-                        !isEditMode && currentDay !== index + 1
-                          ? "not-allowed"
-                          : "pointer",
+                        hoveredDay === day.key || activeDay === day.key
+                          ? "pointer"
+                          : "not-allowed", // Change cursor style when hovered or active
                       width: "120px",
                     }}
-                    onClick={() => {
-                      if (isEditMode || currentDay === index + 1) {
-                        setActiveDay(day.key);
-                      }
-                    }}
-                    disabled={!isEditMode && currentDay !== index + 1}
+                    onClick={() => handleButtonClick(day.key)}
+                    onMouseEnter={() => setHoveredDay(day.key)} // Set hovered day on mouse enter
+                    onMouseLeave={() => setHoveredDay(null)} // Reset hovered day on mouse leave
+                    disabled={hoveredDay === day.key && activeDay === day.key} // Disable if not hovered or active
                   >
-                    {day.label}
+                    {hoveredDay === day.key ? "Edit" : day.label}
                   </Button>
                 </Col>
               ))}
             </Row>
           </div>
-          <div style={{ textAlign: "center", marginBottom: "20px" }}>
-            <Button
-              type="dashed"
-              onClick={handleEditMode}
-              style={{
-                color: isEditMode ? "red" : "blue",
-                borderColor: isEditMode ? "red" : "blue",
-              }}
-            >
-              {isEditMode ? "Disable Edit Mode" : "Enable Edit Mode"}
-            </Button>
-          </div>
-          <hr />
-          <div className="lowerContainer2">
-            <div className="bg-white">{renderActiveComponent()}</div>
-          </div>
+
+          {renderActiveComponent()}
         </div>
       )}
     </>

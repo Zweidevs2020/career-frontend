@@ -32,23 +32,12 @@ import OccupationalOption from "./components/OccupationalOption";
 import CheckoutView from "./components/checkout/checkout";
 import MyGuidanceReport from "./components/MyGuidanceReport";
 import WorkDiary from "./components/MyWorkDiary/WorkDiary";
-import { getApiWithAuth } from "./utils/api";
-import { API_URL } from "./utils/constants";
-import { useEffect, useState } from "react";
+
+import { useSubscribe } from "./context/subscribe";
 
 function App() {
-  const [subscribe, setSubscribe] = useState(null);
+  const { subscribe, loading } = useSubscribe();
 
-  const getUserData = async () => {
-    const response = await getApiWithAuth(API_URL.GETUSER);
-    if (response?.data?.status === 200) {
-      setSubscribe(response?.data?.data?.is_subscribed);
-    }
-  };
-  useEffect(() => {
-    getUserData();
-  }, []);
-  console.log(subscribe, "from app");
   return (
     <BrowserRouter>
       <Routes>

@@ -56,8 +56,10 @@ import {
   MenuOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
+import { useSubscribe } from "../../../../context/subscribe";
 const { Content, Sider, Header } = Layout;
 const Sidebar = ({ children, flags }) => {
+  const { setSubscribe } = useSubscribe();
   const navigate = useNavigate();
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -248,6 +250,7 @@ const Sidebar = ({ children, flags }) => {
   }, [location]);
 
   const logoutUser = async () => {
+    setSubscribe(null);
     removeToken();
     navigate("/");
   };

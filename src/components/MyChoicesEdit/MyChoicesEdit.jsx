@@ -688,6 +688,11 @@ const MyChoicesEdit = () => {
                                               defaultValue={text}
                                               bordered={false}
                                               popupMatchSelectWidth={false}
+                                              onClick={() => {
+                                                if (!record.editable) {
+                                                  eidtThisRow(record);
+                                                }
+                                              }}
                                               disabled={!record.editable}
                                               suffixIcon={
                                                 <Image
@@ -805,19 +810,18 @@ const MyChoicesEdit = () => {
                                       }}
                                       onClick={() => handleAddRow(record)}
                                     />
-                                  ) : (
-                                    <Image
-                                      preview={false}
-                                      src={EditOutlined}
-                                      onClick={() => eidtThisRow(record)}
-                                      style={{
-                                        color: "#1476b7",
-                                        cursor: "pointer",
-                                        width: 22,
-                                        height: "100%",
-                                      }}
-                                    />
-                                  )}
+                                  ) : // <Image
+                                  //   preview={false}
+                                  //   src={EditOutlined}
+                                  //   onClick={() => eidtThisRow(record)}
+                                  //   style={{
+                                  //     color: "#1476b7",
+                                  //     cursor: "pointer",
+                                  //     width: 22,
+                                  //     height: "100%",
+                                  //   }}
+                                  // />
+                                  null}
                                   <DeleteOutlined
                                     style={{
                                       color: "red",
@@ -842,6 +846,15 @@ const MyChoicesEdit = () => {
                           : "emptyTable"
                       }
                       rowKey={"dataId"}
+                      // onRow={(row) => {
+                      //   return {
+                      //     onClick: () => {
+                      //       if (!row.editable) {
+                      //         eidtThisRow(row);
+                      //       }
+                      //     },
+                      //   };
+                      // }}
                       components={{
                         body: {
                           row: Row,
@@ -993,7 +1006,7 @@ const MyChoicesEdit = () => {
                                         defaultValue={text}
                                         bordered={false}
                                         popupMatchSelectWidth={false}
-                                        disabled={!record.editable}
+                                        // disabled={!record.editable}
                                         suffixIcon={
                                           <Image
                                             preview={false}
@@ -1058,7 +1071,7 @@ const MyChoicesEdit = () => {
                                         handleChangeTable(e, record)
                                       }
                                       isPrefix={false}
-                                      disabled={!record.editable}
+                                      // disabled={!record.editable}
                                     />
                                   </>
                                 )}
@@ -1075,28 +1088,28 @@ const MyChoicesEdit = () => {
                         dataIndex={"Object"}
                         render={(_, record) => (
                           <Space size="middle">
-                            {record.editable && record.id !== null ? (
+                            {/* record.editable && */}
+                            {record.id !== null ? (
                               <a onClick={() => handleUpdate(record)}>
                                 <CheckOutlined />
                               </a>
-                            ) : record.editable && record.id === null ? (
+                            ) : record.id === null ? (
                               <a onClick={() => handleAddRow(record)}>
                                 <PlusCircleOutlined />
                               </a>
-                            ) : (
-                              <a onClick={() => eidtThisRow(record)}>
-                                <Image
-                                  preview={false}
-                                  src={EditOutlined}
-                                  style={{
-                                    color: "#1476b7",
-                                    cursor: "pointer",
-                                    width: 22,
-                                    height: "100%",
-                                  }}
-                                />
-                              </a>
-                            )}
+                            ) : // <a onClick={() => eidtThisRow(record)}>
+                            //   <Image
+                            //     preview={false}
+                            //     src={EditOutlined}
+                            //     style={{
+                            //       color: "#1476b7",
+                            //       cursor: "pointer",
+                            //       width: 22,
+                            //       height: "100%",
+                            //     }}
+                            //   />
+                            // </a>
+                            null}
                             <a>
                               <DeleteOutlined style={{ color: "grey" }} />
                             </a>
@@ -1196,7 +1209,12 @@ const MyChoicesEdit = () => {
                                                   row={option}
                                                   label={option[item]}
                                                 >
-                                                  {`${option.title},${option.code},${option.college}`}
+                                                  {item === "code" &&
+                                                    option.code}
+                                                  {item === "title" &&
+                                                    option.title}
+                                                  {item === "college" &&
+                                                    option.college}
                                                 </Select.Option>
                                               ))}
                                             </Select>
@@ -1350,6 +1368,11 @@ const MyChoicesEdit = () => {
                                                   bordered={false}
                                                   popupMatchSelectWidth={false}
                                                   disabled={!row.editable}
+                                                  // onClick={() => {
+                                                  //   if (!row.editable) {
+                                                  //     eidtThisRow(row);
+                                                  //   }
+                                                  // }}
                                                   suffixIcon={
                                                     <Image
                                                       preview={false}
@@ -1378,7 +1401,12 @@ const MyChoicesEdit = () => {
                                                         row={option}
                                                         label={option[item]}
                                                       >
-                                                        {`${option.title},${option.code},${option.college}`}
+                                                        {item === "code" &&
+                                                          option.code}
+                                                        {item === "title" &&
+                                                          option.title}
+                                                        {item === "college" &&
+                                                          option.college}
                                                       </Select.Option>
                                                     )
                                                   )}
@@ -1419,6 +1447,7 @@ const MyChoicesEdit = () => {
                             )}
                         </SortableContext>
                       </DndContext>
+                      {/* EMPTY */}
                       {data
                         .filter((item) => item.id === null)
                         .map((row) => (
@@ -1440,7 +1469,7 @@ const MyChoicesEdit = () => {
                                 />
                                 <div className="actionColumn">
                                   <Space size="middle">
-                                    {row.editable && row.id !== null ? (
+                                    {row.id !== null ? (
                                       <a
                                         onClick={() => handleUpdateMobile(row)}
                                       >
@@ -1448,7 +1477,7 @@ const MyChoicesEdit = () => {
                                           style={{ color: "#1476b7" }}
                                         />
                                       </a>
-                                    ) : row.editable && row.id === null ? (
+                                    ) : row.id === null ? (
                                       <a
                                         onClick={() => handleAddRowMobile(row)}
                                       >
@@ -1490,7 +1519,7 @@ const MyChoicesEdit = () => {
                                 </div>
                               </div>
                               <div className="remaining-columns">
-                                {/* {columns.map((item, index) => (
+                                {columns.map((item, index) => (
                                   <>
                                     {item === "code" ||
                                     item === "title" ||
@@ -1514,7 +1543,7 @@ const MyChoicesEdit = () => {
                                             defaultValue={row[item]}
                                             bordered={false}
                                             popupMatchSelectWidth={false}
-                                            disabled={!row.editable}
+                                            // disabled={!row.editable}
                                             suffixIcon={
                                               <Image
                                                 preview={false}
@@ -1549,7 +1578,12 @@ const MyChoicesEdit = () => {
                                                 row={option}
                                                 label={option[item]}
                                               >
-                                                {`${option.title},${option.code},${option.college}`}
+                                                {/* {`${option.title},${option.code},${option.college}`} */}
+                                                {item === "code" && option.code}
+                                                {item === "title" &&
+                                                  option.title}
+                                                {item === "college" &&
+                                                  option.college}
                                               </Select.Option>
                                             ))}
                                           </Select>
@@ -1576,12 +1610,12 @@ const MyChoicesEdit = () => {
                                           // }
                                           defaultValue={row[item]}
                                           isPrefix={false}
-                                          disabled={!row.editable}
+                                          // disabled={!row.editable}
                                         />
                                       </div>
                                     )}
                                   </>
-                                ))} */}
+                                ))}
                               </div>
                             </div>
                           </div>
