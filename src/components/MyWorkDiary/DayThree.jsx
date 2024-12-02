@@ -202,7 +202,6 @@ const DayThree = () => {
         {/* Submit and Reset Buttons */}
         <Col span={24} style={{ textAlign: "right", marginTop: "16px" }}>
           <Button
-            type="primary"
             onClick={handleSubmit}
             loading={loading}
             style={{ marginRight: "8px" }}

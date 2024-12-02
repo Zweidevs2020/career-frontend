@@ -298,6 +298,7 @@ const MyChoicesEdit = () => {
     }
   };
   const handleAddRowMobile = async (record) => {
+    console.log(record, "record");
     for (const key in record) {
       if (key !== "id" && record[key] === null) {
         message.error(`Please enter the ${key} of the Row`);
@@ -1313,10 +1314,10 @@ const MyChoicesEdit = () => {
                                                 >
                                                   {dropDownOptions.map(
                                                     (option) => {
-                                                      console.log(
-                                                        option,
-                                                        "[option if 4]"
-                                                      );
+                                                      // console.log(
+                                                      //   option,
+                                                      //   "[option if 4]"
+                                                      // );
                                                       return (
                                                         <Select.Option
                                                           key={option[item]}
@@ -1490,10 +1491,10 @@ const MyChoicesEdit = () => {
                                             optionLabelProp="label"
                                           >
                                             {dropDownOptions.map((option) => {
-                                              console.log(
-                                                option,
-                                                "[option if ]"
-                                              );
+                                              // console.log(
+                                              //   option,
+                                              //   "[option if ]"
+                                              // );
                                               return (
                                                 <Select.Option
                                                   key={option[item]}

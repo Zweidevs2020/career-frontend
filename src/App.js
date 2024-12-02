@@ -37,7 +37,7 @@ import { useSubscribe } from "./context/subscribe";
 
 function App() {
   const { subscribe, loading } = useSubscribe();
-
+  console.log("[subscribe in app]", subscribe);
   return (
     <BrowserRouter>
       <Routes>
@@ -84,7 +84,7 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <PrivateRoute restricted={!subscribe}>
+            <PrivateRoute restricted={subscribe == null ? false : !subscribe}>
               <Sidebar>
                 <CareerDashboard />
               </Sidebar>
@@ -227,7 +227,7 @@ function App() {
         <Route
           path="/checkout"
           element={
-            <PublicRoute>
+            <PublicRoute restricted={subscribe}>
               <CheckoutView />
             </PublicRoute>
           }

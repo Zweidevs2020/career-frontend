@@ -17,6 +17,7 @@ export const SubscribeProvider = ({ children }) => {
       if (token) {
         const response = await getApiWithAuth(API_URL.GETUSER);
         if (response?.data?.status === 200) {
+          console.log("payload api", response.data);
           setSubscribe(response?.data?.data?.is_subscribed);
         }
       }
