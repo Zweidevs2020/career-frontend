@@ -244,7 +244,7 @@ const MyChoicesEdit = () => {
   const handleUpdateMobile = async (record) => {
     for (const key in record) {
       if (key !== "id" && key !== "order_number" && record[key] === null) {
-        message.error(`Please enter the ${key} of the Row`);
+        // message.error(`Please enter the ${key} of the Row`);
         break;
       }
     }
