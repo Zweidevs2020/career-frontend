@@ -26,15 +26,6 @@ const DayTwo = () => {
   const [originalData, setOriginalData] = useState(null); // To store the original fetched data
   const [loading, setLoading] = useState(false);
 
-  const isDataUpdated = () => {
-    if (!originalData) return true; // Assume data is updated if there's no original data to compare with
-
-    const currentData = JSON.stringify(formData);
-    const original = JSON.stringify(originalData);
-
-    return currentData !== original; // Return true if there are changes
-  };
-
   const populateForm = async (data) => {
     const updatedFormData = { ...formData };
 
@@ -122,22 +113,126 @@ const DayTwo = () => {
   };
 
   // Handle form submission
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   setLoading(true);
+
+  //   // Check if the data is empty (e.g., no questionsAndAnswers or date)
+  //   const isEmpty =
+  //     !formData.date &&
+  //     !formData.onTime &&
+  //     !formData.reasonForLateness &&
+  //     !formData.whoMetOnArrival &&
+  //     !formData.ableToDoTasks &&
+  //     !formData.supervisorName &&
+  //     !formData.peopleCount &&
+  //     !formData.breakTimes &&
+  //     !formData.lunchActivity &&
+  //     formData.jobs.every((job) => !job); // Check if all jobs are empty
+  //   const questionsAndAnswers = [
+  //     { question: "Were you on time?", answer: formData.onTime },
+  //     formData.onTime === "No" && {
+  //       question: "Why were you late?",
+  //       answer: formData.reasonForLateness,
+  //     },
+  //     {
+  //       question: "Who did you meet on arrival?",
+  //       answer: formData.whoMetOnArrival,
+  //     },
+  //     { question: "Supervisor Name", answer: formData.supervisorName },
+  //     {
+  //       question: "Number of People Working With",
+  //       answer: formData.peopleCount,
+  //     },
+  //     ...formData.jobs.map((job, index) => ({
+  //       question: `Job ${index + 1}`,
+  //       answer: job,
+  //     })),
+  //     {
+  //       question: "Were you able to do the tasks? Why?",
+  //       answer: formData.ableToDoTasks,
+  //     },
+  //     { question: "Break Times", answer: formData.breakTimes },
+  //     {
+  //       question: "What did you do at lunchtime?",
+  //       answer: formData.lunchActivity,
+  //     },
+  //   ].filter(Boolean);
+
+  //   const payload = [
+  //     {
+  //       day: formData.day,
+  //       date: formData.date || "", // Default empty date if not provided
+  //       questionsAndAnswers: questionsAndAnswers,
+  //     },
+  //   ];
+  //   const updatePayload = {
+  //     day: formData.day,
+  //     date: formData.date || "", // Default empty date if not provided
+  //     questionsAndAnswers: questionsAndAnswers,
+  //   };
+  //   if (isEmpty) {
+  //     // If data is empty, post a default payload
+  //     try {
+  //       if (isEmpty) {
+  //         message.error("Please fill the data!");
+  //         return;
+  //       } else {
+  //         const apiUrl = API_URL.WORK_DIARY;
+  //         await postApiWithoutAuth(apiUrl, payload);
+  //       }
+  //     } catch (error) {
+  //       message.error("Something went wrong while submitting empty data.");
+  //       console.error("Error:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //     return; // Exit the function as we have handled the empty case
+  //   }
+
+  //   // Check if data exists (patch case)
+  //   try {
+  //     const url = `${API_URL.WORK_DIARY}update-day/?day=Day2`;
+  //     const respose = await putApiWithAuth(url, updatePayload);
+
+  //     message.success("Data updated successfully!");
+  //   } catch (error) {
+  //     message.error("Something went wrong while updating data.");
+  //     console.error("Error:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-
-    // Check if the data is empty (e.g., no questionsAndAnswers or date)
+    // Check if "Were you on time?" is "No" and the "Why were you late?" field is empty
+    if (formData.onTime === "No" && !formData.reasonForLateness) {
+      message.error("Please provide an explanation for being late.");
+      setLoading(false);
+      return; // Exit the function without proceeding
+    }
+    // Check if the data is empty
     const isEmpty =
-      !formData.date &&
-      !formData.onTime &&
-      !formData.reasonForLateness &&
-      !formData.whoMetOnArrival &&
-      !formData.ableToDoTasks &&
-      !formData.supervisorName &&
-      !formData.peopleCount &&
-      !formData.breakTimes &&
-      !formData.lunchActivity &&
-      formData.jobs.every((job) => !job); // Check if all jobs are empty
+      !formData.date ||
+      !formData.onTime ||
+      (formData.onTime === "No" && !formData.reasonForLateness) || // If "No", reason is required
+      !formData.whoMetOnArrival ||
+      !formData.ableToDoTasks ||
+      !formData.supervisorName ||
+      !formData.peopleCount ||
+      !formData.breakTimes ||
+      !formData.lunchActivity ||
+      formData.jobs.some((job) => !job); // Check if any job is empty
+
+    // If any required field is empty, show error and stop the submission
+    if (isEmpty) {
+      message.error("Please fill in all the required fields.");
+      setLoading(false); // Stop loading
+      return; // Exit the function without making the API call
+    }
+
+    // Prepare the questions and answers array
     const questionsAndAnswers = [
       { question: "Were you on time?", answer: formData.onTime },
       formData.onTime === "No" && {
@@ -166,8 +261,9 @@ const DayTwo = () => {
         question: "What did you do at lunchtime?",
         answer: formData.lunchActivity,
       },
-    ].filter(Boolean);
+    ].filter(Boolean); // Filter out any null or undefined values (conditional questions)
 
+    // Prepare the payload for POST or PUT
     const payload = [
       {
         day: formData.day,
@@ -175,37 +271,37 @@ const DayTwo = () => {
         questionsAndAnswers: questionsAndAnswers,
       },
     ];
+
     const updatePayload = {
       day: formData.day,
       date: formData.date || "", // Default empty date if not provided
       questionsAndAnswers: questionsAndAnswers,
     };
-    if (isEmpty) {
-      // If data is empty, post a default payload
+
+    // If data is empty (i.e., no `date` or `questionsAndAnswers`), make a POST request
+    if (!formData.date) {
       try {
         const apiUrl = API_URL.WORK_DIARY;
         await postApiWithoutAuth(apiUrl, payload);
-        message.success("Empty data submitted successfully!");
+        message.success("Data submitted successfully!");
       } catch (error) {
-        message.error("Something went wrong while submitting empty data.");
+        message.error("Something went wrong while submitting data.");
         console.error("Error:", error);
       } finally {
         setLoading(false);
       }
-      return; // Exit the function as we have handled the empty case
-    }
-
-    // Check if data exists (patch case)
-    try {
-      const url = `${API_URL.WORK_DIARY}update-day/?day=Day2`;
-      const respose = await putApiWithAuth(url, updatePayload);
-
-      message.success("Data updated successfully!");
-    } catch (error) {
-      message.error("Something went wrong while updating data.");
-      console.error("Error:", error);
-    } finally {
-      setLoading(false);
+    } else {
+      // If data exists (i.e., the `date` exists), make a PUT request to update
+      try {
+        const url = `${API_URL.WORK_DIARY}update-day/?day=Day2`; // Adjust day dynamically as needed
+        const response = await putApiWithAuth(url, updatePayload);
+        message.success("Data updated successfully!");
+      } catch (error) {
+        message.error("Something went wrong while updating data.");
+        console.error("Error:", error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 

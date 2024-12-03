@@ -47,9 +47,6 @@ const DayOne = () => {
 
         const apiUrl = API_URL.WORK_DIARY;
         await postApiWithoutAuth(apiUrl, payload);
-        message.info(
-          "No data from backend. Created a new entry with default values."
-        );
       } catch (error) {
         message.error("Failed to create a new entry. Please try again.");
         console.error("Error posting default data:", error);
@@ -127,20 +124,38 @@ const DayOne = () => {
   };
 
   // Submit the form data
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
 
-    // Check if the data is empty (e.g., no questionsAndAnswers or date)
+    // Check if "Were you on time?" is "No" and the "Why were you late?" field is empty
+    if (formData.onTime === "No" && !formData.reasonForLateness) {
+      message.error("Please provide an explanation for being late.");
+      setLoading(false);
+      return; // Exit the function without proceeding
+    }
+
+    // Check if all required fields are filled
     const isEmpty =
-      !formData.date &&
-      !formData.onTime &&
-      !formData.supervisorName &&
-      !formData.peopleCount &&
-      !formData.ableToDoTasks &&
-      !formData.breakTimes &&
-      !formData.lunchActivity &&
-      formData.jobs.every((job) => !job); // Check if all jobs are empty
+      !formData.date ||
+      !formData.onTime ||
+      (formData.onTime === "No" && !formData.reasonForLateness) || // Ensure explanation is provided if "No"
+      !formData.supervisorName ||
+      !formData.peopleCount ||
+      !formData.ableToDoTasks ||
+      !formData.breakTimes ||
+      !formData.lunchActivity ||
+      formData.jobs.some((job) => !job); // Check if any job is empty
+
+    // If any field is empty, show an error message and return
+    if (isEmpty) {
+      message.error("Please fill in all the required fields.");
+      setLoading(false); // Stop loading
+      return; // Exit the function without making the API call
+    }
+
+    // Prepare the questions and answers array
     const questionsAndAnswers = [
       { question: "Were you on time?", answer: formData.onTime },
       formData.onTime === "No" && {
@@ -169,7 +184,7 @@ const DayOne = () => {
         question: "What did you do at lunchtime?",
         answer: formData.lunchActivity,
       },
-    ].filter(Boolean);
+    ].filter(Boolean); // Filter out any null or undefined values (conditional questions)
 
     const payload = [
       {
@@ -178,37 +193,38 @@ const DayOne = () => {
         questionsAndAnswers: questionsAndAnswers,
       },
     ];
+
     const updatePayload = {
       day: formData.day,
       date: formData.date || "", // Default empty date if not provided
       questionsAndAnswers: questionsAndAnswers,
     };
-    if (isEmpty) {
-      // If data is empty, post a default payload
+
+    // Check if the data already exists (e.g., if there's a `date` or `questionsAndAnswers`)
+    if (formData.date) {
+      // If data exists, use PUT to update
       try {
-        const apiUrl = API_URL.WORK_DIARY;
-        await postApiWithoutAuth(apiUrl, payload);
-        message.success("Empty data submitted successfully!");
+        const url = `${API_URL.WORK_DIARY}update-day/?day=Day1`;
+        const response = await putApiWithAuth(url, updatePayload);
+        message.success("Data updated successfully!");
       } catch (error) {
-        message.error("Something went wrong while submitting empty data.");
+        message.error("Something went wrong while updating data.");
         console.error("Error:", error);
       } finally {
         setLoading(false);
       }
-      return; // Exit the function as we have handled the empty case
-    }
-
-    // Check if data exists (patch case)
-    try {
-      const url = `${API_URL.WORK_DIARY}update-day/?day=Day1`;
-      const respose = await putApiWithAuth(url, updatePayload);
-
-      message.success("Data updated successfully!");
-    } catch (error) {
-      message.error("Something went wrong while updating data.");
-      console.error("Error:", error);
-    } finally {
-      setLoading(false);
+    } else {
+      // If no data exists, POST new data
+      try {
+        const apiUrl = API_URL.WORK_DIARY;
+        await postApiWithoutAuth(apiUrl, payload);
+        message.success("Data submitted successfully!");
+      } catch (error) {
+        message.error("Something went wrong while submitting the data.");
+        console.error("Error:", error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 

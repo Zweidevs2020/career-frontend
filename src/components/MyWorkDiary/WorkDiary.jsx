@@ -31,7 +31,6 @@ const WorkDiary = () => {
     { label: "Day 10", key: "DayTen", component: <DayTen /> },
     { label: "Quiz", key: "QuizTime", component: <QuizTime /> },
   ];
-
   useEffect(() => {
     // Set the start date of Day 1
     const startDate = new Date("2024-11-01"); // Change this to your desired start date
@@ -41,11 +40,31 @@ const WorkDiary = () => {
     const diffInDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
 
     // Determine the active day based on the difference
-    const dayIndex = diffInDays % dayComponents.length; // Loop back to Day 1 after Day 10
+    let dayIndex = diffInDays % dayComponents.length; // Loop back to Day 1 after Day 10
+
+    // If DayIndex exceeds 10, reset it to Day 1
+    if (dayIndex > 9) {
+      dayIndex = 0; // Reset to Day 1 after Day 10
+    }
+
     setCurrentDay(dayIndex + 1);
     setActiveDay(dayComponents[dayIndex].key);
   }, [dayComponents.length]);
 
+  // useEffect(() => {
+  //   // Set the start date of Day 1
+  //   const startDate = new Date("2024-11-01"); // Change this to your desired start date
+  //   const today = new Date();
+
+  //   // Calculate the difference in days between today and the start date
+  //   const diffInDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+
+  //   // Determine the active day based on the difference
+  //   const dayIndex = diffInDays % dayComponents.length; // Loop back to Day 1 after Day 10
+  //   console.log(dayIndex + 1);
+  //   setCurrentDay(dayIndex + 1);
+  //   setActiveDay(dayComponents[dayIndex].key);
+  // }, [dayComponents.length]);
   const handleButtonClick = (dayKey) => {
     setActiveDay(dayKey);
   };
