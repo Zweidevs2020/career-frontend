@@ -193,22 +193,22 @@ const MyChoices = () => {
       h1: {
         fontSize: "24px",
         fontWeight: "bold",
-        marginBottom: "20px",
+        marginBottom: "10px",
       },
       h2: {
         fontSize: "22px",
         fontWeight: "bold",
-        marginBottom: "18px",
+        // marginBottom: "5px",
       },
       h3: {
         fontSize: "20px",
         fontWeight: "bold",
-        marginBottom: "15px",
+        marginBottom: "10px",
       },
       p: {
         fontSize: "16px",
         lineHeight: "1.6",
-        marginBottom: "15px",
+        marginBottom: "5px",
       },
       ul: {
         fontSize: "16px",
@@ -226,7 +226,7 @@ const MyChoices = () => {
       li: {
         fontSize: "16px",
         lineHeight: "1.6",
-        marginBottom: "10px",
+        // marginBottom: "10px",
         paddingLeft: "20px",
         listStyleType: "disc", // Ensure bullets appear
         listStylePosition: "outside",
@@ -234,7 +234,7 @@ const MyChoices = () => {
       blockquote: {
         fontSize: "16px",
         fontStyle: "italic",
-        marginBottom: "20px",
+        // marginBottom: "20px",
         paddingLeft: "20px",
         borderLeft: "3px solid #ccc",
       },
