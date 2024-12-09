@@ -29,7 +29,7 @@ const WorkDiary = () => {
     { label: "Day 8", key: "DayEight", component: <DayEight /> },
     { label: "Day 9", key: "DayNine", component: <DayNine /> },
     { label: "Day 10", key: "DayTen", component: <DayTen /> },
-    { label: "Quiz", key: "QuizTime", component: <QuizTime /> },
+    // { label: "Quiz", key: "QuizTime", component: <QuizTime /> },
   ];
   useEffect(() => {
     // Set the start date of Day 1
