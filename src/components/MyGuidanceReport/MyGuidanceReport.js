@@ -131,7 +131,7 @@ const MyChoices = () => {
       );
 
       if (response?.data?.data?.success) {
-        const receivedResponse = response?.data?.data?.gpt_response;
+        const receivedResponse = response?.data?.data?.message;
         setGptResponse(receivedResponse);
         setMessageArray((prevState) => ({
           questions: [
@@ -359,12 +359,12 @@ const MyChoices = () => {
         `ai-report/generate-guidance-report/`,
         payload
       );
-
       if (response?.data?.data?.success) {
         message.success("Data submitted successfully!");
         setIsCodeVisible(false);
 
-        const responseGptData = response?.data?.data?.gpt_response;
+        const responseGptData = response?.data?.data?.message;
+      
         setGptResponse(responseGptData); // Update the state
         // handleDownloadPdf(responseGptData); // Pass the direct response data
       } else {

@@ -64,6 +64,7 @@ const MyCareerGuidanceInputField = (props) => {
           suffix={props.suffix}
           onKeyDown={props.onKeyDown}
           disabled={props.disabled}
+          onClick={props.onClick}
           name={props.name}
           prefix={
             props.prefix ? (
@@ -96,7 +97,9 @@ const MyCareerGuidanceInputField = (props) => {
           onChange={props.onChange}
           autoFocus={props.inputValue}
           name={props.name}
+          onClick={props.onClick}
           required={props.required}
+          id={props.id}
           suffix={props.suffix}
           onKeyDown={props.onKeyDown}
           disabled={props.disabled}

@@ -51,6 +51,7 @@ const { Column, ColumnGroup } = Table;
 
 const MyChoicesEdit = () => {
   const inputRef = useRef(null);
+  const focusRef = useRef(null);
   const handleUpdateRef = useRef(null);
   const handleAddRowRef = useRef(null);
   const handleeidtThisRowRef = useRef(null);
@@ -168,29 +169,35 @@ const MyChoicesEdit = () => {
   }, [showRows]);
 
   const handleChangeTable = (e, rowData) => {
-    const { name, value } = e.target;
+    const { name, value, id } = e.target;
 
     let updatedData = data.map((item) => {
       if (item.rowNo === rowData.rowNo) {
-        rowRef.current = {
-          ...rowRef.current,
+        return {
+          ...item,
           id: item.id,
           dataId: item.dataId,
-          rowDataNo: rowData.rowNo,
+          rowNo: rowData.rowNo,
+          editable: true,
           [name]: value,
         };
-
-        return rowRef.current;
       } else {
         return item;
       }
     });
 
-    dataRef.current = [...updatedData];
+    setData(updatedData);
+
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.focus();
+      }
+    }, 0);
   };
 
   const handleChangeTableMobile = (e, rowData) => {
-    const { name, value } = e.target;
+    const { name, value, id } = e.target;
 
     let updatedData = data.map((item) => {
       if (item.rowNo === rowData.rowNo) {
@@ -206,7 +213,20 @@ const MyChoicesEdit = () => {
       }
     });
     setData(updatedData);
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.focus();
+      }
+    }, 0);
   };
+
+  useEffect(() => {
+    if (focusRef.current) {
+      focusRef.current.focus();
+      focusRef.current = null; // Reset to avoid unnecessary focusing
+    }
+  }, [data]);
 
   const eidtThisRow = (record) => {
     const updatedData = data.map((item) => {
@@ -220,11 +240,14 @@ const MyChoicesEdit = () => {
   };
   // Update function for desktop
   const handleUpdate = async (record) => {
-    const [title] = record.title.split(",");
-    const [college] = record.college.split(",");
-
-    record.title = title;
-    record.college = college;
+    if (record?.title) {
+      const [title] = record.title.split(",");
+      record.title = title;
+    }
+    if (record?.college) {
+      const [college] = record.college.split(",");
+      record.college = college;
+    }
 
     const respose = await patchApiWithAuth(
       `choices/update-${dataa.id}/${record.id}/`,
@@ -281,10 +304,14 @@ const MyChoicesEdit = () => {
     if (record.code === null || record.title === null) {
       message.error("All fields are required");
     } else {
-      let [title] = record.title.split(",");
-      let [college] = record.college.split(",");
-      record.title = title;
-      record.college = college;
+      if (record?.title) {
+        const [title] = record.title.split(",");
+        record.title = title;
+      }
+      if (record?.college) {
+        const [college] = record.college.split(",");
+        record.college = college;
+      }
       const respose = await postApiWithAuth(`choices/${dataa.id}/`, record);
       if (respose.data.status === 200) {
         message.success("Row add succesfully");
@@ -298,7 +325,6 @@ const MyChoicesEdit = () => {
     }
   };
   const handleAddRowMobile = async (record) => {
-    console.log(record, "record");
     for (const key in record) {
       if (key !== "id" && record[key] === null) {
         message.error(`Please enter the ${key} of the Row`);
@@ -674,7 +700,7 @@ const MyChoicesEdit = () => {
                                 </span>
                               )}
                             />
-                            {columns.map((item) => {
+                            {columns.map((item, index) => {
                               return (
                                 <>
                                   {item === "code" ||
@@ -783,7 +809,7 @@ const MyChoicesEdit = () => {
                                       dataIndex={item}
                                       key={item}
                                       disabled
-                                      className="tableHeadingStyle"
+                                      className="tableHeadingStyle "
                                       render={(text, record) => {
                                         let parseText = parseInt(text);
                                         parseText = isNaN(parseText)
@@ -791,14 +817,34 @@ const MyChoicesEdit = () => {
                                           : parseText;
                                         return (
                                           <div
+                                            style={{
+                                              position: "relative",
+                                            }}
                                             onClick={() => {
                                               if (!record.editable) {
                                                 eidtThisRow(record);
                                               }
                                             }}
                                           >
+                                            {!record.editable && (
+                                              <div
+                                                style={{
+                                                  position: "absolute",
+                                                  height: "100%",
+                                                  width: "100%",
+                                                  backgroundColor:
+                                                    "transparent",
+                                                  zIndex: 1,
+                                                }}
+                                                onClick={() => {
+                                                  if (!record.editable) {
+                                                    eidtThisRow(record);
+                                                  }
+                                                }}
+                                              ></div>
+                                            )}
                                             <MyCareerGuidanceInputField
-                                              ref={inputRef}
+                                              // ref={inputRef}
                                               placeholder={item}
                                               type="input"
                                               name={item}
@@ -807,6 +853,13 @@ const MyChoicesEdit = () => {
                                                 handleChangeTable(e, record)
                                               }
                                               isPrefix={false}
+                                              id={`input-${item}-${record?.rowNo}`}
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                if (!record.editable) {
+                                                  eidtThisRow(record);
+                                                }
+                                              }}
                                               disabled={!record.editable}
                                             />
                                           </div>
@@ -880,7 +933,7 @@ const MyChoicesEdit = () => {
                           <span style={{ paddingLeft: 10 }}>{text + 1}</span>
                         )}
                       />
-                      {columns.map((item) => {
+                      {columns.map((item, index) => {
                         return (
                           <>
                             {item === "code" ||
@@ -986,6 +1039,7 @@ const MyChoicesEdit = () => {
                                   parseText = isNaN(parseText)
                                     ? text
                                     : parseText;
+
                                   return (
                                     <div
                                       onClick={() => {
@@ -995,7 +1049,6 @@ const MyChoicesEdit = () => {
                                       }}
                                     >
                                       <MyCareerGuidanceInputField
-                                        ref={inputRef}
                                         placeholder={item}
                                         type="input"
                                         name={item}
@@ -1003,8 +1056,17 @@ const MyChoicesEdit = () => {
                                         onChange={(e) =>
                                           handleChangeTable(e, record)
                                         }
+                                        onFocus={(e) =>
+                                          (inputRef.current = e.target)
+                                        }
+                                        id={`input-${item}-${record?.rowNo}`}
                                         isPrefix={false}
                                         // disabled={!record.editable}
+                                        onClick={() => {
+                                          if (!record.editable) {
+                                            eidtThisRow(record);
+                                          }
+                                        }}
                                       />
                                     </div>
                                   );
