@@ -140,6 +140,38 @@
   display: flex;
   justify-content: center;
 }
+.gptResponse h1 {
+  padding-inline: 1rem;
+  color: #4c7faf;
+  font-size: 24px;
+  text-align: center;
+}
+
+.gptResponse h2 {
+  padding-inline: 1rem;
+  color: blacky;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.gptResponse p {
+  padding-inline: 1rem;
+  color: #333;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+
+.gptResponse ul {
+  padding-inline: 1rem;
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.gptResponse li {
+  padding-inline: 1rem;
+  margin-bottom: 10px;
+}
 .educationalGuidanceMainDiv {
   background-color: white;
   width: 100%;

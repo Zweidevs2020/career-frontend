@@ -31,8 +31,13 @@ import YoutubePage from "./components/CvCoverLetter/YoutubePage";
 import OccupationalOption from "./components/OccupationalOption";
 import CheckoutView from "./components/checkout/checkout";
 import MyGuidanceReport from "./components/MyGuidanceReport";
+import WorkDiary from "./components/MyWorkDiary/WorkDiary";
+
+import { useSubscribe } from "./context/subscribe";
 
 function App() {
+  const { subscribe, loading } = useSubscribe();
+  console.log("[subscribe in app]", subscribe);
   return (
     <BrowserRouter>
       <Routes>
@@ -79,7 +84,7 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <PrivateRoute>
+            <PrivateRoute restricted={subscribe == null ? false : !subscribe}>
               <Sidebar>
                 <CareerDashboard />
               </Sidebar>
@@ -190,6 +195,16 @@ function App() {
           }
         />
         <Route
+          path="/work-diary"
+          element={
+            <PrivateRoute>
+              <Sidebar>
+                <WorkDiary />
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="/my-choice-edit"
           element={
             <PrivateRoute>
@@ -212,7 +227,7 @@ function App() {
         <Route
           path="/checkout"
           element={
-            <PublicRoute>
+            <PublicRoute restricted={subscribe}>
               <CheckoutView />
             </PublicRoute>
           }

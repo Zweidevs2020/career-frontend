@@ -12,10 +12,11 @@ import { API_URL } from "../../../utils/constants";
 import { postApiWithAuth } from "../../../utils/api";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useSubscribe } from "../../../context/subscribe";
 
 function CheckoutForm() {
   const navigate = useNavigate();
-
+  const { setSubscribe } = useSubscribe();
   const stripe = useStripe();
   const elements = useElements();
 
@@ -28,6 +29,7 @@ function CheckoutForm() {
       payment_method_token: payment.id,
     });
     if (response.data.data.success) {
+      setSubscribe(true);
       message.success(response.data.data.message);
       setIsLoading(false);
       navigate("/dashboard");
