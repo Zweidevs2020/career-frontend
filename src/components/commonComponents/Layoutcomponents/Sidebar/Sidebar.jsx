@@ -485,6 +485,24 @@ const Sidebar = ({ children, flags }) => {
                   </span>
                 </Menu.Item>
               </Menu>
+              <p
+                style={{
+                  fontSize: "smaller",
+                  fontWeight: "bold",
+                  padding: "6px",
+                }}
+              >
+                Last Payment Date : {userDatas?.last_payment_date}
+              </p>
+              <p
+                style={{
+                  fontSize: "smaller",
+                  fontWeight: "bold",
+                  padding: "6px",
+                }}
+              >
+                Next Payment Date : {userDatas?.next_payment_date}
+              </p>
               <div
                 style={{
                   display: "flex",
