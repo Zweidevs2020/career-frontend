@@ -46,4 +46,5 @@ export const API_URL = {
   SENDCV: "cv/sendcv/",
   CREATEPAYMENT: "user/create-payment/",
   WORK_DIARY: "/diary/api/work-experience-questions/",
+  SUBS: "user/subscription/expiry/",
 };

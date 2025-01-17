@@ -77,9 +77,26 @@ const Sidebar = ({ children, flags }) => {
     height: window.innerHeight,
   });
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
+  const [Url, setUrl] = useState(null);
   const [open, setOpen] = useState(false);
   const [placement, setPlacement] = useState("left");
+  const [userDatas, setUserDatas] = useState({});
+  const getUserDatas = async () => {
+    const response = await getApiWithAuth(API_URL.SUBS);
+    if (response?.data?.status === 200) {
+      setUserDatas(response.data.data);
+    } else {
+    }
+  };
+  const currentUrl = location.pathname;
+  useEffect(() => {
+    setUrl(currentUrl);
+    console.log(currentUrl, "urls");
+  }, [currentUrl]);
+  useEffect(() => {
+    getUserDatas();
+  }, []);
+
   const showDrawer = () => {
     setOpen(true);
   };
@@ -194,7 +211,18 @@ const Sidebar = ({ children, flags }) => {
   };
 
   const componentsSwtich = (key) => {
+    // If currently on "MyChoices" and trying to leave, show confirmation
+    if (location.pathname === "/my-choice-edit" && key !== "MyChoices") {
+      const confirmSwitch = window.confirm(
+        "Are you sure you want to change routes? All unsaved data will be discarded."
+      );
+      if (!confirmSwitch) {
+        // If the user cancels, don't switch the route
+        return;
+      }
+    }
     setSelectedMenuItem(key);
+
     if (key === "Overview") {
       navigate("/dashboard");
     } else if (key === "CAOCalculator") {
@@ -208,7 +236,7 @@ const Sidebar = ({ children, flags }) => {
     } else if (key === "EducationalGuidance") {
       navigate("/educational-guidance");
     } else if (key === "MyChoices") {
-      navigate("/my-choices");
+      navigate("/my-choices"); // No alert when navigating to "MyChoices"
     } else if (key === "ChatBot") {
       navigate("/my-guidance-report");
     } else if (key === "Work") {
