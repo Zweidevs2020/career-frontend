@@ -492,22 +492,25 @@ const Sidebar = ({ children, flags }) => {
               </div> */}
               <p
                 style={{
-                  fontSize: "smaller",
-                  fontWeight: "bold",
-                  padding: "6px",
+                  fontSize: "12px",
+                  fontWeight: "600",
+                  padding: "8px 12px",
+
+                  borderRadius: "4px",
+                  borderImage:
+                    "linear-gradient(90deg, #888, #666, #444, #222) 1",
+                  boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
+                  background: "#F5F5F5", // Light gray background to match sidebar
+                  color: "#444", // Dark gray text for readability
+                  margin: "10px",
+                  textAlign: "left",
+                  display: "block",
+                  width: "auto",
                 }}
               >
-                Last Payment Date : {userDatas?.last_payment_date}
+                Subscription Ends: {userDatas?.current_period_end}
               </p>
-              <p
-                style={{
-                  fontSize: "smaller",
-                  fontWeight: "bold",
-                  padding: "6px",
-                }}
-              >
-                Next Payment Date : {userDatas?.next_payment_date}
-              </p>
+
               <div
                 style={{
                   display: "flex",
