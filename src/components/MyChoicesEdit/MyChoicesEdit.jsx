@@ -54,9 +54,11 @@ const MyChoicesEdit = () => {
   const focusRef = useRef(null);
   const handleUpdateRef = useRef(null);
   const handleAddRowRef = useRef(null);
+
   const handleeidtThisRowRef = useRef(null);
   const handleDeleteRef = useRef(null);
   const navigate = useNavigate();
+  const [selectedOptions, setSelectedOptions] = useState({});
   const [selectedRowId, setSelectedRowId] = useState(null);
   const location = useLocation();
   const { dataa } = location.state || {};
@@ -92,7 +94,7 @@ const MyChoicesEdit = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
+  console.log(selectedOptions?.code?.row, "selected");
   const getChoiceRecord = async () => {
     setLoadingFirst(true);
     const response = await getApiWithAuth(
@@ -300,30 +302,148 @@ const MyChoicesEdit = () => {
     }
   };
 
-  const handleAddRow = async (record) => {
-    if (record.code === null || record.title === null) {
+  const currentPath = location.pathname;
+  const handleAddRow = async (recordToAdd) => {
+    // Use recordToAdd if provided, or fall back to the record stored in state
+    const finalRecord = recordToAdd || selectedOptions?.code?.row;
+
+    if (!finalRecord) {
+      message.error("No valid record found");
+      return;
+    }
+
+    if (finalRecord.code === null || finalRecord.title === null) {
       message.error("All fields are required");
     } else {
-      if (record?.title) {
-        const [title] = record.title.split(",");
-        record.title = title;
+      console.log(finalRecord, "ss");
+      if (finalRecord?.title) {
+        const [title] = finalRecord.title.split(",");
+        finalRecord.title = title;
       }
-      if (record?.college) {
-        const [college] = record.college.split(",");
-        record.college = college;
+      if (finalRecord?.college) {
+        const [college] = finalRecord.college.split(",");
+        finalRecord.college = college;
       }
-      const respose = await postApiWithAuth(`choices/${dataa.id}/`, record);
-      if (respose.data.status === 200) {
-        message.success("Row add succesfully");
+
+      const response = await postApiWithAuth(
+        `choices/${dataa.id}/`,
+        finalRecord
+      );
+
+      if (response.data.status === 200) {
+        message.success("Row added successfully");
         setShowRows(null);
         getChoiceRecord();
         getTableRecord();
-        setSelectedRowId(record.id);
+        setSelectedRowId(finalRecord.id);
       } else {
-        message.error(respose.data.message);
+        message.error(response.data.message);
       }
     }
   };
+
+  // useEffect(() => {
+  //   // Run on URL change
+  //   const handleRouteChange = () => {
+  //     const shouldNavigate = window.confirm("Are you sure you want to leave?");
+  //     if (shouldNavigate) {
+  //       // If confirmed, navigate to the new route
+  //       navigate(location.pathname); // Keep the current path
+  //     } else {
+  //       // If cancelled, stay on the current route
+  //       window.history.pushState(null, "", location.pathname);
+  //     }
+  //   };
+
+  //   // Listen to location changes
+  //   window.addEventListener("beforeunload", handleRouteChange);
+
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleRouteChange);
+  //   };
+  // }, [location, navigate]);
+  // useEffect(() => {
+  //   // Handle route change using 'beforeunload' and 'popstate'
+  //   const handleRouteChange = () => {
+  //     console.log("Route change detected! Checking if row should be added...");
+  //     if (selectedOptions?.code?.row) {
+  //       handleAddRow(selectedOptions.code.row);
+  //     }
+  //   };
+
+  //   // Listen for browser back/forward (popstate) event
+  //   window.addEventListener("popstate", handleRouteChange);
+
+  //   // Listen for page refresh (beforeunload event)
+  //   const handleBeforeUnload = (event) => {
+  //     console.log("Before unload event triggered. Checking for changes...");
+
+  //     // Call handleRouteChange before leaving the page
+  //     handleRouteChange();
+
+  //     // Show confirmation dialog before leaving the page
+  //     event.preventDefault();
+  //     event.returnValue =
+  //       "Are you sure you want to leave? Your changes might not be saved.";
+  //   };
+
+  //   // Listen for page unload (refresh/navigation away)
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
+
+  //   // Cleanup listeners on unmount
+  //   return () => {
+  //     window.removeEventListener("popstate", handleRouteChange);
+  //     window.removeEventListener("beforeunload", handleBeforeUnload);
+  //   };
+  // }, [selectedOptions?.code?.row]);
+  useEffect(() => {
+    // Handle route change
+    const handleRouteChange = () => {
+      console.log("Route change detected! Checking if row should be added...");
+      if (selectedOptions?.code?.row) {
+        handleAddRow(selectedOptions.code.row);
+      }
+    };
+
+    // Handle before unload
+    const handleBeforeUnload = (event) => {
+      console.log("Before unload event triggered. Checking for changes...");
+      const confirmationMessage =
+        "Are you sure you want to leave? Your changes might not be saved.";
+
+      // Set the event's returnValue to display a confirmation dialog
+      event.preventDefault();
+      event.returnValue = confirmationMessage;
+
+      // Return the confirmation message for some older browsers
+      return confirmationMessage;
+    };
+
+    // Handle reload confirmation
+    const handleReload = () => {
+      const userConfirmed = window.confirm(
+        "Do you want to reload the page? Your changes might not be saved."
+      );
+      if (userConfirmed) {
+        handleRouteChange();
+      }
+    };
+
+    // Add event listeners
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("popstate", handleRouteChange);
+
+    // Call the reload handler
+    window.addEventListener("unload", handleReload);
+
+    // Cleanup listeners on unmount
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("popstate", handleRouteChange);
+      window.removeEventListener("unload", handleReload);
+    };
+  }, [selectedOptions?.code?.row]);
+
   const handleAddRowMobile = async (record) => {
     for (const key in record) {
       if (key !== "id" && record[key] === null) {
@@ -655,7 +775,7 @@ const MyChoicesEdit = () => {
                   </button>
                 </div>
               )}
-              <div className="myChoiceEditHeading py-3">{dataa.name}</div>
+              <div className="myChoiceEditHeading py-3">{dataa?.name}</div>
               <div className="w-100 p-3">
                 {!isMobile ? (
                   <div className="w-100" style={{ overflowX: "auto" }}>
@@ -987,7 +1107,20 @@ const MyChoicesEdit = () => {
                                             style={{ marginRight: 10 }}
                                           />
                                         }
-                                        onSelect={(value, option) =>
+                                        onSelect={(value, option) => {
+                                          // Log the selected value and option to the console
+                                          console.log("Selected value:", value);
+                                          console.log(
+                                            "Selected option:",
+                                            option
+                                          );
+                                          // Update the state with the selected option object
+                                          setSelectedOptions((prevState) => ({
+                                            ...prevState,
+                                            [item]: option,
+                                          }));
+
+                                          // Call the handleSelect function with the necessary parameters
                                           handleSelect(
                                             value,
                                             option,
@@ -995,8 +1128,19 @@ const MyChoicesEdit = () => {
                                               data.filter(
                                                 (item) => item.id !== null
                                               ).length
-                                          )
-                                        }
+                                          );
+                                        }}
+                                        // onSelect={(value, option) =>
+
+                                        //   handleSelect(
+                                        //     value,
+                                        //     option,
+                                        //     rowNum +
+                                        //       data.filter(
+                                        //         (item) => item.id !== null
+                                        //       ).length
+                                        //   )
+                                        // }
                                         optionLabelProp="label"
                                       >
                                         {dropDownOptions.map((option) => {

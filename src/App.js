@@ -37,7 +37,7 @@ import { useSubscribe } from "./context/subscribe";
 
 function App() {
   const { subscribe, loading } = useSubscribe();
-  console.log("[subscribe in app]", subscribe);
+
   return (
     <BrowserRouter>
       <Routes>
