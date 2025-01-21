@@ -26,7 +26,7 @@ function CheckoutForm() {
   const handlePaymentSubmit = async (payment) => {
     setIsLoading(true);
     const response = await postApiWithAuth(API_URL.CREATEPAYMENT, {
-      payment_method_token: payment.id,
+      payment_method_id: payment.id,
     });
     if (response.data.data.success) {
       setSubscribe(true);

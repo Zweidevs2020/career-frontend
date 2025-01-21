@@ -57,6 +57,7 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import { useSubscribe } from "../../../../context/subscribe";
+import { AnalogClock } from "../../../clock/clock";
 const { Content, Sider, Header } = Layout;
 const Sidebar = ({ children, flags }) => {
   const { setSubscribe } = useSubscribe();
@@ -485,6 +486,10 @@ const Sidebar = ({ children, flags }) => {
                   </span>
                 </Menu.Item>
               </Menu>
+              {/* 
+              <div className="p-4 flex justify-center items-center">
+                <AnalogClock />
+              </div> */}
               <p
                 style={{
                   fontSize: "smaller",
