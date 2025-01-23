@@ -16,7 +16,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { ConfigProvider, Input, Modal } from "antd";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { Space, Table, Col, message, Select, Image } from "antd";
 import {
   CheckOutlined,
@@ -52,15 +52,15 @@ const { Column, ColumnGroup } = Table;
 const MyChoicesEdit = () => {
   const inputRef = useRef(null);
   const focusRef = useRef(null);
-  const handleUpdateRef = useRef(null);
-  const handleAddRowRef = useRef(null);
-
-  const handleeidtThisRowRef = useRef(null);
-  const handleDeleteRef = useRef(null);
+  const location = useLocation(); // Track current route
   const navigate = useNavigate();
+  const [searchParam, setSearchParam] = useSearchParams({
+    unsave: false,
+  });
   const [selectedOptions, setSelectedOptions] = useState({});
+  const [previousUrl, setPreviousUrl] = useState(null);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const location = useLocation();
+  const currentUrl = location.pathname;
   const { dataa } = location.state || {};
   const [loadingFirst, setLoadingFirst] = useState(false);
   const [columns, setColums] = useState([]);
@@ -72,9 +72,6 @@ const MyChoicesEdit = () => {
   const [oldData, setOldData] = useState(null);
   const [dropDownOptions, setDropDownOptions] = useState(null);
   const [showRowsData, setShowRowsData] = useState(null);
-  const dataRef = useRef([]);
-  const rowRef = useRef(null);
-  const inputRefMobile = useRef();
 
   useEffect(() => {
     getChoiceRecord();
@@ -94,7 +91,7 @@ const MyChoicesEdit = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-  console.log(selectedOptions?.code?.row, "selected");
+
   const getChoiceRecord = async () => {
     setLoadingFirst(true);
     const response = await getApiWithAuth(
@@ -229,7 +226,64 @@ const MyChoicesEdit = () => {
       focusRef.current = null; // Reset to avoid unnecessary focusing
     }
   }, [data]);
+  // Define event handlers outside of useEffect
+  const handleRouteChange = () => {
+    console.log("Route change detected! Checking if row should be added...");
+    if (selectedOptions?.code?.row) {
+      handleAddRow(selectedOptions.code.row);
+    }
+  };
 
+  const handleBeforeUnload = (event) => {
+    console.log("Before unload event triggered. Checking for changes...");
+    const confirmationMessage =
+      "Are you sure you want to leave? Your changes might not be saved.";
+
+    event.preventDefault();
+    event.returnValue = confirmationMessage;
+
+    return confirmationMessage; // For older browsers
+  };
+
+  const handleReload = () => {
+    const userConfirmed = window.confirm(
+      "Do you want to reload the page? Your changes might not be saved."
+    );
+    if (userConfirmed) {
+      handleRouteChange();
+    }
+  };
+
+  // Function to enable event listeners when a row is being edited
+  const enableEventListeners = () => {
+    // localStorage.setItem("unsave", true);
+    sessionStorage.setItem("unsave", "true");
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("popstate", handleRouteChange);
+    window.addEventListener("unload", handleReload);
+  };
+
+  // Function to disable event listeners
+  const disableEventListeners = () => {
+    // localStorage.removeItem("unsave");
+    sessionStorage.removeItem("unsave");
+    console.log("Disabling event listeners...");
+    window.removeEventListener("beforeunload", handleBeforeUnload);
+    window.removeEventListener("popstate", handleRouteChange);
+    window.removeEventListener("unload", handleReload);
+  };
+
+  // const eidtThisRow = (record) => {
+  //   const updatedData = data.map((item) => {
+  //     if (item.rowNo === record.rowNo) {
+  //       return { ...item, editable: true };
+  //     } else {
+  //       return item;
+  //     }
+  //   });
+  //   setData(updatedData);
+  // };
+  // Modify editThisRow function to include event handling
   const eidtThisRow = (record) => {
     const updatedData = data.map((item) => {
       if (item.rowNo === record.rowNo) {
@@ -238,7 +292,22 @@ const MyChoicesEdit = () => {
         return item;
       }
     });
+
     setData(updatedData);
+
+    // Enable event listeners when a row is being edited
+    enableEventListeners();
+  };
+
+  // Optional: Call disableEventListeners when saving or canceling editing
+  const saveRow = () => {
+    // Your save logic here
+    disableEventListeners();
+  };
+
+  const cancelEdit = () => {
+    // Your cancel logic here
+    disableEventListeners();
   };
   // Update function for desktop
   const handleUpdate = async (record) => {
@@ -329,121 +398,70 @@ const MyChoicesEdit = () => {
         `choices/${dataa.id}/`,
         finalRecord
       );
-
+      // Ensure event listeners are removed
+      disableEventListeners();
+      console.log(response?.data?.status, "hello");
       if (response.data.status === 200) {
         message.success("Row added successfully");
         setShowRows(null);
         getChoiceRecord();
         getTableRecord();
         setSelectedRowId(finalRecord.id);
+        disableEventListeners();
       } else {
         message.error(response.data.message);
       }
     }
   };
-
   // useEffect(() => {
-  //   // Run on URL change
-  //   const handleRouteChange = () => {
-  //     const shouldNavigate = window.confirm("Are you sure you want to leave?");
-  //     if (shouldNavigate) {
-  //       // If confirmed, navigate to the new route
-  //       navigate(location.pathname); // Keep the current path
-  //     } else {
-  //       // If cancelled, stay on the current route
-  //       window.history.pushState(null, "", location.pathname);
-  //     }
+  //   const currentUrl = location.pathname;
+
+  //   // Function to log previous URL when leaving the page
+  //   const logPreviousUrl = () => {
+  //     console.log("Leaving page:", currentUrl);
+  //     // setPreviousUrl(currentUrl);
   //   };
 
-  //   // Listen to location changes
-  //   window.addEventListener("beforeunload", handleRouteChange);
+  //   return logPreviousUrl; // This runs before the effect re-runs (cleanup)
+  // }, [location]);
+  console.log("[loca]", location);
 
-  //   return () => {
-  //     window.removeEventListener("beforeunload", handleRouteChange);
-  //   };
-  // }, [location, navigate]);
   // useEffect(() => {
-  //   // Handle route change using 'beforeunload' and 'popstate'
-  //   const handleRouteChange = () => {
-  //     console.log("Route change detected! Checking if row should be added...");
+  //   const currentUrl = location.pathname;
+
+  //   const logPreviousUrl = () => {
   //     if (selectedOptions?.code?.row) {
-  //       handleAddRow(selectedOptions.code.row);
+  //       const confirmLeave = window.confirm(
+  //         "You have unsaved changes. Are you sure you want to leave?"
+  //       );
+  //       console.log("1");
+  //       console.log(confirmLeave, "confrim", !confirmLeave);
+  //       if (!confirmLeave) {
+  //         console.log(confirmLeave, "inside if ");
+  //         console.log("2");
+  //         return; // Prevent navigation
+  //       }
+  //       console.log("3");
   //     }
+  //     console.log("4");
+  //     setPreviousUrl(currentUrl); // Update previous URL if navigation is allowed
   //   };
 
-  //   // Listen for browser back/forward (popstate) event
-  //   window.addEventListener("popstate", handleRouteChange);
+  //   return logPreviousUrl; // Runs before effect re-runs (cleanup)
+  // }, [location, navigate]);
 
-  //   // Listen for page refresh (beforeunload event)
-  //   const handleBeforeUnload = (event) => {
-  //     console.log("Before unload event triggered. Checking for changes...");
-
-  //     // Call handleRouteChange before leaving the page
-  //     handleRouteChange();
-
-  //     // Show confirmation dialog before leaving the page
-  //     event.preventDefault();
-  //     event.returnValue =
-  //       "Are you sure you want to leave? Your changes might not be saved.";
-  //   };
-
-  //   // Listen for page unload (refresh/navigation away)
-  //   window.addEventListener("beforeunload", handleBeforeUnload);
-
-  //   // Cleanup listeners on unmount
-  //   return () => {
-  //     window.removeEventListener("popstate", handleRouteChange);
-  //     window.removeEventListener("beforeunload", handleBeforeUnload);
-  //   };
-  // }, [selectedOptions?.code?.row]);
   useEffect(() => {
-    // Handle route change
-    const handleRouteChange = () => {
-      console.log("Route change detected! Checking if row should be added...");
-      if (selectedOptions?.code?.row) {
-        handleAddRow(selectedOptions.code.row);
-      }
-    };
+    const isRowEditable = data.some((row) => row.editable);
+    if (isRowEditable) {
+      enableEventListeners();
+    } else {
+      disableEventListeners();
+    }
 
-    // Handle before unload
-    const handleBeforeUnload = (event) => {
-      console.log("Before unload event triggered. Checking for changes...");
-      const confirmationMessage =
-        "Are you sure you want to leave? Your changes might not be saved.";
-
-      // Set the event's returnValue to display a confirmation dialog
-      event.preventDefault();
-      event.returnValue = confirmationMessage;
-
-      // Return the confirmation message for some older browsers
-      return confirmationMessage;
-    };
-
-    // Handle reload confirmation
-    const handleReload = () => {
-      const userConfirmed = window.confirm(
-        "Do you want to reload the page? Your changes might not be saved."
-      );
-      if (userConfirmed) {
-        handleRouteChange();
-      }
-    };
-
-    // Add event listeners
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    window.addEventListener("popstate", handleRouteChange);
-
-    // Call the reload handler
-    window.addEventListener("unload", handleReload);
-
-    // Cleanup listeners on unmount
     return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      window.removeEventListener("popstate", handleRouteChange);
-      window.removeEventListener("unload", handleReload);
+      disableEventListeners(); // Cleanup on component unmount
     };
-  }, [selectedOptions?.code?.row]);
-
+  }, [data, enableEventListeners, disableEventListeners]);
   const handleAddRowMobile = async (record) => {
     for (const key in record) {
       if (key !== "id" && record[key] === null) {

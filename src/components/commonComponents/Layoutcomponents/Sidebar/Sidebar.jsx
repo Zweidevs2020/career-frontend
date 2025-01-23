@@ -90,10 +90,7 @@ const Sidebar = ({ children, flags }) => {
     }
   };
   const currentUrl = location.pathname;
-  useEffect(() => {
-    setUrl(currentUrl);
-    console.log(currentUrl, "urls");
-  }, [currentUrl]);
+
   useEffect(() => {
     getUserDatas();
   }, []);
@@ -213,15 +210,15 @@ const Sidebar = ({ children, flags }) => {
 
   const componentsSwtich = (key) => {
     // If currently on "MyChoices" and trying to leave, show confirmation
-    if (location.pathname === "/my-choice-edit" && key !== "MyChoices") {
-      const confirmSwitch = window.confirm(
-        "Are you sure you want to change routes? All unsaved data will be discarded."
-      );
-      if (!confirmSwitch) {
-        // If the user cancels, don't switch the route
-        return;
-      }
-    }
+    // if (location.pathname === "/my-choice-edit" && key !== "MyChoices") {
+    //   const confirmSwitch = window.confirm(
+    //     "Are you sure you want to change routes? "
+    //   );
+    //   if (!confirmSwitch) {
+    //     // If the user cancels, don't switch the route
+    //     return;
+    //   }
+    // }
     setSelectedMenuItem(key);
 
     if (key === "Overview") {
@@ -307,7 +304,23 @@ const Sidebar = ({ children, flags }) => {
                 selectedKeys={selectedMenuItem}
                 mode="inline"
                 className="sideBarStyle"
-                onClick={(e) => componentsSwtich(e.key)}
+                onClick={(e) => {
+                  if (
+                    // localStorage.getItem("unsave") &&
+                    // Boolean(localStorage.getItem("unsave"))
+                    sessionStorage.getItem("unsave") &&
+                    Boolean(sessionStorage.getItem("unsave"))
+                  ) {
+                    const confirm = window.confirm(
+                      "You have unsaved changes. Are you sure you want to leave this page?"
+                    );
+                    if (confirm) {
+                      componentsSwtich(e.key);
+                    }
+                  } else {
+                    componentsSwtich(e.key);
+                  }
+                }}
               >
                 <Menu.Item
                   key="Overview"
