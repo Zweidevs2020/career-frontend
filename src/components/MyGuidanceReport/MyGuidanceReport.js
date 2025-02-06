@@ -364,7 +364,7 @@ const MyChoices = () => {
         setIsCodeVisible(false);
 
         const responseGptData = response?.data?.data?.message;
-      
+
         setGptResponse(responseGptData); // Update the state
         // handleDownloadPdf(responseGptData); // Pass the direct response data
       } else {

@@ -47,4 +47,7 @@ export const API_URL = {
   CREATEPAYMENT: "user/create-payment/",
   WORK_DIARY: "/diary/api/work-experience-questions/",
   SUBS: "user/subscription/expiry/",
+  CONSELOR_SIGN_IN: "/user/counselor/login/",
+  CONSELOR_LIST_STUDENTS: "/user/counselor/students/",
+  CONSELOR_STUDENT_Details: "user/counselor/students/",
 };
