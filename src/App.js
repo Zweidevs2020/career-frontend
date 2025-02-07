@@ -32,8 +32,11 @@ import OccupationalOption from "./components/OccupationalOption";
 import CheckoutView from "./components/checkout/checkout";
 import MyGuidanceReport from "./components/MyGuidanceReport";
 import WorkDiary from "./components/MyWorkDiary/WorkDiary";
+import ConselorDashboard from "./components/conselor/conselorDashboard";
 
 import { useSubscribe } from "./context/subscribe";
+import ConselorPrivateRoute from "./routes/ConselorRouting";
+import StudentDetails from "./components/conselor/StudentDetails";
 
 function App() {
   const { subscribe, loading } = useSubscribe();
@@ -251,6 +254,22 @@ function App() {
                 <Occupational />
               </Sidebar>
             </PrivateRoute>
+          }
+        />
+        <Route
+          path="/conselorDashboard"
+          element={
+            <ConselorPrivateRoute>
+              <ConselorDashboard />
+            </ConselorPrivateRoute>
+          }
+        />
+        <Route
+          path="/student-details/:id"
+          element={
+            <ConselorPrivateRoute>
+              <StudentDetails />
+            </ConselorPrivateRoute>
           }
         />
       </Routes>
