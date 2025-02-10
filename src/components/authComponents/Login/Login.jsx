@@ -278,9 +278,9 @@ Counsellor Login"
                 >
                   Remember me
                 </Checkbox>
-                <Link to="/forget-password" className="textStyle14">
+                {/* <Link to="/forget-password" className="textStyle14">
                   Forgot Password?
-                </Link>
+                </Link> */}
               </span>
               <MyCareerGuidanceButton
                 label="Sign In"
