@@ -434,7 +434,7 @@ const StudentDetails = () => {
             />
           </Card>
           {/* Diary Entries */}
-          <Card title="Diary Entries" className="mt-4 md:mt-6">
+          <Card title="Work Diary" className="mt-4 md:mt-6">
             <List
               bordered
               dataSource={
