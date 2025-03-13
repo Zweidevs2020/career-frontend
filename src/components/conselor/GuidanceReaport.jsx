@@ -86,7 +86,7 @@ const CounselorCao = () => {
     return (
       <div className="p-6">
         <StudentInformation />
-        <h1 className="text-2xl font-bold mb-4">Educational Guidance</h1>
+        <h1 className="text-2xl font-bold mb-4">My Educational Guidance</h1>
         <p>Loading...</p>
       </div>
     );
@@ -96,7 +96,7 @@ const CounselorCao = () => {
     return (
       <div className="p-6">
         <StudentInformation />
-        <h1 className="text-2xl font-bold mb-4">Educational Guidance</h1>
+        <h1 className="text-2xl font-bold mb-4">My Educational Guidance</h1>
         <p>No data available</p>
       </div>
     );
@@ -109,7 +109,7 @@ const CounselorCao = () => {
   return (
     <div className="p-6">
       <StudentInformation />
-      <h1 className="text-2xl font-bold mb-4">Educational Guidance</h1>
+      <h1 className="text-2xl font-bold mb-4">My Educational Guidance</h1>
 
       {/* Example aggregated data section (optional) */}
       <div className="mb-6 bg-white p-4 rounded shadow">

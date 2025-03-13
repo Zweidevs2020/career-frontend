@@ -94,7 +94,7 @@ const CounselorCao = () => {
   return (
     <div className="p-6">
       <StudentInformation />
-      <h1 className="text-2xl font-bold mb-4">Student Goals</h1>
+      <h1 className="text-2xl font-bold mb-4">My Goals</h1>
       <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
         <div className="w-full ">
           {loading ? (

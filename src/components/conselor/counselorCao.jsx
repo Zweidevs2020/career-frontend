@@ -216,7 +216,7 @@ const CounselorCao = () => {
   return (
     <div className="p-6">
       <StudentInformation />
-      <h1 className="text-2xl font-bold mb-4">CAO Points</h1>
+      <h1 className="text-2xl font-bold mb-4">My CAO Calculator</h1>
       <div className="  gap-6">
         {/* Table Container */}
         <div className="w-full ">

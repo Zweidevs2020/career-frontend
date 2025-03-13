@@ -91,7 +91,7 @@ const CounselorCao = () => {
   return (
     <div className="p-6">
       <StudentInformation />
-      <h1 className="text-2xl font-bold mb-4">Choices</h1>
+      <h1 className="text-2xl font-bold mb-4">My Choices</h1>
 
       {loading ? (
         <p>Loading...</p>

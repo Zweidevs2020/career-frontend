@@ -60,7 +60,7 @@ const CounselorReport = () => {
   return (
     <div className="p-6">
       <StudentInformation />
-      <h1 className="text-2xl font-bold mb-4">Self Assessments</h1>
+      <h1 className="text-2xl font-bold mb-4">My Self Assessments</h1>
 
       {loading ? (
         <p>Loading...</p>

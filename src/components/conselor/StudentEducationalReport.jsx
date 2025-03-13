@@ -58,7 +58,7 @@ const Report = () => {
 
       <div className="min-h-screen bg-gray-100 p-3">
         <nav className="bg-[rgb(20,118,183)] p-4 text-white font-bold text-lg shadow-md">
-          Career Guidance Report
+          My Guidance Report
         </nav>
 
         <div className="p-6 sm:p-2 w-full bg-white shadow-md rounded-lg mt-6 overflow-x-auto">

@@ -98,7 +98,7 @@ const CounselorCao = () => {
       <StudentInformation />
 
       {/* 4. Renamed heading to WORK DIARY */}
-      <h1 className="text-2xl font-bold mb-4">WORK DIARY</h1>
+      <h1 className="text-2xl font-bold mb-4"> My Work Diary</h1>
 
       {/* 5. Display the data or loading/error states */}
       {loading ? (
