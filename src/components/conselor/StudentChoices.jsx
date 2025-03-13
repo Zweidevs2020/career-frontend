@@ -105,7 +105,10 @@ const CounselorCao = () => {
           }
 
           // Convert the level key (level5, level6_7, etc.) to a user-friendly heading
-          const heading = LEVEL_LABELS[levelKey] || levelKey;
+          const heading = (LEVEL_LABELS[levelKey] || levelKey).replace(
+            /lvl/gi,
+            "Level "
+          );
 
           return (
             <div key={levelKey} className="mb-6">
