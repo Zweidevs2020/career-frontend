@@ -21,7 +21,7 @@ const Spinner = () => (
   </div>
 );
 
-const AdvancedTable = ({ initialData, columns, onViewDetails }) => {
+const AdvancedTable = ({ initialData, columns, onViewDetails, cvDetails }) => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -65,14 +65,25 @@ const AdvancedTable = ({ initialData, columns, onViewDetails }) => {
 
   return (
     <div style={{ width: "100%", padding: "1rem" }}>
-      <div style={{ marginBottom: "1rem" }}>
+      <div
+        style={{
+          marginBottom: "1rem",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <h3 className="md:text-xl sm:text-sm font-semibold mb-6 text-black text-start">
+          Students List
+        </h3>
         <input
           type="text"
           placeholder="Search..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          className="md:w-[14.75rem] sm:w-full"
           style={{
-            width: "100%",
+            // width: "14.75rem",
+            height: "2.4375rem",
             padding: "0.5rem",
             border: "1px solid #d1d5db",
             borderRadius: "0.25rem",
@@ -86,6 +97,7 @@ const AdvancedTable = ({ initialData, columns, onViewDetails }) => {
         data={filteredData}
         renderCell={(key, value) => highlightText(value)}
         onViewDetails={onViewDetails}
+        cvDetails={cvDetails}
       />
     </div>
   );

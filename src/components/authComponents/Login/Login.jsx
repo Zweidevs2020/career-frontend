@@ -219,15 +219,15 @@ Counsellor Login"
               style={{ margin: "auto" }}
             >
               <div className="welcomeHaddingText">Welcome to My Guidance.</div>
-              <div
+              {/* <div
                 className="welcomeHaddingText"
                 style={{ fontWeight: "normal" }}
               >
                 Please login or register an account.
-              </div>
-              {/* <div className="textStyle18" style={{ marginBottom: 10 }}>
+              </div> */}
+              <div className="textStyle18" style={{ marginBottom: 10 }}>
             Enter your email and password
-          </div> */}
+          </div>
               <Form.Item
                 name="email"
                 rules={[
