@@ -120,8 +120,27 @@ const CounselorCao = () => {
                 <p className="text-gray-700 font-semibold">
                   <strong>Question:</strong> {item.question}
                 </p>
-                <p className="text-gray-600">
+                {/* <p className="text-gray-600">
                   <strong>Answer:</strong> {item.answer}
+                </p> */}
+                <p className="text-gray-600">
+                  <strong>Answer:</strong>
+                  {(() => {
+                    try {
+                      const parsedAnswer = JSON.parse(item.answer);
+                      return (
+                        <ul className="list-disc pl-5">
+                          {Object.entries(parsedAnswer).map(([key, value]) => (
+                            <li key={key}>
+                              <strong>{key}:</strong> {value}
+                            </li>
+                          ))}
+                        </ul>
+                      );
+                    } catch (error) {
+                      return <span>{item.answer}</span>;
+                    }
+                  })()}
                 </p>
                 <p className="text-gray-400 text-sm">
                   <strong>Date:</strong> {item.date}
