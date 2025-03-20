@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 const Report = () => {
   const { id } = useParams();
   const [reportHtml, setReportHtml] = useState(""); // Store HTML content
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const getCookie = (name) => {
@@ -46,6 +47,7 @@ const Report = () => {
       console.log("Response Received:", response.data.report_html);
       setReportHtml(response.data.report_html); // Store the HTML content
     } catch (error) {
+      setError(error?.response?.data?.message);
       console.error("Error fetching report:", error);
     } finally {
       setLoading(false);
@@ -66,6 +68,11 @@ const Report = () => {
             <p>Loading...</p>
           ) : (
             <>
+              {error && (
+                <div className="text-red-500 text-center mb-4 font-bold">
+                  {error}
+                </div>
+              )}
               <style>
                 {`
                   h1, h2, h3, h4, h5 {

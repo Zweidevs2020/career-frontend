@@ -6,7 +6,7 @@ import { message } from "antd";
 import { API_URL } from "../../utils/constants";
 import { useParams } from "react-router-dom";
 
-const CounselorReport = () => {
+const CounselorSelf = () => {
   const { id } = useParams();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -64,7 +64,7 @@ const CounselorReport = () => {
 
       {loading ? (
         <p>Loading...</p>
-      ) : (
+      ) : data?.length > 0 ? (
         data.map((item, index) => {
           // Build chart options dynamically based on each item
           const chartOptions = {
@@ -130,9 +130,13 @@ const CounselorReport = () => {
             </div>
           );
         })
+      ) : (
+        <p className="text-center text-red-500 font-bold">
+          No data entered from student
+        </p>
       )}
     </div>
   );
 };
 
-export default CounselorReport;
+export default CounselorSelf;

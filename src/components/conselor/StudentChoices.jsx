@@ -20,10 +20,11 @@ const columns = [
   { key: "title", label: "Title" },
 ];
 
-const CounselorCao = () => {
+const CounselorChoices = () => {
   const { id } = useParams();
   const [data, setData] = useState({}); // The API returns an object with keys like level5, level6_7, level8, etc.
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const getCookie = (name) => {
     const cookies = document.cookie.split("; ");
@@ -82,7 +83,7 @@ const CounselorCao = () => {
       }
     } catch (error) {
       console.error("Error fetching student data:", error);
-      message.error("An error occurred while fetching the data.");
+      setError(error?.response?.data?.message);
     } finally {
       setLoading(false);
     }
@@ -92,7 +93,9 @@ const CounselorCao = () => {
     <div className="p-6">
       <StudentInformation />
       <h1 className="text-2xl font-bold mb-4">My Choices</h1>
-
+      {error && (
+        <div className="text-red-500 text-center mb-4 font-bold">{error}</div>
+      )}
       {loading ? (
         <p>Loading...</p>
       ) : (
@@ -122,4 +125,4 @@ const CounselorCao = () => {
   );
 };
 
-export default CounselorCao;
+export default CounselorChoices;
