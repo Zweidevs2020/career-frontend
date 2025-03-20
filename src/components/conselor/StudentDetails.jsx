@@ -322,7 +322,9 @@ const ConselorWrorkDiay = () => {
           );
         })
       ) : (
-        <p>No work experience data available.</p>
+        <p className="text-red-600 text-center font-bold">
+          No work experience data available.
+        </p>
       )}
     </div>
   );

@@ -10,10 +10,11 @@ import {
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
-const CounselorCao = () => {
+const EducationalGuidance = () => {
   const { id } = useParams();
   const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const getCookie = (name) => {
     const cookies = document.cookie.split("; ");
@@ -75,8 +76,8 @@ const CounselorCao = () => {
         message.error("Failed to fetch student data.");
       }
     } catch (error) {
+      setError(error?.response?.data?.message);
       console.error("Error fetching student data:", error);
-      message.error("An error occurred while fetching the data.");
     } finally {
       setLoading(false);
     }
@@ -97,7 +98,9 @@ const CounselorCao = () => {
       <div className="p-6">
         <StudentInformation />
         <h1 className="text-2xl font-bold mb-4">My Educational Guidance</h1>
-        <p>No data available</p>
+        {error && (
+          <div className="text-red-500 text-center mb-4 font-bold">{error}</div>
+        )}
       </div>
     );
   }
@@ -178,4 +181,4 @@ const CounselorCao = () => {
   );
 };
 
-export default CounselorCao;
+export default EducationalGuidance;

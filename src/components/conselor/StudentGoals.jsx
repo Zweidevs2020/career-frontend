@@ -5,7 +5,7 @@ import { message } from "antd";
 import { API_URL } from "../../utils/constants";
 import { useParams } from "react-router-dom";
 
-const CounselorCao = () => {
+const CounselorGoals = () => {
   const { id } = useParams();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -132,11 +132,13 @@ const CounselorCao = () => {
               ))}
             </div>
           ) : (
-            <p>No data available to show</p>
+            <p className="text-center text-red-500 font-bold">
+              No data entered from student
+            </p>
           )}
         </div>
       </div>
-      {countdown && (
+      {countdown && data?.length > 0 ? (
         <div className="mt-6 text-center text-xl font-semibold border rounded-lg p-4 shadow-md w-full max-w-lg mx-auto">
           <span className="text-red-500 font-bold text-2xl">
             {timeLeft.days} :
@@ -158,9 +160,11 @@ const CounselorCao = () => {
           </span>
           <span className="text-black font-semibold text-xl"> Secs</span>
         </div>
+      ) : (
+        ""
       )}
     </div>
   );
 };
 
-export default CounselorCao;
+export default CounselorGoals;
