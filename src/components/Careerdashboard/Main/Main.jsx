@@ -32,7 +32,7 @@ const cards = [
   { src: imgcard3, navigateTo: "/my-study" },
   { src: imgcard7, navigateTo: "/my-choices" },
   { src: imgcard6, navigateTo: "/educational-guidance" },
-  { src: imgcard8, navigateTo: "/my-guidance-report" },
+  // { src: imgcard8, navigateTo: "/my-guidance-report" },
   { src: imgcard9, navigateTo: "/work-diary" },
 ];
 const Main = () => {
