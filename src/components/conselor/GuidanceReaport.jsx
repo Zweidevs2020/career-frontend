@@ -156,7 +156,7 @@ const EducationalGuidance = () => {
                         strokeLinecap: "round",
                         textSize: "14px",
                         pathTransitionDuration: 0.5,
-                        pathColor: "#1476B7",
+                        pathColor: "#db3737",
                         textColor: "#263238",
                         trailColor: "#d6d6d6",
                       })}

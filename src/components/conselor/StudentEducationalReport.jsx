@@ -45,7 +45,7 @@ const Report = () => {
       );
 
       console.log("Response Received:", response.data.report_html);
-      setReportHtml(response.data.report_html); // Store the HTML content
+      setReportHtml(response.data.report_html);
     } catch (error) {
       setError(error?.response?.data?.message);
       console.error("Error fetching report:", error);

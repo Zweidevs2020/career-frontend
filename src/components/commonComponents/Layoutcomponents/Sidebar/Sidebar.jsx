@@ -466,7 +466,7 @@ const Sidebar = ({ children, flags }) => {
                     ) : null}
                   </span>
                 </Menu.Item>
-                <Menu.Item
+                {/* <Menu.Item
                   key="ChatBot"
                   icon={
                     <ReportIcon
@@ -482,7 +482,7 @@ const Sidebar = ({ children, flags }) => {
                       <span> &nbsp;&#x25cf; </span>
                     ) : null}
                   </span>
-                </Menu.Item>
+                </Menu.Item> */}
                 <Menu.Item
                   key="Work"
                   icon={
