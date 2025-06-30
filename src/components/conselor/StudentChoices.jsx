@@ -89,6 +89,15 @@ const CounselorChoices = () => {
     }
   };
 
+  const renderCell = (key, value) => {
+    switch (key) {
+      case 'point':
+        return value ? parseInt(value) : "NA"
+      default:
+        return value;
+    }
+  }
+
   return (
     <div className="p-6">
       <StudentInformation />
@@ -116,7 +125,7 @@ const CounselorChoices = () => {
           return (
             <div key={levelKey} className="mb-6">
               <h2 className="text-xl font-semibold mb-2">{heading}</h2>
-              <Table columns={columns} data={courses} loading={false} />
+              <Table columns={columns} data={courses} loading={false} renderCell={renderCell} />
             </div>
           );
         })

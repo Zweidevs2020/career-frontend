@@ -69,7 +69,7 @@ const OccupationalOption = () => {
             );
           })
         ) : (
-          <p className="">{idData.idea}</p>
+          <p className="" dangerouslySetInnerHTML={{__html: idData.idea}}></p>
         )}
       </div>
     </div>
