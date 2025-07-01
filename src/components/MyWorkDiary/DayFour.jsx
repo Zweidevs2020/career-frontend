@@ -369,11 +369,11 @@ const DayFour = () => {
       formData.jobs.some((job) => !job); // Ensure none of the jobs are empty
 
     // If any required field is empty, show error and stop submission
-    if (isEmpty) {
-      message.error("Please fill in all the required fields.");
-      setLoading(false);
-      return;
-    }
+    // if (isEmpty) {
+    //   message.error("Please fill in all the required fields.");
+    //   setLoading(false);
+    //   return;
+    // }
 
     // Prepare questions and answers array
     const questionsAndAnswers = [
