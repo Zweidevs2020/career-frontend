@@ -82,7 +82,7 @@ const Interest = ({ setCurrent, current }) => {
     var token = localStorage.getItem("access_token", "");
 
     const response = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}cv/cv/`,
+      `${'https://api-dev.classroomguidance.ie/'}cv/cv/`,
       {
         responseType: "blob", // Set the response type to 'blob'
         headers: {
