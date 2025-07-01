@@ -907,7 +907,7 @@ const MyChoicesEdit = () => {
                                                     row={option}
                                                     label={option[item]}
                                                   >
-                                                    {`${option.title}, ${option.code}, ${option.college}`}
+                                                    {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})`: ''}`}
                                                   </Select.Option>
                                                 );
                                               })}
@@ -1174,7 +1174,7 @@ const MyChoicesEdit = () => {
                                               row={option}
                                               label={option[item]}
                                             >
-                                              {`${option.title}, ${option.code}, ${option.college}`}
+                                              {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})`: ''}`}
                                             </Select.Option>
                                           );
                                         })}
@@ -1355,7 +1355,7 @@ const MyChoicesEdit = () => {
                                                     row={option}
                                                     label={option[item]}
                                                   >
-                                                    {`${option.title}, ${option.code}, ${option.college}`}
+                                                    {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})`: ''}`}
                                                   </Select.Option>
                                                 );
                                               })}
@@ -1550,7 +1550,7 @@ const MyChoicesEdit = () => {
                                                           row={option}
                                                           label={option[item]}
                                                         >
-                                                          {`${option.title}, ${option.code}, ${option.college}`}
+                                                          {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})`: ''}`}
                                                         </Select.Option>
                                                       );
                                                     }
@@ -1727,7 +1727,7 @@ const MyChoicesEdit = () => {
                                                   row={option}
                                                   label={option[item]}
                                                 >
-                                                  {`${option.title}, ${option.code}, ${option.college}`}
+                                                  {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})`: ''}`}
                                                 </Select.Option>
                                               );
                                             })}
