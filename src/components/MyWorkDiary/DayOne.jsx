@@ -149,11 +149,11 @@ const DayOne = () => {
       formData.jobs.some((job) => !job); // Check if any job is empty
 
     // If any field is empty, show an error message and return
-    if (isEmpty) {
-      message.error("Please fill in all the required fields.");
-      setLoading(false); // Stop loading
-      return; // Exit the function without making the API call
-    }
+    // if (isEmpty) {
+    //   message.error("Please fill in all the required fields.");
+    //   setLoading(false); // Stop loading
+    //   return; // Exit the function without making the API call
+    // }
 
     // Prepare the questions and answers array
     const questionsAndAnswers = [

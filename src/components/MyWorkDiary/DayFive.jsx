@@ -419,11 +419,11 @@ const DayFive = () => {
       formData.jobs.some((job) => !job); // Ensure none of the jobs are empty
 
     // If any required field is empty, show error and stop submission
-    if (isEmpty) {
-      message.error("Please fill in all the required fields.");
-      setLoading(false);
-      return;
-    }
+    // if (isEmpty) {
+    //   message.error("Please fill in all the required fields.");
+    //   setLoading(false);
+    //   return;
+    // }
 
     // Check for conditional validation (e.g., if goalProgress is "No", whyProgress is required)
     if (formData.goalProgress === "No" && !formData.whyProgress) {
