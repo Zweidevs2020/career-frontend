@@ -44,6 +44,7 @@ import dropdownIcon from "../../assets/dropdownIcon.svg";
 import EditOutlined from "../../assets/uil_edit.svg";
 
 import { Link } from "react-router-dom";
+import {debounce} from 'lodash'
 
 import "./myChoicesEdit.css";
 
@@ -92,8 +93,10 @@ const MyChoicesEdit = () => {
     };
   }, []);
 
-  const getChoiceRecord = async () => {
-    setLoadingFirst(true);
+  const getChoiceRecord = async (runLoading =  true) => {
+    if (runLoading) {
+      setLoadingFirst(true);
+    }
     const response = await getApiWithAuth(
       `choices/column-names/?choice=${dataa.id}`
     );
@@ -372,7 +375,7 @@ const MyChoicesEdit = () => {
   };
 
   const currentPath = location.pathname;
-  const handleAddRow = async (recordToAdd) => {
+  const handleAddRow = async (recordToAdd, isDebounceCall = false) => {
     // Use recordToAdd if provided, or fall back to the record stored in state
     const finalRecord = recordToAdd || selectedOptions?.code?.row;
 
@@ -404,7 +407,8 @@ const MyChoicesEdit = () => {
       if (response.data.status === 200) {
         message.success("Row added successfully");
         setShowRows(null);
-        getChoiceRecord();
+
+        getChoiceRecord(!isDebounceCall);
         getTableRecord();
         setSelectedRowId(finalRecord.id);
         disableEventListeners();
@@ -750,11 +754,16 @@ const MyChoicesEdit = () => {
       const updatedData = data.map((item) => {
         if (item.rowNo === rowNum) {
           const { id, ...rest } = option.row;
-          return {
+          const _body = {
             ...item,
             ...rest,
             order_number: rowNum,
           };
+          const saveDebounce = debounce(() => {
+            handleAddRow(_body, true)
+          }, 3000)
+          saveDebounce()
+          return _body;
         }
         return item;
       });
