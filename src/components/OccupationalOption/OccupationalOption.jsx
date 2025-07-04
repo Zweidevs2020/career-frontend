@@ -2,6 +2,8 @@ import { Button } from "antd";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
+import styles from "./occupational.module.css";
+
 const OccupationalOption = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -69,7 +71,10 @@ const OccupationalOption = () => {
             );
           })
         ) : (
-          <p className="" dangerouslySetInnerHTML={{__html: idData.idea}}></p>
+          <>
+          <div className={styles.htmlParser} dangerouslySetInnerHTML={{__html: (idData.idea)}}></div>
+          
+          </>
         )}
       </div>
     </div>
