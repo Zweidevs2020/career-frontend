@@ -6,11 +6,14 @@ import { message } from "antd";
 import { API_URL } from "../../utils/constants";
 import { useParams } from "react-router-dom";
 
+// ✅ Only show these levels and in this order
+const LEVEL_ORDER = ["lvl8", "lvl6", "lvl5"];
+
+// ✅ Custom display names for each level
 const LEVEL_LABELS = {
-  level5: "Level 5 (PLC) Options",
-  level6_7: "Level 6/7 Courses",
-  level8: "Level 8 Courses",
-  // Add more mappings if your API returns additional levels
+  lvl8: "Level 8 Hons Degrees",
+  lvl6: "Level 6/7 Ord Degrees of Higher Cert",
+  lvl5: "Level 5 PLC/ Further Ed",
 };
 
 const columns = [
@@ -22,7 +25,7 @@ const columns = [
 
 const CounselorChoices = () => {
   const { id } = useParams();
-  const [data, setData] = useState({}); // The API returns an object with keys like level5, level6_7, level8, etc.
+  const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -60,23 +63,6 @@ const CounselorChoices = () => {
       );
 
       if (response.status === 200) {
-        /*
-          Example response shape:
-
-          {
-            level5: [
-              { id: 91, code: "5M2102 CSC", point: 120, college: "Blackrock FEI", title: "Computer Science" },
-              ...
-            ],
-            level6_7: [
-              { id: 102, code: "6M2102 CSC", point: 215, college: "TUS - Athlone Campus", title: "Computer Engineering" },
-              ...
-            ],
-            level8: [
-              ...
-            ]
-          }
-        */
         setData(response.data);
       } else {
         message.error("Failed to fetch student data.");
@@ -91,41 +77,44 @@ const CounselorChoices = () => {
 
   const renderCell = (key, value) => {
     switch (key) {
-      case 'point':
-        return value ? parseInt(value) : "NA"
+      case "point":
+        return value ? parseInt(value) : "NA";
       default:
         return value;
     }
-  }
+  };
 
   return (
     <div className="p-6">
       <StudentInformation />
       <h1 className="text-2xl font-bold mb-4">My Choices</h1>
+
       {error && (
-        <div className="text-red-500 text-center mb-4 font-bold">{error}</div>
+        <div className="text-red-500 text-center mb-4 font-bold">
+          {error}
+        </div>
       )}
+
       {loading ? (
         <p>Loading...</p>
       ) : (
-        // Dynamically map over the keys in `data` (e.g., level5, level6_7, level8)
-        Object.keys(data).map((levelKey) => {
+        LEVEL_ORDER.map((levelKey) => {
           const courses = data[levelKey];
           if (!Array.isArray(courses) || courses.length === 0) {
-            // If there's no data for this level, skip or handle accordingly
             return null;
           }
 
-          // Convert the level key (level5, level6_7, etc.) to a user-friendly heading
-          const heading = (LEVEL_LABELS[levelKey] || levelKey).replace(
-            /lvl/gi,
-            "Level "
-          );
+          const heading = LEVEL_LABELS[levelKey] || levelKey;
 
           return (
             <div key={levelKey} className="mb-6">
               <h2 className="text-xl font-semibold mb-2">{heading}</h2>
-              <Table columns={columns} data={courses} loading={false} renderCell={renderCell} />
+              <Table
+                columns={columns}
+                data={courses}
+                loading={false}
+                renderCell={renderCell}
+              />
             </div>
           );
         })
