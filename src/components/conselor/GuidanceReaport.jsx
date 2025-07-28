@@ -116,6 +116,7 @@ const EducationalGuidance = () => {
         <h2 className="text-xl font-bold mb-4">Quiz Scores</h2>
         {quiz_overview && quiz_overview.length > 0 ? (
           quiz_overview.map((quiz, index) => {
+          
             const { quiz_name, obtained_score, total_score, percentage } = quiz;
 
             return (
