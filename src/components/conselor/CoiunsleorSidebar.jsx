@@ -128,7 +128,7 @@ export default function CounselorSidebar() {
     },
     {
       icon: <ProfileSvg fill={selectedMenuItem === "CV" ? "#1476B7" : "#BDBDBD"} />,
-      label: "Download CV",
+      label: "My CV",
       path: "#",
       isDownloadCV: true, 
     },
