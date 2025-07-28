@@ -50,27 +50,6 @@ const EducationalGuidance = () => {
       );
 
       if (response.status === 200) {
-        /*
-          Example response structure:
-          {
-            aggregated_data: { total_quizzes: 2, average_score: 3 },
-            graph_data: {
-              labels: ["Unit 1: CAO", "Unit 2: SUSI Quiz"],
-              obtained_scores: [3, 3],
-              total_scores: [12, 10]
-            },
-            quiz_overview: [
-              {
-                quiz_id: 127,
-                quiz_name: "Unit 1 : CAO",
-                obtained_score: 3,
-                total_score: 12,
-                percentage: 25
-              },
-              ...
-            ]
-          }
-        */
         setReportData(response.data);
       } else {
         message.error("Failed to fetch student data.");
@@ -80,6 +59,17 @@ const EducationalGuidance = () => {
       console.error("Error fetching student data:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // 🟢 Color logic from Code 1
+  const showColor = (score) => {
+    if (Number(score) <= 4) {
+      return "red";
+    } else if (Number(score) >= 5 && Number(score) <= 8) {
+      return "orange";
+    } else {
+      return "green";
     }
   };
 
@@ -114,14 +104,14 @@ const EducationalGuidance = () => {
       <StudentInformation />
       <h1 className="text-2xl font-bold mb-4">My Educational Guidance</h1>
 
-      {/* Example aggregated data section (optional) */}
+      {/* Aggregated info */}
       <div className="mb-6 bg-white p-4 rounded shadow">
         <h2 className="text-xl font-bold mb-2">Aggregated Data</h2>
         <p>Total Quizzes: {totalQuizzes}</p>
         <p>Average Score: {averageScore}</p>
       </div>
 
-      {/* Where the user wants the chart integrated for each quiz */}
+      {/* Quiz list with circular progress */}
       <div className="bg-white p-4 rounded shadow">
         <h2 className="text-xl font-bold mb-4">Quiz Scores</h2>
         {quiz_overview && quiz_overview.length > 0 ? (
@@ -141,7 +131,7 @@ const EducationalGuidance = () => {
                   <p>Percentage: {percentage}</p>
                 </div>
 
-                {/* Circular Progress Bar (smaller size) */}
+                {/* Circular Progress Bar */}
                 <div
                   className="w-full md:w-1/2 flex justify-center"
                   style={{ minWidth: "100px" }}
@@ -156,7 +146,7 @@ const EducationalGuidance = () => {
                         strokeLinecap: "round",
                         textSize: "14px",
                         pathTransitionDuration: 0.5,
-                        pathColor: "#db3737",
+                        pathColor: showColor(obtained_score), // ✅ dynamic color logic
                         textColor: "#263238",
                         trailColor: "#d6d6d6",
                       })}
