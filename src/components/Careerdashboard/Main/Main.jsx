@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from "react";
 import searchicon from "../../../assets/searchicon.svg";
-import imgcard from "../../../assets/1.png";
-import imgcard2 from "../../../assets/2.png";
-import imgcard3 from "../../../assets/3.png";
-import imgcard4 from "../../../assets/4.png";
-import imgcard5 from "../../../assets/5.png";
-import imgcard6 from "../../../assets/6.png";
-import imgcard7 from "../../../assets/7.png";
+// import imgcard from "../../../assets/1.png";
+// import imgcard2 from "../../../assets/2.png";
+// import imgcard3 from "../../../assets/3.png";
+// import imgcard4 from "../../../assets/4.png";
+// import imgcard5 from "../../../assets/5.png";
+// import imgcard6 from "../../../assets/6.png";
+// import imgcard7 from "../../../assets/7.png";
+import imgcard from "../../../assets/1.jpg";
+import imgcard2 from "../../../assets/2.jpg";
+import imgcard3 from "../../../assets/3.jpg";
+import imgcard4 from "../../../assets/4.jpg";
+import imgcard5 from "../../../assets/5.jpg";
+import imgcard6 from "../../../assets/6.jpg";
+import imgcard7 from "../../../assets/7.jpg";
+import imgcard8 from "../../../assets/8.jpg";
+import imgcard9 from "../../../assets/9.jpg";
 import winningCup from "../../../assets/winningCup.svg";
 import { MyCareerGuidanceButton } from "../../../components/commonComponents";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -15,7 +24,17 @@ import { getApiWithAuth } from "../../../utils/api";
 import { Spin, Modal } from "antd";
 import bookImage from "../../../assets/bookImage.png";
 import "../Main/Main.css";
-
+const cards = [
+  { src: imgcard, navigateTo: "/cao-calculator" },
+  { src: imgcard4, navigateTo: "/my-goals" },
+  { src: imgcard2, navigateTo: "/cover-letter" },
+  { src: imgcard5, navigateTo: "/self-assesment" },
+  { src: imgcard3, navigateTo: "/my-study" },
+  { src: imgcard7, navigateTo: "/my-choices" },
+  { src: imgcard6, navigateTo: "/educational-guidance" },
+  // { src: imgcard8, navigateTo: "/my-guidance-report" },
+  { src: imgcard9, navigateTo: "/work-diary" },
+];
 const Main = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -55,108 +74,30 @@ const Main = () => {
             Career Guidance
           </h1>
         </div>
-
       </div>
       <div className="grid grid-cols-12 gap-3 px-3 careerGuidenceGrid">
-        <div
-          // className="col-span-6 rounded-xl"
-          className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto m-auto"
-          onClick={() => {
-            navigate("/cao-calculator");
-          }}
-          style={{ width: "100%", height: "200px" }}
-        >
-          <img
-            src={imgcard}
-            className=" bg-cover "
-            style={{ width: "100%", height: "200px", cursor: "pointer", borderRadius: '10px' }}
-
-          />
-        </div>
-        <div
-          // className="col-span-6rounded-xl"
-          className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto m-auto"
-          onClick={() => {
-            navigate("/my-goals");
-          }}
-          style={{ width: "100%", height: "200px" }}
-        >
-          <img
-            src={imgcard4}
-            className=" bg-cover"
-            style={{ cursor: "pointer", borderRadius: '10px', width: "100%", height: "200px" }}
-          />
-        </div>
-        <div
-          // className="col-span-sm-12 col-span-6  rounded-xl"
-          className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto m-auto"
-          onClick={() => {
-            navigate("/cover-letter");
-          }}
-          style={{ width: "100%", height: "200px" }}
-        >
-          <img
-            src={imgcard2}
-            className=" bg-cover"
-            style={{ cursor: "pointer", borderRadius: '10px', width: "100%", height: "200px" }}
-          />
-        </div>
-        <div
-          // className="col-span-6rounded-xl"
-          className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto m-auto"
-          onClick={() => {
-            navigate("/self-assesment");
-          }}
-          style={{ width: "100%", height: "200px" }}
-        >
-          <img
-            src={imgcard5}
-            className=" bg-cover"
-            style={{ cursor: "pointer", borderRadius: '10px', width: "100%", height: "200px" }}
-          />
-        </div>
-        <div
-          // className="col-span-sm-12 col-span-6  rounded-xl"
-          className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto m-auto"
-          onClick={() => {
-            navigate("/my-study");
-          }}
-          style={{ width: "100%", height: "200px" }}
-        >
-          <img
-            src={imgcard3}
-            className=" bg-cover"
-            style={{ cursor: "pointer", borderRadius: '10px', width: "100%", height: "200px" }}
-          />
-        </div>
-        <div
-
-          className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto m-auto"
-          onClick={() => {
-            navigate("/my-choices");
-          }}
-          style={{ width: "100%", height: "200px" }}
-        >
-          <img
-            src={imgcard7}
-            className=" bg-cover"
-            style={{ cursor: "pointer", borderRadius: '10px', width: "100%", height: "200px" }}
-          />
-        </div>
-        <div
-
-          className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto m-auto"
-          onClick={() => {
-            navigate("/educational-guidance");
-          }}
-          style={{ width: "100%", height: "200px" }}
-        >
-          <img
-            src={imgcard6}
-            className=" bg-cover"
-            style={{ cursor: "pointer", borderRadius: '10px', width: "100%", height: "200px" }}
-          />
-        </div>
+        {cards.map((card, index) => (
+          <div
+            key={index}
+            // className="col-span-6 rounded-xl"
+            className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto m-auto"
+            onClick={() => {
+              navigate(card.navigateTo);
+            }}
+            style={{ width: "100%", height: "160px" }}
+          >
+            <img
+              src={card.src}
+              className=" bg-cover "
+              style={{
+                width: "100%",
+                height: "160px",
+                cursor: "pointer",
+                borderRadius: "10px",
+              }}
+            />
+          </div>
+        ))}
       </div>
 
       <Modal
@@ -182,13 +123,14 @@ const Main = () => {
             </div>
             <div className="mt-3">
               <MyCareerGuidanceButton
-                label={`${singlequizData.score ? singlequizData.score : 0}/${singlequizData.total_score ? singlequizData.total_score : 0
-                  }`}
+                label={`${singlequizData.score ? singlequizData.score : 0}/${
+                  singlequizData.total_score ? singlequizData.total_score : 0
+                }`}
                 className="resultDataButton"
                 type="button"
                 htmlType="button"
                 onClick={handleCancel}
-              //   loading={loading}
+                //   loading={loading}
               />
             </div>
           </div>

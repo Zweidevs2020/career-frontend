@@ -29,7 +29,27 @@ import MyChoicesEdit from "./components/MyChoicesEdit";
 import Occupational from "./components/Occupational";
 import YoutubePage from "./components/CvCoverLetter/YoutubePage";
 import OccupationalOption from "./components/OccupationalOption";
+import CheckoutView from "./components/checkout/checkout";
+import MyGuidanceReport from "./components/MyGuidanceReport";
+import WorkDiary from "./components/MyWorkDiary/WorkDiary";
+import ConselorDashboard from "./components/conselor/conselorDashboard";
+
+import { useSubscribe } from "./context/subscribe";
+import ConselorPrivateRoute from "./routes/ConselorRouting";
+import StudentDetails from "./components/conselor/StudentDetails";
+import CounsellorCV from "./components/conselor/counsellorCV";
+import CounsellorGoals from "./components/conselor/counselorGoals";
+import CounselorLayout from "./components/conselor/counselorLayout";
+import CounselorCao from "./components/conselor/counselorCao";
+import CounselorGoals from "./components/conselor/StudentGoals";
+import CounselorChoices from "./components/conselor/StudentChoices";
+import CounselorEducationalReport from "./components/conselor/StudentEducationalReport";
+import CounselorGuidanceReport from "./components/conselor/GuidanceReaport";
+import CousnelorSelf from "./components/conselor/CousnelorSelf";
+
 function App() {
+  const { subscribe, loading } = useSubscribe();
+
   return (
     <BrowserRouter>
       <Routes>
@@ -76,7 +96,7 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <PrivateRoute>
+            <PrivateRoute restricted={subscribe == null ? false : !subscribe}>
               <Sidebar>
                 <CareerDashboard />
               </Sidebar>
@@ -187,6 +207,16 @@ function App() {
           }
         />
         <Route
+          path="/work-diary"
+          element={
+            <PrivateRoute>
+              <Sidebar>
+                <WorkDiary />
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="/my-choice-edit"
           element={
             <PrivateRoute>
@@ -196,12 +226,31 @@ function App() {
             </PrivateRoute>
           }
         />
-         <Route
+        <Route
           path="/occupation/:idea"
           element={
             <PrivateRoute>
               <Sidebar>
                 <OccupationalOption />
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            <PublicRoute restricted={subscribe}>
+              <CheckoutView />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path="/my-guidance-report"
+          element={
+            <PrivateRoute>
+              <Sidebar>
+                <MyGuidanceReport />
               </Sidebar>
             </PrivateRoute>
           }
@@ -216,6 +265,61 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/conselorDashboard"
+          element={
+            <ConselorPrivateRoute>
+              <ConselorDashboard />
+            </ConselorPrivateRoute>
+          }
+        />
+        {/* <Route
+          path="/student-details/:id"
+          element={
+            <ConselorPrivateRoute>
+              <StudentDetails />
+            </ConselorPrivateRoute>
+          }
+        /> */}
+        <Route
+          path="/counsellor-cv/:id"
+          element={
+            <ConselorPrivateRoute>
+              <CounsellorCV />
+            </ConselorPrivateRoute>
+          }
+        />
+        <Route
+          path="/counsellor-goals/:id"
+          element={
+            <ConselorPrivateRoute>
+              <CounsellorGoals />
+            </ConselorPrivateRoute>
+          }
+        />
+        <Route path="/consellor" element={<CounselorLayout />}>
+          <Route path="counsellor-goals/:id" element={<CounsellorGoals />} />
+          <Route path="student-details/:id" element={<StudentDetails />} />
+          <Route path="student-cao/:id" element={<CounselorCao />} />
+          <Route path="student-goals/:id" element={<CounselorGoals />} />
+          <Route path="student-choices/:id" element={<CounselorChoices />} />
+          <Route path="student-cv/:id" element={<CounsellorCV />} />
+          <Route path="self/:id" element={<CousnelorSelf />} />
+          {/* <Route path="student-self/:id" element={<CousnelorSelf />} /> */}
+          CounsellorCV
+          <Route
+            path="student-guidance-report/:id"
+            element={<CounselorGuidanceReport />}
+          />
+          <Route
+            path="student-educational-report/:id"
+            element={<CounselorEducationalReport />}
+          />
+          <Route
+            path="work-diary/:id"
+            element={<CounselorEducationalReport />}
+          />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

@@ -3,7 +3,7 @@ import {
   Spin,
   message,
   Button,
-  TimePicker,
+  Avatar,
   Modal,
   Select,
   ColorPicker,
@@ -79,6 +79,8 @@ const MyStudy = () => {
 
   const [eventToDelete, setEventToDelete] = useState(null);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [usedColors, setUsedColors] = useState([]);
+  const [selectedColor, setSelectedColor] = useState(null);
 
   const optionArray = [];
   const startTime = new Date("2000-01-01T06:00:00");
@@ -96,23 +98,34 @@ const MyStudy = () => {
     const value = label;
     optionArray.push({ label, value });
   }
+  const handleAvatarClick = (color) => {
+    if (selectedColor === color) {
+      setSelectedColor(null);
+     getUsedColor()
+    } else {
+      setSelectedColor(color);
+    }
+  };
+  const getUsedColor = async () => {
+    const response = await getApiWithAuth(`/timetable/recent-colors/`);
+    if (response?.data.status === 200) {
+      setUsedColors(response.data.data.colors);
+    }
+  };
 
   useEffect(() => {
+    getUsedColor();
     getCalanderData();
   }, []);
 
   const getCurrentWeek = () => {
-    console.log("===================res", data);
 
     var currentDate = moment();
     var weekStart = currentDate.clone().startOf("week");
-    console.log("===================res what ", currentDate, "====", weekStart);
     var days = [];
     for (var i = 0; i <= 6; i++) {
       days.push(moment(weekStart).add(i, "days").format("ddd MMMM DD YYYY"));
     }
-    console.log("===================res days", data, days);
-
     setDatatime(days);
   };
 
@@ -211,7 +224,6 @@ const MyStudy = () => {
         setUpdateLoading(false);
         setOpenViewBooking(false);
         getCalanderData();
-        // getCalanderData();
       } else {
         message.error(response.data.message);
       }
@@ -221,7 +233,6 @@ const MyStudy = () => {
   };
 
   useEffect(() => {
-    console.log("===================res days data time", dataTime, data);
 
     let check = [];
     check = data.map((item) => {
@@ -245,14 +256,12 @@ const MyStudy = () => {
         },
       };
     });
-    console.log("===================res days data time check", check);
     setCalenderData(check);
   }, [dataTime]);
 
   const getCalanderData = async () => {
     setLoading(true);
     const response = await getApiWithAuth(`timetable/list-timeslot/`);
-    console.log("===================res", response);
     if (response?.data.status === 200) {
       setData(response.data.data);
       setLoading(false);
@@ -267,11 +276,6 @@ const MyStudy = () => {
   }, [data]);
 
   const handleDeleteEvent = async (event) => {
-    console.log("=====event", event);
-    // const eventId = event.extendedProps.selectID;
-
-    // setEventToDelete(eventId);
-
     const response = await deleteApiWithAuth(
       `timetable/delete-timeslot/${eventId}`
     );
@@ -300,27 +304,12 @@ const MyStudy = () => {
               ? `${eventInfo.event._def.title.slice(0, 15)}...`
               : eventInfo.event._def.title}
           </div>
-          {/* <button
-            onClick={() => handleDeleteEvent(eventInfo.event)}
-            data-event-id={eventInfo.event._def.extendedProps.selectID}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              position: "absolute",
-              top: 0,
-              right: 3,
-            }}
-          >
-            <DeleteOutlined style={{ color: "white" }} />
-          </button> */}
         </div>
       </>
     );
   }
 
   const handleDateSelect = (selectInfo, b) => {
-    console.log("=====================handleDat", selectInfo, "===", b);
     if (b !== undefined) {
       setIsEditing(false);
       const selectedStart = new Date(selectInfo);
@@ -374,7 +363,6 @@ const MyStudy = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // console.log(hexString, "inside hex");
     if (isEditing) {
       handleEdit(hexString);
     } else {
@@ -383,7 +371,6 @@ const MyStudy = () => {
   };
 
   const createNewEvent = async (bgColor) => {
-    console.log("==========bg new",bgColor)
     setLoadingBooking(true);
 
     let startTime = dayjs(selectedTime, "hh:mm A").format("HH:mm:ss");
@@ -394,7 +381,7 @@ const MyStudy = () => {
       endslot: endTime,
       day: weekDay,
       title: title,
-      color: bgColor,
+      color: selectedColor ? selectedColor : bgColor,
     });
 
     if (response.data.status === 201) {
@@ -408,6 +395,8 @@ const MyStudy = () => {
       setData([]);
       setDatatime([]);
       getCalanderData();
+      setSelectedColor(null)
+     getUsedColor()
     } else {
       setLoadingBooking(false);
       message.error(response.data.message[0]);
@@ -495,22 +484,7 @@ const MyStudy = () => {
     setBtnDisabled(false);
     setViewData({ ...viewData, end: e?.$d });
   };
-  useEffect(() => {
-    console.log(
-      "=====================weekDayy",
-      moment().startOf("week").add(2, "days").toDate(),
-      weekDay,
-      "===",
-      selectedTime,
-      "===",
-      selectedEndTime,
-      "====",
-      eventToDelete
-    );
-  }, [weekDay, selectedTime, selectedEndTime, eventToDelete]);
   const handleEdit = async (bgColor) => {
-    console.log("==========bg handleEdit",bgColor)
-
     setUpdateLoading(true);
 
     const formattedStartTime = dayjs(selectedTime, "hh:mm A").format(
@@ -529,11 +503,9 @@ const MyStudy = () => {
         endslot: formattedEndTime,
         day: weekDay,
         title: title,
-        color: bgColor,
+        color: selectedColor ? selectedColor : bgColor,
       }
     );
-    console.log("=====================weekDay response", response);
-
     if (response.data.success === true) {
       message.success("Updated Successfully");
       setUpdateLoading(false);
@@ -541,6 +513,8 @@ const MyStudy = () => {
       getCalanderData();
       setOpenViewBooking(false);
       setOpenBooking(false);
+      setSelectedColor(null);
+     getUsedColor()
     }
     if (response.data.success === false) {
       message.error(response.data.message);
@@ -588,54 +562,6 @@ const MyStudy = () => {
     () => (typeof colorHex === "string" ? colorHex : colorHex?.toHexString()),
     [colorHex]
   );
-  // setBackgroundColor(hexString);
-  console.log(colorHex, "Colorhex", hexString, backgroundColor);
-
-  // const [calendarReady, setCalendarReady] = useState(false);
-  // const calendarRef = useRef();
-
-  // useEffect(() => {
-  //   console.log(calendarReady, "wds");
-  //   // if (!calendarReady) return;
-  //   const func = () => {
-  //     console.log(calendarRef, "soso");
-  //     const el = calendarRef.current.elRef.current;
-  //     console.log(calendarRef.current.elRef, "sdsdsd", calendarRef);
-  //     let startX = 0;
-  //     const handleTouchStart = (e) => {
-  //       startX = e.touches[0].clientX;
-  //     };
-
-  //     const handleTouchMove = (e) => {
-  //       e.preventDefault();
-  //     };
-
-  //     const handleTouchEnd = (e) => {
-  //       const endX = e.changedTouches[0].clientX;
-  //       if (startX - endX > 50) {
-  //         calendarRef.current.getApi().next();
-  //       } else if (startX - endX < -50) {
-  //         calendarRef.current.getApi().prev();
-  //       }
-  //     };
-
-  //     el?.addEventListener("touchstart", handleTouchStart, { passive: false });
-  //     el?.addEventListener("touchmove", handleTouchMove, { passive: false });
-  //     el?.addEventListener("touchend", handleTouchEnd);
-  //   };
-  //   setTimeout(() => {
-  //     func();
-  //   }, 5000);
-
-  //   // return () => {
-  //   //   el.removeEventListener("touchstart", handleTouchStart);
-  //   //   el.removeEventListener("touchmove", handleTouchMove);
-  //   //   el.removeEventListener("touchend", handleTouchEnd);
-  //   // };
-  // }, [calendarReady]); // Depend on calendarReady
-
-  // // useEffect;
-  // console.log(calendarRef, "calendarRef");
   return (
     <>
       <div className="educationalGuidanceMainDiv">
@@ -736,9 +662,31 @@ const MyStudy = () => {
                 onChange={setColorHex}
                 onFormatChange={setFormatHex}
               />
-              <span style={{ marginLeft: "10px" }}>Color</span>
+              <span style={{ marginLeft: "10px" }}>Pick New Color</span>
             </div>
-
+            {usedColors.length > 0 ? (
+              <>
+                <div className="welcomeHaddingText mb-1">Recent Colors:</div>
+                <div style={{ display: "flex", flexWrap: "wrap" }}>
+                  {usedColors.map((item, index) => (
+                    <Avatar
+                      key={index}
+                      style={{
+                        backgroundColor: item.color,
+                        marginRight: 6,
+                        marginBottom: 6,
+                        border:
+                          selectedColor === item.color
+                            ? "2px solid #000"
+                            : "none",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => handleAvatarClick(item.color)}
+                    />
+                  ))}
+                </div>
+              </>
+            ) : null}
             <MyCareerGuidanceInputField
               placeholder="Add Title"
               type="input"
@@ -748,21 +696,6 @@ const MyStudy = () => {
               style={{ marginTop: "10px" }}
             />
 
-            {/* <Select
-              // placeholder="Select end Time"
-              // onChange={handleChange2}
-              onChange={(e) => setBackgroundColor(e)}
-              style={{ marginTop: "10px" }}
-              value={backgroundColor}
-              bordered={false}
-              className="inputFieldStyleSelect"
-            >
-              {colorArray.map((option) => (
-                <Option key={option.value} value={option.value}>
-                  {option.label}
-                </Option>
-              ))}
-            </Select> */}
             <div
               style={{
                 display: "flex",
@@ -817,9 +750,7 @@ const MyStudy = () => {
                   className={`takebutton ${
                     disableCreateButton ? "disabled" : ""
                   }`}
-                  // type="submit"
                   htmlType="submit"
-                  // onClick={createNewEvent}
                   loading={loadingBooking}
                   disabled={disableCreateButton}
                 />
@@ -830,9 +761,7 @@ const MyStudy = () => {
                   className={`takebutton ${
                     disableCreateButton ? "disabled" : ""
                   }`}
-                  // type="submit"
                   htmlType="submit"
-                  // onClick={handleEdit}
                   loading={loadingBooking}
                   disabled={disableCreateButton}
                 />
@@ -843,9 +772,7 @@ const MyStudy = () => {
                   className={`takebutton ${
                     disableCreateButton ? "disabled" : ""
                   }`}
-                  // type="submit"
                   htmlType="button"
-                  // onClick={handleEdit}
                   loading={loadingBooking}
                   disabled={disableCreateButton}
                   onClick={(e) => handleDeleteEvent(e)}

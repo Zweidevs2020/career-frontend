@@ -2,6 +2,8 @@ import { Button } from "antd";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
+import styles from "./occupational.module.css";
+
 const OccupationalOption = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -11,7 +13,6 @@ const OccupationalOption = () => {
   const [idDataArray, setIdDataArray] = useState([]);
 
   const infoData = location.state || {};
-console.log("=================res",infoData)
   useEffect(() => {
     getData(infoData);
   }, [infoData]);
@@ -64,14 +65,16 @@ console.log("=================res",infoData)
                   className="textStyle18 pt-1 pb-3"
                   style={{ fontWeight: 600 }}
                 >
-                  {/* {index + 1}: {item.title} */}
                 </div>
                 <div className="textStyle18 pt-1 pb-3">{item.description}</div>
               </div>
             );
           })
         ) : (
-          <p className="">{idData.idea}</p>
+          <>
+          <div className={styles.htmlParser} dangerouslySetInnerHTML={{__html: (idData.idea)}}></div>
+          
+          </>
         )}
       </div>
     </div>

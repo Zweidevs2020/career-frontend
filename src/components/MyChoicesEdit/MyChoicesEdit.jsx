@@ -15,13 +15,13 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Input, Modal } from "antd";
-import { useLocation } from "react-router-dom";
-import { Space, Table, Col, message, Form } from "antd";
+import { ConfigProvider, Input, Modal } from "antd";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { Space, Table, Col, message, Select, Image } from "antd";
 import {
   CheckOutlined,
   DeleteOutlined,
-  EditOutlined,
+  // EditOutlined,
   LeftOutlined,
   MenuOutlined,
   PlusCircleOutlined,
@@ -39,19 +39,29 @@ import {
   patchApiWithAuth,
   deleteApiWithAuth,
 } from "../../utils/api";
+import dropdownIcon from "../../assets/dropdownIcon.svg";
+// import EditOutlined from "../../assets/nimbus_edit.svg";
+import EditOutlined from "../../assets/uil_edit.svg";
+
+import { Link } from "react-router-dom";
+import {debounce} from 'lodash'
+
 import "./myChoicesEdit.css";
 
 const { Column, ColumnGroup } = Table;
 
 const MyChoicesEdit = () => {
   const inputRef = useRef(null);
-  const handleUpdateRef = useRef(null);
-  const handleAddRowRef = useRef(null);
-  const handleeidtThisRowRef = useRef(null);
-  const handleDeleteRef = useRef(null);
+  const focusRef = useRef(null);
+  const location = useLocation(); // Track current route
   const navigate = useNavigate();
+  const [searchParam, setSearchParam] = useSearchParams({
+    unsave: false,
+  });
+  const [selectedOptions, setSelectedOptions] = useState({});
+  const [previousUrl, setPreviousUrl] = useState(null);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const location = useLocation();
+  const currentUrl = location.pathname;
   const { dataa } = location.state || {};
   const [loadingFirst, setLoadingFirst] = useState(false);
   const [columns, setColums] = useState([]);
@@ -61,10 +71,8 @@ const MyChoicesEdit = () => {
   const [dragTimer, setDragTimer] = useState(null);
   const [myData, setMyData] = useState([]);
   const [oldData, setOldData] = useState(null);
+  const [dropDownOptions, setDropDownOptions] = useState(null);
   const [showRowsData, setShowRowsData] = useState(null);
-  const dataRef = useRef([]);
-  const rowRef = useRef(null);
-  const inputRefMobile = useRef();
 
   useEffect(() => {
     getChoiceRecord();
@@ -85,12 +93,13 @@ const MyChoicesEdit = () => {
     };
   }, []);
 
-  const getChoiceRecord = async () => {
-    setLoadingFirst(true);
+  const getChoiceRecord = async (runLoading =  true) => {
+    if (runLoading) {
+      setLoadingFirst(true);
+    }
     const response = await getApiWithAuth(
       `choices/column-names/?choice=${dataa.id}`
     );
-    console.log("================resgetChoiceRecord", response);
     if (response.data.status === 200) {
       const columnsData = response.data.data.data;
       const columnsWithoutOrderNumber = columnsData.slice(
@@ -108,10 +117,10 @@ const MyChoicesEdit = () => {
 
   const getTableRecord = async () => {
     const response = await getApiWithAuth(`choices/${dataa.id}/`);
-    console.log("================res", response);
     if (response.data.status === 200) {
-      setOldData(response.data.data);
-      // setData(response.data.data);
+      setOldData(response.data.data.user_data);
+      setDropDownOptions(response.data.data.level_data);
+
       setLoadingFirst(false);
     } else {
       setLoadingFirst(true);
@@ -162,29 +171,35 @@ const MyChoicesEdit = () => {
   }, [showRows]);
 
   const handleChangeTable = (e, rowData) => {
-    const { name, value } = e.target;
+    const { name, value, id } = e.target;
 
     let updatedData = data.map((item) => {
       if (item.rowNo === rowData.rowNo) {
-        rowRef.current = {
-          ...rowRef.current,
+        return {
+          ...item,
           id: item.id,
           dataId: item.dataId,
-          rowDataNo: rowData.rowNo,
+          rowNo: rowData.rowNo,
+          editable: true,
           [name]: value,
         };
-
-        return rowRef.current;
       } else {
         return item;
       }
     });
 
-    dataRef.current = [...updatedData];
+    setData(updatedData);
+
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.focus();
+      }
+    }, 0);
   };
 
   const handleChangeTableMobile = (e, rowData) => {
-    const { name, value } = e.target;
+    const { name, value, id } = e.target;
 
     let updatedData = data.map((item) => {
       if (item.rowNo === rowData.rowNo) {
@@ -200,10 +215,79 @@ const MyChoicesEdit = () => {
       }
     });
     setData(updatedData);
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.focus();
+      }
+    }, 0);
   };
 
+  useEffect(() => {
+    if (focusRef.current) {
+      focusRef.current.focus();
+      focusRef.current = null; // Reset to avoid unnecessary focusing
+    }
+  }, [data]);
+  // Define event handlers outside of useEffect
+  const handleRouteChange = () => {
+    console.log("Route change detected! Checking if row should be added...");
+    if (selectedOptions?.code?.row) {
+      handleAddRow(selectedOptions.code.row);
+    }
+  };
+
+  const handleBeforeUnload = (event) => {
+    console.log("Before unload event triggered. Checking for changes...");
+    const confirmationMessage =
+      "Are you sure you want to leave? Your changes might not be saved.";
+
+    event.preventDefault();
+    event.returnValue = confirmationMessage;
+
+    return confirmationMessage; // For older browsers
+  };
+
+  const handleReload = () => {
+    const userConfirmed = window.confirm(
+      "Do you want to reload the page? Your changes might not be saved."
+    );
+    if (userConfirmed) {
+      handleRouteChange();
+    }
+  };
+
+  // Function to enable event listeners when a row is being edited
+  const enableEventListeners = () => {
+    // localStorage.setItem("unsave", true);
+    sessionStorage.setItem("unsave", "true");
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("popstate", handleRouteChange);
+    window.addEventListener("unload", handleReload);
+  };
+
+  // Function to disable event listeners
+  const disableEventListeners = () => {
+    // localStorage.removeItem("unsave");
+    sessionStorage.removeItem("unsave");
+    console.log("Disabling event listeners...");
+    window.removeEventListener("beforeunload", handleBeforeUnload);
+    window.removeEventListener("popstate", handleRouteChange);
+    window.removeEventListener("unload", handleReload);
+  };
+
+  // const eidtThisRow = (record) => {
+  //   const updatedData = data.map((item) => {
+  //     if (item.rowNo === record.rowNo) {
+  //       return { ...item, editable: true };
+  //     } else {
+  //       return item;
+  //     }
+  //   });
+  //   setData(updatedData);
+  // };
+  // Modify editThisRow function to include event handling
   const eidtThisRow = (record) => {
-    console.log("================res eidtThisRow", data, "=====", record);
     const updatedData = data.map((item) => {
       if (item.rowNo === record.rowNo) {
         return { ...item, editable: true };
@@ -211,57 +295,53 @@ const MyChoicesEdit = () => {
         return item;
       }
     });
-    console.log("================res eidtThisRow updatedData", updatedData);
 
     setData(updatedData);
+
+    // Enable event listeners when a row is being edited
+    enableEventListeners();
   };
 
+  // Optional: Call disableEventListeners when saving or canceling editing
+  const saveRow = () => {
+    // Your save logic here
+    disableEventListeners();
+  };
+
+  const cancelEdit = () => {
+    // Your cancel logic here
+    disableEventListeners();
+  };
+  // Update function for desktop
   const handleUpdate = async (record) => {
-    console.log("================res handleUpdate in", record, "====", dataRef);
-    const row = dataRef.current.filter((item) => item.id === record?.id);
-    console.log("================res handleUpdate row", row);
+    if (record?.title) {
+      const [title] = record.title.split(",");
+      record.title = title;
+    }
+    if (record?.college) {
+      const [college] = record.college.split(",");
+      record.college = college;
+    }
 
-    if (row.length != 0) {
-      const checkNullValue = (row, key) => {
-        if (row[0][key] === null || row[0][key] === "") {
-          return key;
-        }
-        return null;
-      };
+    const respose = await patchApiWithAuth(
+      `choices/update-${dataa.id}/${record.id}/`,
+      record
+    );
 
-      const nullKeys = columns
-        .map((column) => checkNullValue(row, column))
-        .filter(Boolean);
-
-      if (nullKeys.length > 0) {
-        message.error(`Please enter the ${nullKeys[0]} of the Row`);
-      } else {
-        const respose = await patchApiWithAuth(
-          `choices/update-${dataa.id}/${record.id}/`,
-          row[0]
-        );
-
-        if (respose.data.status === 200) {
-          message.success("Row update succesfully");
-          setShowRows(null);
-          getChoiceRecord();
-          setSelectedRowId(record.id);
-          getTableRecord();
-        } else {
-          message.error(respose.data.message);
-        }
-      }
-    } else {
+    if (respose.data.status === 200) {
+      message.success("Row update succesfully");
       setShowRows(null);
       getChoiceRecord();
+      setSelectedRowId(record.id);
       getTableRecord();
+    } else {
+      message.error(respose.data.message);
     }
   };
   const handleUpdateMobile = async (record) => {
-    console.log("=================check", record);
     for (const key in record) {
       if (key !== "id" && key !== "order_number" && record[key] === null) {
-        message.error(`Please enter the ${key} of the Row`);
+        // message.error(`Please enter the ${key} of the Row`);
         break;
       }
     }
@@ -294,43 +374,98 @@ const MyChoicesEdit = () => {
     }
   };
 
-  const handleAddRow = async (record) => {
-    const row = dataRef.current.filter((item) => item.dataId === record.dataId);
+  const currentPath = location.pathname;
+  const handleAddRow = async (recordToAdd, isDebounceCall = false) => {
+    // Use recordToAdd if provided, or fall back to the record stored in state
+    const finalRecord = recordToAdd || selectedOptions?.code?.row;
 
-    if (row.length != 0) {
-      const row1 = row[0];
-      const checkNullValue = (row1, key) => {
-        if (row1[key] === undefined || row1[key] === "") {
-          return key;
-        } else {
-          return null;
-        }
-      };
+    if (!finalRecord) {
+      message.error("No valid record found");
+      return;
+    }
 
-      const nullKeys = columns
-        .map((key) => checkNullValue(row1, key))
-        .filter(Boolean);
-
-      if (nullKeys.length > 0) {
-        message.error(`Please enter the ${nullKeys[0]} of the Row`);
-      } else {
-        row1.order_number = record.rowNo + 1;
-        const respose = await postApiWithAuth(`choices/${dataa.id}/`, row);
-
-        if (respose.data.status === 200) {
-          message.success("Row add succesfully");
-          setShowRows(null);
-          getChoiceRecord();
-          getTableRecord();
-          setSelectedRowId(record.id);
-        } else {
-          message.error(respose.data.message);
-        }
+    if (finalRecord.code === null || finalRecord.title === null) {
+      message.error("All fields are required");
+    } else {
+      console.log(finalRecord, "ss");
+      if (finalRecord?.title) {
+        const [title] = finalRecord.title.split(",");
+        finalRecord.title = title;
       }
-    } else if (!record || !record.code) {
-      message.error(`Please enter Code to proceed further`);
+      if (finalRecord?.college) {
+        const [college] = finalRecord.college.split(",");
+        finalRecord.college = college;
+      }
+
+      const response = await postApiWithAuth(
+        `choices/${dataa.id}/`,
+        finalRecord
+      );
+      // Ensure event listeners are removed
+      disableEventListeners();
+      console.log(response?.data?.status, "hello");
+      if (response.data.status === 200) {
+        message.success("Row added successfully");
+        setShowRows(null);
+
+        getChoiceRecord(!isDebounceCall);
+        getTableRecord();
+        setSelectedRowId(finalRecord.id);
+        disableEventListeners();
+      } else {
+        message.error(response.data.message);
+      }
     }
   };
+  // useEffect(() => {
+  //   const currentUrl = location.pathname;
+
+  //   // Function to log previous URL when leaving the page
+  //   const logPreviousUrl = () => {
+  //     console.log("Leaving page:", currentUrl);
+  //     // setPreviousUrl(currentUrl);
+  //   };
+
+  //   return logPreviousUrl; // This runs before the effect re-runs (cleanup)
+  // }, [location]);
+  console.log("[loca]", location);
+
+  // useEffect(() => {
+  //   const currentUrl = location.pathname;
+
+  //   const logPreviousUrl = () => {
+  //     if (selectedOptions?.code?.row) {
+  //       const confirmLeave = window.confirm(
+  //         "You have unsaved changes. Are you sure you want to leave?"
+  //       );
+  //       console.log("1");
+  //       console.log(confirmLeave, "confrim", !confirmLeave);
+  //       if (!confirmLeave) {
+  //         console.log(confirmLeave, "inside if ");
+  //         console.log("2");
+  //         return; // Prevent navigation
+  //       }
+  //       console.log("3");
+  //     }
+  //     console.log("4");
+  //     setPreviousUrl(currentUrl); // Update previous URL if navigation is allowed
+  //   };
+
+  //   return logPreviousUrl; // Runs before effect re-runs (cleanup)
+  // }, [location, navigate]);
+
+  useEffect(() => {
+    const isRowEditable = data.some((row) => row.editable);
+    if (isRowEditable) {
+      enableEventListeners();
+    } else {
+      disableEventListeners();
+    }
+
+    return () => {
+      disableEventListeners(); // Cleanup on component unmount
+    };
+  }, [data, enableEventListeners, disableEventListeners]);
   const handleAddRowMobile = async (record) => {
     for (const key in record) {
       if (key !== "id" && record[key] === null) {
@@ -383,10 +518,7 @@ const MyChoicesEdit = () => {
       id: props["data-row-key"],
     });
     const rowId = props["data-row-key"];
-    console.log("======Row", rowId, data);
     const row = data.find((item) => item.dataId === rowId);
-    const shouldShowIcon = data.find((item) => item.id === rowId);
-    console.log("======Row row", row);
     const isIdNotNull = row && row.id !== null;
     const style = {
       ...props.style,
@@ -419,20 +551,6 @@ const MyChoicesEdit = () => {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {/* <Column
-            title=""
-            key="menuIcon"
-            dataIndex="menuIcon"
-            render={(text, record) => (
-              <MenuOutlined
-                style={{
-                  touchAction: "none",
-                  cursor: "move",
-                }}
-              />
-            )}
-          /> */}
-
           {children}
           {row?.id ? (
             <MenuOutlined
@@ -441,14 +559,10 @@ const MyChoicesEdit = () => {
               style={{
                 touchAction: "none",
                 cursor: "move",
-                // width: 20,
-                // height: 20,
                 marginRight: 30,
                 position: "absolute",
                 top: "42%",
                 left: "0px",
-
-                // color: row?.id ? "red" : "transparent",
               }}
             />
           ) : null}
@@ -470,7 +584,6 @@ const MyChoicesEdit = () => {
     });
 
     const rowId = props["data-row-key"];
-    console.log(rowId, "row");
     const { row: comingRow } = props;
     const row = data.find((item) => item.dataId === rowId);
     const isIdNotNull = row && row.id !== null;
@@ -486,8 +599,6 @@ const MyChoicesEdit = () => {
 
       transition,
       cursor: "move",
-      // touchAction: "none",
-
       ...(isDragging
         ? {
             position: "relative",
@@ -523,7 +634,6 @@ const MyChoicesEdit = () => {
                 {...listeners}
               />
               <div className="actionColumn">
-                {/* <span className="rowHeadingMobile">Action</span> */}
                 <Space size="middle">
                   {comingRow.editable && comingRow.id !== null ? (
                     <a onClick={() => handleUpdateMobile(comingRow)}>
@@ -535,7 +645,16 @@ const MyChoicesEdit = () => {
                     </a>
                   ) : (
                     <a onClick={() => eidtThisRow(comingRow)}>
-                      <EditOutlined style={{ color: "#1476b7" }} />
+                      <Image
+                        preview={false}
+                        src={EditOutlined}
+                        style={{
+                          color: "#1476b7",
+                          cursor: "pointer",
+                          width: 22,
+                          height: "100%",
+                        }}
+                      />
                     </a>
                   )}
                   <a onClick={() => handleDelete(comingRow)}>
@@ -578,112 +697,13 @@ const MyChoicesEdit = () => {
     })
   );
 
-  // const onDragEnd = async ({ active, over }) => {
-  //   // if ( !isDragInProgress) {
-  //   //   return;
-  //   // }
-  //   console.log(active, over, "active,over");
-  //   if (active?.id && over?.id) {
-  //     if (active?.id !== over?.id) {
-  //       setData((prev) => {
-  //         const activeIndex = prev.findIndex((i) => i.dataId === active?.id);
-
-  //         const overIndex = prev.findIndex((i) => i.dataId === over?.id);
-
-  //         const orderUpdate1 = {
-  //           order_number: oldData[overIndex]?.order_number,
-  //         };
-
-  //         const orderUpdate2 = {
-  //           order_number: oldData[activeIndex]?.order_number,
-  //         };
-
-  //         const updateOrder1 = async () => {
-  //           setLoadingFirst(true);
-  //           const respose1 = await patchApiWithAuth(
-  //             `choices/update-${dataa.id}/${oldData[activeIndex].id}/`,
-  //             orderUpdate1
-  //           );
-
-  //           if (respose1.data.status === 200) {
-  //             getTableRecord();
-  //             // setData(respose1.data.data);
-  //           }
-  //           setLoadingFirst(false);
-  //         };
-
-  //         const updateOrder2 = async () => {
-  //           setLoadingFirst(true);
-  //           const respose2 = await patchApiWithAuth(
-  //             `choices/update-${dataa.id}/${oldData[overIndex].id}/`,
-  //             orderUpdate2
-  //           );
-
-  //           if (respose2.data.status === 200) {
-  //             getTableRecord();
-  //             // setData(response.data.data);
-  //           }
-
-  //           setLoadingFirst(false);
-  //         };
-
-  //         updateOrder1();
-  //         updateOrder2();
-
-  //         return arrayMove(prev, activeIndex, overIndex);
-  //       });
-  //     }
-  //   }
-  //   {
-  //     isMobile && window.location.reload();
-  //   }
-  // };
-  const reorderArray = (activeIndex, overIndex, array) => {
-    // Ensure the indices are within array bounds
-    if (
-      activeIndex < 0 ||
-      activeIndex >= array.length ||
-      overIndex < 0 ||
-      overIndex >= array.length
-    ) {
-      return;
-    }
-
-    // Copy the array to avoid modifying the original array
-    const newArray = array.slice();
-
-    // Remove the element at activeIndex
-    const [movedElement] = newArray.splice(activeIndex, 1);
-
-    // Adjust overIndex if the element was removed from before the overIndex
-    if (activeIndex < overIndex) {
-      overIndex -= 1;
-    }
-
-    // Insert the moved element at overIndex
-    newArray.splice(overIndex, 0, movedElement);
-
-    return newArray;
-  };
   const onDragEnd = async ({ active, over }) => {
-    // if ( !isDragInProgress) {
-    //   return;
-    // }
-    console.log(active, over, "active,over");
     if (active?.id && over?.id) {
       if (active?.id !== over?.id) {
         setData((prev) => {
           const activeIndex = prev.findIndex((i) => i.dataId === active?.id);
 
           const overIndex = prev.findIndex((i) => i.dataId === over?.id);
-
-          const orderUpdate1 = {
-            order_number: oldData[overIndex]?.order_number,
-          };
-
-          const orderUpdate2 = {
-            order_number: oldData[activeIndex]?.order_number,
-          };
           const checkArray = arrayMove(prev, activeIndex, overIndex);
           const swapArray = checkArray.filter((item) => item.id !== null);
           const check = swapArray.map(async (item, index) => {
@@ -691,10 +711,6 @@ const MyChoicesEdit = () => {
               order_number: index + 1,
             });
           });
-          // if(check.length===checkArray.filter((item) => item.id !== null))
-          // {
-          //   getTableRecord()
-          // }
           Promise.all(check).then(getTableRecord(), getTableRecord());
 
           return arrayMove(prev, activeIndex, overIndex);
@@ -707,37 +723,13 @@ const MyChoicesEdit = () => {
   };
 
   const updateOrderMultitimes = async (id, activeIndexId, swapArrayOrder) => {
-    // setLoadingFirst(true);
     const respose1 = await patchApiWithAuth(
       `choices/update-${id}/${activeIndexId}/`,
       swapArrayOrder
     );
 
     if (respose1.data.status === 200) {
-      // updateOrder2(id, overIndexId, orderUpdate2);
-      // setData(respose1.data.data);
     }
-    // setLoadingFirst(false);
-  };
-
-  const updateOrder1 = async (
-    id,
-    activeIndexId,
-    overIndexId,
-    orderUpdate1,
-    orderUpdate2
-  ) => {
-    setLoadingFirst(true);
-    const respose1 = await patchApiWithAuth(
-      `choices/update-${id}/${activeIndexId}/`,
-      orderUpdate1
-    );
-
-    if (respose1.data.status === 200) {
-      updateOrder2(id, overIndexId, orderUpdate2);
-      // setData(respose1.data.data);
-    }
-    setLoadingFirst(false);
   };
 
   const updateOrder2 = async (id, overIndexId, orderUpdate2) => {
@@ -749,10 +741,35 @@ const MyChoicesEdit = () => {
 
     if (respose2.data.status === 200) {
       getTableRecord();
-      // setData(response.data.data);
     }
 
     setLoadingFirst(false);
+  };
+
+  const handleSelect = async (value, option, rowNum) => {
+    const isCodeAvailable = data.some((item) => item.code === option.code);
+    if (isCodeAvailable) {
+      message.error("You already select this Course");
+    } else {
+      const updatedData = data.map((item) => {
+        if (item.rowNo === rowNum) {
+          const { id, ...rest } = option.row;
+          const _body = {
+            ...item,
+            ...rest,
+            order_number: rowNum,
+          };
+          const saveDebounce = debounce(() => {
+            handleAddRow(_body, true)
+          }, 3000)
+          saveDebounce()
+          return _body;
+        }
+        return item;
+      });
+
+      setData(updatedData);
+    }
   };
   return (
     <>
@@ -770,7 +787,6 @@ const MyChoicesEdit = () => {
                       navigate("/my-choices");
                     }}
                   >
-                    {/* <LeftOutlined class="h-4" /> */}
                     <span class="ml-1">Back</span>
                   </button>
                 </div>
@@ -786,10 +802,11 @@ const MyChoicesEdit = () => {
                   </button>
                 </div>
               )}
-              <div className="myChoiceEditHeading py-3">{dataa.name}</div>
+              <div className="myChoiceEditHeading py-3">{dataa?.name}</div>
               <div className="w-100 p-3">
                 {!isMobile ? (
                   <div className="w-100" style={{ overflowX: "auto" }}>
+                    {/* Desktop view with drag and drop feature */}
                     <DndContext
                       sensors={sensors}
                       modifiers={[restrictToVerticalAxis]}
@@ -823,38 +840,180 @@ const MyChoicesEdit = () => {
                               title="No."
                               dataIndex="rowNo"
                               key="rowNo"
-                              className="tableHeadingStyle"
+                              className="firstTableHeadingStyle"
                               render={(text) => (
                                 <span style={{ paddingLeft: 10 }}>
                                   {text + 1}
                                 </span>
                               )}
                             />
-                            {columns.map((item) => {
+                            {columns.map((item, index) => {
                               return (
                                 <>
-                                  <Column
-                                    title={capitalizeWords(item)}
-                                    dataIndex={item}
-                                    key={item}
-                                    className="tableHeadingStyle"
-                                    render={(text, record) => (
-                                      <>
-                                        <MyCareerGuidanceInputField
-                                          ref={inputRef}
-                                          placeholder={item}
-                                          type="input"
-                                          name={item}
-                                          defaultValue={text}
-                                          onChange={(e) =>
-                                            handleChangeTable(e, record)
-                                          }
-                                          isPrefix={false}
-                                          disabled={!record.editable}
-                                        />
-                                      </>
-                                    )}
-                                  />
+                                  {item === "code" ||
+                                  item === "title" ||
+                                  item === "college" ? (
+                                    <>
+                                      <Column
+                                        title={capitalizeWords(item)}
+                                        dataIndex={item}
+                                        key={item}
+                                        className="tableHeadingStyle"
+                                        render={(text, record, rowNum) => (
+                                          <>
+                                            <Select
+                                              showSearch
+                                              placeholder={`Select ${item}`}
+                                              name={item}
+                                              value={
+                                                item === "code"
+                                                  ? text
+                                                  : `${text},${record.code}`
+                                              }
+                                              optionFilterProp="children"
+                                              className="selectInputFieldStyle"
+                                              ref={inputRef}
+                                              defaultValue={
+                                                item === "code"
+                                                  ? text
+                                                  : `${text},${record.code}`
+                                              }
+                                              bordered={false}
+                                              popupMatchSelectWidth={false}
+                                              disabled={!record.editable}
+                                              onClick={() => {
+                                                if (!record.editable) {
+                                                  eidtThisRow(record);
+                                                }
+                                              }}
+                                              suffixIcon={
+                                                <Image
+                                                  preview={false}
+                                                  src={dropdownIcon}
+                                                  width={15}
+                                                  style={{ marginRight: 10 }}
+                                                />
+                                              }
+                                              onSelect={(value, option) =>
+                                                handleSelect(
+                                                  value,
+                                                  option,
+                                                  rowNum
+                                                )
+                                              }
+                                              optionLabelProp="label"
+                                            >
+                                              {dropDownOptions.map((option) => {
+                                                return (
+                                                  <Select.Option
+                                                    key={option?.id}
+                                                    value={
+                                                      item === "code"
+                                                        ? option[item]
+                                                        : `${option[item]},${option.code}`
+                                                    }
+                                                    code={option.code}
+                                                    row={option}
+                                                    label={option[item]}
+                                                  >
+                                                    {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})`: ''}`}
+                                                  </Select.Option>
+                                                );
+                                              })}
+                                            </Select>
+                                          </>
+                                        )}
+                                      />
+                                    </>
+                                  ) : item === "course_information" ? (
+                                    <Column
+                                      title={item
+                                        .split("_") // Split the string by underscores
+                                        .map(
+                                          (word) =>
+                                            word.charAt(0).toUpperCase() +
+                                            word.slice(1) // Capitalize the first letter of each word
+                                        )
+                                        .join(" ")}
+                                      dataIndex={item}
+                                      key={item}
+                                      className="tableHeadingStyle"
+                                      render={(text, record) => (
+                                        <>
+                                          <Link
+                                            to={text}
+                                            className="linkStyle"
+                                            target={"_blank"}
+                                          >
+                                            {text}
+                                          </Link>
+                                        </>
+                                      )}
+                                    />
+                                  ) : (
+                                    <Column
+                                      title={capitalizeWords(item)}
+                                      dataIndex={item}
+                                      key={item}
+                                      disabled
+                                      className="tableHeadingStyle "
+                                      render={(text, record) => {
+                                        let parseText = parseInt(text);
+                                        parseText = isNaN(parseText)
+                                          ? text
+                                          : parseText;
+                                        return (
+                                          <div
+                                            style={{
+                                              position: "relative",
+                                            }}
+                                            onClick={() => {
+                                              if (!record.editable) {
+                                                eidtThisRow(record);
+                                              }
+                                            }}
+                                          >
+                                            {!record.editable && (
+                                              <div
+                                                style={{
+                                                  position: "absolute",
+                                                  height: "100%",
+                                                  width: "100%",
+                                                  backgroundColor:
+                                                    "transparent",
+                                                  zIndex: 1,
+                                                }}
+                                                onClick={() => {
+                                                  if (!record.editable) {
+                                                    eidtThisRow(record);
+                                                  }
+                                                }}
+                                              ></div>
+                                            )}
+                                            <MyCareerGuidanceInputField
+                                              // ref={inputRef}
+                                              placeholder={item}
+                                              type="input"
+                                              name={item}
+                                              defaultValue={parseText}
+                                              onChange={(e) =>
+                                                handleChangeTable(e, record)
+                                              }
+                                              isPrefix={false}
+                                              id={`input-${item}-${record?.rowNo}`}
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                if (!record.editable) {
+                                                  eidtThisRow(record);
+                                                }
+                                              }}
+                                              disabled={!record.editable}
+                                            />
+                                          </div>
+                                        );
+                                      }}
+                                    />
+                                  )}
                                 </>
                               );
                             })}
@@ -862,39 +1021,31 @@ const MyChoicesEdit = () => {
                             <Column
                               title="Action"
                               key="Object"
-                              className="tableHeadingStyle"
+                              className="firstTableHeadingStyle"
                               dataIndex={"Object"}
                               render={(_, record) => (
                                 <Space size="middle">
                                   {record.editable && record.id !== null ? (
                                     <CheckOutlined
-                                      style={{ cursor: "pointer" }}
+                                      style={{
+                                        cursor: "pointer",
+                                      }}
                                       onClick={() => handleUpdate(record)}
-                                      // ref={handleUpdateRef}
                                     />
                                   ) : record.editable && record.id === null ? (
                                     <PlusCircleOutlined
-                                      style={{ cursor: "pointer" }}
-                                      onClick={() => handleAddRow(record)}
-                                      // ref={handleAddRowRef}
-                                    />
-                                  ) : (
-                                    <EditOutlined
                                       style={{
-                                        color: "#1476b7",
                                         cursor: "pointer",
                                       }}
-                                      onClick={() => eidtThisRow(record)}
-                                      // ref={handleeidtThisRowRef}
+                                      onClick={() => handleAddRow(record)}
                                     />
-                                  )}
+                                  ) : null}
                                   <DeleteOutlined
                                     style={{
                                       color: "red",
                                       cursor: "pointer",
                                     }}
                                     onClick={() => handleDelete(record)}
-                                    // ref={handleDeleteRef}
                                   />
                                 </Space>
                               )}
@@ -904,6 +1055,7 @@ const MyChoicesEdit = () => {
                       </SortableContext>
                     </DndContext>
 
+                    {/* Desktop view for empty rows */}
                     <Table
                       pagination={false}
                       dataSource={data.filter((item) => item.id === null)}
@@ -923,36 +1075,175 @@ const MyChoicesEdit = () => {
                         title="No."
                         dataIndex="rowNo"
                         key="rowNo"
-                        className="tableHeadingStyle"
+                        className="firstTableHeadingStyle"
                         render={(text) => (
                           <span style={{ paddingLeft: 10 }}>{text + 1}</span>
                         )}
                       />
-                      {columns.map((item) => {
+                      {columns.map((item, index) => {
                         return (
                           <>
-                            <Column
-                              title={capitalizeWords(item)}
-                              dataIndex={item}
-                              key={item}
-                              className="tableHeadingStyle"
-                              render={(text, record) => (
-                                <>
-                                  <MyCareerGuidanceInputField
-                                    ref={inputRef}
-                                    placeholder={item}
-                                    type="input"
-                                    name={item}
-                                    defaultValue={text}
-                                    onChange={(e) =>
-                                      handleChangeTable(e, record)
-                                    }
-                                    isPrefix={false}
-                                    disabled={!record.editable}
-                                  />
-                                </>
-                              )}
-                            />
+                            {item === "code" ||
+                            item === "title" ||
+                            item === "college" ? (
+                              <>
+                                <Column
+                                  title={capitalizeWords(item)}
+                                  dataIndex={item}
+                                  key={item}
+                                  className="tableHeadingStyle"
+                                  render={(text, record, rowNum) => (
+                                    <>
+                                      <Select
+                                        showSearch
+                                        placeholder={`Select ${item}`}
+                                        name={item}
+                                        value={
+                                          item === "code"
+                                            ? text
+                                            : !text
+                                            ? undefined
+                                            : `${text ?? ""},${
+                                                record.code ?? ""
+                                              }`
+                                        }
+                                        optionFilterProp="children"
+                                        className="inputSelectFieldStyle"
+                                        ref={inputRef}
+                                        defaultValue={
+                                          item === "code"
+                                            ? text
+                                            : !text
+                                            ? undefined
+                                            : `${text ?? ""},${
+                                                record.code ?? ""
+                                              }`
+                                        }
+                                        bordered={false}
+                                        popupMatchSelectWidth={false}
+                                        onClick={() => {
+                                          if (!record.editable) {
+                                            eidtThisRow(record);
+                                          }
+                                        }}
+                                        suffixIcon={
+                                          <Image
+                                            preview={false}
+                                            src={dropdownIcon}
+                                            width={15}
+                                            style={{ marginRight: 10 }}
+                                          />
+                                        }
+                                        onSelect={(value, option) => {
+                                          // Log the selected value and option to the console
+                                          console.log("Selected value:", value);
+                                          console.log(
+                                            "Selected option:",
+                                            option
+                                          );
+                                          // Update the state with the selected option object
+                                          setSelectedOptions((prevState) => ({
+                                            ...prevState,
+                                            [item]: option,
+                                          }));
+
+                                          // Call the handleSelect function with the necessary parameters
+                                          handleSelect(
+                                            value,
+                                            option,
+                                            rowNum +
+                                              data.filter(
+                                                (item) => item.id !== null
+                                              ).length
+                                          );
+                                        }}
+                                        // onSelect={(value, option) =>
+
+                                        //   handleSelect(
+                                        //     value,
+                                        //     option,
+                                        //     rowNum +
+                                        //       data.filter(
+                                        //         (item) => item.id !== null
+                                        //       ).length
+                                        //   )
+                                        // }
+                                        optionLabelProp="label"
+                                      >
+                                        {dropDownOptions.map((option) => {
+                                          return (
+                                            <Select.Option
+                                              key={option["id"]}
+                                              value={
+                                                item === "code"
+                                                  ? option[item]
+                                                  : `${option[item]},${option.code}`
+                                              }
+                                              code={option.code}
+                                              row={option}
+                                              label={option[item]}
+                                            >
+                                              {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})`: ''}`}
+                                            </Select.Option>
+                                          );
+                                        })}
+                                      </Select>
+                                    </>
+                                  )}
+                                />
+                              </>
+                            ) : (
+                              <Column
+                                title={item
+                                  .split("_") // Split the string by underscores
+                                  .map(
+                                    (word) =>
+                                      word.charAt(0).toUpperCase() +
+                                      word.slice(1) // Capitalize the first letter of each word
+                                  )
+                                  .join(" ")}
+                                dataIndex={item}
+                                key={item}
+                                className="tableHeadingStyle"
+                                render={(text, record) => {
+                                  let parseText = parseInt(text);
+                                  parseText = isNaN(parseText)
+                                    ? text
+                                    : parseText;
+
+                                  return (
+                                    <div
+                                      onClick={() => {
+                                        if (!record.editable) {
+                                          eidtThisRow(record);
+                                        }
+                                      }}
+                                    >
+                                      <MyCareerGuidanceInputField
+                                        placeholder={item}
+                                        type="input"
+                                        name={item}
+                                        defaultValue={parseText}
+                                        onChange={(e) =>
+                                          handleChangeTable(e, record)
+                                        }
+                                        onFocus={(e) =>
+                                          (inputRef.current = e.target)
+                                        }
+                                        id={`input-${item}-${record?.rowNo}`}
+                                        isPrefix={false}
+                                        // disabled={!record.editable}
+                                        onClick={() => {
+                                          if (!record.editable) {
+                                            eidtThisRow(record);
+                                          }
+                                        }}
+                                      />
+                                    </div>
+                                  );
+                                }}
+                              />
+                            )}
                           </>
                         );
                       })}
@@ -960,7 +1251,7 @@ const MyChoicesEdit = () => {
                       <Column
                         title="Action"
                         key="Object"
-                        className="tableHeadingStyle"
+                        className="firstTableHeadingStyle"
                         dataIndex={"Object"}
                         render={(_, record) => (
                           <Space size="middle">
@@ -972,16 +1263,10 @@ const MyChoicesEdit = () => {
                               <a onClick={() => handleAddRow(record)}>
                                 <PlusCircleOutlined />
                               </a>
-                            ) : (
-                              <a onClick={() => eidtThisRow(record)}>
-                                <EditOutlined />
-                              </a>
-                            )}
+                            ) : null}
                             <a>
                               <DeleteOutlined style={{ color: "grey" }} />
                             </a>
-
-                            {/* <a onClick={() => handleDelete(record)}><DeleteOutlined style={{ color: 'red' }} /></a> */}
                           </Space>
                         )}
                       />
@@ -1029,27 +1314,109 @@ const MyChoicesEdit = () => {
                                     </div>
                                   </div>
                                   <div className="remaining-columns">
-                                    {columns.map((item, index) => (
-                                      <div
-                                        className="column"
-                                        key={`${item.dataId}-${index}`}
-                                      >
-                                        <span className="rowHeadingMobile">
-                                          {capitalizeWords(item)}
-                                        </span>
-                                        <MyCareerGuidanceInputField
-                                          placeholder={row[item]}
-                                          type="input"
-                                          name={item}
-                                          onChange={(e) =>
-                                            handleChangeTableMobile(e, row)
-                                          }
-                                          defaultValue={row[item]}
-                                          isPrefix={false}
-                                          disabled={!row.editable}
-                                        />
-                                      </div>
-                                    ))}
+                                    {columns.map((item, index) =>
+                                      item === "code" ||
+                                      item === "title" ||
+                                      item === "college" ? (
+                                        <>
+                                          <div
+                                            className="column"
+                                            key={`${item.dataId}-${index}`}
+                                          >
+                                            <span className="rowHeadingMobile">
+                                              {capitalizeWords(item)}
+                                            </span>
+                                            <Select
+                                              showSearch
+                                              placeholder={`Select ${row[item]}`}
+                                              name={item}
+                                              value={row[item]}
+                                              optionFilterProp="children"
+                                              className="inputSelectFieldStyle"
+                                              ref={inputRef}
+                                              defaultValue={row[item]}
+                                              bordered={false}
+                                              popupMatchSelectWidth={false}
+                                              disabled={!row.editable}
+                                              suffixIcon={
+                                                <Image
+                                                  preview={false}
+                                                  src={dropdownIcon}
+                                                  width={15}
+                                                  style={{ marginRight: 10 }}
+                                                />
+                                              }
+                                              onSelect={(value, option) =>
+                                                handleSelect(
+                                                  value,
+                                                  option,
+                                                  row.rowNo
+                                                )
+                                              }
+                                              optionLabelProp="label"
+                                            >
+                                              {dropDownOptions.map((option) => {
+                                                return (
+                                                  <Select.Option
+                                                    key={option?.id}
+                                                    value={option[item]}
+                                                    code={option.code}
+                                                    row={option}
+                                                    label={option[item]}
+                                                  >
+                                                    {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})`: ''}`}
+                                                  </Select.Option>
+                                                );
+                                              })}
+                                            </Select>
+                                          </div>
+                                        </>
+                                      ) : item === "course_information" ? (
+                                        <div
+                                          className="column"
+                                          key={`${item.dataId}-${index}`}
+                                        >
+                                          <span className="rowHeadingMobile">
+                                            {item
+                                              .split("_") // Split the string by underscores
+                                              .map(
+                                                (word) =>
+                                                  word.charAt(0).toUpperCase() +
+                                                  word.slice(1) // Capitalize the first letter of each word
+                                              )
+                                              .join(" ")}
+                                          </span>
+
+                                          <Link
+                                            to={row[item]}
+                                            className="linkStyle"
+                                            target={"_blank"}
+                                          >
+                                            {row[item]}
+                                          </Link>
+                                        </div>
+                                      ) : (
+                                        <div
+                                          className="column"
+                                          key={`${item.dataId}-${index}`}
+                                        >
+                                          <span className="rowHeadingMobile">
+                                            {capitalizeWords(item)}
+                                          </span>
+                                          <MyCareerGuidanceInputField
+                                            placeholder={row[item]}
+                                            type="input"
+                                            name={item}
+                                            onChange={(e) =>
+                                              handleChangeTableMobile(e, row)
+                                            }
+                                            defaultValue={row[item]}
+                                            isPrefix={false}
+                                            disabled={!row.editable}
+                                          />
+                                        </div>
+                                      )
+                                    )}
                                   </div>
                                 </MobileRow>
                               ) : (
@@ -1073,7 +1440,6 @@ const MyChoicesEdit = () => {
                                         }}
                                       />
                                       <div className="actionColumn">
-                                        {/* <span className="rowHeadingMobile">Action</span> */}
                                         <Space size="middle">
                                           {row.editable && row.id !== null ? (
                                             <a
@@ -1096,8 +1462,15 @@ const MyChoicesEdit = () => {
                                             </a>
                                           ) : (
                                             <a onClick={() => eidtThisRow(row)}>
-                                              <EditOutlined
-                                                style={{ color: "#1476b7" }}
+                                              <Image
+                                                preview={false}
+                                                src={EditOutlined}
+                                                style={{
+                                                  color: "#1476b7",
+                                                  cursor: "pointer",
+                                                  width: 22,
+                                                  height: "100%",
+                                                }}
                                               />
                                             </a>
                                           )}
@@ -1122,25 +1495,104 @@ const MyChoicesEdit = () => {
                                     </div>
                                     <div className="remaining-columns">
                                       {columns.map((item, index) => (
-                                        <div
-                                          className="column"
-                                          key={`${item.dataId}-${index}`}
-                                        >
-                                          <span className="rowHeadingMobile">
-                                            {capitalizeWords(item)}
-                                          </span>
-                                          <MyCareerGuidanceInputField
-                                            placeholder={row[item]}
-                                            type="input"
-                                            name={item}
-                                            onChange={(e) =>
-                                              handleChangeTableMobile(e, row)
-                                            }
-                                            defaultValue={row[item]}
-                                            isPrefix={false}
-                                            disabled={!row.editable}
-                                          />
-                                        </div>
+                                        <>
+                                          {item === "code" ||
+                                          item === "title" ||
+                                          item === "college" ? (
+                                            <>
+                                              <div
+                                                className="column"
+                                                key={`${item.dataId}-${index}`}
+                                              >
+                                                <span className="rowHeadingMobile">
+                                                  {capitalizeWords(item)}
+                                                </span>
+                                                <Select
+                                                  showSearch
+                                                  placeholder={`Select ${row[item]}`}
+                                                  name={item}
+                                                  value={row[item]}
+                                                  optionFilterProp="children"
+                                                  className="inputSelectFieldStyle"
+                                                  ref={inputRef}
+                                                  defaultValue={row[item]}
+                                                  bordered={false}
+                                                  popupMatchSelectWidth={false}
+                                                  disabled={!row.editable}
+                                                  suffixIcon={
+                                                    <Image
+                                                      preview={false}
+                                                      src={dropdownIcon}
+                                                      width={15}
+                                                      style={{
+                                                        marginRight: 10,
+                                                      }}
+                                                    />
+                                                  }
+                                                  onSelect={(value, option) =>
+                                                    handleSelect(
+                                                      value,
+                                                      option,
+                                                      row.rowNo
+                                                    )
+                                                  }
+                                                  // onSelect={(value, option) =>
+                                                  //   handleSelect(
+                                                  //     value,
+                                                  //     option,
+                                                  //     row.rowNo
+                                                  //   )
+                                                  // }
+                                                  optionLabelProp="label"
+                                                >
+                                                  {dropDownOptions.map(
+                                                    (option) => {
+                                                      // console.log(
+                                                      //   option,
+                                                      //   "[option if 4]"
+                                                      // );
+                                                      return (
+                                                        <Select.Option
+                                                          key={option[item]}
+                                                          value={option[item]}
+                                                          code={option.code}
+                                                          row={option}
+                                                          label={option[item]}
+                                                        >
+                                                          {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})`: ''}`}
+                                                        </Select.Option>
+                                                      );
+                                                    }
+                                                  )}
+                                                </Select>
+                                              </div>
+                                            </>
+                                          ) : (
+                                            <div
+                                              className="column"
+                                              key={`${item.dataId}-${index}`}
+                                            >
+                                              <span className="rowHeadingMobile">
+                                                {capitalizeWords(item)}
+                                              </span>
+                                              <MyCareerGuidanceInputField
+                                                placeholder={row[item]}
+                                                type="input"
+                                                name={item}
+                                                value={row[item]}
+                                                // onChange={(e) =>
+                                                //   handleChangeTableMobile(
+                                                //     e,
+                                                //     row
+                                                //   )
+                                                // }
+                                                defaultValue={row[item]}
+                                                isPrefix={false}
+                                                disabled={!row.editable}
+                                              />
+                                            </div>
+                                          )}
+                                        </>
                                       ))}
                                     </div>
                                   </div>
@@ -1188,8 +1640,15 @@ const MyChoicesEdit = () => {
                                       </a>
                                     ) : (
                                       <a onClick={() => eidtThisRow(row)}>
-                                        <EditOutlined
-                                          style={{ color: "#1476b7" }}
+                                        <Image
+                                          preview={false}
+                                          src={EditOutlined}
+                                          style={{
+                                            color: "#1476b7",
+                                            cursor: "pointer",
+                                            width: 22,
+                                            height: "100%",
+                                          }}
                                         />
                                       </a>
                                     )}
@@ -1214,128 +1673,107 @@ const MyChoicesEdit = () => {
                               </div>
                               <div className="remaining-columns">
                                 {columns.map((item, index) => (
-                                  <div
-                                    className="column"
-                                    key={`${item.dataId}-${index}`}
-                                  >
-                                    <span className="rowHeadingMobile">
-                                      {capitalizeWords(item)}
-                                    </span>
-                                    <MyCareerGuidanceInputField
-                                      ref={inputRef}
-                                      placeholder={row[item]}
-                                      type="input"
-                                      // value={row[item]}
-                                      name={item}
-                                      onChange={(e) =>
-                                        handleChangeTableMobile(e, row)
-                                      }
-                                      defaultValue={row[item]}
-                                      isPrefix={false}
-                                      disabled={!row.editable}
-                                    />
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-
-                      {/* <DndContext
-                        sensors={sensors}
-                        modifiers={[restrictToVerticalAxis]}
-                        onDragEnd={onDragEnd}
-                      >
-                        <SortableContext
-                          items={data
-                            .filter((item) => item.id !== null)
-                            .map((item) => item.dataId)}
-                          strategy={verticalListSortingStrategy}
-                        >
-                          {data.map((row) => (
-                            <Row key={row.id} data-row-key={row.dataId}>
-                              <div className="dragDrop" key={row.id}>
-                                <div
-                                  className={`row mobile-row`}
-                                  style={{
-                                    background: "rgb(244, 246, 248)",
-                                    marginBottom: "5rem",
-                                  }}
-                                >
-                                  <div className="menuIconMobile drag-handle">
-                                    <MenuOutlined
-                                      style={{
-                                        touchAction: "none",
-                                        cursor: "move",
-                                      }}
-                                    />
-                                    <div className="actionColumn">
-                                      <Space size="middle">
-                                        {row.editable && row.id !== null ? (
-                                          <a onClick={() => handleUpdate(row)}>
-                                            <CheckOutlined
-                                              style={{ color: "#1476b7" }}
-                                            />
-                                          </a>
-                                        ) : row.editable && row.id === null ? (
-                                          <a onClick={() => handleAddRow(row)}>
-                                            <PlusCircleOutlined
-                                              style={{ color: "#1476b7" }}
-                                            />
-                                          </a>
-                                        ) : (
-                                          <a onClick={() => eidtThisRow(row)}>
-                                            <EditOutlined
-                                              style={{ color: "#1476b7" }}
-                                            />
-                                          </a>
-                                        )}
-                                        <a onClick={() => handleDelete(row)}>
-                                          <DeleteOutlined
-                                            style={{ color: "red" }}
-                                          />
-                                        </a>
-                                      </Space>
-                                    </div>
-                                  </div>
-                                  <div className="first-column">
-                                    <div className="column"></div>
-                                    <div
-                                      className="column"
-                                      style={{ width: "100%" }}
-                                    >
-                                      <span className="rowHeadingMobile">
-                                        No. {row.rowNo + 1}
-                                      </span>
-                                    </div>
-                                  </div>
-                                  <div className="remaining-columns">
-                                    {columns.map((item, index) => (
-                                      <div className="column" key={item.dataId}>
+                                  <>
+                                    {item === "code" ||
+                                    item === "title" ||
+                                    item === "college" ? (
+                                      <>
+                                        <div
+                                          className="column"
+                                          key={`${item.dataId}-${index}`}
+                                        >
+                                          <span className="rowHeadingMobile">
+                                            {capitalizeWords(item)}
+                                          </span>
+                                          <Select
+                                            showSearch
+                                            placeholder={`Select ${item}`}
+                                            name={item}
+                                            value={row[item]}
+                                            optionFilterProp="children"
+                                            className="inputSelectFieldStyle"
+                                            ref={inputRef}
+                                            defaultValue={row[item]}
+                                            bordered={false}
+                                            popupMatchSelectWidth={false}
+                                            disabled={!row.editable}
+                                            suffixIcon={
+                                              <Image
+                                                preview={false}
+                                                src={dropdownIcon}
+                                                width={15}
+                                                style={{
+                                                  marginRight: 10,
+                                                }}
+                                              />
+                                            }
+                                            onSelect={(value, option) =>
+                                              handleSelect(
+                                                value,
+                                                option,
+                                                row.rowNo
+                                              )
+                                            }
+                                            // onSelect={(value, option) =>
+                                            //   handleSelect(
+                                            //     value,
+                                            //     option,
+                                            //     row.rowNo
+                                            //   )
+                                            // }
+                                            optionLabelProp="label"
+                                          >
+                                            {dropDownOptions.map((option) => {
+                                              // console.log(
+                                              //   option,
+                                              //   "[option if ]"
+                                              // );
+                                              return (
+                                                <Select.Option
+                                                  key={option[item]}
+                                                  value={option[item]}
+                                                  code={option.code}
+                                                  row={option}
+                                                  label={option[item]}
+                                                >
+                                                  {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})`: ''}`}
+                                                </Select.Option>
+                                              );
+                                            })}
+                                          </Select>
+                                        </div>
+                                      </>
+                                    ) : (
+                                      <div
+                                        className="column"
+                                        key={`${item.dataId}-${index}`}
+                                      >
                                         <span className="rowHeadingMobile">
                                           {capitalizeWords(item)}
                                         </span>
                                         <MyCareerGuidanceInputField
-                                          ref={inputRef}
-                                          placeholder={row[item]}
+                                          placeholder={item}
                                           type="input"
                                           name={item}
-                                          onChange={(e) =>
-                                            handleChangeTableMobile(e, row)
-                                          }
+                                          value={row[item]}
+                                          // onChange={(e) =>
+                                          //   handleChangeTableMobile(
+                                          //     e,
+                                          //     row
+                                          //   )
+                                          // }
                                           defaultValue={row[item]}
                                           isPrefix={false}
                                           disabled={!row.editable}
                                         />
                                       </div>
-                                    ))}
-                                  </div>
-                                </div>
+                                    )}
+                                  </>
+                                ))}
                               </div>
-                            </Row>
-                          ))}
-                        </SortableContext>
-                      </DndContext> */}
+                            </div>
+                          </div>
+                        ))}
                     </div>
                   </div>
                 )}

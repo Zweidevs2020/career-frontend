@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import {
   Modal,
@@ -40,6 +39,8 @@ import {
   AssesmentSvg,
   StudySvg,
   ChoicesSvg,
+  ReportIcon,
+  WorkDiaryIcon,
 } from "../../../../utils/svg";
 import { API_URL } from "../../../../utils/constants";
 import "./SidebarStyle.css";
@@ -49,9 +50,17 @@ import {
   patchApiWithAuth,
 } from "../../../../utils/api";
 import MyCareerGuidanceButton from "../../MyCareerGuidanceButton";
-import { CloseOutlined, MenuFoldOutlined, MenuOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  CloseOutlined,
+  MenuFoldOutlined,
+  MenuOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
+import { useSubscribe } from "../../../../context/subscribe";
+import { AnalogClock } from "../../../clock/clock";
 const { Content, Sider, Header } = Layout;
 const Sidebar = ({ children, flags }) => {
+  const { setSubscribe } = useSubscribe();
   const navigate = useNavigate();
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -63,16 +72,29 @@ const Sidebar = ({ children, flags }) => {
   const [editMode, setEditMode] = useState(false);
   const [schools, setSchools] = useState([]);
   const [loading2, setLoading2] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
   const [screenSize, setScreenSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-
+  const [Url, setUrl] = useState(null);
   const [open, setOpen] = useState(false);
-  const [placement, setPlacement] = useState('left');
+  const [placement, setPlacement] = useState("left");
+  const [userDatas, setUserDatas] = useState({});
+  const getUserDatas = async () => {
+    const response = await getApiWithAuth(API_URL.SUBS);
+    if (response?.data?.status === 200) {
+      setUserDatas(response.data.data);
+    } else {
+    }
+  };
+  const currentUrl = location.pathname;
+
+  useEffect(() => {
+    getUserDatas();
+  }, []);
+
   const showDrawer = () => {
     setOpen(true);
   };
@@ -126,8 +148,6 @@ const Sidebar = ({ children, flags }) => {
     }
   };
 
-
-
   const handleMenuItemClick = (key) => {
     setSelectedMenuItem(key);
     toggleSidebar();
@@ -170,7 +190,6 @@ const Sidebar = ({ children, flags }) => {
     setLoading2(true);
     const response = await patchApiWithAuth(API_URL.GETUSER2, updateData);
 
-
     if (response.data.status === 200) {
       setIsModalOpen(false);
       getUserData();
@@ -190,7 +209,18 @@ const Sidebar = ({ children, flags }) => {
   };
 
   const componentsSwtich = (key) => {
+    // If currently on "MyChoices" and trying to leave, show confirmation
+    // if (location.pathname === "/my-choice-edit" && key !== "MyChoices") {
+    //   const confirmSwitch = window.confirm(
+    //     "Are you sure you want to change routes? "
+    //   );
+    //   if (!confirmSwitch) {
+    //     // If the user cancels, don't switch the route
+    //     return;
+    //   }
+    // }
     setSelectedMenuItem(key);
+
     if (key === "Overview") {
       navigate("/dashboard");
     } else if (key === "CAOCalculator") {
@@ -204,7 +234,11 @@ const Sidebar = ({ children, flags }) => {
     } else if (key === "EducationalGuidance") {
       navigate("/educational-guidance");
     } else if (key === "MyChoices") {
-      navigate("/my-choices");
+      navigate("/my-choices"); // No alert when navigating to "MyChoices"
+    } else if (key === "ChatBot") {
+      navigate("/my-guidance-report");
+    } else if (key === "Work") {
+      navigate("/work-diary");
     } else {
       navigate("/my-study");
     }
@@ -234,12 +268,15 @@ const Sidebar = ({ children, flags }) => {
       location.pathname === "/my-choice-edit"
     ) {
       setSelectedMenuItem("MyChoices");
+    } else if (location.pathname === "/my-guidance-report") {
+      setSelectedMenuItem("ChatBot");
+    } else if (location.pathname === "/work-diary") {
+      setSelectedMenuItem("Work");
     }
-
   }, [location]);
 
   const logoutUser = async () => {
-
+    setSubscribe(null);
     removeToken();
     navigate("/");
   };
@@ -258,7 +295,6 @@ const Sidebar = ({ children, flags }) => {
             top: 0,
           }}
         >
-
           <Sider className="backgroundColorSidebar">
             <div className="logoStyle my-2">
               <img src={mycareer} alt="cyberLegendLogo" width="70%" />
@@ -268,7 +304,23 @@ const Sidebar = ({ children, flags }) => {
                 selectedKeys={selectedMenuItem}
                 mode="inline"
                 className="sideBarStyle"
-                onClick={(e) => componentsSwtich(e.key)}
+                onClick={(e) => {
+                  if (
+                    // localStorage.getItem("unsave") &&
+                    // Boolean(localStorage.getItem("unsave"))
+                    sessionStorage.getItem("unsave") &&
+                    Boolean(sessionStorage.getItem("unsave"))
+                  ) {
+                    const confirm = window.confirm(
+                      "You have unsaved changes. Are you sure you want to leave this page?"
+                    );
+                    if (confirm) {
+                      componentsSwtich(e.key);
+                    }
+                  } else {
+                    componentsSwtich(e.key);
+                  }
+                }}
               >
                 <Menu.Item
                   key="Overview"
@@ -414,7 +466,64 @@ const Sidebar = ({ children, flags }) => {
                     ) : null}
                   </span>
                 </Menu.Item>
+                <Menu.Item
+                  key="ChatBot"
+                  icon={
+                    <ReportIcon
+                      fill={
+                        selectedMenuItem === "ChatBot" ? "#1476B7" : "#BDBDBD"
+                      }
+                    />
+                  }
+                >
+                  <span className="textStyling">
+                    My Guidance Report
+                    {selectedMenuItem === "ChatBot" ? (
+                      <span> &nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
+                </Menu.Item>
+                <Menu.Item
+                  key="Work"
+                  icon={
+                    <WorkDiaryIcon
+                      fill={selectedMenuItem === "Work" ? "#1476B7" : "#BDBDBD"}
+                    />
+                  }
+                >
+                  <span className="textStyling">
+                    My Work Diary
+                    {selectedMenuItem === "Work" ? (
+                      <span> &nbsp;&#x25cf; </span>
+                    ) : null}
+                  </span>
+                </Menu.Item>
               </Menu>
+              {/* 
+              <div className="p-4 flex justify-center items-center">
+                <AnalogClock />
+              </div> */}
+              <p
+                style={{
+                  fontSize: "12px",
+                  fontWeight: "600",
+                  padding: "8px 12px",
+
+                  borderRadius: "4px",
+                  borderImage:
+                    "linear-gradient(90deg, #888, #666, #444, #222) 1",
+                  boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
+                  background: "#F5F5F5", // Light gray background to match sidebar
+                  color: "#444", // Dark gray text for readability
+                  margin: "10px",
+                  textAlign: "left",
+                  display: "block",
+                  width: "auto",
+                }}
+              >
+                Subscription Ends: {userDatas?.current_period_end}
+              </p>
+
               <div
                 style={{
                   display: "flex",
@@ -478,9 +587,7 @@ const Sidebar = ({ children, flags }) => {
                 justifyContent: "center",
               }}
               open={isModalOpen}
-
               footer={[]}
-
               title={
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <Title
@@ -610,19 +717,19 @@ const Sidebar = ({ children, flags }) => {
                     <Col xs={24} md={12}>
                       <Input.Password
                         name="new_password"
-                        type={showPassword ? 'text' : 'password'} // Show/hide password based on state
+                        type={showPassword ? "text" : "password"} // Show/hide password based on state
                         onChange={(e) => handleChange(e)}
                         prefix={
                           <Space>
                             <img
                               src={pass}
-                              style={{ marginRight: '15px' }}
+                              style={{ marginRight: "15px" }}
                               alt=""
                             />
                           </Space>
                         }
                         disabled={!editMode}
-                        style={{ padding: '15px 10px' }}
+                        style={{ padding: "15px 10px" }}
                         placeholder="***************"
                       />
                     </Col>
@@ -664,16 +771,18 @@ const Sidebar = ({ children, flags }) => {
                         prefix={
                           <img
                             src={phoneIcon}
-                            style={{ marginRight: "15px",width:'19px' }}
+                            style={{ marginRight: "15px", width: "19px" }}
                             alt=""
                           />
                         }
                       />
                     </Col>
-
                   </Row>
 
-                  <div className="mt-5" style={{ display: "flex", justifyContent: 'center' }}>
+                  <div
+                    className="mt-5"
+                    style={{ display: "flex", justifyContent: "center" }}
+                  >
                     <MyCareerGuidanceButton
                       label="Update"
                       className="takebutton"
@@ -704,19 +813,19 @@ const Sidebar = ({ children, flags }) => {
             background: "#F8FAFC",
           }}
         >
-
-
           <Drawer
-
             placement={placement}
-
             onClose={onClose}
             open={open}
-
             key={placement}
-
           >
-            <img src={myCareer} style={{ position: 'absolute', zIndex: '0', width: '2.3rem' }} className="drawerIcon" alt="cyberLegendLogo" width="100%" />
+            <img
+              src={myCareer}
+              style={{ position: "absolute", zIndex: "0", width: "2.3rem" }}
+              className="drawerIcon"
+              alt="cyberLegendLogo"
+              width="100%"
+            />
             <Menu
               selectedKeys={selectedMenuItem}
               mode="inline"
@@ -851,25 +960,33 @@ const Sidebar = ({ children, flags }) => {
                 type="primary"
                 htmlType="button"
                 onClick={logoutUser}
-
               />
             </div>
           </Drawer>
 
-
           <Layout className="site-layout">
-
             <Header className="Navbar">
               <div className="menuIconSidebarHide " onClick={showDrawer}>
                 <MenuOutlined />
               </div>
-              <div className={`logoStyle mt-3 ${isSidebarOpen ? 'sidebarOpen' : ''}`} style={{ width: "200px", marginRight: !isSidebarOpen ? '-1rem' : '0' }}>
+              <div
+                className={`logoStyle mt-3 ${
+                  isSidebarOpen ? "sidebarOpen" : ""
+                }`}
+                style={{
+                  width: "200px",
+                  marginRight: !isSidebarOpen ? "-1rem" : "0",
+                }}
+              >
                 <img src={myCareer} alt="cyberLegendLogo" width="50%" />
-
               </div>
 
-              <div style={{ width: "209px" }} className="img" onClick={() => showModal()}>
-                <div className="imgcard" style={{ width: '100%' }}>
+              <div
+                style={{ width: "209px" }}
+                className="img"
+                onClick={() => showModal()}
+              >
+                <div className="imgcard" style={{ width: "100%" }}>
                   <img src={userData.profile_image} className="cardprofile" />
                   <div className="cardtext">
                     <p className="name" style={{ height: 20, color: "white" }}>
@@ -893,9 +1010,7 @@ const Sidebar = ({ children, flags }) => {
                 justifyContent: "center",
               }}
               open={isModalOpen}
-
               footer={[]}
-
               title={
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <Title
@@ -971,7 +1086,7 @@ const Sidebar = ({ children, flags }) => {
                           borderRadius: "50%",
                           width: "100px",
                           height: "100px",
-                          cursor: "pointer"
+                          cursor: "pointer",
                         }}
                       />
 
@@ -1065,33 +1180,30 @@ const Sidebar = ({ children, flags }) => {
                           }
                         />
                       </Form.Item>
-                      <Col xs={24} md={24} style={{paddingLeft:'0px'}}>
-                      <Input
-                        value={userData.number}
-                        name="number"
-                        onChange={(e) => handleChange(e)}
-                        disabled={!editMode}
-                        style={{ padding: "15px 10px" }}
-                        placeholder="Phone Number"
-                        prefix={
-                          <img
-                            src={phoneIcon}
-                            style={{ marginRight: "15px" ,width:'18px'}}
-                            alt=""
-                          />
-                        }
-                      />
+                      <Col xs={24} md={24} style={{ paddingLeft: "0px" }}>
+                        <Input
+                          value={userData.number}
+                          name="number"
+                          onChange={(e) => handleChange(e)}
+                          disabled={!editMode}
+                          style={{ padding: "15px 10px" }}
+                          placeholder="Phone Number"
+                          prefix={
+                            <img
+                              src={phoneIcon}
+                              style={{ marginRight: "15px", width: "18px" }}
+                              alt=""
+                            />
+                          }
+                        />
+                      </Col>
                     </Col>
-
-                    </Col>
-
-
-
                   </Row>
 
-
-
-                  <div className="mt-5" style={{ display: "flex",justifyContent:'center' }}>
+                  <div
+                    className="mt-5"
+                    style={{ display: "flex", justifyContent: "center" }}
+                  >
                     <MyCareerGuidanceButton
                       label="Update"
                       className="takebutton"

@@ -52,6 +52,15 @@ const EducationalGuidance = () => {
     setSinglequizData(scoreView);
     setIsModalOpen(true);
   };
+  const showColor = (score) => {
+    if (Number(score) <= 4) {
+      return "red";
+    } else if (Number(score) >= 5 && Number(score) <= 8) {
+      return "orange";
+    } else {
+      return "green";
+    }
+  };
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -66,7 +75,6 @@ const EducationalGuidance = () => {
   useEffect(() => {
     if (data?.obtained_score !== undefined) {
       localStorage.setItem("obtained_score", data.obtained_score);
-
     }
   }, [data?.obtained_score]);
   return (
@@ -79,80 +87,44 @@ const EducationalGuidance = () => {
           ) : quizz.length === 0 ? (
             <div className="quizDetailsStyle">No Data Found</div>
           ) : (
-            quizz.sort((a, b) => {
-              const getNumericPart = (str) => parseInt(str.match(/\d+/)[0]);
-              return getNumericPart(a.name) - getNumericPart(b.name);
-            }).map((item) => (
-              <div className="quizMain">
-                <div className="quizStyle" key={item.id}>
-                  <div className={item.complete ? 'width90' : 'mobileEducationalRow'}> 
-                    <div style={{ display: "flex", alignItems: "center", width: "55%" }}>
-                      <img src={item.image} alt="" style={{width:68,height:68}} />
-                      <div style={{ marginLeft: 20 }}>
-                        <div className="quizHeadingStyle">{item.name}</div>
-                        <div className="quizDetailsStyle">{item.description}</div>
-                      </div>
-                    </div>
-                    {!item.complete ? (
-                      <div className="takeTestMobile">
-                        <MyCareerGuidanceButton
-                          width="100%"
-                          label="Take Test"
-                          className="takebutton "
-                          type="button"
-                          htmlType="button"
-                          onClick={() => {
-                            if (item.youtube_link?.length !== 0) {
-                              setTestId(
-                                `https://www.youtube.com/embed/${item.youtube_link}`
-                              );
-                              navigate("/video", {
-                                state: {
-                                  data: item,
-                                  videoId: `https://www.youtube.com/embed/${item.youtube_link}`,
-                                },
-                              });
-                            } else {
-                              navigate("/educational-guidance-test", {
-                                state: { data: item },
-                              });
-                            }
-                          }}
+            quizz
+              .sort((a, b) => {
+                const getNumericPart = (str) => parseInt(str.match(/\d+/)[0]);
+                return getNumericPart(a.name) - getNumericPart(b.name);
+              })
+              .map((item) => (
+                <div className="quizMain">
+                  <div className="quizStyle" key={item.id}>
+                    <div
+                      className={
+                        item.complete ? "width90" : "mobileEducationalRow"
+                      }
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "55%",
+                        }}
+                      >
+                        <img
+                          src={item.image}
+                          alt=""
+                          style={{ width: 68, height: 68 }}
                         />
-                      </div>
-                    ) : (
-                      <div className="retakeChart">
-                        <div className="quizBoard">
-                          <CircularProgressbarWithChildren
-                            value={singlequizData?.score}
-                            minValue={0}
-                            maxValue={data?.total_score}
-                            styles={buildStyles({
-                              pathColor: calculateProgressColor(
-                                localStorage.getItem("obtained_score") || 0
-                              ),
-                              pathColor: "#1476b7",
-                              rotation: 0.99,
-                              strokeLinecap: "dashboard",
-                              textSize: "19px",
-                              pathTransitionDuration: 0.5,
-                              textColor: "#263238",
-                              trailColor: "#d6d6d6",
-                            })}
-                          >
-                            <div className="pointsText">
-                              {item.score || 0}/{item.total_score}
-
-                            </div>
-                            <div className="cao2ndText">
-                              <strong>Points</strong>
-                            </div>
-                          </CircularProgressbarWithChildren>
+                        <div style={{ marginLeft: 20 }}>
+                          <div className="quizHeadingStyle">{item.name}</div>
+                          <div className="quizDetailsStyle">
+                            {item.description}
+                          </div>
                         </div>
-                        <div className="retake">
+                      </div>
+                      {!item.complete ? (
+                        <div className="takeTestMobile">
                           <MyCareerGuidanceButton
-                            label="Retake"
-                            className="takebutton"
+                            width="100%"
+                            label="Take Test"
+                            className="takebutton "
                             type="button"
                             htmlType="button"
                             onClick={() => {
@@ -162,7 +134,6 @@ const EducationalGuidance = () => {
                                 );
                                 navigate("/video", {
                                   state: {
-
                                     data: item,
                                     videoId: `https://www.youtube.com/embed/${item.youtube_link}`,
                                   },
@@ -175,70 +146,149 @@ const EducationalGuidance = () => {
                             }}
                           />
                         </div>
-                      </div>
+                      ) : (
+                        <div className="retakeChart">
+                          <div className="quizBoard">
+                            {/* <CircularProgressbarWithChildren
+                              value={singlequizData?.score}
+                              minValue={0}
+                              maxValue={data?.total_score}
+                              styles={buildStyles({
+                                pathColor: calculateProgressColor(
+                                  localStorage.getItem("obtained_score") || 0
+                                ),
+                                // pathColor: "#1476b7",
+                                pathColor: showColor(item.score),
+                                rotation: 0.99,
+                                strokeLinecap: "dashboard",
+                                textSize: "19px",
+                                pathTransitionDuration: 0.5,
+                                textColor: "#263238",
+                                trailColor: "#d6d6d6",
+                              })}
+                            >
+                              <div className="pointsText">
+                                {item.score || 0}/{item.total_score}
+                              </div>
+                              <div className="cao2ndText">
+                                <strong>Points</strong>
+                              </div>
+                            </CircularProgressbarWithChildren> */}
+                            <CircularProgressbarWithChildren
+                              value={item?.score}
+                              minValue={0}
+                              maxValue={item?.total_score}
+                              styles={buildStyles({
+                                // Use the dynamically calculated progress color
+                                // pathColor: calculateProgressColor(data?.obtained_score),
+                                // pathColor: "#1476b7",
+                                pathColor: showColor(item.score),
+                                rotation: 0.99,
+                                strokeLinecap: "dashboard",
+                                textSize: "19px",
+                                pathTransitionDuration: 0.5,
+                                textColor: "#263238",
+                                trailColor: "#d6d6d6",
+                              })}
+                            >
+                              <div className="pointsText">
+                                {item.score || 0}/{item.total_score}
+                              </div>
+                              <div className="cao2ndText">
+                                <strong>Points</strong>
+                              </div>
+                            </CircularProgressbarWithChildren>
+                          </div>
+                          <div className="retake">
+                            <MyCareerGuidanceButton
+                              label="Retake"
+                              className="takebutton"
+                              type="button"
+                              htmlType="button"
+                              onClick={() => {
+                                if (item.youtube_link?.length !== 0) {
+                                  setTestId(
+                                    `https://www.youtube.com/embed/${item.youtube_link}`
+                                  );
+                                  navigate("/video", {
+                                    state: {
+                                      data: item,
+                                      videoId: `https://www.youtube.com/embed/${item.youtube_link}`,
+                                    },
+                                  });
+                                } else {
+                                  navigate("/educational-guidance-test", {
+                                    state: { data: item },
+                                  });
+                                }
+                              }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="educationalButtonBottom">
+                    {item.complete ? (
+                      <MyCareerGuidanceButton
+                        label="Retake"
+                        width="100%"
+                        className="takebutton"
+                        type="button"
+                        htmlType="button"
+                        onClick={() => {
+                          if (item.youtube_link?.length !== 0) {
+                            setTestId(
+                              `https://www.youtube.com/embed/${item.youtube_link}`
+                            );
+                            navigate("/video", {
+                              state: {
+                                data: item,
+                                videoId: `https://www.youtube.com/embed/${item.youtube_link}`,
+                              },
+                            });
+                          } else {
+                            navigate("/educational-guidance-test", {
+                              state: { data: item },
+                            });
+                          }
+                        }}
+                      />
+                    ) : (
+                      <MyCareerGuidanceButton
+                        width="100%"
+                        label="Take Test"
+                        className="takebutton "
+                        type="button"
+                        htmlType="button"
+                        onClick={() => {
+                          if (item.youtube_link?.length !== 0) {
+                            setTestId(
+                              `https://www.youtube.com/embed/${item.youtube_link}`
+                            );
+                            navigate("/video", {
+                              state: {
+                                data: item,
+                                videoId: `https://www.youtube.com/embed/${item.youtube_link}`,
+                              },
+                            });
+                          } else {
+                            navigate("/educational-guidance-test", {
+                              state: { data: item },
+                            });
+                          }
+                        }}
+                      />
                     )}
                   </div>
                 </div>
-                <div className="educationalButtonBottom">
-                  {item.complete ? 
-                 <MyCareerGuidanceButton
-                 label="Retake"
-                 width='100%'
-                 className="takebutton"
-                 type="button"
-                 htmlType="button"
-                 onClick={() => {
-                   if (item.youtube_link?.length !== 0) {
-                     setTestId(
-                       `https://www.youtube.com/embed/${item.youtube_link}`
-                     );
-                     navigate("/video", {
-                       state: {
-
-                         data: item,
-                         videoId: `https://www.youtube.com/embed/${item.youtube_link}`,
-                       },
-                     });
-                   } else {
-                     navigate("/educational-guidance-test", {
-                       state: { data: item },
-                     });
-                   }
-                 }}
-               />: 
-               <MyCareerGuidanceButton
-               width="100%"
-               label="Take Test"
-               className="takebutton "
-               type="button"
-               htmlType="button"
-               onClick={() => {
-                 if (item.youtube_link?.length !== 0) {
-                   setTestId(
-                     `https://www.youtube.com/embed/${item.youtube_link}`
-                   );
-                   navigate("/video", {
-                     state: {
-                       data: item,
-                       videoId: `https://www.youtube.com/embed/${item.youtube_link}`,
-                     },
-                   });
-                 } else {
-                   navigate("/educational-guidance-test", {
-                     state: { data: item },
-                   });
-                 }
-               }}
-             />}
-                </div>
-              </div>
-            ))
+              ))
           )}
         </div>
       </div>
 
       {/* Modal for quiz results */}
-      <Modal
+      {/* <Modal
         centered
         width={700}
         open={isModalOpen}
@@ -280,8 +330,9 @@ const EducationalGuidance = () => {
                 maxValue={singlequizData?.total_score}
                 styles={buildStyles({
                   // Use the dynamically calculated progress color
-                  pathColor: calculateProgressColor(singlequizData?.score),
+                  // pathColor: calculateProgressColor(singlequizData?.score),
                   pathColor: "#1476b7",
+                  // pathColor: showColor(singlequizData?.score),
                   rotation: 0.99,
                   strokeLinecap: "dashboard",
                   textSize: "19px",
@@ -300,7 +351,7 @@ const EducationalGuidance = () => {
             </div>
           </div>
         </div>
-      </Modal>
+      </Modal> */}
 
       {/* Modal for YouTube video */}
       <Modal
@@ -381,8 +432,9 @@ const EducationalGuidance = () => {
                 maxValue={data?.total_score}
                 styles={buildStyles({
                   // Use the dynamically calculated progress color
-                  pathColor: calculateProgressColor(data?.obtained_score),
-                  pathColor: "#1476b7",
+                  // pathColor: calculateProgressColor(data?.obtained_score),
+                  // pathColor: "#1476b7",
+                  pathColor: showColor(data?.obtained_score),
                   rotation: 0.99,
                   strokeLinecap: "dashboard",
                   textSize: "19px",

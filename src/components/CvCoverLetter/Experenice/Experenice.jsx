@@ -154,7 +154,7 @@ const Experenice = ({ setCurrent, current }) => {
     var token = localStorage.getItem("access_token", "");
 
     const response = await axios.get(
-      `${process.env.REACT_APP_LINK_BASE_URL}cv/cv/`,
+      `${'https://api-dev.classroomguidance.ie/'}cv/cv/`,
       {
         responseType: "blob", // Set the response type to 'blob'
         headers: {
@@ -172,7 +172,7 @@ const Experenice = ({ setCurrent, current }) => {
     // Create a link and initiate the download
     const link = document.createElement("a");
     link.href = pdfUrl;
-       link.download = `${userData.full_name}'s.pdf`; // Set the desired filename
+    link.download = `${userData.full_name}'s.pdf`; // Set the desired filename
 
     document.body.appendChild(link);
     link.click();
@@ -326,7 +326,7 @@ const Experenice = ({ setCurrent, current }) => {
                         ]}
                       >
                         <MyCareerGuidanceInputField
-                          placeholder="Town/Area"
+                          placeholder="Town/Area/City"
                           type="input"
                           name="city"
                           onChange={(event) => onChangeHandle(event, index)}
@@ -422,13 +422,14 @@ const Experenice = ({ setCurrent, current }) => {
                           //     current < dayjs(customDate, "DD-MM-YYYY")
                           //   );
                           // }}
-                          disabled={item?.dataValue.is_current_work }
-
+                          disabled={item?.dataValue.is_current_work}
                           disabledDate={(current) => {
                             let customDate = dayjs().format("DD-MM-YYYY");
                             return (
-                              current &&
-                              current > dayjs(customDate, "DD-MM-YYYY") || current < dayjs(item.dataValue.startdate, "DD-MM-YYYY")
+                              (current &&
+                                current > dayjs(customDate, "DD-MM-YYYY")) ||
+                              current <
+                                dayjs(item.dataValue.startdate, "DD-MM-YYYY")
                             );
                           }}
                           value={
@@ -449,7 +450,6 @@ const Experenice = ({ setCurrent, current }) => {
                           className="expCheckBox"
                           name="is_current_work"
                           inputValue={item?.dataValue?.is_current_work}
-                          
                           onChange={(e) => {
                             setExpereniceArray(
                               expereniceArray.map((item) => {
@@ -469,8 +469,6 @@ const Experenice = ({ setCurrent, current }) => {
                         >
                           I am currently working here
                         </Checkbox>
-
-                        
                       </div>
                     </div>
                   </div>

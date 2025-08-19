@@ -37,7 +37,6 @@ const Education = ({ setCurrent, current }) => {
 
   const { Option } = Select;
 
-
   const handleGetApi = async () => {
     const response = await getApiWithAuth(API_URL.GETEDUCATION);
 
@@ -309,7 +308,7 @@ const Education = ({ setCurrent, current }) => {
     var token = localStorage.getItem("access_token", "");
 
     const response = await axios.get(
-      `${process.env.REACT_APP_LINK_BASE_URL}cv/cv/`,
+      `${'https://api-dev.classroomguidance.ie/'}cv/cv/`,
       {
         responseType: "blob", // Set the response type to 'blob'
         headers: {
@@ -582,7 +581,6 @@ const Education = ({ setCurrent, current }) => {
       ]);
     }
   };
-  
 
   const handleDeleteLeaving = async (id) => {
     try {
