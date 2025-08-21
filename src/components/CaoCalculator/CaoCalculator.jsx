@@ -633,7 +633,7 @@ const CaoCalculator = () => {
                   loading={loadingFirst}
                 />
 
-                <div className="addSubjectContainer">
+                {/* <div className="addSubjectContainer">
                   <MyCareerGuidanceButton
                     label="Add Subject"
                     className="addSubjectButton"
@@ -641,7 +641,7 @@ const CaoCalculator = () => {
                     onClick={handleAdd}
                     icon={<PlusOutlined />}
                   />
-                </div>
+                </div> */}
               </div>
               <div className="coaPointsWidth coaPointsWidth">
                 <div
@@ -932,7 +932,7 @@ const CaoCalculator = () => {
                   </div>
                 </div>
 
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                {/* <div style={{ display: "flex", justifyContent: "center" }}>
                   <MyCareerGuidanceButton
                     label="Add Subject"
                     className="addSubjectButton mt-2"
@@ -940,7 +940,7 @@ const CaoCalculator = () => {
                     onClick={handleAdd}
                     icon={<PlusOutlined />}
                   />
-                </div>
+                </div> */}
               </div>
             </div>
           )}
