@@ -92,7 +92,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
     var token = localStorage.getItem("access_token", "");
 
     const response = await axios.get(
-      `${'https://api.classroomguidance.ie/'}cv/cv/`,
+      `${'${process.env.REACT_APP_BASE_URL}'}cv/cv/`,
       {
         responseType: "blob", // Set the response type to 'blob'
         headers: {

@@ -60,7 +60,7 @@ const ConselorWorkDiary = () => {
 
     try {
       const response = await axios.get(
-        `https://api.classroomguidance.ie/${API_URL.CONSELOR_STUDENT_Details}${id}`,
+        `${process.env.REACT_APP_BASE_URL}${API_URL.CONSELOR_STUDENT_Details}${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
