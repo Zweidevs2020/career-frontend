@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import axios from "axios";
 import { getToken } from "./LocalStorage";
-const BASE_URL = 'https://api-dev.classroomguidance.ie/';
+const BASE_URL = 'https://api.classroomguidance.ie/';
 console.log("Base URL:", BASE_URL);
 const baseInstance = axios.create({
   baseURL: BASE_URL,
