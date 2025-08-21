@@ -43,7 +43,7 @@ const EducationalGuidance = () => {
 
     try {
       const response = await axios.get(
-        `https://api.classroomguidance.ie/${API_URL.CONSELOR_STUDENT_Details}${id}/education-guidance/`,
+        `${process.env.REACT_APP_BASE_URL}${API_URL.CONSELOR_STUDENT_Details}${id}/education-guidance/`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
