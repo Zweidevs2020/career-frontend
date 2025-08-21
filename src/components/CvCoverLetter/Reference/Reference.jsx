@@ -85,7 +85,7 @@ const Reference = ({ setCurrent, current, downloadDocs }) => {
   //   var token = localStorage.getItem("access_token", "");
 
   //   const response = await axios.get(
-  //     `${'https://api-dev.classroomguidance.ie/'}cv/cv/`,
+  //     `${'https://api.classroomguidance.ie/'}cv/cv/`,
   //     {
   //       responseType: "blob", // Set the response type to 'blob'
   //       headers: {
@@ -116,7 +116,7 @@ const Reference = ({ setCurrent, current, downloadDocs }) => {
       var token = localStorage.getItem("access_token", "");
 
       const response = await axios.get(
-        `${'https://api-dev.classroomguidance.ie/'}cv/doc-cv
+        `${'https://api.classroomguidance.ie/'}cv/doc-cv
         `,
         {
           responseType: "blob", // Set the response type to 'blob'

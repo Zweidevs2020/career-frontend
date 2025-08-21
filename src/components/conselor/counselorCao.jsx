@@ -51,7 +51,7 @@ const CounselorCao = () => {
 
     try {
       const response = await axios.get(
-        `https://api-dev.classroomguidance.ie/${API_URL.CONSELOR_STUDENT_Details}${id}/cao-points/`,
+        `https://api.classroomguidance.ie/${API_URL.CONSELOR_STUDENT_Details}${id}/cao-points/`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
