@@ -3,6 +3,7 @@ import axios from "axios";
 import { getToken } from "./LocalStorage";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 console.log("Base URL:", BASE_URL);
+console.log("Axios Version:", process.env.REACT_APP_BASE_URL);
 const baseInstance = axios.create({
   baseURL: BASE_URL,
 });

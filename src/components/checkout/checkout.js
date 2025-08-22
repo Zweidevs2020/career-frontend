@@ -30,7 +30,7 @@ import styles from "./CheckoutView.module.css";
 
 function CheckoutView() {
   const stripePromise = loadStripe(
-    `pk_test_2Q5yG1nFpcg3pb9synVOAENT`
+    `${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`
   );
 
   return (
