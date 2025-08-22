@@ -44,7 +44,7 @@ export default function CounselorSidebar() {
 
     try {
       const response = await axios.get(
-        `https://api-dev.classroomguidance.ie/${API_URL.CONSELOR_STUDENT_Details}${id}/cv/download/`,
+        `${process.env.REACT_APP_BASE_URL}${API_URL.CONSELOR_STUDENT_Details}${id}/cv/download/`,
         {
           headers: { Authorization: `Bearer ${token}` },
           responseType: "blob", // Ensures the response is treated as a file

@@ -43,7 +43,7 @@ const ConselorDashboard = () => {
 
     try {
       const response = await axios.get(
-        `https://api-dev.classroomguidance.ie${API_URL.CONSELOR_LIST_STUDENTS}`,
+        `${process.env.REACT_APP_BASE_URL}${API_URL.CONSELOR_LIST_STUDENTS}`,
         {
           // params: { page: currentPage, limit: rowsPerPage }, // Query parameters
           headers: {
