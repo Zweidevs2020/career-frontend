@@ -30,30 +30,36 @@ const Login = () => {
   };
 
   const handlerSubmit = async () => {
-    setLoading(true);
-    const response = await postApiWithoutAuth(API_URL.SIGNIN, {
-      ...data,
-      email: data.email.toLowerCase(),
-    });
-    if (response?.status === 200) {
-      message.success("Login Successfully");
-      setLoading(false);
-      setToken(response?.data?.access);
-      setSubscribe(response.data.is_subscribed);
+  setLoading(true);
 
-      if (response.data.is_subscribed) {
-        navigate("/dashboard");
-      } else {
-        navigate("/checkout");
-      }
-    } else if (response?.status === 400) {
-      message.error(response.data.message);
-      setLoading(false);
+  
+  const response = await postApiWithoutAuth(API_URL.SIGNIN, {
+    ...data,
+    email: data.email.toLowerCase(),
+  });
+
+  // console.log("Signin API URL:", API_URL.SIGNIN);
+  
+  if (response?.status === 200) {
+    message.success("Login Successfully");
+    setLoading(false);
+    setToken(response?.data?.access);
+    setSubscribe(response.data.is_subscribed);
+
+    if (response.data.is_subscribed) {
+      navigate("/dashboard");
     } else {
-      setLoading(false);
-      message.success(response?.data?.detail);
+      navigate("/checkout");
     }
-  };
+  } else if (response?.status === 400) {
+    message.error(response.data.message);
+    setLoading(false);
+  } else {
+    setLoading(false);
+    message.success(response?.data?.detail);
+  }
+};
+
   // const handlerSubmit2 = async () => {
   //   navigate("/conselorDashboard");
   // };
