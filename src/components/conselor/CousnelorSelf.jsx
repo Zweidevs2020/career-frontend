@@ -40,7 +40,7 @@ const CounselorSelf = () => {
 
     try {
       const response = await axios.get(
-        `https://api-dev.classroomguidance.ie/${API_URL.CONSELOR_STUDENT_Details}${id}/psychometric-graphs/`,
+        `${process.env.REACT_APP_BASE_URL}${API_URL.CONSELOR_STUDENT_Details}${id}/psychometric-graphs/`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
