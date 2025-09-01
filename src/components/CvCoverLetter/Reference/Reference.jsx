@@ -116,8 +116,7 @@ const Reference = ({ setCurrent, current, downloadDocs }) => {
       var token = localStorage.getItem("access_token", "");
 
       const response = await axios.get(
-        `${'${process.env.REACT_APP_BASE_URL}'}cv/doc-cv
-        `,
+        `${process.env.REACT_APP_BASE_URL}cv/doc-cv`,
         {
           responseType: "blob", // Set the response type to 'blob'
           headers: {

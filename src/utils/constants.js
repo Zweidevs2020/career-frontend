@@ -10,7 +10,7 @@ export const API_URL = {
   SUBJECTLIST: "calculator/subject-list/",
   CALCULATEDATA: "calculator/calculate-coa-point/",
   GETGOALS: "education/quizzes/",
-  GETPSYCHOMETRICTEST: "/psychometric/test/",
+  GETPSYCHOMETRICTEST: "/psychometric/student-test/",
   GETUSERGOAL: "goals/",
   POSTUSERGOAL: "goals/",
   POSTPROFILE: "cv/create-cv/",
@@ -48,6 +48,6 @@ export const API_URL = {
   WORK_DIARY: "/diary/api/work-experience-questions/",
   SUBS: "user/subscription/expiry/",
   CONSELOR_SIGN_IN: "/user/counselor/login/",
-  CONSELOR_LIST_STUDENTS: "/user/counselor/students/",
+  CONSELOR_LIST_STUDENTS: "/user/counselor/students/v2/",
   CONSELOR_STUDENT_Details: "user/counselor/students/",
 };
