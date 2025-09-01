@@ -77,7 +77,7 @@ const CounselorCao = () => {
 
   // Calculate total sum safely by providing defaults
   const totalSum = data.reduce(
-    (acc, item) => acc + (item.total_points || 0) + (item.bonus_points || 0),
+    (acc, item) => acc + (item.total_points || 0) ,
     0
   );
 
