@@ -521,7 +521,7 @@ const Sidebar = ({ children, flags }) => {
                   width: "auto",
                 }}
               >
-                Subscription Ends: {userDatas?.current_period_end}
+                Subscription Ends: {userDatas?.current_period_end || "NA" } 
               </p>
 
               <div
