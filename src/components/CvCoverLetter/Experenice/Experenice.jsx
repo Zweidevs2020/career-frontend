@@ -154,7 +154,7 @@ const Experenice = ({ setCurrent, current }) => {
     var token = localStorage.getItem("access_token", "");
 
     const response = await axios.get(
-      `${'${process.env.REACT_APP_BASE_URL}'}cv/cv/`,
+      `${process.env.REACT_APP_BASE_URL}cv/cv/`,
       {
         responseType: "blob", // Set the response type to 'blob'
         headers: {

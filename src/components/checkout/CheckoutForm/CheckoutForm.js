@@ -23,52 +23,111 @@ function CheckoutForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [nameOnCard, setNameOnCard] = useState("");
 
-  const handlePaymentSubmit = async (payment) => {
-    setIsLoading(true);
-    const response = await postApiWithAuth(API_URL.CREATEPAYMENT, {
-      payment_method_id: payment.id,
-    });
-    if (response.data.data.success) {
-      setSubscribe(true);
-      message.success(response.data.data.message);
+  const handlePaymentSubmit = async (paymentMethod) => {
+    try {
+      // Extract useful info from payment method for better UX
+      const cardInfo = paymentMethod.card;
+      const cardBrand = cardInfo?.brand?.toUpperCase() || 'CARD';
+      const last4 = cardInfo?.last4 || '';
+      
+      const response = await postApiWithAuth(API_URL.CREATEPAYMENT, {
+        payment_method_id: paymentMethod.id,
+        // Optionally send additional payment info to backend
+        card_brand: cardInfo?.brand,
+        card_last4: cardInfo?.last4,
+        card_country: cardInfo?.country,
+        cardholder_name: paymentMethod.billing_details?.name || nameOnCard,
+      });
+      
+      // Debug log to check response structure
+      console.log("API Response:", response.data);
+      
+      // Check different possible response structures
+      const responseData = response.data?.data || response.data;
+      
+      if (responseData?.success) {
+        setSubscribe(true);
+        message.success(
+          responseData.message || 
+          `Payment successful with ${cardBrand} ending in ${last4}!`
+        );
+        setIsLoading(false);
+        navigate("/dashboard");
+      } else {
+        setIsLoading(false);
+        message.error(responseData?.message || "Payment failed. Please try again.");
+      }
+    } catch (error) {
       setIsLoading(false);
-      navigate("/dashboard");
-    } else {
-      setIsLoading(false);
-      message.error(response.data.data.message);
+      console.error("Payment error:", error);
+      message.error("Payment failed. Please try again.");
     }
   };
 
   const handleSubmit = async (e) => {
-    setIsLoading(true);
     e.preventDefault();
+    setIsLoading(true);
 
     if (!stripe || !elements) {
       setIsLoading(false);
+      message.error("Payment system not ready. Please refresh and try again.");
       return;
     }
 
-    let cardElement = null;
-    cardElement = { ...elements.getElement(CardCvcElement) };
-    cardElement = { ...cardElement, ...elements.getElement(CardExpiryElement) };
-    cardElement = { ...cardElement, ...elements.getElement(CardNumberElement) };
+    // Get the card element correctly
+    const cardElement = elements.getElement(CardNumberElement);
 
-    const { error: stripeError, paymentMethod } =
-      await stripe.createPaymentMethod({
+    if (!cardElement) {
+      setIsLoading(false);
+      message.error("Card information not found. Please refresh and try again.");
+      return;
+    }
+
+    try {
+      const { error: stripeError, paymentMethod } = await stripe.createPaymentMethod({
         type: "card",
         card: cardElement,
-        metadata: {
-          cardholder: nameOnCard,
+        billing_details: {
+          name: nameOnCard,
         },
       });
-    console.log("=========payment", stripeError, paymentMethod);
 
-    if (stripeError) {
+      if (stripeError) {
+        setIsLoading(false);
+        // Enhanced error messages based on Stripe error types
+        let errorMessage = stripeError.message;
+        
+        if (stripeError.code === 'card_declined') {
+          errorMessage = "Your card was declined. Please try a different payment method.";
+        } else if (stripeError.code === 'expired_card') {
+          errorMessage = "Your card has expired. Please use a different card.";
+        } else if (stripeError.code === 'incorrect_cvc') {
+          errorMessage = "Your card's security code is incorrect.";
+        }
+        
+        message.error(errorMessage);
+      } else {
+        // Validate card details before processing
+        if (paymentMethod?.card?.country && paymentMethod.card.country !== 'PK') {
+          // Optional: Add country validation if needed
+          console.log(`Card issued in: ${paymentMethod.card.country}`);
+        }
+        
+        // Log payment method details for debugging
+        console.log("Payment Method Created:", {
+          id: paymentMethod.id,
+          brand: paymentMethod.card?.brand,
+          last4: paymentMethod.card?.last4,
+          country: paymentMethod.card?.country
+        });
+        
+        // Now call handlePaymentSubmit
+        await handlePaymentSubmit(paymentMethod);
+      }
+    } catch (error) {
       setIsLoading(false);
-
-      message.error(stripeError.message);
-    } else {
-      handlePaymentSubmit(paymentMethod);
+      console.error("Stripe error:", error);
+      message.error("Payment processing failed. Please try again.");
     }
   };
 
@@ -80,6 +139,7 @@ function CheckoutForm() {
       setNameOnCard(inputValue);
     }
   };
+
   return (
     <div style={{ width: "100%" }}>
       <form onSubmit={handleSubmit}>
@@ -89,12 +149,14 @@ function CheckoutForm() {
             placeholder="Name on card"
             value={nameOnCard}
             onChange={handleNameInputChange}
+            disabled={isLoading}
           />
         </div>
         <div className="mt-5">
           <CardNumberElement
             className={`${styles.inputContainer} `}
             options={{
+              disabled: isLoading,
               style: {
                 base: {
                   color: "#49454f",
@@ -116,6 +178,7 @@ function CheckoutForm() {
             <CardExpiryElement
               className={`${styles.inputContainer}`}
               options={{
+                disabled: isLoading,
                 style: {
                   base: {
                     color: "#49454f",
@@ -137,6 +200,7 @@ function CheckoutForm() {
               <CardCvcElement
                 className={`${styles.inputContainer} `}
                 options={{
+                  disabled: isLoading,
                   style: {
                     base: {
                       color: "#49454f",
@@ -161,6 +225,7 @@ function CheckoutForm() {
           type="primary"
           htmlType="submit"
           loading={isLoading}
+          disabled={isLoading || !stripe || !elements}
         />
       </form>
     </div>

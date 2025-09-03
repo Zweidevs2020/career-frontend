@@ -48,23 +48,35 @@ const Signup = () => {
 
   const handlerSaveSubmit = async () => {
     setLoading(true)
-    setLoading(false)
-    const response = await postApiWithoutAuth(API_URL.SINGUPUSER, {
-      ...data,
-      dob: `${dobSave.year}-${dobSave.month}-${dobSave.day}`,
-      email: data.email.toLowerCase(),
-    })
+    
+    try {
+      const response = await postApiWithoutAuth(API_URL.SINGUPUSER, {
+        ...data,
+        dob: `${dobSave.year}-${dobSave.month}-${dobSave.day}`,
+        email: data.email.toLowerCase(),
+      })
 
-    if (response.status === 200) {
-      message.success(
-        "Congratulations! You've successfully signed up. You're now ready to log in and explore our platform. Welcome aboard!",
-      )
-      setSubscribe(false)
-      setToken(response.data.access_token)
-      navigate("/checkout")
-    } else {
+      if (response.status === 200) {
+        message.success(
+          "Congratulations! You've successfully signed up. You're now ready to log in and explore our platform. Welcome aboard!",
+        )
+        
+        const isSubscribed = response.data.is_subscribed || false
+        setSubscribe(isSubscribed)
+        setToken(response.data.access_token)
+        if (isSubscribed) {
+          navigate("/dashboard")
+        } else {
+          navigate("/checkout")
+        }
+        
+      } else {
+        setLoading(false)
+        message.error(response.data.message)
+      }
+    } catch (error) {
       setLoading(false)
-      message.error(response.data.message)
+      message.error("Something went wrong. Please try again.")
     }
   }
 
@@ -102,19 +114,24 @@ const Signup = () => {
   }
 
   const getSchools = async () => {
-    const response = await getApiWithoutAuth(API_URL.GETUSERSCHOOL)
-    if (response?.data?.success) {
-      const school = response.data.data?.map((item) => {
-        return {
-          value: item.pk, // This is the primary key
-          label: item.school,
-          county: item.county,
-        }
-      })
-      setSchools(school)
+    try {
+      const response = await getApiWithoutAuth(API_URL.GETUSERSCHOOL)
+      if (response?.data?.success) {
+        const school = response.data.data?.map((item) => {
+          return {
+            value: item.pk, // This is the primary key
+            label: item.school,
+            county: item.county,
+          }
+        })
+        setSchools(school)
+        setLoading(false)
+      } else {
+        setLoading(false)
+      }
+    } catch (error) {
       setLoading(false)
-    } else {
-      setLoading(false)
+      console.error("Error fetching schools:", error)
     }
   }
 
