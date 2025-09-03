@@ -46,6 +46,7 @@ import CounselorChoices from "./components/conselor/StudentChoices";
 import CounselorEducationalReport from "./components/conselor/StudentEducationalReport";
 import CounselorGuidanceReport from "./components/conselor/GuidanceReaport";
 import CousnelorSelf from "./components/conselor/CousnelorSelf";
+import PaymentVerification from "./components/PaymentVerification/payment-verificatin";
 
 function App() {
   const { subscribe, loading } = useSubscribe();
@@ -244,7 +245,14 @@ function App() {
             </PublicRoute>
           }
         />
-
+        <Route
+          path="/payment-verification"
+          element={
+            <PrivateRoute>
+              <PaymentVerification />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/my-guidance-report"
           element={
