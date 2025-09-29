@@ -21,7 +21,6 @@ const PersonalProfile = ({ setCurrent, current }) => {
   const [savedTotalStep, setSavedTotalStep] = useState();
   const [isInputDisabled, setIsInputDisabled] = useState(true);
   const [userData, setUserData] = useState({});
-  const [enableDownloadCV, setEnableDownloadCV] = useState(false);
 
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
@@ -298,28 +297,30 @@ const PersonalProfile = ({ setCurrent, current }) => {
                 </Form.Item>
               </div>
               <div style={{ width: "24%" }} className="mobileLayout">
-                <Form.Item
-                  label="Eircode"
-                  name="eircode"
-                  className="profileItemLable"
-                  rules={[
-                    {
-                      required: false,
-                      message: "Please input your Eircode!",
-                    },
-                  ]}
-                >
-                  <MyCareerGuidanceInputField
-                    placeholder="DXX XXXX"
-                    type="input"
-                    name="eircode"
-                    onChange={onChangeHandle}
-                    inputValue={profileObject?.eircode}
-                    isPrefix={false}
-                    // disabled={isInputDisabled}
-                  />
-                </Form.Item>
-              </div>
+  <Form.Item
+    label="Eircode"
+    name="eircode"
+    className="profileItemLable"
+    initialValue={profileObject?.eircode?.toUpperCase() || ""} 
+    rules={[
+      {
+        required: false,
+        message: "Please input your Eircode!",
+      },
+    ]}
+    getValueFromEvent={(e) => e.target.value.toUpperCase()} 
+  >
+    <MyCareerGuidanceInputField
+      placeholder="DXX XXXX"
+      type="input"
+      name="eircode"
+      onChange={onChangeHandle}
+      inputValue={profileObject?.eircode?.toUpperCase() || ""} 
+      isPrefix={false}
+      // disabled={isInputDisabled}
+    />
+  </Form.Item>
+</div>
             </div>
 
             <div className="profileFormItem">
