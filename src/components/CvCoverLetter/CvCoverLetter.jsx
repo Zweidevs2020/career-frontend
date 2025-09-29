@@ -8,7 +8,6 @@ import Reference from "./Reference/Reference";
 import Education from "./Eductaion/Education";
 import emailIcon from "../../assets/image 2.png";
 import docxIcon from "../../assets/images.png";
-import pdfIcon from "../../assets/images.jpeg";
 import Experenice from "./Experenice/Experenice";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import { API_URL } from "../../utils/constants";
@@ -88,12 +87,11 @@ const CvCoverLetter = () => {
       var token = localStorage.getItem("access_token", "");
 
       const response = await axios.get(
-        `${'${process.env.REACT_APP_BASE_URL}'}cv/doc-cv
-        `,
+        `${process.env.REACT_APP_BASE_URL}cv/doc-cv`,
         {
-          responseType: "blob", // Set the response type to 'blob'
+          responseType: "blob", 
           headers: {
-            Authorization: `Bearer ${token}`, // Set the Authorization header
+            Authorization: `Bearer ${token}`,
           },
         }
       );
