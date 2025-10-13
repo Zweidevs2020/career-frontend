@@ -274,7 +274,7 @@ function App() {
           }
         />
         <Route
-          path="/conselorDashboard"
+          path="/counsellor-Dashboard"
           element={
             <ConselorPrivateRoute>
               <ConselorDashboard />

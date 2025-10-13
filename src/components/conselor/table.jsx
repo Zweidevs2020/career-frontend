@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 
 const Table = ({ columns, data, renderCell, onViewDetails }) => {
   const location = useLocation();
-  const isCounselorDashboard = location.pathname.includes("/conselorDashboard");
+  const isCounselorDashboard = location.pathname.includes("/counsellor-Dashboard");
 
   return (
     <div>
