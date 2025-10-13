@@ -75,7 +75,7 @@ const Login = () => {
       // setSubscribe(response.data.is_subscribed);
 
       if (response?.data?.access) {
-        navigate("/conselorDashboard");
+navigate("/counsellor-Dashboard");
       } else {
         return;
       }

@@ -635,28 +635,18 @@ const MyChoicesEdit = () => {
               />
               <div className="actionColumn">
                 <Space size="middle">
-                  {comingRow.editable && comingRow.id !== null ? (
-                    <a onClick={() => handleUpdateMobile(comingRow)}>
-                      <CheckOutlined style={{ color: "#1476b7" }} />
-                    </a>
-                  ) : row.editable && row.id === null ? (
-                    <a onClick={() => handleAddRow(comingRow)}>
-                      <PlusCircleOutlined style={{ color: "#1476b7" }} />
-                    </a>
-                  ) : (
-                    <a onClick={() => eidtThisRow(comingRow)}>
-                      <Image
-                        preview={false}
-                        src={EditOutlined}
-                        style={{
-                          color: "#1476b7",
-                          cursor: "pointer",
-                          width: 22,
-                          height: "100%",
-                        }}
-                      />
-                    </a>
-                  )}
+                  <a onClick={() => eidtThisRow(comingRow)}>
+                    <Image
+                      preview={false}
+                      src={EditOutlined}
+                      style={{
+                        color: "#1476b7",
+                        cursor: "pointer",
+                        width: 22,
+                        height: "100%",
+                      }}
+                    />
+                  </a>
                   <a onClick={() => handleDelete(comingRow)}>
                     <DeleteOutlined style={{ color: "red" }} />
                   </a>
@@ -855,7 +845,7 @@ const MyChoicesEdit = () => {
                                   item === "college" ? (
                                     <>
                                       <Column
-                                        title={capitalizeWords(item)}
+                                        title={item.toLowerCase() === 'point' ? 'Points' : capitalizeWords(item)}
                                         dataIndex={item}
                                         key={item}
                                         className="tableHeadingStyle"
@@ -880,8 +870,7 @@ const MyChoicesEdit = () => {
                                               }
                                               bordered={false}
                                               popupMatchSelectWidth={false}
-                                              disabled={!record.editable}
-                                              onClick={() => {
+                                              onFocus={() => {
                                                 if (!record.editable) {
                                                   eidtThisRow(record);
                                                 }
@@ -952,7 +941,7 @@ const MyChoicesEdit = () => {
                                     />
                                   ) : (
                                     <Column
-                                      title={capitalizeWords(item)}
+                                      title={item.toLowerCase() === 'point' ? 'Points' : capitalizeWords(item)}
                                       dataIndex={item}
                                       key={item}
                                       disabled
@@ -996,7 +985,7 @@ const MyChoicesEdit = () => {
                                               type="input"
                                               name={item}
                                               defaultValue={parseText}
-                                              onChange={(e) =>
+                                              onBlur={(e) =>
                                                 handleChangeTable(e, record)
                                               }
                                               isPrefix={false}
@@ -1025,21 +1014,6 @@ const MyChoicesEdit = () => {
                               dataIndex={"Object"}
                               render={(_, record) => (
                                 <Space size="middle">
-                                  {record.editable && record.id !== null ? (
-                                    <CheckOutlined
-                                      style={{
-                                        cursor: "pointer",
-                                      }}
-                                      onClick={() => handleUpdate(record)}
-                                    />
-                                  ) : record.editable && record.id === null ? (
-                                    <PlusCircleOutlined
-                                      style={{
-                                        cursor: "pointer",
-                                      }}
-                                      onClick={() => handleAddRow(record)}
-                                    />
-                                  ) : null}
                                   <DeleteOutlined
                                     style={{
                                       color: "red",
@@ -1121,7 +1095,7 @@ const MyChoicesEdit = () => {
                                         }
                                         bordered={false}
                                         popupMatchSelectWidth={false}
-                                        onClick={() => {
+                                        onFocus={() => {
                                           if (!record.editable) {
                                             eidtThisRow(record);
                                           }
@@ -1157,17 +1131,6 @@ const MyChoicesEdit = () => {
                                               ).length
                                           );
                                         }}
-                                        // onSelect={(value, option) =>
-
-                                        //   handleSelect(
-                                        //     value,
-                                        //     option,
-                                        //     rowNum +
-                                        //       data.filter(
-                                        //         (item) => item.id !== null
-                                        //       ).length
-                                        //   )
-                                        // }
                                         optionLabelProp="label"
                                       >
                                         {dropDownOptions.map((option) => {
@@ -1224,7 +1187,7 @@ const MyChoicesEdit = () => {
                                         type="input"
                                         name={item}
                                         defaultValue={parseText}
-                                        onChange={(e) =>
+                                        onBlur={(e) =>
                                           handleChangeTable(e, record)
                                         }
                                         onFocus={(e) =>
@@ -1255,15 +1218,6 @@ const MyChoicesEdit = () => {
                         dataIndex={"Object"}
                         render={(_, record) => (
                           <Space size="middle">
-                            {record.editable && record.id !== null ? (
-                              <a onClick={() => handleUpdate(record)}>
-                                <CheckOutlined />
-                              </a>
-                            ) : record.editable && record.id === null ? (
-                              <a onClick={() => handleAddRow(record)}>
-                                <PlusCircleOutlined />
-                              </a>
-                            ) : null}
                             <a>
                               <DeleteOutlined style={{ color: "grey" }} />
                             </a>
@@ -1324,7 +1278,7 @@ const MyChoicesEdit = () => {
                                             key={`${item.dataId}-${index}`}
                                           >
                                             <span className="rowHeadingMobile">
-                                              {capitalizeWords(item)}
+                                              {item.toLowerCase() === 'point' ? 'Points' : capitalizeWords(item)}
                                             </span>
                                             <Select
                                               showSearch
@@ -1337,7 +1291,11 @@ const MyChoicesEdit = () => {
                                               defaultValue={row[item]}
                                               bordered={false}
                                               popupMatchSelectWidth={false}
-                                              disabled={!row.editable}
+                                              onFocus={() => {
+                                                if (!row.editable) {
+                                                  eidtThisRow(row);
+                                                }
+                                              }}
                                               suffixIcon={
                                                 <Image
                                                   preview={false}
@@ -1407,7 +1365,7 @@ const MyChoicesEdit = () => {
                                             placeholder={row[item]}
                                             type="input"
                                             name={item}
-                                            onChange={(e) =>
+                                            onBlur={(e) =>
                                               handleChangeTableMobile(e, row)
                                             }
                                             defaultValue={row[item]}
@@ -1441,39 +1399,18 @@ const MyChoicesEdit = () => {
                                       />
                                       <div className="actionColumn">
                                         <Space size="middle">
-                                          {row.editable && row.id !== null ? (
-                                            <a
-                                              onClick={() =>
-                                                handleUpdateMobile(row)
-                                              }
-                                            >
-                                              <CheckOutlined
-                                                style={{ color: "#1476b7" }}
-                                              />
-                                            </a>
-                                          ) : row.editable &&
-                                            row.id === null ? (
-                                            <a
-                                              onClick={() => handleAddRow(row)}
-                                            >
-                                              <PlusCircleOutlined
-                                                style={{ color: "#1476b7" }}
-                                              />
-                                            </a>
-                                          ) : (
-                                            <a onClick={() => eidtThisRow(row)}>
-                                              <Image
-                                                preview={false}
-                                                src={EditOutlined}
-                                                style={{
-                                                  color: "#1476b7",
-                                                  cursor: "pointer",
-                                                  width: 22,
-                                                  height: "100%",
-                                                }}
-                                              />
-                                            </a>
-                                          )}
+                                          <a onClick={() => eidtThisRow(row)}>
+                                            <Image
+                                              preview={false}
+                                              src={EditOutlined}
+                                              style={{
+                                                color: "#1476b7",
+                                                cursor: "pointer",
+                                                width: 22,
+                                                height: "100%",
+                                              }}
+                                            />
+                                          </a>
                                           <a onClick={() => handleDelete(row)}>
                                             <DeleteOutlined
                                               style={{ color: "red" }}
@@ -1505,7 +1442,7 @@ const MyChoicesEdit = () => {
                                                 key={`${item.dataId}-${index}`}
                                               >
                                                 <span className="rowHeadingMobile">
-                                                  {capitalizeWords(item)}
+                                                  {item.toLowerCase() === 'point' ? 'Points' : capitalizeWords(item)}
                                                 </span>
                                                 <Select
                                                   showSearch
@@ -1518,7 +1455,11 @@ const MyChoicesEdit = () => {
                                                   defaultValue={row[item]}
                                                   bordered={false}
                                                   popupMatchSelectWidth={false}
-                                                  disabled={!row.editable}
+                                                  onFocus={() => {
+                                                    if (!row.editable) {
+                                                      eidtThisRow(row);
+                                                    }
+                                                  }}
                                                   suffixIcon={
                                                     <Image
                                                       preview={false}
@@ -1536,21 +1477,10 @@ const MyChoicesEdit = () => {
                                                       row.rowNo
                                                     )
                                                   }
-                                                  // onSelect={(value, option) =>
-                                                  //   handleSelect(
-                                                  //     value,
-                                                  //     option,
-                                                  //     row.rowNo
-                                                  //   )
-                                                  // }
                                                   optionLabelProp="label"
                                                 >
                                                   {dropDownOptions.map(
                                                     (option) => {
-                                                      // console.log(
-                                                      //   option,
-                                                      //   "[option if 4]"
-                                                      // );
                                                       return (
                                                         <Select.Option
                                                           key={option[item]}
@@ -1580,12 +1510,6 @@ const MyChoicesEdit = () => {
                                                 type="input"
                                                 name={item}
                                                 value={row[item]}
-                                                // onChange={(e) =>
-                                                //   handleChangeTableMobile(
-                                                //     e,
-                                                //     row
-                                                //   )
-                                                // }
                                                 defaultValue={row[item]}
                                                 isPrefix={false}
                                                 disabled={!row.editable}
@@ -1622,36 +1546,18 @@ const MyChoicesEdit = () => {
                                 />
                                 <div className="actionColumn">
                                   <Space size="middle">
-                                    {row.editable && row.id !== null ? (
-                                      <a
-                                        onClick={() => handleUpdateMobile(row)}
-                                      >
-                                        <CheckOutlined
-                                          style={{ color: "#1476b7" }}
-                                        />
-                                      </a>
-                                    ) : row.editable && row.id === null ? (
-                                      <a
-                                        onClick={() => handleAddRowMobile(row)}
-                                      >
-                                        <PlusCircleOutlined
-                                          style={{ color: "#1476b7" }}
-                                        />
-                                      </a>
-                                    ) : (
-                                      <a onClick={() => eidtThisRow(row)}>
-                                        <Image
-                                          preview={false}
-                                          src={EditOutlined}
-                                          style={{
-                                            color: "#1476b7",
-                                            cursor: "pointer",
-                                            width: 22,
-                                            height: "100%",
-                                          }}
-                                        />
-                                      </a>
-                                    )}
+                                    <a onClick={() => eidtThisRow(row)}>
+                                      <Image
+                                        preview={false}
+                                        src={EditOutlined}
+                                        style={{
+                                          color: "#1476b7",
+                                          cursor: "pointer",
+                                          width: 22,
+                                          height: "100%",
+                                        }}
+                                      />
+                                    </a>
                                     <a>
                                       <DeleteOutlined
                                         style={{ color: "grey" }}
@@ -1696,7 +1602,11 @@ const MyChoicesEdit = () => {
                                             defaultValue={row[item]}
                                             bordered={false}
                                             popupMatchSelectWidth={false}
-                                            disabled={!row.editable}
+                                            onFocus={() => {
+                                              if (!row.editable) {
+                                                eidtThisRow(row);
+                                              }
+                                            }}
                                             suffixIcon={
                                               <Image
                                                 preview={false}
@@ -1714,20 +1624,9 @@ const MyChoicesEdit = () => {
                                                 row.rowNo
                                               )
                                             }
-                                            // onSelect={(value, option) =>
-                                            //   handleSelect(
-                                            //     value,
-                                            //     option,
-                                            //     row.rowNo
-                                            //   )
-                                            // }
                                             optionLabelProp="label"
                                           >
                                             {dropDownOptions.map((option) => {
-                                              // console.log(
-                                              //   option,
-                                              //   "[option if ]"
-                                              // );
                                               return (
                                                 <Select.Option
                                                   key={option[item]}
@@ -1756,12 +1655,6 @@ const MyChoicesEdit = () => {
                                           type="input"
                                           name={item}
                                           value={row[item]}
-                                          // onChange={(e) =>
-                                          //   handleChangeTableMobile(
-                                          //     e,
-                                          //     row
-                                          //   )
-                                          // }
                                           defaultValue={row[item]}
                                           isPrefix={false}
                                           disabled={!row.editable}
