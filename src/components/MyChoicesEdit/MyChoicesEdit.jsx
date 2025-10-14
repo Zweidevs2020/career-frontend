@@ -1095,11 +1095,6 @@ const MyChoicesEdit = () => {
                                         }
                                         bordered={false}
                                         popupMatchSelectWidth={false}
-                                        onFocus={() => {
-                                          if (!record.editable) {
-                                            eidtThisRow(record);
-                                          }
-                                        }}
                                         suffixIcon={
                                           <Image
                                             preview={false}
@@ -1602,11 +1597,6 @@ const MyChoicesEdit = () => {
                                             defaultValue={row[item]}
                                             bordered={false}
                                             popupMatchSelectWidth={false}
-                                            onFocus={() => {
-                                              if (!row.editable) {
-                                                eidtThisRow(row);
-                                              }
-                                            }}
                                             suffixIcon={
                                               <Image
                                                 preview={false}
