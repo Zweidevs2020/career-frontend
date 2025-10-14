@@ -132,6 +132,12 @@ export default function CounselorSidebar() {
       path: "#",
       isDownloadCV: true, 
     },
+    {
+      icon: <ProfileSvg fill={selectedMenuItem === "ChangePassword" ? "#1476B7" : "#BDBDBD"} />,
+      label: "Account Settings",
+      path: id ? `/consellor/change-password/${id}` : "#",
+      activeState: "ChangePassword",
+    },
   ]
 
   const handleMenuClick = (item) => {

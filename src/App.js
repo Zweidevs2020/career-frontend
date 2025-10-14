@@ -47,6 +47,7 @@ import CounselorEducationalReport from "./components/conselor/StudentEducational
 import CounselorGuidanceReport from "./components/conselor/GuidanceReaport";
 import CousnelorSelf from "./components/conselor/CousnelorSelf";
 import PaymentVerification from "./components/PaymentVerification/payment-verificatin";
+import ChangePassword from "./components/conselor/ChangePassword";
 
 function App() {
   const { subscribe, loading } = useSubscribe();
@@ -327,6 +328,7 @@ function App() {
             path="work-diary/:id"
             element={<CounselorEducationalReport />}
           />
+          <Route path="change-password/:id" element={<ChangePassword />} />
         </Route>
       </Routes>
     </BrowserRouter>
