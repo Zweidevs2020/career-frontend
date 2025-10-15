@@ -941,64 +941,46 @@ const MyChoicesEdit = () => {
                                     />
                                   ) : (
                                     <Column
-                                      title={item.toLowerCase() === 'point' ? 'Points' : capitalizeWords(item)}
+                                      title={
+                                        item.toLowerCase() === "point"
+                                          ? "Points"
+                                          : capitalizeWords(item)
+                                      }
                                       dataIndex={item}
                                       key={item}
                                       disabled
                                       className="tableHeadingStyle "
+                                      onCell={(record) => ({
+                                        onClick: () => {
+                                          if (!record.editable) {
+                                            eidtThisRow(record);
+                                          }
+                                        },
+                                        style: { cursor: "text" },
+                                        className: "choice-cell",
+                                      })}
                                       render={(text, record) => {
                                         let parseText = parseInt(text);
                                         parseText = isNaN(parseText)
                                           ? text
                                           : parseText;
                                         return (
-                                          <div
-                                            style={{
-                                              position: "relative",
+                                          <MyCareerGuidanceInputField
+                                            // ref={inputRef}
+                                            placeholder={item}
+                                            type="input"
+                                            name={item}
+                                            defaultValue={parseText}
+                                            onBlur={(e) =>
+                                              handleChangeTable(e, record)
+                                            }
+                                            isPrefix={false}
+                                            id={`input-${item}-${record?.rowNo}`}
+                                            onClick={(e) => {
+                                              e.stopPropagation();
                                             }}
-                                            onClick={() => {
-                                              if (!record.editable) {
-                                                eidtThisRow(record);
-                                              }
-                                            }}
-                                          >
-                                            {!record.editable && (
-                                              <div
-                                                style={{
-                                                  position: "absolute",
-                                                  height: "100%",
-                                                  width: "100%",
-                                                  backgroundColor:
-                                                    "transparent",
-                                                  zIndex: 1,
-                                                }}
-                                                onClick={() => {
-                                                  if (!record.editable) {
-                                                    eidtThisRow(record);
-                                                  }
-                                                }}
-                                              ></div>
-                                            )}
-                                            <MyCareerGuidanceInputField
-                                              // ref={inputRef}
-                                              placeholder={item}
-                                              type="input"
-                                              name={item}
-                                              defaultValue={parseText}
-                                              onBlur={(e) =>
-                                                handleChangeTable(e, record)
-                                              }
-                                              isPrefix={false}
-                                              id={`input-${item}-${record?.rowNo}`}
-                                              onClick={(e) => {
-                                                e.stopPropagation();
-                                                if (!record.editable) {
-                                                  eidtThisRow(record);
-                                                }
-                                              }}
-                                              disabled={!record.editable}
-                                            />
-                                          </div>
+                                            disabled={!record.editable}
+                                          />
                                         );
                                       }}
                                     />
@@ -1163,6 +1145,15 @@ const MyChoicesEdit = () => {
                                 dataIndex={item}
                                 key={item}
                                 className="tableHeadingStyle"
+                                onCell={(record) => ({
+                                  onClick: () => {
+                                    if (!record.editable) {
+                                      eidtThisRow(record);
+                                    }
+                                  },
+                                  style: { cursor: "text" },
+                                  className: "choice-cell",
+                                })}
                                 render={(text, record) => {
                                   let parseText = parseInt(text);
                                   parseText = isNaN(parseText)
@@ -1170,34 +1161,24 @@ const MyChoicesEdit = () => {
                                     : parseText;
 
                                   return (
-                                    <div
-                                      onClick={() => {
-                                        if (!record.editable) {
-                                          eidtThisRow(record);
-                                        }
+                                    <MyCareerGuidanceInputField
+                                      placeholder={item}
+                                      type="input"
+                                      name={item}
+                                      defaultValue={parseText}
+                                      onBlur={(e) =>
+                                        handleChangeTable(e, record)
+                                      }
+                                      onFocus={(e) =>
+                                        (inputRef.current = e.target)
+                                      }
+                                      id={`input-${item}-${record?.rowNo}`}
+                                      isPrefix={false}
+                                      // disabled={!record.editable}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
                                       }}
-                                    >
-                                      <MyCareerGuidanceInputField
-                                        placeholder={item}
-                                        type="input"
-                                        name={item}
-                                        defaultValue={parseText}
-                                        onBlur={(e) =>
-                                          handleChangeTable(e, record)
-                                        }
-                                        onFocus={(e) =>
-                                          (inputRef.current = e.target)
-                                        }
-                                        id={`input-${item}-${record?.rowNo}`}
-                                        isPrefix={false}
-                                        // disabled={!record.editable}
-                                        onClick={() => {
-                                          if (!record.editable) {
-                                            eidtThisRow(record);
-                                          }
-                                        }}
-                                      />
-                                    </div>
+                                    />
                                   );
                                 }}
                               />
