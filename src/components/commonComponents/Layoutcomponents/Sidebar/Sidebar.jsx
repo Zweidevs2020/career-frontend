@@ -945,7 +945,54 @@ const Sidebar = ({ children, flags }) => {
                   ) : null}
                 </span>
               </Menu.Item>
+              <Menu.Item
+                key="ChatBot"
+                onClick={() => {
+                  componentsSwtich("ChatBot");
+                  onClose();
+                }}
+              >
+                <span className="textStyling">
+                  My Guidance Report
+                  {selectedMenuItem === "ChatBot" ? (
+                    <span> &nbsp;&#x25cf; </span>
+                  ) : null}
+                </span>
+              </Menu.Item>
+              <Menu.Item
+                key="Work"
+                onClick={() => {
+                  componentsSwtich("Work");
+                  onClose();
+                }}
+              >
+                <span className="textStyling">
+                  My Work Diary
+                  {selectedMenuItem === "Work" ? (
+                    <span> &nbsp;&#x25cf; </span>
+                  ) : null}
+                </span>
+              </Menu.Item>
             </Menu>
+            <p
+              style={{
+                fontSize: "12px",
+                fontWeight: "600",
+                padding: "8px 12px",
+                borderRadius: "4px",
+                borderImage:
+                  "linear-gradient(90deg, #888, #666, #444, #222) 1",
+                boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
+                background: "#F5F5F5",
+                color: "#444",
+                margin: "10px",
+                textAlign: "left",
+                display: "block",
+                width: "auto",
+              }}
+            >
+              Subscription Ends: {userDatas?.current_period_end || "NA"}
+            </p>
             <div
               style={{
                 display: "flex",
