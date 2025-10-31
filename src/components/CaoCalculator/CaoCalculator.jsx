@@ -617,13 +617,13 @@ const CaoCalculator = () => {
   };
 
   return (
-    <div className="caoMainDiv">
-      <div style={{ background: "white" }}>
-        <div className="coaInnerf8fafcDiv">
-          <div className="welcomeHaddingText">My CAO Points: </div>
+    <div className="caoMainDiv" style={{backgroundColor: "#DCFCEF"}}>
+      
+        <div className="coaInnerf8fafcDiv bg-[#DCFCEF]">
+          <div className="welcomeHaddingText bg-[#DCFCEF]">My CAO Points: </div>
 
           {screenSize.width > "748" ? (
-            <div className="coaSubjectDiv p-3">
+            <div className="coaSubjectDiv p-3 bg-[#DCFCEF]">
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <Table
                   dataSource={tableData}
@@ -946,7 +946,8 @@ const CaoCalculator = () => {
           )}
         </div>
       </div>
-    </div>
+  
+    
   );
 };
 

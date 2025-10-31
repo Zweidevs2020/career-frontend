@@ -500,6 +500,7 @@ const MyChoices = () => {
                   minHeight: "55vh",
                   paddingTop: 20,
                   height: "100%",
+                  background: "#E0E0E0",
                 }}
               >
                 <Form layout="vertical">

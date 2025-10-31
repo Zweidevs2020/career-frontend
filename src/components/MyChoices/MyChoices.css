@@ -13,6 +13,18 @@
   cursor: pointer;
 
 }
+.educationalGuidanceSecond {
+  background: #F3EDFA;
+  width: 100%;
+  min-height: 80vh;
+  padding: 20px;
+}
+.educationalGuidanceMain {
+  background-color: #F3EDFA;
+  width: 100%;
+  min-height: 90vh;
+  padding: 20px;
+}
 .myChoicesRow{
   display: flex;
   justify-content: space-between;
