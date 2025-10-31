@@ -768,7 +768,7 @@ const MyChoicesEdit = () => {
       ) : (
         <div className="caoMainDiv">
           <div style={{ background: "white" }}>
-            <div className="coaInnerf8fafcDiv">
+            <div className="coaInnerf8fafcDivtest">
               {isMobile ? (
                 <div className="h-[40px] w-[15%] bg-[#1476B7] rounded-lg flex items-center justify-evenly mx-2">
                   <button
