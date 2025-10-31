@@ -92,10 +92,10 @@ const TakeSelfTest = () => {
 
   return (
     <>
-      <div className="educationalGuidanceMainDiv" id="targetSectionId">
+      <div className="selfassessment" id="targetSectionId">
         <div className="welcomeHaddingText pb-4">{quizData.name}</div>
         <div className="textDescription pb-4">{quizData.intro}</div>
-        <div className="educationalGuidanceSecondDiv">
+        <div className="selfassessment">
           {loading ? (
             <Spin className="spinStyle" />
           ) : quizData.questions?.length === 0 ? (
