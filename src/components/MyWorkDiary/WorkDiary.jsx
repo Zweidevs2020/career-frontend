@@ -79,7 +79,7 @@ const WorkDiary = () => {
       {loading ? (
         <Spin className="spinStyle" />
       ) : (
-        <div className="bg-white">
+        <div style={{backgroundColor: "#CEF5E0"}}>
           <div className="topContainer">
             <div>
               <h5 className="goalHeading">My Work Diary</h5>
@@ -108,14 +108,11 @@ const WorkDiary = () => {
                     type={activeDay === day.key ? "primary" : "default"}
                     style={{
                       backgroundColor:
-                        activeDay === day.key ? "#1890ff" : "transparent",
+                        activeDay === day.key ? "#1890ff" : "white",
                       color: activeDay === day.key ? "#fff" : "#000",
                       borderColor:
-                        currentDay === index + 1 ? "#1890ff" : "#ccc", // Highlight current day
-                      opacity:
-                        hoveredDay === day.key || activeDay === day.key
-                          ? 1
-                          : 0.5, // Show button at full opacity on hover or if active
+                        currentDay === index + 1 ? "#1890ff" : "white", // Highlight current day
+                      opacity: 1, // Show button at full opacity on hover or if active
                       cursor:
                         hoveredDay === day.key || activeDay === day.key
                           ? "pointer"

@@ -148,13 +148,13 @@ const MyChoices = () => {
   };
   return (
     <>
-      <div className="educationalGuidanceMainDiv">
-        <div className="educationalGuidanceSecondDiv">
-          <div className="welcomeHaddingText pb-3">Choices</div>
+      <div className="educationalGuidanceMain">
+        <div className="educationalGuidanceSecond ">
+          <div className="welcomeHaddingText pb-3" >Choices</div>
           <div
             style={{
               marginTop: 10,
-              background: "#FFFFFF",
+              background: "#F3EDFA",
               minHeight: 168,
               borderRadius: 10,
               padding: 15,

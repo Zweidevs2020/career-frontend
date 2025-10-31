@@ -564,7 +564,7 @@ const MyStudy = () => {
   );
   return (
     <>
-      <div className="educationalGuidanceMainDiv">
+      <div className="educationalGuidanceMainDiv" style={{backgroundColor: "#F2FAED"}}>
         <div
           style={{
             display: "flex",

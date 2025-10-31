@@ -96,7 +96,7 @@ const Selfassesment = () => {
 
   return (
     <>
-      <div className="educationalGuidanceMainDiv">
+      <div className="educationalGuidanceMainDiv" style={{backgroundColor: "#DCF1FC"}}>
         <div className="welcomeHaddingText ">Self Assessment Results</div>
 
         {loading ? (
