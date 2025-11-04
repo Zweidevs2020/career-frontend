@@ -26,6 +26,7 @@ import TakeSelfTest from "./components/TakeSelfTest";
 import MyStudy from "./components/MyStudy";
 import MyChoices from "./components/MyChoices";
 import MyChoicesEdit from "./components/MyChoicesEdit";
+import TertiaryEdit from "./components/MyChoicesEdit/TertiaryEdit";
 import Occupational from "./components/Occupational";
 import YoutubePage from "./components/CvCoverLetter/YoutubePage";
 import OccupationalOption from "./components/OccupationalOption";
@@ -228,6 +229,17 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/tertiary-choice-edit"
+          element={
+            <PrivateRoute>
+              <Sidebar>
+                <TertiaryEdit />
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+
         <Route
           path="/occupation/:idea"
           element={
