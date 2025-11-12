@@ -153,7 +153,7 @@ const Occupational = () => {
 
   return (
     <>
-      <div className="educationalGuidanceMainDiv">
+      <div className="mySelf">
         {loading ? (
           <Spin className="spinStyle" />
         ) : educationGuidance?.length === 0 ? (
@@ -179,7 +179,7 @@ const Occupational = () => {
               {educationGuidance[0]?.test_name}
             </div>
 
-            <div className="educationalGuidanceSecondDiv">
+            <div className="mySelfTwo">
               <div
                 style={{
                   backgroundColor: "white",

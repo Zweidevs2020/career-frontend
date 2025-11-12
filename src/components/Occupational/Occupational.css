@@ -5,3 +5,17 @@
     padding: 10px;
     box-shadow: 2px 2px 2px lightblue;
 }
+
+.mySelf {
+  background-color: #DCF1FC;
+  width: 100%;
+  min-height: 90vh;
+  padding: 20px;
+}
+
+.mySelfTwo {
+    background: #DCF1FC;
+    width: 100%;
+    min-height: 80vh;
+    padding: 20px;
+}
