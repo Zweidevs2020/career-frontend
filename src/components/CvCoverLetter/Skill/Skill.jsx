@@ -241,33 +241,37 @@ const Skill = ({ setCurrent, current }) => {
   }
   const SavePdf = async (e) => {
     e.preventDefault();
-    var token = localStorage.getItem("access_token", "");
+    try {
+      var token = localStorage.getItem("access_token", "");
 
-    const response = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}cv/cv/`,
-      {
-        responseType: "blob", 
-        headers: {
-          Authorization: `Bearer ${token}`, 
-        },
-      }
-    );
-
-   
-    const pdfBlob = new Blob([response.data], { type: "application/pdf" });
-
- 
-    const pdfUrl = URL.createObjectURL(pdfBlob);
-
-  
-    const link = document.createElement("a");
-    link.href = pdfUrl;
-    link.download = `${userData.full_name}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    URL.revokeObjectURL(pdfUrl);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}cv/doc-cv`,
+        {
+          responseType: "blob", // Set the response type to 'blob'
+          headers: {
+            Authorization: `Bearer ${token}`, // Set the Authorization header
+          },
+        }
+      );
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      });
+      var link = document.createElement("a");
+      var URL = window.URL || window.webkitURL;
+      var downloadUrl = URL.createObjectURL(blob);
+      link.href = downloadUrl;
+      link.style = "display: none";
+      link.download = "filename.docx";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      message.success(
+        "Download initiated! Please choose a location to save the file."
+      );
+    } catch (error) {
+      console.error("Error downloading document:", error);
+      message.error("Failed to download document. Please try again.");
+    }
   };
   const handleNextClick = () => {
     if (savedTotalStep >= current) { 
