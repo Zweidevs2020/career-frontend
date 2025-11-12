@@ -38,7 +38,7 @@ const OccupationalOption = () => {
       .split(" ")
       .join(", ");
   return (
-    <div className="educationalGuidanceMainDiv">
+    <div className="mySelfTwo">
       <div style={{ display: "flex", justifyContent: "flex-start" }}>
         <Button
           className="skillsButton"
