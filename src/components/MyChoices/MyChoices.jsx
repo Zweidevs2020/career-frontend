@@ -13,6 +13,7 @@ import Choice2 from "../../assets/Choice2.svg";
 import Choice3 from "../../assets/Choice3.svg";
 import Choice4 from "../../assets/Choice4.svg";
 import Choice5 from "../../assets/Choice5.svg";
+import Choice6 from "../../assets/Choice6.svg"
 
 import { useNavigate } from "react-router-dom";
 import "./MyChoices.css";
@@ -67,6 +68,11 @@ const MyChoices = () => {
       id: "other",
       icon: Choice5,
       name: "Other Options",
+    },
+    {
+      id: "tertiary",
+      icon: Choice6,
+      name: "Tertiary Degrees",
     },
   ];
   useEffect(() => {
@@ -148,13 +154,13 @@ const MyChoices = () => {
   };
   return (
     <>
-      <div className="educationalGuidanceMainDiv">
-        <div className="educationalGuidanceSecondDiv">
-          <div className="welcomeHaddingText pb-3">Choices</div>
+      <div className="educationalGuidanceMain">
+        <div className="educationalGuidanceSecond ">
+          <div className="welcomeHaddingText pb-3" >Choices</div>
           <div
             style={{
               marginTop: 10,
-              background: "#FFFFFF",
+              background: "#F3EDFA",
               minHeight: 168,
               borderRadius: 10,
               padding: 15,
@@ -182,11 +188,17 @@ const MyChoices = () => {
                           className="addChoicesButton me-3 "
                           type="primary"
                           htmlType="b"
-                          onClick={() =>
-                            navigate("/my-choice-edit", {
-                              state: { dataa: item },
-                            })
-                          }
+                          onClick={() => {
+                            if (item.id === "tertiary") {
+                              navigate("/tertiary-choice-edit", {
+                                state: { dataa: item },
+                              });
+                            } else {
+                              navigate("/my-choice-edit", {
+                                state: { dataa: item },
+                              });
+                            }
+                          }}
                         >
                           Edit
                         </Button>

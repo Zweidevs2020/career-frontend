@@ -36,12 +36,12 @@ function CheckoutView() {
       {/* Back Button */}
       
 
-      <div className="text-center">
+      {/* <div className="text-center">
         <h1 className="font-bold text-[24px] text-[#474749]">Confirm your Payment</h1>
         <p className="text-muted mt-2">
           You are being charged €10 because your school is not a Gold-Platinum school
         </p>
-      </div>
+      </div> */}
 
       <div className="w-100 mt-5">
         <Elements stripe={stripePromise}>

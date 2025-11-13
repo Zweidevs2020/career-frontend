@@ -50,7 +50,7 @@ import "./myChoicesEdit.css";
 
 const { Column, ColumnGroup } = Table;
 
-const MyChoicesEdit = () => {
+const TertiaryEdit = () => {
   const inputRef = useRef(null);
   const focusRef = useRef(null);
   const location = useLocation(); // Track current route
@@ -94,81 +94,88 @@ const MyChoicesEdit = () => {
   }, []);
 
   const getChoiceRecord = async (runLoading =  true) => {
-    if (runLoading) {
-      setLoadingFirst(true);
-    }
-    const response = await getApiWithAuth(
-      `choices/column-names/?choice=${dataa.id}`
-    );
-    if (response.data.status === 200) {
-      const columnsData = response.data.data.data;
-      const columnsWithoutOrderNumber = columnsData.slice(
-        0,
-        columnsData.length - 1
-      );
-
-      setColums(columnsWithoutOrderNumber);
-      setShowRows(response.data.data.rows);
-      setLoadingFirst(false);
-    } else {
-      setLoadingFirst(true);
-    }
+    setColums(['title', 'college', 'duration', 'level', 'course_information']);
+    setShowRows(10);
+    setLoadingFirst(false);
   };
 
   const getTableRecord = async () => {
-    const response = await getApiWithAuth(`choices/${dataa.id}/`);
-    if (response.data.status === 200) {
-      setOldData(response.data.data.user_data);
-      setDropDownOptions(response.data.data.level_data);
-
-      setLoadingFirst(false);
+    setLoadingFirst(true);
+    const dropdown_options_response = await getApiWithAuth(`/choices/tertiary-degree/`);
+    if (dropdown_options_response.data.status === 200) {
+      const userData = dropdown_options_response.data.data.user_data || [];
+      const levelData = dropdown_options_response.data.data.level_data || [];
+      setMyData(userData);
+      setDropDownOptions(levelData);
     } else {
-      setLoadingFirst(true);
+      setMyData([]);
+      setDropDownOptions([]);
+      message.error(dropdown_options_response.data.message || "Failed to fetch table records.");
     }
+    setLoadingFirst(false);
   };
 
   useEffect(() => {
-    if (showRowsData !== null) {
-      if (oldData !== null) {
-        if (oldData.length > 0) {
-          let updateData = [...oldData, ...showRowsData.slice(oldData.length)];
+    if (showRowsData !== null && myData !== null) {
+      console.log("myData before combining:", myData);
+      console.log("showRowsData before combining:", showRowsData);
+      // Start with existing user data
+      let combinedData = [...myData];
 
-          setData(
-            updateData.map((item, index) => ({
-              ...item,
-              rowNo: index,
-              editable: false,
-              dataId: uuid4(),
-            }))
-          );
-        } else {
-          setData(
-            showRowsData.map((item, index) => ({
-              ...item,
-              rowNo: index,
-              editable: false,
-              dataId: uuid4(),
-            }))
-          );
-        }
-      }
+      // Fill remaining slots with empty rows from showRowsData
+      const emptyRowsToAdd = showRowsData.slice(myData.length);
+      combinedData = [...combinedData, ...emptyRowsToAdd];
+      console.log("combinedData before setting data:", combinedData);
+
+      setData(
+        combinedData.map((item, index) => {
+          let duration = null;
+          let level = null;
+
+          if (item.Duration_level) {
+            const parts = item.Duration_level.split(', ');
+            if (parts.length === 2) {
+              level = parts[0];
+              duration = parts[1];
+            }
+          }
+
+          return {
+            ...item,
+            rowNo: index,
+            editable: false,
+            dataId: item.dataId || uuid4(), // Use existing dataId if available, otherwise generate new
+            duration: duration,
+            level: level,
+          };
+        })
+      );
     }
-  }, [showRowsData, oldData]);
+  }, [showRowsData, myData]);
 
-  useEffect(() => {
-    if (showRows !== null) {
-      const newData = Array.from({ length: showRows }, () => {
-        const rowData = { dataId: uuid4(), id: null };
-        columns.forEach((column) => {
-          rowData[column] = null;
+    useEffect(() => {
+
+      if (showRows !== null) {
+
+        const newData = Array.from({ length: showRows }, () => {
+
+          const rowData = { dataId: uuid4(), id: null };
+
+          columns.forEach((column) => {
+
+            rowData[column] = null;
+
+          });
+
+          return rowData;
+
         });
-        return rowData;
-      });
-      setMyData(oldData);
 
-      setShowRowsData(newData);
-    }
-  }, [showRows]);
+        setShowRowsData(newData);
+
+      }
+
+    }, [showRows]);
 
   const handleChangeTable = (e, rowData) => {
     const { name, value, id } = e.target;
@@ -328,7 +335,7 @@ const MyChoicesEdit = () => {
       record
     );
 
-    if (respose.data.status === 200) {
+    if (respose.data.status === 201) {
       message.success("Row update succesfully");
       setShowRows(null);
       getChoiceRecord();
@@ -350,7 +357,7 @@ const MyChoicesEdit = () => {
       record
     );
 
-    if (respose.data.status === 200) {
+    if (respose.data.status === 201) {
       message.success("Row update succesfully");
       setShowRows(null);
       getChoiceRecord();
@@ -362,7 +369,7 @@ const MyChoicesEdit = () => {
   };
   const handleDelete = async (item) => {
     const respose = await deleteApiWithAuth(
-      `choices/delete-${dataa.id}/${item.id}/`
+      `choices/tertiary-degree/${item.id}/`
     );
 
     if (respose.data.status === 204) {
@@ -398,13 +405,13 @@ const MyChoicesEdit = () => {
       }
 
       const response = await postApiWithAuth(
-        `choices/${dataa.id}/`,
+        `choices/tertiary-degree/`,
         finalRecord
       );
       // Ensure event listeners are removed
       disableEventListeners();
       console.log(response?.data?.status, "hello");
-      if (response.data.status === 200) {
+      if (response.data.status === 201) {
         message.success("Row added successfully");
         setShowRows(null);
 
@@ -892,7 +899,7 @@ const MyChoicesEdit = () => {
                                               }
                                               optionLabelProp="label"
                                             >
-                                              {dropDownOptions.map((option) => {
+                                              {(dropDownOptions || []).map((option) => {
                                                 return (
                                                   <Select.Option
                                                     key={option?.id}
@@ -1110,7 +1117,7 @@ const MyChoicesEdit = () => {
                                         }}
                                         optionLabelProp="label"
                                       >
-                                        {dropDownOptions.map((option) => {
+                                        {(dropDownOptions || []).map((option) => {
                                           return (
                                             <Select.Option
                                               key={option["id"]}
@@ -1289,7 +1296,7 @@ const MyChoicesEdit = () => {
                                               }
                                               optionLabelProp="label"
                                             >
-                                              {dropDownOptions.map((option) => {
+                                              {(dropDownOptions || []).map((option) => {
                                                 return (
                                                   <Select.Option
                                                     key={option?.id}
@@ -1455,7 +1462,7 @@ const MyChoicesEdit = () => {
                                                   }
                                                   optionLabelProp="label"
                                                 >
-                                                  {dropDownOptions.map(
+                                                  {(dropDownOptions || []).map(
                                                     (option) => {
                                                       return (
                                                         <Select.Option
@@ -1649,4 +1656,4 @@ const MyChoicesEdit = () => {
     </>
   );
 };
-export default MyChoicesEdit;
+export default TertiaryEdit;

@@ -26,6 +26,7 @@ import TakeSelfTest from "./components/TakeSelfTest";
 import MyStudy from "./components/MyStudy";
 import MyChoices from "./components/MyChoices";
 import MyChoicesEdit from "./components/MyChoicesEdit";
+import TertiaryEdit from "./components/MyChoicesEdit/TertiaryEdit";
 import Occupational from "./components/Occupational";
 import YoutubePage from "./components/CvCoverLetter/YoutubePage";
 import OccupationalOption from "./components/OccupationalOption";
@@ -46,6 +47,8 @@ import CounselorChoices from "./components/conselor/StudentChoices";
 import CounselorEducationalReport from "./components/conselor/StudentEducationalReport";
 import CounselorGuidanceReport from "./components/conselor/GuidanceReaport";
 import CousnelorSelf from "./components/conselor/CousnelorSelf";
+import PaymentVerification from "./components/PaymentVerification/payment-verificatin";
+import ChangePassword from "./components/conselor/ChangePassword";
 
 function App() {
   const { subscribe, loading } = useSubscribe();
@@ -227,6 +230,17 @@ function App() {
           }
         />
         <Route
+          path="/tertiary-choice-edit"
+          element={
+            <PrivateRoute>
+              <Sidebar>
+                <TertiaryEdit />
+              </Sidebar>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
           path="/occupation/:idea"
           element={
             <PrivateRoute>
@@ -244,7 +258,14 @@ function App() {
             </PublicRoute>
           }
         />
-
+        <Route
+          path="/payment-verification"
+          element={
+            <PrivateRoute>
+              <PaymentVerification />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/my-guidance-report"
           element={
@@ -266,7 +287,7 @@ function App() {
           }
         />
         <Route
-          path="/conselorDashboard"
+          path="/counsellor-Dashboard"
           element={
             <ConselorPrivateRoute>
               <ConselorDashboard />
@@ -319,6 +340,7 @@ function App() {
             path="work-diary/:id"
             element={<CounselorEducationalReport />}
           />
+          <Route path="change-password/:id" element={<ChangePassword />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -6,7 +6,7 @@ import { LeftCircleOutlined, LogoutOutlined } from "@ant-design/icons";
 const Navbar = () => {
   const navigate = useNavigate(); // React Router navigation
   const location = useLocation();
-  const isCounselorDashboard = location.pathname.includes("/conselorDashboard");
+  const isCounselorDashboard = location.pathname.includes("/counsellor-Dashboard");
   // Logout Function - Removes 'conselorToken' and navigates to home
   const handleLogout = () => {
     document.cookie =
@@ -15,7 +15,7 @@ const Navbar = () => {
     window.location.href = "/";
   };
   const handleBack = () => {
-    navigate("/conselorDashboard");
+    navigate("/counsellor-Dashboard");
   };
 
   return (

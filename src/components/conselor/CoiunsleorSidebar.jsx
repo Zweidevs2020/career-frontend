@@ -132,6 +132,12 @@ export default function CounselorSidebar() {
       path: "#",
       isDownloadCV: true, 
     },
+    {
+      icon: <ProfileSvg fill={selectedMenuItem === "ChangePassword" ? "#1476B7" : "#BDBDBD"} />,
+      label: "Account Settings",
+      path: id ? `/consellor/change-password/${id}` : "#",
+      activeState: "ChangePassword",
+    },
   ]
 
   const handleMenuClick = (item) => {
@@ -178,8 +184,8 @@ export default function CounselorSidebar() {
                   style={{ border: "none", background: "none", padding: 0 }}
                 >
                   <div
-                    className={`flex items-center p-3 hover:bg-gray-200 rounded-lg text-gray-700 ${
-                      loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                    className={`flex items-center p-3 text-gray-700 ${
+                      loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:bg-gray-200 rounded-lg"
                     }`}
                   >
                     <span
@@ -207,8 +213,8 @@ export default function CounselorSidebar() {
                 className={`relative block ${item.path === "#" ? "pointer-events-none opacity-50" : ""}`}
               >
                 <div
-                  className={`flex items-center p-3 hover:bg-gray-200 rounded-lg ${
-                    isActive ? "bg-[rgb(20,118,183)] text-white" : "text-gray-700"
+                  className={`flex items-center p-3 ${
+                    isActive ? "bg-[rgb(20,118,183)] text-white" : "hover:bg-gray-200 rounded-lg text-gray-700"
                   }`}
                 >
                   <span

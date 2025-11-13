@@ -1,16 +1,25 @@
 .educationalGuidanceMainDiv {
-  background-color: white;
+  background-color: #FAD2D2;
+  width: 100%;
+  min-height: 90vh;
+  padding: 20px;
+}
+
+.educationalGuidanceMainDivAss {
+  background-color: blue;
   width: 100%;
   min-height: 90vh;
   padding: 20px;
 }
 
 .educationalGuidanceSecondDiv {
-  background: #f8fafc;
+  background: #FAD2D2;
   width: 100%;
   min-height: 80vh;
   padding: 20px;
 }
+
+
 
 .quizMain {
 

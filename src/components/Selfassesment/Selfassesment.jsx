@@ -96,7 +96,7 @@ const Selfassesment = () => {
 
   return (
     <>
-      <div className="educationalGuidanceMainDiv">
+      <div className="selfassessment" >
         <div className="welcomeHaddingText ">Self Assessment Results</div>
 
         {loading ? (
