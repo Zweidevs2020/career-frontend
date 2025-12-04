@@ -689,13 +689,13 @@ const CaoCalculator = () => {
                                 trailColor: "#d6d6d6",
                               })}
                             >
-                              <div className="caoHeadingText">
+                              <div className="caoHeadingText" style={{fontSize: '26px'}}>
                                 {finalData.total_points
                                   ? finalData.total_points
                                   : 0}
                               </div>
                               <div className="cao2ndText">
-                                <strong>Points</strong>
+                                <strong className="font-bold text-black">Points</strong>
                               </div>
                             </CircularProgressbarWithChildren>
                           </div>
@@ -793,13 +793,13 @@ const CaoCalculator = () => {
                                 trailColor: "#d6d6d6",
                               })}
                             >
-                              <div className="caoHeadingText">
+                              <div className="caoHeadingText" style={{fontSize: '26px'}}>
                                 {finalData.total_points
                                   ? finalData.total_points
                                   : 0}
                               </div>
                               <div className="cao2ndText">
-                                <strong>Points</strong>
+                                <strong className="font-bold text-black">Points</strong>
                               </div>
                             </CircularProgressbarWithChildren>
                           </div>

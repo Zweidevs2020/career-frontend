@@ -60,19 +60,19 @@ const MyChoices = () => {
       name: "Level 5 PLC/ Further Ed  ",
     },
     {
+      id: "tertiary",
+      icon: Choice6,
+      name: "Tertiary Degrees",
+    },
+    {
       id: "apprentice",
       icon: Choice4,
-      name: "Level 5/6/7 or 8 Apprenticeships",
+      name: "Apprenticeships",
     },
     {
       id: "other",
       icon: Choice5,
       name: "Other Options",
-    },
-    {
-      id: "tertiary",
-      icon: Choice6,
-      name: "Tertiary Degrees",
     },
   ];
   useEffect(() => {
@@ -156,7 +156,7 @@ const MyChoices = () => {
     <>
       <div className="educationalGuidanceMain">
         <div className="educationalGuidanceSecond ">
-          <div className="welcomeHaddingText pb-3" >Choices</div>
+          <div className="welcomeHaddingText pb-3" >My Choices</div>
           <div
             style={{
               marginTop: 10,
@@ -171,7 +171,17 @@ const MyChoices = () => {
             ) : (
               choicesData.map((item, index) => {
                 return (
-                 <> <div className={"choicesWithoutBorder"} key={index}>
+                 <> <div className={"choicesWithoutBorder"} key={index}   onClick={() => {
+                  if (item.id === "tertiary") {
+                    navigate("/tertiary-choice-edit", {
+                      state: { dataa: item },
+                    });
+                  } else {
+                    navigate("/my-choice-edit", {
+                      state: { dataa: item },
+                    });
+                  }
+                }}>
                     <div
                       className="myChoicesRow"
                     >
@@ -183,27 +193,7 @@ const MyChoices = () => {
                         />
                         <div className="ps-4 quizHeadingStyle">{item.name}</div>
                       </div>
-                      <div className="editButtonMobileView" >
-                        <Button
-                          className="addChoicesButton me-3 "
-                          type="primary"
-                          htmlType="b"
-                          onClick={() => {
-                            if (item.id === "tertiary") {
-                              navigate("/tertiary-choice-edit", {
-                                state: { dataa: item },
-                              });
-                            } else {
-                              navigate("/my-choice-edit", {
-                                state: { dataa: item },
-                              });
-                            }
-                          }}
-                        >
-                          Edit
-                        </Button>
-                       
-                      </div>
+                    
                     </div>
                   </div></>
                 );
