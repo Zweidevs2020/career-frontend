@@ -84,13 +84,13 @@ const WorkDiary = () => {
             <div>
               <h5 className="goalHeading">My Work Diary</h5>
             </div>
-            <div className="subHead">
+            {/* <div className="subHead">
               <h className="subHeading">
                 Writing down your goal increases your chances of success. Fill
                 out this form to view any time or print and put you can see
                 daily.
               </h>
-            </div>
+            </div> */}
           </div>
           <div style={{ textAlign: "center", margin: "20px 0" }}>
             <Row gutter={[16, 16]}>
