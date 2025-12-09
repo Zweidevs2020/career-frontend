@@ -1,165 +1,206 @@
-"use client"
-
-import { useState, useEffect } from "react"
-import sideAuthImage from "../../../assets/kid-front-page (1).jpg"
-import myCareerGuidanceIcon from "../../../assets/my-guidance-logo.png"
-import usernameIcon from "../../../assets/usernameIcon.svg"
-import nameIcon from "../../../assets/nameIcon.svg"
-import lockIcon from "../../../assets/lockIcon.svg"
-import dropdownIcon from "../../../assets/dropdownIcon.svg"
-import { Link } from "react-router-dom"
-import { Form, Image, Select, Upload, message } from "antd"
-import { MyCareerGuidanceInputField, MyCareerGuidanceButton } from "../../commonComponents"
-import { API_URL } from "../../../utils/constants"
-import { getApiWithoutAuth, postApiWithoutAuth } from "../../../utils/api"
-import "./SignupStyle.css"
-import { convertBase64 } from "../../../utils/helper"
-import moment from "moment"
-import { useNavigate } from "react-router-dom"
-import { setToken } from "../../../utils/LocalStorage"
-import { useSubscribe } from "../../../context/subscribe"
+import { useState, useEffect } from "react";
+import sideAuthImage from "../../../assets/kid-front-page (1).jpg";
+import myCareerGuidanceIcon from "../../../assets/my-guidance-logo.png";
+import usernameIcon from "../../../assets/usernameIcon.svg";
+import nameIcon from "../../../assets/nameIcon.svg";
+import lockIcon from "../../../assets/lockIcon.svg";
+import dropdownIcon from "../../../assets/dropdownIcon.svg";
+import { Link } from "react-router-dom";
+import { Form, Image, Select, Upload, message, Checkbox, Modal } from "antd";
+import {
+  MyCareerGuidanceInputField,
+  MyCareerGuidanceButton,
+} from "../../commonComponents";
+import { API_URL } from "../../../utils/constants";
+import { getApiWithoutAuth, postApiWithoutAuth } from "../../../utils/api";
+import "./SignupStyle.css";
+import { convertBase64 } from "../../../utils/helper";
+import moment from "moment";
+import { useNavigate } from "react-router-dom";
+import { setToken } from "../../../utils/LocalStorage";
+import { useSubscribe } from "../../../context/subscribe";
+import TermsAndConditions from "./TermsAndConditions";
+import PrivacyPolicy from "./PrivacyPolicy";
 
 const Signup = () => {
-  const navigate = useNavigate()
-  const { setSubscribe } = useSubscribe()
-  const [loading, setLoading] = useState(false)
-  const [data, setData] = useState({})
-  const [schools, setSchools] = useState([])
-  const [newSchools, setNewSchools] = useState("")
-  const [dobSave, setDobSave] = useState({})
-  const [number, setPhoneNumber] = useState("")
-  const [open, setOpen] = useState(false)
-  const [isAddSchoolValid, setIsAddSchoolValid] = useState(false)
+  const navigate = useNavigate();
+  const { setSubscribe } = useSubscribe();
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState({});
+  const [schools, setSchools] = useState([]);
+  const [newSchools, setNewSchools] = useState("");
+  const [dobSave, setDobSave] = useState({});
+  const [number, setPhoneNumber] = useState("");
+  const [open, setOpen] = useState(false);
+  const [isAddSchoolValid, setIsAddSchoolValid] = useState(false);
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalContent, setModalContent] = useState("");
 
-  const currentYear = moment().year()
+  const showModal = (content) => {
+    setModalContent(content);
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const currentYear = moment().year();
 
   const disabledDate = (current) => {
-    return current.year() > currentYear
-  }
+    return current.year() > currentYear;
+  };
 
   const onChangeYearInternal = (date) => {
-    onChangeYear(date?.year())
-  }
+    onChangeYear(date?.year());
+  };
 
   const onChangeHandle = (e) => {
-    const { name, value } = e.target
-    setData({ ...data, [name]: value })
-  }
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
 
   const handlerSaveSubmit = async () => {
-    setLoading(true)
-    
+    setLoading(true);
+
     try {
       const response = await postApiWithoutAuth(API_URL.SINGUPUSER, {
         ...data,
         dob: `${dobSave.year}-${dobSave.month}-${dobSave.day}`,
         email: data.email.toLowerCase(),
-      })
+      });
 
       if (response.status === 200) {
         message.success(
-          "Congratulations! You've successfully signed up. You're now ready to log in and explore our platform. Welcome aboard!",
-        )
-        
-        const isSubscribed = response.data.is_subscribed || false
-        setSubscribe(isSubscribed)
-        setToken(response.data.access_token)
+          "Congratulations! You've successfully signed up. You're now ready to log in and explore our platform. Welcome aboard!"
+        );
+
+        const isSubscribed = response.data.is_subscribed || false;
+        setSubscribe(isSubscribed);
+        setToken(response.data.access_token);
         if (isSubscribed) {
-          navigate("/dashboard")
+          navigate("/dashboard");
         } else {
-          navigate("/checkout")
+          navigate("/checkout");
         }
-        
       } else {
-        setLoading(false)
-        message.error(response.data.message)
+        setLoading(false);
+        message.error(response.data.message);
       }
     } catch (error) {
-      setLoading(false)
-      message.error("Something went wrong. Please try again.")
+      setLoading(false);
+      message.error("Something went wrong. Please try again.");
     }
-  }
+  };
 
   const onChangeUpload = async (e) => {
     if (e.fileList.length > 0) {
-      const base64 = await convertBase64(e.file)
-      setData({ ...data, profile_image: base64 })
+      const base64 = await convertBase64(e.file);
+      setData({ ...data, profile_image: base64 });
     }
-  }
+  };
 
   // Updated handleSelect function to send pk instead of school name
   const handleSelect = (schoolValue) => {
     // schoolValue is already the pk (primary key) from the schools array
-    setData({ ...data, school: schoolValue })
-  }
+    setData({ ...data, school: schoolValue });
+  };
 
   const handleSelectDay = (d) => {
-    setDobSave({ ...dobSave, day: d })
-  }
+    setDobSave({ ...dobSave, day: d });
+  };
 
-  useEffect(() => {}, [dobSave])
+  useEffect(() => {}, [dobSave]);
 
   const onChangeYear = (date) => {
-    setDobSave({ ...dobSave, year: date })
-  }
+    setDobSave({ ...dobSave, year: date });
+  };
 
   useEffect(() => {
-    getSchools()
-  }, [])
+    getSchools();
+  }, []);
 
   const handleSchool = (e) => {
-    const { value } = e.target
-    setNewSchools(value)
-    setIsAddSchoolValid(!!value.trim())
-  }
+    const { value } = e.target;
+    setNewSchools(value);
+    setIsAddSchoolValid(!!value.trim());
+  };
 
   const getSchools = async () => {
     try {
-      const response = await getApiWithoutAuth(API_URL.GETUSERSCHOOL)
+      const response = await getApiWithoutAuth(API_URL.GETUSERSCHOOL);
       if (response?.data?.success) {
         const school = response.data.data?.map((item) => {
           return {
             value: item.pk, // This is the primary key
             label: item.school,
             county: item.county,
-          }
-        })
-        setSchools(school)
-        setLoading(false)
+          };
+        });
+        setSchools(school);
+        setLoading(false);
       } else {
-        setLoading(false)
+        setLoading(false);
       }
     } catch (error) {
-      setLoading(false)
-      console.error("Error fetching schools:", error)
+      setLoading(false);
+      console.error("Error fetching schools:", error);
     }
-  }
+  };
 
   const handleSelectMonth = (m) => {
-    setDobSave({ ...dobSave, month: m })
+    setDobSave({ ...dobSave, month: m });
     if (dobSave.day) {
       const isValidDayForMonth =
         (m === "02" && dobSave.day >= "01" && dobSave.day <= "28") ||
-        (["04", "06", "09", "11"].includes(m) && dobSave.day >= "01" && dobSave.day <= "30") ||
-        (["01", "03", "05", "07", "08", "10", "12"].includes(m) && dobSave.day >= "01" && dobSave.day <= "31")
+        (["04", "06", "09", "11"].includes(m) &&
+          dobSave.day >= "01" &&
+          dobSave.day <= "30") ||
+        ([
+          "01",
+          "03",
+          "05",
+          "07",
+          "08",
+          "10",
+          "12",
+        ].includes(m) &&
+          dobSave.day >= "01" &&
+          dobSave.day <= "31");
 
       if (!isValidDayForMonth) {
-        setDobSave((prevDobSave) => ({ ...prevDobSave, day: "" }))
+        setDobSave((prevDobSave) => ({ ...prevDobSave, day: "" }));
       }
     }
-  }
+  };
 
   return (
     <div className="mainDiv">
       <div className="leftDiv">
-        <Image preview={false} src={myCareerGuidanceIcon || "/placeholder.svg"} width={207} />
-        <Form onFinish={handlerSaveSubmit} className="formStyle" autoComplete={false}>
+        <Image
+          preview={false}
+          src={myCareerGuidanceIcon || "/placeholder.svg"}
+          width={207}
+        />
+        <Form
+          onFinish={handlerSaveSubmit}
+          className="formStyle"
+          autoComplete={false}
+        >
           <div className="welcomeHaddingText">Hello</div>
           <div className="textStyle18" style={{ marginBottom: 15 }}>
             Signup to Get Started
           </div>
 
-          <Form.Item name="full_name" rules={[{ required: true, message: "Please input your Name!" }]}>
+          <Form.Item
+            name="full_name"
+            rules={[{ required: true, message: "Please input your Name!" }]}
+          >
             <MyCareerGuidanceInputField
               placeholder="Full Name"
               prefix={nameIcon}
@@ -170,7 +211,12 @@ const Signup = () => {
             />
           </Form.Item>
 
-          <Form.Item name="email" rules={[{ required: true, message: "Please input your Email Address!" }]}>
+          <Form.Item
+            name="email"
+            rules={[
+              { required: true, message: "Please input your Email Address!" },
+            ]}
+          >
             <MyCareerGuidanceInputField
               placeholder="Email Address"
               prefix={usernameIcon}
@@ -186,7 +232,9 @@ const Signup = () => {
             rules={[
               {
                 required: true,
-                pattern: new RegExp(/^(?=.*\d)(?=.*?[@$!%*#?&^_.,-])(?=.*[a-z])(?=.*[A-Z]).{8,}$/),
+                pattern: new RegExp(
+                  /^(?=.*\d)(?=.*?[@$!%*#?&^_.,-])(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+                ),
                 message:
                   "Please ensure your password contains at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character.",
               },
@@ -202,14 +250,19 @@ const Signup = () => {
             />
           </Form.Item>
 
-          <Form.Item rules={[{ required: true, message: "Please select a school!" }]} style={{ marginBottom: "12px" }}>
+          <Form.Item
+            rules={[{ required: true, message: "Please select a school!" }]}
+            style={{ marginBottom: "12px" }}
+          >
             <Select
               showSearch
               placeholder="School"
               name="school"
               value={data?.school}
               optionFilterProp="children"
-              filterOption={(input, option) => option.children.toLowerCase().startsWith(input.toLowerCase())}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().startsWith(input.toLowerCase())
+              }
               className="inputSelectFieldStyle"
               onChange={handleSelect}
               bordered={false}
@@ -259,15 +312,43 @@ const Signup = () => {
             </Upload>
           </Form.Item>
 
+          <Form.Item
+            name="agreement"
+            valuePropName="checked"
+            rules={[
+              {
+                validator: (_, value) =>
+                  value
+                    ? Promise.resolve()
+                    : Promise.reject(
+                        new Error("Please accept the terms and conditions")
+                      ),
+              },
+            ]}
+          >
+            <Checkbox
+              checked={agreeToTerms}
+              onChange={(e) => setAgreeToTerms(e.target.checked)}
+            >
+              I agree to the{" "}
+              <a onClick={() => showModal("terms")} className="font-bold text-black ">Terms & Conditions</a> and{" "}
+              <a onClick={() => showModal("privacy")}className="font-bold text-black ">Privacy Policy</a>.
+            </Checkbox>
+          </Form.Item>
+
           <MyCareerGuidanceButton
             label="Sign Up"
             className="signInButton"
             type="primary"
             htmlType="submit"
             loading={loading}
+            disabled={!agreeToTerms}
           />
 
-          <div className="textStyle16" style={{ display: "flex", justifyContent: "center" }}>
+          <div
+            className="textStyle16"
+            style={{ display: "flex", justifyContent: "center" }}
+          >
             Already have an account?&nbsp;&nbsp;
             <Link to="/" className="linkStyle">
               Login
@@ -290,8 +371,34 @@ const Signup = () => {
           alt="img"
         />
       </div>
+      <Modal
+        title={
+          modalContent === "terms"
+            ? "Terms & Conditions"
+            : "Privacy Policy"
+        }
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={[
+          <MyCareerGuidanceButton
+            key="back"
+            onClick={handleCancel}
+            label="Close"
+            className="ant-btn ant-btn-primary"
+            type="button"
+          />,
+        ]}
+        className="terms-modal"
+      >
+        {modalContent === "terms" ? (
+          <TermsAndConditions />
+        ) : (
+          <PrivacyPolicy />
+        )}
+      </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default Signup
+export default Signup;
