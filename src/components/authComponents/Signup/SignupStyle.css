@@ -64,8 +64,10 @@
 }
 
 .ant-modal-content{
-  width: 430px;
+  width: 50vw;
   margin: auto;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 
@@ -111,9 +113,49 @@ button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary.eduButtonBack
   width:55%
 }
 
+.ant-checkbox-wrapper {
+  margin-bottom: 15px;
+}
+
+.terms-modal .ant-modal-content {
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e8e8e8;
+}
+
+.terms-modal .ant-modal-header {
+  background-color: #f0f2f5;
+  border-bottom: 1px solid #e8e8e8;
+  border-radius: 15px 15px 0 0;
+  padding: 20px 24px;
+}
+
+.terms-modal .ant-modal-title {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  text-align: center;
+  color: #333;
+}
+
+.terms-modal .ant-modal-body {
+  padding: 24px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.terms-modal .ant-modal-footer {
+  padding: 15px 24px;
+  border-top: 1px solid #e8e8e8;
+  text-align: center;
+}
+
 @media only screen and (min-width: 0px) and (max-width: 650px) {
   .signInButtonStyle {
     width:100%;
+  }
+  .ant-modal-content {
+    width: 90vw;
   }
 }
 
@@ -135,5 +177,9 @@ button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary.eduButtonBack
 @media only screen and (min-width: 1401px) {
   .signInButtonStyle {
     width:100%;
+  }
+  .terms-modal {
+    max-width: 800px;
+    width: 50vw;
   }
 }
