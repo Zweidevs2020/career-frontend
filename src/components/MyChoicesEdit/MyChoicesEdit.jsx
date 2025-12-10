@@ -62,7 +62,7 @@ const MyChoicesEdit = () => {
   const [previousUrl, setPreviousUrl] = useState(null);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const currentUrl = location.pathname;
-  const { dataa } = location.state || {};
+  const { dataa, isApprentice } = location.state || {};
   const [loadingFirst, setLoadingFirst] = useState(false);
   const [columns, setColums] = useState([]);
   const [showRows, setShowRows] = useState(null);
@@ -93,7 +93,7 @@ const MyChoicesEdit = () => {
     };
   }, []);
 
-  const getChoiceRecord = async (runLoading =  true) => {
+  const getChoiceRecord = async (runLoading = true) => {
     if (runLoading) {
       setLoadingFirst(true);
     }
@@ -101,13 +101,16 @@ const MyChoicesEdit = () => {
       `choices/column-names/?choice=${dataa.id}`
     );
     if (response.data.status === 200) {
-      const columnsData = response.data.data.data;
-      const columnsWithoutOrderNumber = columnsData.slice(
-        0,
-        columnsData.length - 1
-      );
-
-      setColums(columnsWithoutOrderNumber);
+      if (isApprentice) {
+        setColums(["title", "college", "level", "location", "course_information"]);
+      } else {
+        const columnsData = response.data.data.data;
+        const columnsWithoutOrderNumber = columnsData.slice(
+          0,
+          columnsData.length - 1
+        );
+        setColums(columnsWithoutOrderNumber);
+      }
       setShowRows(response.data.data.rows);
       setLoadingFirst(false);
     } else {
@@ -119,8 +122,18 @@ const MyChoicesEdit = () => {
     const response = await getApiWithAuth(`choices/${dataa.id}/`);
     if (response.data.status === 200) {
       setOldData(response.data.data.user_data);
-      setDropDownOptions(response.data.data.level_data);
-
+      if (isApprentice) {
+        const apprenticeData = response.data.data.level_data;
+        const transformedData = apprenticeData.map((item) => ({
+          ...item,
+          title: item.name,
+          college: item.provider,
+          code: item.id,
+        }));
+        setDropDownOptions(transformedData);
+      } else {
+        setDropDownOptions(response.data.data.level_data);
+      }
       setLoadingFirst(false);
     } else {
       setLoadingFirst(true);
@@ -130,8 +143,18 @@ const MyChoicesEdit = () => {
   useEffect(() => {
     if (showRowsData !== null) {
       if (oldData !== null) {
-        if (oldData.length > 0) {
-          let updateData = [...oldData, ...showRowsData.slice(oldData.length)];
+        let processedOldData = oldData;
+        if (isApprentice && oldData.length > 0) {
+            processedOldData = oldData.map(item => ({
+                ...item,
+                title: item.name,
+                college: item.provider,
+                code: item.id
+            }));
+        }
+
+        if (processedOldData.length > 0) {
+          let updateData = [...processedOldData, ...showRowsData.slice(processedOldData.length)];
 
           setData(
             updateData.map((item, index) => ({
@@ -318,13 +341,16 @@ const MyChoicesEdit = () => {
       const [title] = record.title.split(",");
       record.title = title;
     }
-    if (record?.college) {
-      const [college] = record.college.split(",");
-      record.college = college;
+    // Add transformation for apprentice data
+    if (isApprentice) {
+      record.name = record.title;
+      record.provider = record.college;
+      // Optionally delete transformed fields if backend strictly doesn't accept them
+      // delete record.title;
+      // delete record.college;
     }
-
     const respose = await patchApiWithAuth(
-      `choices/update-${dataa.id}/${record.id}/`,
+      `choices/${isApprentice ? 'apprentice' : `update-${dataa.id}`}/${record.id}/`,
       record
     );
 
@@ -345,8 +371,16 @@ const MyChoicesEdit = () => {
         break;
       }
     }
+    // Add transformation for apprentice data
+    if (isApprentice) {
+      record.name = record.title;
+      record.provider = record.college;
+      // Optionally delete transformed fields if backend strictly doesn't accept them
+      // delete record.title;
+      // delete record.college;
+    }
     const respose = await patchApiWithAuth(
-      `choices/update-${dataa.id}/${record.id}/`,
+      `choices/${isApprentice ? 'apprentice' : `update-${dataa.id}`}/${record.id}/`,
       record
     );
 
@@ -362,10 +396,10 @@ const MyChoicesEdit = () => {
   };
   const handleDelete = async (item) => {
     const respose = await deleteApiWithAuth(
-      `choices/delete-${dataa.id}/${item.id}/`
+      `choices/${isApprentice ? 'apprentice' : `delete-${dataa.id}`}/${item.id}/`
     );
 
-    if (respose.data.status === 204) {
+    if (respose.data.status === 204 || respose.data.status === 200) {
       message.success("Row delete succesfully");
       getChoiceRecord();
       getTableRecord();
@@ -397,6 +431,10 @@ const MyChoicesEdit = () => {
         finalRecord.college = college;
       }
 
+      if (isApprentice) {
+        finalRecord.name = finalRecord.title;
+        finalRecord.provider = finalRecord.college;
+      }
       const response = await postApiWithAuth(
         `choices/${dataa.id}/`,
         finalRecord

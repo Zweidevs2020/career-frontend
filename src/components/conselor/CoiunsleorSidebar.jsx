@@ -59,7 +59,7 @@ export default function CounselorSidebar() {
         link.href = url
 
         const contentDisposition = response.headers["content-disposition"]
-        let fileName = "student_cv.pdf" // Default filename
+        let fileName = "student_cv.docx" // Default filename
         if (contentDisposition) {
           const match = contentDisposition.match(/filename="(.+)"/)
           if (match) fileName = match[1]
