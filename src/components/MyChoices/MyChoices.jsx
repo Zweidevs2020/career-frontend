@@ -176,6 +176,10 @@ const MyChoices = () => {
                     navigate("/tertiary-choice-edit", {
                       state: { dataa: item },
                     });
+                  } else if (item.id === "apprentice") {
+                    navigate("/my-choice-edit", {
+                      state: { dataa: item, isApprentice: true },
+                    });
                   } else {
                     navigate("/my-choice-edit", {
                       state: { dataa: item },
