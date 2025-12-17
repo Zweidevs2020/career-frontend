@@ -120,7 +120,7 @@ const ConselorDashboard = () => {
 
     try {
       const response = await deleteMultipleStudents(studentsToDelete);
-      if (response?.status === 200) {
+      if (response?.status === 204 || response?.status === 200) {
         message.success("Students deleted successfully.");
         setSelectedStudentIds([]); // Clear selection
         setStudentsToDelete([]); // Clear students to delete
