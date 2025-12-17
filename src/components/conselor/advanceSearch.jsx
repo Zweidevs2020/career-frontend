@@ -128,7 +128,18 @@ const Spinner = () => (
   </div>
 );
 
-const AdvancedTable = ({ initialData, columns, onViewDetails, cvDetails }) => {
+const AdvancedTable = ({
+  initialData,
+  columns,
+  onViewDetails,
+  cvDetails,
+  onToggleStudentSelection,
+  onSelectAllStudents,
+  selectedStudentIds,
+  onDeleteSelected,
+  selectedCount,
+  onDeleteSingleStudent, // New prop
+}) => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -180,26 +191,42 @@ const AdvancedTable = ({ initialData, columns, onViewDetails, cvDetails }) => {
           marginBottom: "1rem",
           display: "flex",
           justifyContent: "space-between",
+          alignItems: "center", // Align items vertically in the middle
         }}
       >
         <h3 className="md:text-xl sm:text-sm font-semibold mb-6 text-black text-start">
           Students List
         </h3>
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="md:w-[14.75rem] sm:w-full"
-          style={{
-            height: "2.4375rem",
-            padding: "0.5rem",
-            border: "1px solid #d1d5db",
-            borderRadius: "0.25rem",
-            transition: "all 0.3s",
-            color: "black",
-          }}
-        />
+        <div className="flex items-center space-x-4">
+          {" "}
+          {/* Container for search and delete button */}
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="md:w-[14.75rem] sm:w-full"
+            style={{
+              height: "2.4375rem",
+              padding: "0.5rem",
+              border: "1px solid #d1d5db",
+              borderRadius: "0.25rem",
+              transition: "all 0.3s",
+              color: "black",
+            }}
+          />
+          <button
+            onClick={onDeleteSelected}
+            disabled={selectedCount === 0}
+            className={`px-4 py-2 rounded ${
+              selectedCount === 0
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-red-500 text-white hover:bg-red-600"
+            }`}
+          >
+            Delete Selected ({selectedCount})
+          </button>
+        </div>
       </div>
       <Table
         columns={columns}
@@ -207,6 +234,10 @@ const AdvancedTable = ({ initialData, columns, onViewDetails, cvDetails }) => {
         renderCell={(key, value, row) => highlightText(value)}
         onViewDetails={onViewDetails}
         cvDetails={cvDetails}
+        onToggleStudentSelection={onToggleStudentSelection}
+        onSelectAllStudents={onSelectAllStudents}
+        selectedStudentIds={selectedStudentIds}
+        onDeleteSingleStudent={onDeleteSingleStudent} // Pass down the new prop
       />
     </div>
   );
