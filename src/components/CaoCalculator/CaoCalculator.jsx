@@ -285,7 +285,7 @@ const CAOCalculator = ({ closePopup }) => {
       },
     },
     {
-      title: "Expected_Grades",
+      title: "Expected Grades",
       dataIndex: "name",
       align: "center",
       render: (_, record) => (
@@ -308,7 +308,7 @@ const CAOCalculator = ({ closePopup }) => {
       ),
     },
     {
-      title: "",
+      title: "Action",
       key: "action",
       render: (text, record) => (
         <Space size="middle">
