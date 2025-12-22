@@ -102,6 +102,39 @@ export const postApiWithoutAuth = async (url, body) => {
   }
 };
 
+
+const getCookie = (name) => {
+  const cookies = document.cookie.split("; ");
+  for (const cookie of cookies) {
+    const [key, value] = cookie.split("=");
+    if (key === name) {
+      return value;
+    }
+  }
+  return null;
+};
+export const deleteMultipleStudents = async (student_ids) => {
+  const token = getCookie("conselorToken");
+  try {
+    const res = await baseInstance.post(
+      `user/counselor/delete-multiple/`,
+      { student_ids: student_ids },
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
+    );
+    return {
+      data: res.data,
+      status: res.status,
+    };
+  } catch (err) {
+    return err.response;
+  }
+};
+
+
 export const postFormDataAPI = async (url, body) => {
   baseInstance.defaults.headers.common["Content-Type"] = "multipart/form-data";
   await setApiHeader();
