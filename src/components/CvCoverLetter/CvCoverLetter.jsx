@@ -160,7 +160,7 @@ const CvCoverLetter = () => {
       <div className="h-[100%] w-[100%]" style={{backgroundColor: "#FCF3DC"}}>
         <div className="h-[100%] pt-5 pb-5 ml-9 mr-10 flex flex-wrap justify-between items-center  sm:flex-col sm:items-start">
           <div>
-            <h1 className="font-bold text-[24px] text-[#474749]">CV</h1>
+            <h1 className="font-bold text-[24px] text-[#474749]">My CV</h1>
           </div>
           <div
             style={{ display: "flex", justifyContent: "flex-start" }}
