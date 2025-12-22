@@ -1,69 +1,55 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Button, Select, Table, Space, message } from "antd";
-import add from "../../assets/add.svg";
-import {
-  buildStyles,
-  CircularProgressbarWithChildren,
-} from "react-circular-progressbar";
-import { MyCareerGuidanceButton } from "../commonComponents";
-import "react-circular-progressbar/dist/styles.css";
-import "./CaoCalculator.css";
-import { Spin } from "antd";
-import {
-  deleteApiWithAuth,
-  getApiWithAuth,
-  postApiWithAuth,
-} from "../../utils/api";
-import { API_URL } from "../../utils/constants";
-import {
-  PlusCircleFilled,
-  PlusCircleOutlined,
-  PlusOutlined,
-  DeleteOutlined,
-  ClearOutlined,
-  RollbackOutlined,
-} from "@ant-design/icons";
-import Column from "antd/es/table/Column";
+"use client"
 
-const { Option } = Select;
+import { useState, useEffect, useRef } from "react"
+import { Select, Table, Space } from "antd"
+import { buildStyles, CircularProgressbarWithChildren } from "react-circular-progressbar"
+import { MyCareerGuidanceButton } from "../commonComponents"
+import "react-circular-progressbar/dist/styles.css"
+import "./CaoCalculator.css"
+import { Spin } from "antd"
+import { deleteApiWithAuth, getApiWithAuth, postApiWithAuth } from "../../utils/api"
+import { API_URL } from "../../utils/constants"
+import { PlusOutlined, DeleteOutlined, LoadingOutlined } from "@ant-design/icons"
 
-const CaoCalculator = () => {
-  const refDiv = useRef();
-  const [countFields, setCountFields] = useState(0);
-  const [firstDropdownValue, setFirstDropdownValue] = useState("");
-  const [secondDropdownValue, setSecondDropdownValue] = useState("");
-  const [thirdDropdownValue, setThirdDropdownValue] = useState("");
-  const [loadingFirst, setLoadingFirst] = useState(false);
-  const [loadingThird, setLoadingThird] = useState(false);
-  const [loadingSub, setLoadingSub] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
-  const [gradeId, setGradeId] = useState([]);
-  const [gradeIdApi, setGradeIdApi] = useState([]);
-  const [gradeId1, setGradeId1] = useState([{}, {}]);
-  const [grades, setGrades] = useState([]);
-  const [subjects, setSubjects] = useState("");
-  const [level, setLevel] = useState("");
-  const [grade, setGrade] = useState("");
-  const [thirdDropdownOptions, setThirdDropdownOptions] = useState([]);
-  const [tableKey, setTableKey] = useState(0);
-  const [btnDisabled, setBtnDisabled] = useState(true);
-  const [currentState, setCurrectState] = useState(-1);
-  const [selectedSubjects, setSelectedSubjects] = useState({});
-  const [subjectErrors, setSubjectErrors] = useState({});
-  const [availableSubjects, setAvailableSubjects] = useState([]);
-  const [dataId, setDataId] = useState(null);
-  const [dataLength, setDataLength] = useState(0);
+const { Option } = Select
+
+const CAOCalculator = ({ closePopup }) => {
+  const refDiv = useRef()
+  const [countFields, setCountFields] = useState(0)
+  const [firstDropdownValue, setFirstDropdownValue] = useState("")
+  const [secondDropdownValue, setSecondDropdownValue] = useState("")
+  const [thirdDropdownValue, setThirdDropdownValue] = useState("")
+  const [loadingFirst, setLoadingFirst] = useState(false)
+  const [loadingThird, setLoadingThird] = useState(false)
+  const [loadingSub, setLoadingSub] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [data, setData] = useState([])
+  const [gradeId, setGradeId] = useState([])
+  const [gradeIdApi, setGradeIdApi] = useState([])
+  const [gradeId1, setGradeId1] = useState([{}, {}])
+  const [grades, setGrades] = useState([])
+  const [subjects, setSubjects] = useState("")
+  const [level, setLevel] = useState("")
+  const [grade, setGrade] = useState("")
+  const [thirdDropdownOptions, setThirdDropdownOptions] = useState([])
+  const [tableKey, setTableKey] = useState(0)
+  const [btnDisabled, setBtnDisabled] = useState(true)
+  const [currentState, setCurrectState] = useState(-1)
+  const [selectedSubjects, setSelectedSubjects] = useState({})
+  const [subjectErrors, setSubjectErrors] = useState({})
+  const [availableSubjects, setAvailableSubjects] = useState([])
+  const [dataId, setDataId] = useState(null)
+  const [dataLength, setDataLength] = useState(0)
   const [finalData, setFinalData] = useState({
     points: 0,
     bonus_points: 0,
     total_points: 0,
-  });
+  })
 
   const [screenSize, setScreenSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
-  });
+  })
 
   const [tableData, setTableData] = useState([
     {
@@ -102,72 +88,71 @@ const CaoCalculator = () => {
       level: null,
       grades: null,
     },
-  ]);
+  ])
+
+  const [deletingRowNo, setDeletingRowNo] = useState(null)
 
   useEffect(() => {
-    const idExistsLength = tableData.filter(
-      (item) => item.id !== undefined
-    ).length;
-    setDataLength(idExistsLength);
-  }, [tableData]);
+    const idExistsLength = tableData.filter((item) => item.id !== undefined).length
+    setDataLength(idExistsLength)
+  }, [tableData])
 
   useEffect(() => {
     const handleResize = () => {
-      setScreenSize({ width: window.innerWidth, height: window.innerHeight });
-    };
+      setScreenSize({ width: window.innerWidth, height: window.innerHeight })
+    }
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize)
 
     return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
 
   const handleAdd = () => {
-    setLoadingSub(false);
-    setCountFields(countFields + 1);
+    setLoadingSub(false)
+    setCountFields(countFields + 1)
     const newData = {
       No: tableData?.length,
       name: null,
       level: null,
       grades: null,
-    };
+    }
 
-    setTableData([...tableData, newData]);
-  };
+    setTableData([...tableData, newData])
+  }
 
   useEffect(() => {
     if (firstDropdownValue !== "" && secondDropdownValue !== "") {
     }
-  }, [firstDropdownValue, secondDropdownValue]);
+  }, [firstDropdownValue, secondDropdownValue])
 
   const handleThridDropDownApi = async (index) => {
-    setLoadingThird(true);
-    setCurrectState(index);
-    setThirdDropdownOptions([]);
-    const encodedLevel = encodeURIComponent(tableData[index].name);
+    setLoadingThird(true)
+    setCurrectState(index)
+    setThirdDropdownOptions([])
+    const encodedLevel = encodeURIComponent(tableData[index].name)
     const response = await getApiWithAuth(
-      `calculator/check-level-grade/?level=${tableData[index].level}&subject=${encodedLevel}`
-    );
+      `calculator/check-level-grade/?level=${tableData[index].level}&subject=${encodedLevel}`,
+    )
     if (response?.data?.status === 200) {
-      setLoadingThird(false);
-      setCurrectState(-1);
-      setGrades(response.data.data);
+      setLoadingThird(false)
+      setCurrectState(-1)
+      setGrades(response.data.data)
       if (response?.data?.data.length > 0) {
-        const options = response?.data?.data?.map((e) => ({ value: e.grade }));
-        setThirdDropdownOptions(options);
-
+        const options = response?.data?.data?.map((e) => ({ value: e.grade }))
+        setThirdDropdownOptions(options)
       }
     }
-  };
+  }
 
   const handleFirstDropdownChange = (value, record) => {
-    const isDuplicate = tableData.some((item) => item.name === value);
+    const isDuplicate = tableData.some((item) => item.name === value)
 
     if (isDuplicate) {
-      const errorMessages = { ...subjectErrors };
-      errorMessages[record.No] = "Subject already selected";
-      setSubjectErrors(errorMessages);
+      const errorMessages = { ...subjectErrors }
+      errorMessages[record.No] = "Subject already selected"
+      setSubjectErrors(errorMessages)
       const tempData = tableData.map((item) =>
         item.No === record.No
           ? {
@@ -176,20 +161,18 @@ const CaoCalculator = () => {
               level: null,
               grades: null,
             }
-          : item
-      );
+          : item,
+      )
 
-      setTableData(tempData);
+      setTableData(tempData)
 
-      return;
+      return
     } else if (!isDuplicate) {
-      const errorMessages = { ...subjectErrors };
-      delete errorMessages[record.No];
-      setSubjectErrors(errorMessages);
+      const errorMessages = { ...subjectErrors }
+      delete errorMessages[record.No]
+      setSubjectErrors(errorMessages)
     }
-    setAvailableSubjects((prevSubjects) =>
-      prevSubjects.filter((subject) => subject !== value)
-    );
+    setAvailableSubjects((prevSubjects) => prevSubjects.filter((subject) => subject !== value))
 
     const tempData = tableData.map((item) =>
       item.No === record.No
@@ -199,11 +182,11 @@ const CaoCalculator = () => {
             level: null,
             grades: null,
           }
-        : item
-    );
+        : item,
+    )
 
-    setTableData(tempData);
-  };
+    setTableData(tempData)
+  }
 
   const handleSecondDropdownChange = (value, record) => {
     const tempData = tableData?.map((item, index) => {
@@ -212,13 +195,13 @@ const CaoCalculator = () => {
           ...item,
           level: value,
           grades: null,
-        };
+        }
       } else {
-        return item;
+        return item
       }
-    });
-    setTableData(tempData);
-  };
+    })
+    setTableData(tempData)
+  }
 
   const handle = (value, record) => {
     const tempData = tableData?.map((item, index) => {
@@ -226,25 +209,25 @@ const CaoCalculator = () => {
         return {
           ...item,
           grades: value,
-        };
+        }
       } else {
-        return item;
+        return item
       }
-    });
+    })
 
-    setTableData(tempData);
-    const gradeid = grades?.filter((item) => item?.grade === value);
+    setTableData(tempData)
+    const gradeid = grades?.filter((item) => item?.grade === value)
 
     setGradeId((prevState) => {
-      const newArray = [...prevState];
+      const newArray = [...prevState]
 
-      newArray[record.No] = { grade: gradeid[0]?.pk };
+      newArray[record.No] = { grade: gradeid[0]?.pk }
 
-      return newArray;
-    });
-  };
+      return newArray
+    })
+  }
 
-  let isDeleteButtonDisabled = dataLength < 6;
+  const isDeleteButtonDisabled = dataLength < 6
   const columns = [
     {
       title: "Subject",
@@ -260,9 +243,7 @@ const CaoCalculator = () => {
             style={{ cursor: "pointer" }}
             loading={loadingFirst}
             showSearch
-            filterOption={(input, option) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
+            filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
           >
             {availableSubjects.map((item) => (
               <Option key={item} value={item}>
@@ -271,11 +252,7 @@ const CaoCalculator = () => {
             ))}
           </Select>
           {subjectErrors[record?.No] && (
-            <div
-              style={{ color: "red", fontSize: "12px", marginBottom: "-1rem" }}
-            >
-              {subjectErrors[record?.No]}
-            </div>
+            <div style={{ color: "red", fontSize: "12px", marginBottom: "-1rem" }}>{subjectErrors[record?.No]}</div>
           )}
         </>
       ),
@@ -298,16 +275,13 @@ const CaoCalculator = () => {
                 data
                   .find((item) => item.name == tableData[record?.No]?.name)
                   ?.level?.map((level) => (
-                    <Option
-                      key={level?.level__id}
-                      value={level?.level__subjectlevel}
-                    >
+                    <Option key={level?.level__id} value={level?.level__subjectlevel}>
                       {level?.level__subjectlevel}
                     </Option>
                   ))}
             </Select>
           </>
-        );
+        )
       },
     },
     {
@@ -334,93 +308,122 @@ const CaoCalculator = () => {
       ),
     },
     {
-      title: "Action",
+      title: "",
       key: "action",
       render: (text, record) => (
         <Space size="middle">
-          
-          <DeleteOutlined
-            style={{
-              color: "red",
-            }}
-            onClick={() => handleDelete(record.No)}
-          />
+          {deletingRowNo === record.No ? (
+            <LoadingOutlined style={{ color: "red" }} spin />
+          ) : (
+            <DeleteOutlined
+              style={{
+                color: deletingRowNo !== null ? "#ccc" : "red",
+                cursor: deletingRowNo !== null ? "not-allowed" : "pointer",
+              }}
+              onClick={() => {
+                if (deletingRowNo === null) {
+                  handleDelete(record.No)
+                }
+              }}
+            />
+          )}
         </Space>
       ),
     },
-  ];
+  ]
 
   const handleDelete = async (id) => {
-    const idExistsLength = tableData.filter(
-      (item) => item.id !== undefined
-    ).length;
+    const rowToDelete = tableData.find((item) => item.No === id)
 
-    const filteredTable = tableData.filter((item) => item.No == id);
-    if (
-      filteredTable[0]?.name == null &&
-      filteredTable[0]?.grades == null &&
-      filteredTable[0]?.level === null
-    ) {
-      if (tableData?.length > 6) {
-        const filteredTableData = tableData.filter((item) => item.No !== id);
-        const saveData = filteredTableData.map((item, index) => {
-          return { ...item, No: index };
-        });
-        setTableData(saveData);
+    if (!rowToDelete) return
+
+    // Set the deleting state to show loader
+    setDeletingRowNo(id)
+
+    // Case 1: Row is completely empty - just remove it if we have more than 6 rows
+    if (rowToDelete.name == null && rowToDelete.grades == null && rowToDelete.level === null) {
+      if (tableData.length > 6) {
+        const filteredTableData = tableData.filter((item) => item.No !== id)
+        const saveData = filteredTableData.map((item, index) => ({
+          ...item,
+          No: index,
+        }))
+        setTableData(saveData)
+
+        // Also update gradeId array to match new indices
+        const newGradeId = []
+        saveData.forEach((item, index) => {
+          if (gradeId[item.No]?.grade) {
+            newGradeId[index] = gradeId[item.No]
+          }
+        })
+        setGradeId(newGradeId)
       }
-    } else {
-      const targetIndex = tableData.findIndex((item) => item.No === id);
-      const deletedRowData = tableData[targetIndex];
+      setDeletingRowNo(null)
+      return
+    }
 
-      const body = {
-        id: dataId,
-        subjectId: deletedRowData.id,
-      };
-      if (deletedRowData.id) {
-        const response = await postApiWithAuth(
-          `calculator/remove-subject-grade/`,
-          body
-        );
+    // Case 2: Row has data and is saved to server (has id) - delete from API
+    if (rowToDelete.id && dataId) {
+      try {
+        const body = {
+          id: dataId,
+          subjectId: rowToDelete.id,
+        }
+
+        const response = await postApiWithAuth(`calculator/remove-subject-grade/`, body)
 
         if (response?.data?.status === 200) {
-          getCurrectSelectedValues();
+          await getCurrectSelectedValues()
+          await getFiltersData()
         }
-      } else {
-        let data = tableData.map((item) => {
-          if (item.No === targetIndex) {
-            return { No: targetIndex, name: null, level: null, grades: null };
-          } else {
-            return item;
-          }
-        });
-        setTableData(data);
+      } catch (error) {
+        console.error("Error deleting from server:", error)
+      } finally {
+        setDeletingRowNo(null)
       }
+    } else {
+      // Case 3: Row has data but NOT saved to server yet - just clear locally
+      const newTableData = tableData.map((item) => {
+        if (item.No === id) {
+          return { No: item.No, name: null, level: null, grades: null }
+        }
+        return item
+      })
+      setTableData(newTableData)
+
+      // Clear the gradeId for this row
+      setGradeId((prevState) => {
+        const newArray = [...prevState]
+        delete newArray[id]
+        return newArray
+      })
+
+      await getFiltersData()
+      setDeletingRowNo(null)
     }
-    getFiltersData();
-  };
+  }
 
   const clearAllData = async () => {
-    const response1 = await getApiWithAuth(`calculator/user-points/`);
+    const response1 = await getApiWithAuth(`calculator/user-points/`)
     if (response1?.data?.data[0]) {
-      const response = await deleteApiWithAuth(
-        `calculator/user-points/delete/${response1?.data?.data[0]?.id}/`
-      );
+      const response = await deleteApiWithAuth(`calculator/user-points/delete/${response1?.data?.data[0]?.id}/`)
 
       if (response?.data?.status === 204) {
         setFinalData({
           points: 0,
           bonus_points: 0,
           total_points: 0,
-        });
-        getFiltersData();
-        getCurrectSelectedValues();
+        })
+        getFiltersData()
+        getCurrectSelectedValues()
       }
     } else {
       setFinalData({
         points: 0,
         bonus_points: 0,
         total_points: 0,
-      });
+      })
       setTableData([
         {
           No: 0,
@@ -458,86 +461,86 @@ const CaoCalculator = () => {
           level: null,
           grades: null,
         },
-      ]);
+      ])
     }
-  };
+  }
 
   const calCulateData = async () => {
     if (loadingSub === false) {
-      setLoading(true);
+      setLoading(true)
 
-      const response = await postApiWithAuth(API_URL.CALCULATEDATA, gradeId);
+      const response = await postApiWithAuth(API_URL.CALCULATEDATA, gradeId)
       if (response.data.data.success) {
-        setFinalData(response.data.data.data);
+        setFinalData(response.data.data.data)
         // getCurrectSelectedValues()
-        getFiltersData();
-        getCurrectSelectedValues();
-        setLoading(false);
+        getFiltersData()
+        await getCurrectSelectedValues()
+        setLoading(false)
       } else {
-        setLoading(false);
+        setLoading(false)
       }
     }
-  };
+  }
 
   useEffect(() => {
     if (data.length > 0) {
-      getCurrectSelectedValues();
+      getCurrectSelectedValues()
     }
-  }, [data]);
+  }, [data])
 
   useEffect(() => {
-    getFiltersData();
-  }, []);
+    getFiltersData()
+  }, [])
 
   useEffect(() => {
     if (data.length > 0) {
-      const subjects = data.map((item) => item.name);
-      setAvailableSubjects(subjects);
+      const subjects = data.map((item) => item.name)
+      setAvailableSubjects(subjects)
     }
-  }, [data]);
+  }, [data])
 
   const getFiltersData = async () => {
-    setLoadingFirst(true);
-    const response = await getApiWithAuth(API_URL.SUBJECTLIST);
+    setLoadingFirst(true)
+    const response = await getApiWithAuth(API_URL.SUBJECTLIST)
     if (response?.data?.status === 200) {
-      setData(response.data.data);
-      setLoadingFirst(false);
+      setData(response.data.data)
+      setLoadingFirst(false)
     } else {
-      setLoadingFirst(false);
+      setLoadingFirst(false)
     }
-  };
+  }
 
   const getCurrectSelectedValues = async () => {
-    setLoadingSub(true);
-    setGradeId([]);
-    let filterGrade = [];
-    let newData = [];
+    setLoadingSub(true)
+    setGradeId([])
+    let filterGrade = []
+    let newData = []
     try {
-      const response = await getApiWithAuth(`calculator/user-points/`);
-      let checkLength = response.data.data[0].grades.map((obj) => ({
+      const response = await getApiWithAuth(`calculator/user-points/`)
+      const checkLength = response.data.data[0].grades.map((obj) => ({
         grade: obj.id,
-      }));
+      }))
       if (checkLength.length > 0) {
         const response2 = await postApiWithAuth(
           API_URL.CALCULATEDATA,
-          response.data.data[0].grades.map((obj) => ({ grade: obj.id }))
-        );
+          response.data.data[0].grades.map((obj) => ({ grade: obj.id })),
+        )
         if (response2.data.data.success) {
-          setFinalData(response2.data.data.data);
-          const response = await getApiWithAuth(`calculator/user-points/`);
-          setDataId(response.data.data[0].id);
-          setDataLength(response.data.data.length);
+          setFinalData(response2.data.data.data)
+          const response = await getApiWithAuth(`calculator/user-points/`)
+          setDataId(response.data.data[0].id)
+          setDataLength(response.data.data.length)
 
-          setLoading(false);
+          setLoading(false)
         } else {
-          setLoading(false);
+          setLoading(false)
         }
       } else {
         setFinalData({
           points: 0,
           bonus_points: 0,
           total_points: 0,
-        });
+        })
       }
 
       if (response.data.data.length === 0) {
@@ -547,18 +550,14 @@ const CaoCalculator = () => {
             name: null,
             level: null,
             grades: null,
-          };
-          newData.push(ND);
+          }
+          newData.push(ND)
         }
       } else if (response.data.data.length !== 0) {
         newData = response?.data?.data[0]?.grades.map((item, index) => {
-          const filterSubjects = data.filter(
-            (SubItem) => SubItem.id == item?.subject
-          );
+          const filterSubjects = data.filter((SubItem) => SubItem.id == item?.subject)
 
-          const filterLevel = filterSubjects[0].level.filter(
-            (levelItem) => levelItem.level__id == item.level
-          );
+          const filterLevel = filterSubjects[0].level.filter((levelItem) => levelItem.level__id == item.level)
 
           const newObj = {
             id: item.id,
@@ -566,147 +565,223 @@ const CaoCalculator = () => {
             name: filterSubjects[0].name,
             level: filterLevel[0].level__subjectlevel,
             grades: item.grade,
-          };
-          return newObj;
-        });
+          }
+          return newObj
+        })
 
+        const newGradeIds = []
         for (let i = 0; i < newData?.length; i++) {
           const response1 = await getApiWithAuth(
-            `calculator/check-level-grade/?level=${newData[i].level}&subject=${newData[i].name}`
-          );
+            `calculator/check-level-grade/?level=${newData[i].level}&subject=${newData[i].name}`,
+          )
 
           if (response1.data.status === 200) {
-            filterGrade = response1?.data?.data.filter(
-              (gradeItem) => gradeItem.grade == newData[i]?.grades
-            );
+            filterGrade = response1?.data?.data.filter((gradeItem) => gradeItem.grade == newData[i]?.grades)
+            if (filterGrade.length > 0 && filterGrade[0]?.pk) {
+              newGradeIds.push({ grade: filterGrade[0].pk })
+            }
           }
-
-          setGradeId((prevState) => {
-            const newGrade = { grade: filterGrade[0]?.pk };
-            const updatedGradeId = [...prevState, newGrade];
-            const uniqueGradeSet = new Set(
-              updatedGradeId.map((item) => item.grade)
-            );
-
-            const uniqueGradeArray = Array.from(uniqueGradeSet).map(
-              (grade) => ({ grade })
-            );
-
-            return uniqueGradeArray;
-          });
         }
+        const uniqueGradeArray = Array.from(new Set(newGradeIds.map((item) => item.grade))).map((grade) => ({ grade }))
+        setGradeId(uniqueGradeArray)
       }
     } catch (error) {
     } finally {
-      const remainingEmptyRows = tableData.length - newData.length;
-      const emptyRows = Array.from(
-        { length: remainingEmptyRows },
-        (_, index) => ({
-          No: newData.length + index,
-          name: null,
-          level: null,
-          grades: null,
-        })
-      );
-      const combinedData = [...newData, ...emptyRows];
+      const remainingEmptyRows = tableData.length - newData.length
+      const emptyRows = Array.from({ length: remainingEmptyRows }, (_, index) => ({
+        No: newData.length + index,
+        name: null,
+        level: null,
+        grades: null,
+      }))
+      const combinedData = [...newData, ...emptyRows]
 
-      setCountFields(combinedData.length);
-      setTableData(combinedData);
-      setLoadingSub(false);
+      setCountFields(combinedData.length)
+      setTableData(combinedData)
+      setLoadingSub(false)
     }
-  };
+  }
 
   return (
-    <div className="caoMainDiv" style={{backgroundColor: "#DCFCEF"}}>
-      
-        <div className="coaInnerf8fafcDiv bg-[#DCFCEF]">
-          <div className="welcomeHaddingText bg-[#DCFCEF]">My CAO Points: </div>
+    <div className="caoMainDiv" style={{ backgroundColor: "#DCFCEF" }}>
+      <div className="coaInnerf8fafcDiv bg-[#DCFCEF]">
+        <div className="welcomeHaddingText bg-[#DCFCEF]">My CAO Points: </div>
 
-          {screenSize.width > "748" ? (
-            <div className="coaSubjectDiv p-3 bg-[#DCFCEF]">
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <Table
-                  dataSource={tableData}
-                  columns={columns}
-                  rowClassName={() => "backgroundF4F6F8"}
-                  pagination={false}
-                  loading={loadingFirst}
+        {screenSize.width > "748" ? (
+          <div className="coaSubjectDiv p-3 bg-[#DCFCEF]">
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <Table
+                dataSource={tableData}
+                columns={columns}
+                rowClassName={() => "backgroundF4F6F8"}
+                pagination={false}
+                loading={loadingFirst}
+                rowKey="No"
+              />
+
+              <div className="addSubjectContainer">
+                <MyCareerGuidanceButton
+                  label="Add Subject"
+                  className="addSubjectButton"
+                  htmlType="button"
+                  onClick={handleAdd}
+                  icon={<PlusOutlined />}
                 />
-
-                <div className="addSubjectContainer">
-                  <MyCareerGuidanceButton
-                    label="Add Subject"
-                    className="addSubjectButton"
-                    htmlType="button"
-                    onClick={handleAdd}
-                    icon={<PlusOutlined />}
-                  />
-                </div>
               </div>
-              <div className="coaPointsWidth coaPointsWidth">
-                <div
-                  style={{
-                    background:
-                      "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(25, 132, 255, 0.1) 100%)",
-                  }}
-                >
-                  <div style={{ padding: 10 }}>
-                    <div>
-                      <div className="textStyle18">My CAO Points.</div>
-                      <div className="coaPointTextMain">
-                        <div className="coaPointTextStyle">Points</div>
-                        <div>{finalData.points ? finalData.points : 0}</div>
-                      </div>
-                      <hr />
-                      <div className="coaPointTextMain">
-                        <div className="coaPointTextStyle">Bonus Points</div>
-                        <div>
-                          {finalData.bonus_points ? finalData.bonus_points : 0}
-                        </div>
-                      </div>
+            </div>
+            <div className="coaPointsWidth coaPointsWidth">
+              <div
+                style={{
+                  background: "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(25, 132, 255, 0.1) 100%)",
+                }}
+              >
+                <div style={{ padding: 10 }}>
+                  <div>
+                    <div className="textStyle18">My CAO Points.</div>
+                    <div className="coaPointTextMain">
+                      <div className="coaPointTextStyle">Points</div>
+                      <div>{finalData.points ? finalData.points : 0}</div>
+                    </div>
+                    <hr />
+                    <div className="coaPointTextMain">
+                      <div className="coaPointTextStyle">Bonus Points</div>
+                      <div>{finalData.bonus_points ? finalData.bonus_points : 0}</div>
+                    </div>
 
-                      <hr />
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          marginTop: 20,
-                        }}
-                      >
-                        <div className="circularBarMainDiv">
-                          <div style={{ width: 130 }}>
-                            <CircularProgressbarWithChildren
-                              value={finalData}
-                              minValue={0}
-                              maxValue={1000}
-                              styles={buildStyles({
-                                rotation: 0.72,
-                                strokeLinecap: "dashboard",
-                                textSize: "19px",
-                                pathTransitionDuration: 0.5,
-                                pathColor: "#1476B7",
-                                textColor: "#263238",
-                                trailColor: "#d6d6d6",
-                              })}
-                            >
-                              <div className="caoHeadingText" style={{fontSize: '26px'}}>
-                                {finalData.total_points
-                                  ? finalData.total_points
-                                  : 0}
-                              </div>
-                              <div className="cao2ndText">
-                                <strong className="font-bold text-black">Points</strong>
-                              </div>
-                            </CircularProgressbarWithChildren>
-                          </div>
+                    <hr />
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        marginTop: 20,
+                      }}
+                    >
+                      <div className="circularBarMainDiv">
+                        <div style={{ width: 130 }}>
+                          <CircularProgressbarWithChildren
+                            value={finalData}
+                            minValue={0}
+                            maxValue={1000}
+                            styles={buildStyles({
+                              rotation: 0.72,
+                              strokeLinecap: "dashboard",
+                              textSize: "19px",
+                              pathTransitionDuration: 0.5,
+                              pathColor: "#1476B7",
+                              textColor: "#263238",
+                              trailColor: "#d6d6d6",
+                            })}
+                          >
+                            <div className="caoHeadingText" style={{ fontSize: "26px" }}>
+                              {finalData.total_points ? finalData.total_points : 0}
+                            </div>
+                            <div className="cao2ndText">
+                              <strong className="font-bold text-black">Points</strong>
+                            </div>
+                          </CircularProgressbarWithChildren>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div
-                  style={{ display: "flex", justifyContent: "space-evenly" }}
-                >
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+                <MyCareerGuidanceButton
+                  label="Clear All"
+                  className="clearAllButton"
+                  type="primary"
+                  htmlType="button"
+                  onClick={clearAllData}
+                />
+                <MyCareerGuidanceButton
+                  label="Calculate"
+                  className="calculateButton"
+                  type="primary"
+                  htmlType="button"
+                  onClick={calCulateData}
+                  loading={loading}
+                />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="coaSubjectDiv p-3">
+            <div className="coaPointsWidth">
+              <div
+                style={{
+                  background: "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(25, 132, 255, 0.1) 100%)",
+                }}
+              >
+                <div style={{ padding: 10 }}>
+                  <div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <div className="textStyle18"> Points</div>
+                      <div className="">
+                        <div>{finalData.points ? finalData.points : 0}</div>
+                      </div>
+                    </div>
+                    <hr />
+                    <hr />
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginTop: 10,
+                      }}
+                    >
+                      <div className="textStyle18"> Bonus Points</div>
+                      <div className="">
+                        <div>{finalData.bonus_points ? finalData.bonus_points : 0}</div>
+                      </div>
+                    </div>
+
+                    <hr />
+
+                    <hr />
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        marginTop: 20,
+                      }}
+                    >
+                      <div className="circularBarMainDiv">
+                        <div style={{ width: 130 }}>
+                          <CircularProgressbarWithChildren
+                            value={finalData}
+                            minValue={0}
+                            maxValue={1000}
+                            styles={buildStyles({
+                              rotation: 0.72,
+                              strokeLinecap: "dashboard",
+                              textSize: "19px",
+                              pathTransitionDuration: 0.5,
+                              pathColor: "#1476B7",
+                              textColor: "#263238",
+                              trailColor: "#d6d6d6",
+                            })}
+                          >
+                            <div className="caoHeadingText" style={{ fontSize: "26px" }}>
+                              {finalData.total_points ? finalData.total_points : 0}
+                            </div>
+                            <div className="cao2ndText">
+                              <strong className="font-bold text-black">Points</strong>
+                            </div>
+                          </CircularProgressbarWithChildren>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div style={{ display: "flex", justifyContent: "center" }}>
                   <MyCareerGuidanceButton
                     label="Clear All"
                     className="clearAllButton"
@@ -714,6 +789,8 @@ const CaoCalculator = () => {
                     htmlType="button"
                     onClick={clearAllData}
                   />
+                </div>
+                <div style={{ display: "flex", justifyContent: "center" }}>
                   <MyCareerGuidanceButton
                     label="Calculate"
                     className="calculateButton"
@@ -725,230 +802,120 @@ const CaoCalculator = () => {
                 </div>
               </div>
             </div>
-          ) : (
-            <div className="coaSubjectDiv p-3">
-              <div className="coaPointsWidth">
-                <div
-                  style={{
-                    background:
-                      "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(25, 132, 255, 0.1) 100%)",
-                  }}
-                >
-                  <div style={{ padding: 10 }}>
-                    <div>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <div className="textStyle18"> Points</div>
-                        <div className="">
-                          <div>{finalData.points ? finalData.points : 0}</div>
-                        </div>
-                      </div>
-                      <hr />
-                      <hr />
-
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          marginTop: 10,
-                        }}
-                      >
-                        <div className="textStyle18"> Bonus Points</div>
-                        <div className="">
-                          <div>
-                            {finalData.bonus_points
-                              ? finalData.bonus_points
-                              : 0}
-                          </div>
-                        </div>
-                      </div>
-
-                      <hr />
-
-                      <hr />
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          marginTop: 20,
-                        }}
-                      >
-                        <div className="circularBarMainDiv">
-                          <div style={{ width: 130 }}>
-                            <CircularProgressbarWithChildren
-                              value={finalData}
-                              minValue={0}
-                              maxValue={1000}
-                              styles={buildStyles({
-                                rotation: 0.72,
-                                strokeLinecap: "dashboard",
-                                textSize: "19px",
-                                pathTransitionDuration: 0.5,
-                                pathColor: "#1476B7",
-                                textColor: "#263238",
-                                trailColor: "#d6d6d6",
-                              })}
+            <div className="coaSubjectWidth" style={{ paddingTop: "30px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div className="mobileTable">
+                  {tableData.map((item, index) => (
+                    <div className="mobileTableRow " key={index}>
+                      <div className="mobileTableHeader mt-2">Subject {index + 1}</div>
+                      <div className="py-2" style={{ background: " #F4F6F8" }}>
+                        <div className="mobileTableCell my-3">
+                          <Select
+                            placeholder="Select Subject"
+                            value={item?.name}
+                            onChange={(value) => handleFirstDropdownChange(value, item)}
+                            className="selectFieldStyle"
+                            loading={loadingFirst}
+                            showSearch
+                            filterOption={(input, option) =>
+                              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                            }
+                          >
+                            {availableSubjects.map((item) => (
+                              <Option key={item} value={item}>
+                                {item}
+                              </Option>
+                            ))}
+                          </Select>
+                          {subjectErrors[index] && (
+                            <div
+                              style={{
+                                color: "red",
+                                fontSize: "12px",
+                                marginLeft: "1rem",
+                              }}
                             >
-                              <div className="caoHeadingText" style={{fontSize: '26px'}}>
-                                {finalData.total_points
-                                  ? finalData.total_points
-                                  : 0}
-                              </div>
-                              <div className="cao2ndText">
-                                <strong className="font-bold text-black">Points</strong>
-                              </div>
-                            </CircularProgressbarWithChildren>
-                          </div>
+                              {subjectErrors[index]}
+                            </div>
+                          )}
+                        </div>
+                        <div className="mobileTableCell my-3">
+                          <Select
+                            placeholder="Select Level"
+                            value={item?.level}
+                            onChange={(value) => handleSecondDropdownChange(value, item)}
+                            className="selectFieldStyle"
+                          >
+                            {data
+                              .find((subject) => subject?.name === item?.name)
+                              ?.level?.map((level) => (
+                                <Option key={level?.level__id} value={level?.level__subjectlevel}>
+                                  {level?.level__subjectlevel}
+                                </Option>
+                              ))}
+                          </Select>
+                        </div>
+                        <div className="mobileTableCell my-3">
+                          <Select
+                            placeholder="Select Grade"
+                            value={item?.grades}
+                            onChange={(value) => handle(value, item)}
+                            onClick={() => handleThridDropDownApi(index)}
+                            className="selectFieldStyle"
+                            loading={index === currentState}
+                          >
+                            {thirdDropdownOptions.map((option) => (
+                              <Option key={option.id} value={option.value}>
+                                {option?.label}
+                              </Option>
+                            ))}
+                          </Select>
+                        </div>
+                        <div>
+                          {deletingRowNo === item.No ? (
+                            <LoadingOutlined style={{ color: "red", display: "flex", justifyContent: "center" }} spin />
+                          ) : (
+                            <DeleteOutlined
+                              style={{
+                                color: deletingRowNo !== null ? "#ccc" : "red",
+                                display: "flex",
+                                justifyContent: "center",
+                                cursor: deletingRowNo !== null ? "not-allowed" : "pointer",
+                              }}
+                              onClick={async () => {
+                                if (deletingRowNo === null) {
+                                  await handleDelete(item.No)
+                                }
+                              }}
+                            />
+                          )}
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div>
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    <MyCareerGuidanceButton
-                      label="Clear All"
-                      className="clearAllButton"
-                      type="primary"
-                      htmlType="button"
-                      onClick={clearAllData}
-                    />
-                  </div>
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    <MyCareerGuidanceButton
-                      label="Calculate"
-                      className="calculateButton"
-                      type="primary"
-                      htmlType="button"
-                      onClick={calCulateData}
-                      loading={loading}
-                    />
-                  </div>
+                  ))}
                 </div>
               </div>
-              <div className="coaSubjectWidth" style={{ paddingTop: "30px" }}>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div className="mobileTable">
-                    {tableData.map((item, index) => (
-                      <div className="mobileTableRow " key={index}>
-                        <div className="mobileTableHeader mt-2">
-                          Subject {index + 1}
-                        </div>
-                        <div
-                          className="py-2"
-                          style={{ background: " #F4F6F8" }}
-                        >
-                          <div className="mobileTableCell my-3">
-                            <Select
-                              placeholder="Select Subject"
-                              value={item?.name}
-                              onChange={(value) =>
-                                handleFirstDropdownChange(value, item)
-                              }
-                              className="selectFieldStyle"
-                              loading={loadingFirst}
-                              showSearch
-                              filterOption={(input, option) =>
-                                option.children
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              }
-                            >
-                              {availableSubjects.map((item) => (
-                                <Option key={item} value={item}>
-                                  {item}
-                                </Option>
-                              ))}
-                            </Select>
-                            {subjectErrors[index] && (
-                              <div
-                                style={{
-                                  color: "red",
-                                  fontSize: "12px",
-                                  marginLeft: "1rem",
-                                }}
-                              >
-                                {subjectErrors[index]}
-                              </div>
-                            )}
-                          </div>
-                          <div className="mobileTableCell my-3">
-                            <Select
-                              placeholder="Select Level"
-                              value={item?.level}
-                              onChange={(value) =>
-                                handleSecondDropdownChange(value, item)
-                              }
-                              className="selectFieldStyle"
-                            >
-                              {data
-                                .find((subject) => subject?.name === item?.name)
-                                ?.level?.map((level) => (
-                                  <Option
-                                    key={level?.level__id}
-                                    value={level?.level__subjectlevel}
-                                  >
-                                    {level?.level__subjectlevel}
-                                  </Option>
-                                ))}
-                            </Select>
-                          </div>
-                          <div className="mobileTableCell my-3">
-                            <Select
-                              placeholder="Select Grade"
-                              value={item?.grades}
-                              onChange={(value) => handle(value, item)}
-                              onClick={() => handleThridDropDownApi(index)}
-                              className="selectFieldStyle"
-                              loading={index === currentState}
-                            >
-                              {thirdDropdownOptions.map((option) => (
-                                <Option key={option.id} value={option.value}>
-                                  {option?.label}
-                                </Option>
-                              ))}
-                            </Select>
-                          </div>
-                          <DeleteOutlined
-                            style={{
-                              color: "red",
-                              display: "flex",
-                              justifyContent: "center",
-                            }}
-                            onClick={() => handleDelete(item.No)}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
 
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                  <MyCareerGuidanceButton
-                    label="Add Subject"
-                    className="addSubjectButton mt-2"
-                    htmlType="button"
-                    onClick={handleAdd}
-                    icon={<PlusOutlined />}
-                  />
-                </div>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <MyCareerGuidanceButton
+                  label="Add Subject"
+                  className="addSubjectButton mt-2"
+                  htmlType="button"
+                  onClick={handleAdd}
+                  icon={<PlusOutlined />}
+                />
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
-  
-    
-  );
-};
+    </div>
+  )
+}
 
-export default CaoCalculator;
+export default CAOCalculator

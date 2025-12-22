@@ -492,7 +492,7 @@ const MyChoices = () => {
     <>
       <div className={styles.educationalGuidanceMainDiv}>
         <div className={styles.educationalGuidanceSecondDiv}>
-          <div className="welcomeHaddingText ">Guidance Report</div>
+          <div className="welcomeHaddingText ">My Guidance Report</div>
           <Layout>
             <ContentComponent>
               <section
