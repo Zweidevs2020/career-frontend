@@ -14,7 +14,11 @@ const Table = ({
 }) => {
   const location = useLocation();
   const isCounselorDashboard = location.pathname.includes("/counsellor-Dashboard");
-  const isAllSelected = data.length > 0 && selectedStudentIds.length === data.length;
+  const isAllSelected =
+    data &&
+    data.length > 0 &&
+    selectedStudentIds &&
+    selectedStudentIds.length === data.length;
 
   return (
     <div>
@@ -47,7 +51,7 @@ const Table = ({
             </tr>
           </thead>
           <tbody>
-            {data.map((row, index) => (
+            {data && data.map((row, index) => (
               <tr
                 key={row.id}
                 className={`${
@@ -58,7 +62,7 @@ const Table = ({
                   <td className="p-3 border-t w-12">
                     <input
                       type="checkbox"
-                      checked={selectedStudentIds.includes(row.id)}
+                      checked={selectedStudentIds && selectedStudentIds.includes(row.id)}
                       onChange={() => onToggleStudentSelection(row.id)}
                       className="form-checkbox h-4 w-4 text-[#1476B7] rounded"
                     />
