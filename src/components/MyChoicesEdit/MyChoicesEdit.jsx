@@ -7,7 +7,7 @@ import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy } 
 import { CSS } from "@dnd-kit/utilities"
 import { useLocation, useSearchParams } from "react-router-dom"
 import { Space, Table, message, Select, Image } from "antd"
-import { CheckOutlined, DeleteOutlined, MenuOutlined, PlusCircleOutlined } from "@ant-design/icons"
+import { DeleteOutlined, MenuOutlined } from "@ant-design/icons"
 import { useNavigate } from "react-router-dom"
 import { v4 as uuid4 } from "uuid"
 import { MyCareerGuidanceInputField } from "../../components/commonComponents"
@@ -108,7 +108,7 @@ const MyChoicesEdit = () => {
     }
   }
 
-  const handleSaveOtherOption = async (record) => {
+  const handleSaveOtherOption = async (record, skipRefetch = false) => {
     if (!record.idea || record.idea.trim() === "") {
       message.error("Please enter an idea")
       return
@@ -126,7 +126,9 @@ const MyChoicesEdit = () => {
         if (response.data.status === 200) {
           message.success("Option updated successfully")
           setSavedOtherOptions((prev) => ({ ...prev, [record.id]: true }))
-          getOtherOptions()
+          if (!skipRefetch) {
+            getOtherOptions()
+          }
         } else {
           message.error(response.data.message || "Failed to update")
         }
@@ -135,7 +137,9 @@ const MyChoicesEdit = () => {
         const response = await postApiWithAuth("choices/other/", payload)
         if (response.data.status === 200 || response.data.status === 201) {
           message.success("Option saved successfully")
-          getOtherOptions()
+          if (!skipRefetch) {
+            getOtherOptions()
+          }
         } else {
           message.error(response.data.message || "Failed to save")
         }
@@ -179,16 +183,69 @@ const MyChoicesEdit = () => {
     )
   }
 
-  const handleAddNewOtherOption = () => {
-    const newOption = {
-      id: null,
-      idea: "",
-      order_number: otherOptionsData.length + 1,
-      dataId: uuid4(),
-      rowNo: otherOptionsData.length,
-      editable: true,
+  const handleAddNewOtherOption = async () => {
+    // First save all unsaved rows that have data
+    const unsavedRowsWithData = otherOptionsData.filter((item) => !item.id && item.idea && item.idea.trim() !== "")
+
+    // Save each unsaved row without refetching
+    for (const row of unsavedRowsWithData) {
+      await handleSaveOtherOption(row, true) // skip refetch
     }
-    setOtherOptionsData((prev) => [...prev, newOption])
+
+    // Refetch data once after all saves complete
+    if (unsavedRowsWithData.length > 0) {
+      const response = await getApiWithAuth("choices/other/")
+      if (response.data.status === 200) {
+        const userData = response.data.data?.user_data || []
+        const savedMap = {}
+        userData.forEach((item) => {
+          if (item.id) {
+            savedMap[item.id] = true
+          }
+        })
+        setSavedOtherOptions(savedMap)
+
+        // Set data with saved items + new empty row
+        const savedData = userData.map((item, index) => ({
+          ...item,
+          dataId: uuid4(),
+          rowNo: index,
+          editable: false,
+        }))
+
+        // Add new empty row
+        const newOption = {
+          id: null,
+          idea: "",
+          order_number: savedData.length + 1,
+          dataId: uuid4(),
+          rowNo: savedData.length,
+          editable: true,
+        }
+
+        setOtherOptionsData([...savedData, newOption])
+      }
+    } else {
+      // No unsaved rows, just add new row
+      const newOption = {
+        id: null,
+        idea: "",
+        order_number: otherOptionsData.length + 1,
+        dataId: uuid4(),
+        rowNo: otherOptionsData.length,
+        editable: true,
+      }
+      setOtherOptionsData((prev) => [...prev, newOption])
+    }
+  }
+
+  const saveUnsavedOtherOptions = async () => {
+    if (isOtherSection) {
+      const unsavedRowsWithData = otherOptionsData.filter((item) => !item.id && item.idea && item.idea.trim() !== "")
+      for (const row of unsavedRowsWithData) {
+        await handleSaveOtherOption(row)
+      }
+    }
   }
 
   const enableEditForOtherOption = (dataId) => {
@@ -673,11 +730,8 @@ const MyChoicesEdit = () => {
                 style={{
                   touchAction: "none",
                   cursor: "move",
+                  color: "transparent",
                 }}
-                onTouchStart={handleTouchStart}
-                onTouchEnd={handleTouchEnd}
-                {...attributes}
-                {...listeners}
               />
               <div className="actionColumn">
                 <Space size="middle">
@@ -853,15 +907,6 @@ const MyChoicesEdit = () => {
                 className="firstTableHeadingStyle"
                 render={(_, record) => (
                   <Space size="middle">
-                    {/* Show tick if saved, plus if not saved/new */}
-                    {record.id && savedOtherOptions[record.id] ? (
-                      <CheckOutlined style={{ color: "green" }} />
-                    ) : (
-                      <PlusCircleOutlined
-                        style={{ color: "#1476B7", cursor: "pointer" }}
-                        onClick={() => handleSaveOtherOption(record)}
-                      />
-                    )}
                     <DeleteOutlined
                       style={{ color: "red", cursor: "pointer" }}
                       onClick={() => handleDeleteOtherOption(record)}
@@ -911,14 +956,6 @@ const MyChoicesEdit = () => {
                     />
                     <div className="actionColumn">
                       <Space size="middle">
-                        {/* Show tick if saved, plus if not saved/new */}
-                        {row.id && savedOtherOptions[row.id] ? (
-                          <CheckOutlined style={{ color: "green" }} />
-                        ) : (
-                          <a onClick={() => handleSaveOtherOption(row)}>
-                            <PlusCircleOutlined style={{ color: "#1476B7", cursor: "pointer" }} />
-                          </a>
-                        )}
                         <a onClick={() => handleDeleteOtherOption(row)}>
                           <DeleteOutlined style={{ color: "red" }} />
                         </a>
@@ -985,7 +1022,8 @@ const MyChoicesEdit = () => {
                 <div className="h-[40px] w-[15%] bg-[#1476B7] rounded-lg flex items-center justify-evenly mx-2">
                   <button
                     className="text-[#fff] flex items-center"
-                    onClick={() => {
+                    onClick={async () => {
+                      await saveUnsavedOtherOptions()
                       navigate("/my-choices")
                     }}
                   >
@@ -996,7 +1034,8 @@ const MyChoicesEdit = () => {
                 <div className="h-[40px] w-[10%] bg-[#1476B7] rounded-lg flex items-center justify-evenly backDesktopButtonChoicesEdit">
                   <button
                     className="text-[#fff] flex items-center"
-                    onClick={() => {
+                    onClick={async () => {
+                      await saveUnsavedOtherOptions()
                       navigate("/my-choices")
                     }}
                   >
