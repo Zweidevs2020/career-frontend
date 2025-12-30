@@ -122,7 +122,7 @@ const MyChoicesEdit = () => {
 
       if (record.id) {
         // Update existing record
-        const response = await patchApiWithAuth(`choices/update-other/${record.id}/`, payload)
+        const response = await patchApiWithAuth(`choices/other/${record.id}/`, payload)
         if (response.data.status === 200) {
           message.success("Option updated successfully")
           setSavedOtherOptions((prev) => ({ ...prev, [record.id]: true }))
@@ -152,7 +152,7 @@ const MyChoicesEdit = () => {
     }
 
     try {
-      const response = await deleteApiWithAuth(`choices/delete-other/${item.id}/`)
+      const response = await deleteApiWithAuth(`choices/other/${item.id}/`)
       if (response.data.status === 204 || response.data.status === 200) {
         message.success("Option deleted successfully")
         getOtherOptions()
@@ -776,16 +776,24 @@ const MyChoicesEdit = () => {
     if (isCodeAvailable) {
       message.error("You already select this Course")
     } else {
+      const currentRow = data.find((item) => item.rowNo === rowNum)
+      const existingRowId = currentRow?.id // Store the existing row's id if it exists
+
       const updatedData = data.map((item) => {
         if (item.rowNo === rowNum) {
           const { id, ...rest } = option.row
           const _body = {
             ...item,
             ...rest,
+            id: existingRowId || id,
             order_number: rowNum,
           }
           const saveDebounce = debounce(() => {
-            handleAddRow(_body, true)
+            if (existingRowId) {
+              handleUpdate(_body)
+            } else {
+              handleAddRow(_body, true)
+            }
           }, 3000)
           saveDebounce()
           return _body
