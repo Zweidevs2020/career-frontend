@@ -82,14 +82,28 @@ const MyChoicesEdit = () => {
       if (response.data.status === 200) {
         // Extract user_data from the response
         const userData = response.data.data?.user_data || []
-        setOtherOptionsData(
-          userData.map((item, index) => ({
-            ...item,
-            dataId: uuid4(),
-            rowNo: index,
-            editable: false,
-          })),
-        )
+
+        const mappedData = userData.map((item, index) => ({
+          ...item,
+          dataId: uuid4(),
+          rowNo: index,
+          editable: true,
+        }))
+
+        // Add empty rows to make total at least 5
+        const minRows = 5
+        const emptyRowsNeeded = Math.max(0, minRows - mappedData.length)
+        const emptyRows = Array.from({ length: emptyRowsNeeded }, (_, index) => ({
+          id: null,
+          idea: "",
+          order_number: mappedData.length + index + 1,
+          dataId: uuid4(),
+          rowNo: mappedData.length + index,
+          editable: true,
+        }))
+
+        setOtherOptionsData([...mappedData, ...emptyRows])
+
         // Mark all existing items as saved
         const savedMap = {}
         userData.forEach((item) => {
@@ -122,7 +136,7 @@ const MyChoicesEdit = () => {
 
       if (record.id) {
         // Update existing record
-        const response = await patchApiWithAuth(`choices/other/${record.id}/`, payload)
+        const response = await patchApiWithAuth(`choices/update-other/${record.id}/`, payload)
         if (response.data.status === 200) {
           message.success("Option updated successfully")
           setSavedOtherOptions((prev) => ({ ...prev, [record.id]: true }))
@@ -156,7 +170,7 @@ const MyChoicesEdit = () => {
     }
 
     try {
-      const response = await deleteApiWithAuth(`choices/other/${item.id}/`)
+      const response = await deleteApiWithAuth(`choices/delete-other/${item.id}/`)
       if (response.data.status === 204 || response.data.status === 200) {
         message.success("Option deleted successfully")
         getOtherOptions()
@@ -181,6 +195,15 @@ const MyChoicesEdit = () => {
         return item
       }),
     )
+  }
+
+  const handleOtherOptionKeyDown = async (e, record) => {
+    if (e.key === "Enter") {
+      e.preventDefault()
+      if (record.idea && record.idea.trim() !== "") {
+        await handleSaveOtherOption(record)
+      }
+    }
   }
 
   const handleAddNewOtherOption = async () => {
@@ -894,8 +917,8 @@ const MyChoicesEdit = () => {
                     name="idea"
                     defaultValue={text || ""}
                     isPrefix={false}
-                    disabled={record.id && !record.editable}
                     onChange={(e) => handleOtherOptionChange(record.dataId, e.target.value)}
+                    onKeyDown={(e) => handleOtherOptionKeyDown(e, record)}
                     id={`input-idea-${record?.rowNo}`}
                     style={{ color: "#333333" }}
                   />
@@ -977,8 +1000,8 @@ const MyChoicesEdit = () => {
                         name="idea"
                         defaultValue={row.idea || ""}
                         isPrefix={false}
-                        disabled={row.id && !row.editable}
                         onChange={(e) => handleOtherOptionChange(row.dataId, e.target.value)}
+                        onKeyDown={(e) => handleOtherOptionKeyDown(e, row)}
                         style={{ color: "#333333" }}
                       />
                     </div>
