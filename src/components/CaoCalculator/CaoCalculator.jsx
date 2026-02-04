@@ -97,6 +97,20 @@ const CAOCalculator = ({ closePopup }) => {
     setDataLength(idExistsLength)
   }, [tableData])
 
+  const gradeIdRef = useRef([])
+  useEffect(() => {
+    gradeIdRef.current = gradeId
+  }, [gradeId])
+
+  useEffect(() => {
+    return () => {
+      const finalGrades = gradeIdRef.current.filter((item) => item && item.grade)
+      if (finalGrades.length > 0) {
+        postApiWithAuth(API_URL.CALCULATEDATA, finalGrades)
+      }
+    }
+  }, [])
+
   useEffect(() => {
     const handleResize = () => {
       setScreenSize({ width: window.innerWidth, height: window.innerHeight })
@@ -186,6 +200,11 @@ const CAOCalculator = ({ closePopup }) => {
     )
 
     setTableData(tempData)
+    setGradeId((prevState) => {
+      const newArray = [...prevState]
+      newArray[record.No] = null
+      return newArray
+    })
   }
 
   const handleSecondDropdownChange = (value, record) => {
@@ -201,6 +220,11 @@ const CAOCalculator = ({ closePopup }) => {
       }
     })
     setTableData(tempData)
+    setGradeId((prevState) => {
+      const newArray = [...prevState]
+      newArray[record.No] = null
+      return newArray
+    })
   }
 
   const handle = (value, record) => {
@@ -217,14 +241,21 @@ const CAOCalculator = ({ closePopup }) => {
 
     setTableData(tempData)
     const gradeid = grades?.filter((item) => item?.grade === value)
+    const newGradeId = { grade: gradeid[0]?.pk }
 
     setGradeId((prevState) => {
       const newArray = [...prevState]
 
-      newArray[record.No] = { grade: gradeid[0]?.pk }
+      newArray[record.No] = newGradeId
 
       return newArray
     })
+
+    if (record?.name && record?.level && value) {
+      const updatedGradeId = [...gradeId]
+      updatedGradeId[record.No] = newGradeId
+      calCulateData(updatedGradeId)
+    }
   }
 
   const isDeleteButtonDisabled = dataLength < 6
@@ -465,11 +496,14 @@ const CAOCalculator = ({ closePopup }) => {
     }
   }
 
-  const calCulateData = async () => {
+  const calCulateData = async (updatedGrades) => {
+    const dataToSend = updatedGrades && Array.isArray(updatedGrades) ? updatedGrades : gradeId
+    const filteredData = dataToSend.filter((item) => item && item.grade)
+
     if (loadingSub === false) {
       setLoading(true)
 
-      const response = await postApiWithAuth(API_URL.CALCULATEDATA, gradeId)
+      const response = await postApiWithAuth(API_URL.CALCULATEDATA, filteredData)
       if (response.data.data.success) {
         setFinalData(response.data.data.data)
         // getCurrectSelectedValues()
