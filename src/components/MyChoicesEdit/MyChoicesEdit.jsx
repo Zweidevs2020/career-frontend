@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom"
 import { v4 as uuid4 } from "uuid"
 import { MyCareerGuidanceInputField } from "../../components/commonComponents"
 import { Spin } from "antd"
-import { getApiWithAuth, postApiWithAuth, patchApiWithAuth, deleteApiWithAuth } from "../../utils/api"
+import { getApiWithAuth, patchApiWithAuth, deleteApiWithAuth, putApiWithAuth, postApiWithAuth } from "../../utils/api"
 import dropdownIcon from "../../assets/dropdownIcon.svg"
 import EditOutlined from "../../assets/uil_edit.svg"
 
@@ -279,6 +279,12 @@ const MyChoicesEdit = () => {
     if (runLoading) {
       setLoadingFirst(true)
     }
+    if (dataa.id === "ucas-ni") {
+      setColums(["code", "title", "college", "nfq_level", "course_information"])
+      setShowRows(10)
+      setLoadingFirst(false)
+      return
+    }
     const response = await getApiWithAuth(`choices/column-names/?choice=${dataa.id}`)
     if (response.data.status === 200) {
       if (isApprentice) {
@@ -499,12 +505,16 @@ const MyChoicesEdit = () => {
       record.name = record.title
       record.provider = record.college
     }
-    const respose = await patchApiWithAuth(
-      `choices/${isApprentice ? "apprentice" : `update-${dataa.id}`}/${record.id}/`,
-      record,
-    )
+    const updateUrl = isApprentice
+      ? `choices/apprentice/${record.id}/`
+      : dataa.id === "ucas-ni"
+        ? `choices/ucas-ni/${record.id}/`
+        : `choices/update-${dataa.id}/${record.id}/`
 
-    if (respose.data.status === 200) {
+    const respose =
+      dataa.id === "ucas-ni" ? await putApiWithAuth(updateUrl, record) : await patchApiWithAuth(updateUrl, record)
+
+    if (respose.data.status === 200 || respose.data.status === 201) {
       message.success("Row update succesfully")
       setShowRows(null)
       getChoiceRecord()
@@ -525,12 +535,16 @@ const MyChoicesEdit = () => {
       record.name = record.title
       record.provider = record.college
     }
-    const respose = await patchApiWithAuth(
-      `choices/${isApprentice ? "apprentice" : `update-${dataa.id}`}/${record.id}/`,
-      record,
-    )
+    const updateUrl = isApprentice
+      ? `choices/apprentice/${record.id}/`
+      : dataa.id === "ucas-ni"
+        ? `choices/ucas-ni/${record.id}/`
+        : `choices/update-${dataa.id}/${record.id}/`
 
-    if (respose.data.status === 200) {
+    const respose =
+      dataa.id === "ucas-ni" ? await putApiWithAuth(updateUrl, record) : await patchApiWithAuth(updateUrl, record)
+
+    if (respose.data.status === 200 || respose.data.status === 201) {
       message.success("Row update succesfully")
       setShowRows(null)
       getChoiceRecord()
@@ -542,7 +556,12 @@ const MyChoicesEdit = () => {
   }
 
   const handleDelete = async (item) => {
-    const respose = await deleteApiWithAuth(`choices/${isApprentice ? "apprentice" : `delete-${dataa.id}`}/${item.id}/`)
+    const deleteUrl = isApprentice
+      ? `choices/apprentice/${item.id}/`
+      : dataa.id === "ucas-ni"
+        ? `choices/ucas-ni/${item.id}/`
+        : `choices/delete-${dataa.id}/${item.id}/`
+    const respose = await deleteApiWithAuth(deleteUrl)
 
     if (respose.data.status === 204 || respose.data.status === 200) {
       message.success("Row delete succesfully")
@@ -582,7 +601,7 @@ const MyChoicesEdit = () => {
       const response = await postApiWithAuth(`choices/${dataa.id}/`, finalRecord)
       disableEventListeners()
       console.log(response?.data?.status, "hello")
-      if (response.data.status === 200) {
+      if (response.data.status === 200 || response.data.status === 201) {
         message.success("Row added successfully")
         setShowRows(null)
 
@@ -620,7 +639,7 @@ const MyChoicesEdit = () => {
     }
     const respose = await postApiWithAuth(`choices/${dataa.id}/`, record)
 
-    if (respose.data.status === 200) {
+    if (respose.data.status === 200 || respose.data.status === 201) {
       message.success("Row add succesfully")
       setShowRows(null)
       getChoiceRecord()
@@ -831,7 +850,11 @@ const MyChoicesEdit = () => {
   }
 
   const updateOrderMultitimes = async (id, activeIndexId, swapArrayOrder) => {
-    const respose1 = await patchApiWithAuth(`choices/update-${id}/${activeIndexId}/`, swapArrayOrder)
+    const updateUrl = id === "ucas-ni" ? `choices/ucas-ni/${activeIndexId}/` : `choices/update-${id}/${activeIndexId}/`
+    const respose1 =
+      id === "ucas-ni"
+        ? await putApiWithAuth(updateUrl, swapArrayOrder)
+        : await patchApiWithAuth(updateUrl, swapArrayOrder)
 
     if (respose1.data.status === 200) {
     }
@@ -839,7 +862,9 @@ const MyChoicesEdit = () => {
 
   const updateOrder2 = async (id, overIndexId, orderUpdate2) => {
     setLoadingFirst(true)
-    const respose2 = await patchApiWithAuth(`choices/update-${id}/${overIndexId}/`, orderUpdate2)
+    const updateUrl = id === "ucas-ni" ? `choices/ucas-ni/${overIndexId}/` : `choices/update-${id}/${overIndexId}/`
+    const respose2 =
+      id === "ucas-ni" ? await putApiWithAuth(updateUrl, orderUpdate2) : await patchApiWithAuth(updateUrl, orderUpdate2)
 
     if (respose2.data.status === 200) {
       getTableRecord()
@@ -858,11 +883,11 @@ const MyChoicesEdit = () => {
 
       const updatedData = data.map((item) => {
         if (item.rowNo === rowNum) {
-          const { id, ...rest } = option.row
+          const { id: libraryId, ...rest } = option.row
           const _body = {
             ...item,
             ...rest,
-            id: existingRowId || id,
+            id: existingRowId || null,
             order_number: rowNum,
           }
           const saveDebounce = debounce(() => {
@@ -1105,12 +1130,19 @@ const MyChoicesEdit = () => {
                                 return (
                                   <React.Fragment key={index}>
                                     {item === "code" || item === "title" || item === "college" ? (
-                                      <>
-                                        <Column
-                                          title={item.toLowerCase() === "point" ? "Points" : capitalizeWords(item)}
-                                          dataIndex={item}
-                                          key={item}
-                                          className="tableHeadingStyle"
+                                      <><Column
+      dataIndex={item}
+      key={item}
+      className="tableHeadingStyle"
+                                          title={
+                                            dataa.id === "ucas-ni" && item === "code"
+                                              ? "Course Code"
+                                              : dataa.id === "ucas-ni" && item === "nfq_level"
+                                                ? "NFQ Level"
+                                                : item.toLowerCase() === "point"
+                                                  ? "Points"
+                                                  : capitalizeWords(item)
+                                          }
                                           render={(text, record, rowNum) => (
                                             <>
                                               <Select
@@ -1187,7 +1219,15 @@ const MyChoicesEdit = () => {
                                       />
                                     ) : (
                                       <Column
-                                        title={item.toLowerCase() === "point" ? "Points" : capitalizeWords(item)}
+                                        title={
+                                          dataa.id === "ucas-ni" && item === "code"
+                                            ? "Course Code"
+                                            : dataa.id === "ucas-ni" && item === "nfq_level"
+                                              ? "NFQ Level"
+                                              : item.toLowerCase() === "point"
+                                                ? "Points"
+                                                : capitalizeWords(item)
+                                        }
                                         dataIndex={item}
                                         key={item}
                                         disabled
@@ -1273,7 +1313,13 @@ const MyChoicesEdit = () => {
                               {item === "code" || item === "title" || item === "college" ? (
                                 <>
                                   <Column
-                                    title={capitalizeWords(item)}
+                                    title={
+                                      dataa.id === "ucas-ni" && item === "code"
+                                        ? "Course Code"
+                                        : dataa.id === "ucas-ni" && item === "nfq_level"
+                                          ? "NFQ Level"
+                                          : capitalizeWords(item)
+                                    }
                                     dataIndex={item}
                                     key={item}
                                     className="tableHeadingStyle"
@@ -1323,7 +1369,11 @@ const MyChoicesEdit = () => {
                                               [item]: option,
                                             }))
 
-                                            handleSelect(value, option, data.filter((item) => item.id !== null).length)
+                                            handleSelect(
+                                              value,
+                                              option,
+                                              rowNum + data.filter((item) => item.id !== null).length,
+                                            )
                                           }}
                                           optionLabelProp="label"
                                         >
@@ -1441,63 +1491,69 @@ const MyChoicesEdit = () => {
                                           <React.Fragment key={`${row.dataId}-${index}`}>
                                             <div className="column">
                                               <span className="rowHeadingMobile">
-                                                {item.toLowerCase() === "point" ? "Points" : capitalizeWords(item)}
+                                                {dataa.id === "ucas-ni" && item === "code"
+                                                  ? "Course Code"
+                                                  : dataa.id === "ucas-ni" && item === "nfq_level"
+                                                    ? "NFQ Level"
+                                                    : item.toLowerCase() === "point"
+                                                      ? "Points"
+                                                      : capitalizeWords(item)}
                                               </span>
-                                              <Select
-                                                showSearch
-                                                placeholder={`Select ${row[item]}`}
-                                                name={item}
-                                                value={row[item]}
-                                                optionFilterProp="children"
-                                                className="inputSelectFieldStyle"
-                                                ref={inputRef}
-                                                defaultValue={row[item]}
-                                                bordered={false}
-                                                popupMatchSelectWidth={false}
-                                                getPopupContainer={(trigger) => trigger.parentNode}
-                                                dropdownStyle={{ minWidth: "500px", maxWidth: "90vw" }}
-                                                dropdownRender={(menu) => (
-                                                  <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
-                                                )}
-                                                onFocus={() => {
-                                                  if (!row.editable) {
-                                                    eidtThisRow(row)
+                                                <Select
+                                                  showSearch
+                                                  placeholder={`Select ${row[item]}`}
+                                                  name={item}
+                                                  value={row[item]}
+                                                  optionFilterProp="children"
+                                                  className="inputSelectFieldStyle"
+                                                  ref={inputRef}
+                                                  defaultValue={row[item]}
+                                                  bordered={false}
+                                                  popupMatchSelectWidth={false}
+                                                  getPopupContainer={(trigger) => trigger.parentNode}
+                                                  dropdownStyle={{ minWidth: "500px", maxWidth: "90vw" }}
+                                                  dropdownRender={(menu) => (
+                                                    <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
+                                                  )}
+                                                  onFocus={() => {
+                                                    if (!row.editable) {
+                                                      eidtThisRow(row)
+                                                    }
+                                                  }}
+                                                  suffixIcon={
+                                                    <Image
+                                                      preview={false}
+                                                      src={dropdownIcon || "/placeholder.svg"}
+                                                      width={15}
+                                                      style={{ marginRight: 10 }}
+                                                    />
                                                   }
-                                                }}
-                                                suffixIcon={
-                                                  <Image
-                                                    preview={false}
-                                                    src={dropdownIcon || "/placeholder.svg"}
-                                                    width={15}
-                                                    style={{ marginRight: 10 }}
-                                                  />
-                                                }
-                                                onSelect={(value, option) => handleSelect(value, option, row.rowNo)}
-                                                optionLabelProp="label"
-                                              >
-                                                {dropDownOptions &&
-                                                  dropDownOptions.map((option) => {
-                                                    return (
-                                                      <Select.Option
-                                                        key={option?.id}
-                                                        value={option[item]}
-                                                        code={option.code}
-                                                        row={option}
-                                                        label={option[item]}
-                                                      >
-                                                        <div style={{ padding: "4px 0" }}>
-                                                          <div style={{ fontWeight: 600, fontSize: "14px", marginBottom: "2px", color: "#1476B7" }}>
-                                                            {option.title}
+                                                  onSelect={(value, option) => handleSelect(value, option, row.rowNo)}
+                                                  optionLabelProp="label"
+                                                >
+                                                  {dropDownOptions &&
+                                                    dropDownOptions.map((option) => {
+                                                      return (
+                                                        <Select.Option
+                                                          key={option?.id}
+                                                          value={option[item]}
+                                                          code={option.code}
+                                                          row={option}
+                                                          label={option[item]}
+                                                        >
+                                                          <div style={{ padding: "4px 0" }}>
+                                                            <div style={{ fontWeight: 600, fontSize: "14px", marginBottom: "2px", color: "#1476B7" }}>
+                                                              {option.title}
+                                                            </div>
+                                                            <div style={{ fontSize: "12px", color: "#666" }}>
+                                                              {option.code} • {option.college}
+                                                              {option?.abbreviation && ` • ${option.abbreviation}`}
+                                                            </div>
                                                           </div>
-                                                          <div style={{ fontSize: "12px", color: "#666" }}>
-                                                            {option.code} • {option.college}
-                                                            {option?.abbreviation && ` • ${option.abbreviation}`}
-                                                          </div>
-                                                        </div>
-                                                      </Select.Option>
-                                                    )
-                                                  })}
-                                              </Select>
+                                                        </Select.Option>
+                                                      )
+                                                    })}
+                                                </Select>
                                             </div>
                                           </React.Fragment>
                                         ) : item === "course_information" ? (
@@ -1515,7 +1571,7 @@ const MyChoicesEdit = () => {
                                           </div>
                                         ) : (
                                           <div className="column" key={`${row.dataId}-${index}`}>
-                                            <span className="rowHeadingMobile">{capitalizeWords(item)}</span>
+                                            <span className="rowHeadingMobile">{dataa.id === "ucas-ni" && item === "nfq_level" ? "NFQ Level" : capitalizeWords(item)}</span>
                                             <MyCareerGuidanceInputField
                                               placeholder={row[item]}
                                               type="input"
@@ -1581,68 +1637,68 @@ const MyChoicesEdit = () => {
                                                   <span className="rowHeadingMobile">
                                                     {item.toLowerCase() === "point" ? "Points" : capitalizeWords(item)}
                                                   </span>
-                                                  <Select
-                                                    showSearch
-                                                    placeholder={`Select ${row[item]}`}
-                                                    name={item}
-                                                    value={row[item]}
-                                                    optionFilterProp="children"
-                                                    className="inputSelectFieldStyle"
-                                                    ref={inputRef}
-                                                    defaultValue={row[item]}
-                                              bordered={false}
-                                              popupMatchSelectWidth={false}
-                                              getPopupContainer={(trigger) => trigger.parentNode}
-                                              dropdownStyle={{ width: "calc(100vw - 40px)", maxWidth: "500px" }}
-                                              dropdownRender={(menu) => (
-                                                <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
-                                              )}
-                                                    onFocus={() => {
-                                                      if (!row.editable) {
-                                                        eidtThisRow(row)
+                                                    <Select
+                                                      showSearch
+                                                      placeholder={`Select ${row[item]}`}
+                                                      name={item}
+                                                      value={row[item]}
+                                                      optionFilterProp="children"
+                                                      className="inputSelectFieldStyle"
+                                                      ref={inputRef}
+                                                      defaultValue={row[item]}
+                                                      bordered={false}
+                                                      popupMatchSelectWidth={false}
+                                                      getPopupContainer={(trigger) => trigger.parentNode}
+                                                      dropdownStyle={{ width: "calc(100vw - 40px)", maxWidth: "500px" }}
+                                                      dropdownRender={(menu) => (
+                                                        <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
+                                                      )}
+                                                      onFocus={() => {
+                                                        if (!row.editable) {
+                                                          eidtThisRow(row)
+                                                        }
+                                                      }}
+                                                      suffixIcon={
+                                                        <Image
+                                                          preview={false}
+                                                          src={dropdownIcon || "/placeholder.svg"}
+                                                          width={15}
+                                                          style={{
+                                                            marginRight: 10,
+                                                          }}
+                                                        />
                                                       }
-                                                    }}
-                                                    suffixIcon={
-                                                      <Image
-                                                        preview={false}
-                                                        src={dropdownIcon || "/placeholder.svg"}
-                                                        width={15}
-                                                        style={{
-                                                          marginRight: 10,
-                                                        }}
-                                                      />
-                                                    }
-                                                    onSelect={(value, option) => handleSelect(value, option, row.rowNo)}
-                                                    optionLabelProp="label"
-                                                  >
-                                                    {dropDownOptions &&
-                                                      dropDownOptions.map((option) => {
-                                                        return (
-                                                          <Select.Option
-                                                            key={option[item]}
-                                                            value={option[item]}
-                                                            code={option.code}
-                                                            row={option}
-                                                            label={option[item]}
-                                                          >
-                                                            <div style={{ padding: "4px 0" }}>
-                                                              <div style={{ fontWeight: 600, fontSize: "14px", marginBottom: "2px", color: "#1476B7" }}>
-                                                                {option.title}
+                                                      onSelect={(value, option) => handleSelect(value, option, row.rowNo)}
+                                                      optionLabelProp="label"
+                                                    >
+                                                      {dropDownOptions &&
+                                                        dropDownOptions.map((option) => {
+                                                          return (
+                                                            <Select.Option
+                                                              key={option[item]}
+                                                              value={option[item]}
+                                                              code={option.code}
+                                                              row={option}
+                                                              label={option[item]}
+                                                            >
+                                                              <div style={{ padding: "4px 0" }}>
+                                                                <div style={{ fontWeight: 600, fontSize: "14px", marginBottom: "2px", color: "#1476B7" }}>
+                                                                  {option.title}
+                                                                </div>
+                                                                <div style={{ fontSize: "12px", color: "#666" }}>
+                                                                  {option.code} • {option.college}
+                                                                  {option?.abbreviation && ` • ${option.abbreviation}`}
+                                                                </div>
                                                               </div>
-                                                              <div style={{ fontSize: "12px", color: "#666" }}>
-                                                                {option.code} • {option.college}
-                                                                {option?.abbreviation && ` • ${option.abbreviation}`}
-                                                              </div>
-                                                            </div>
-                                                          </Select.Option>
-                                                        )
-                                                      })}
-                                                  </Select>
+                                                            </Select.Option>
+                                                          )
+                                                        })}
+                                                    </Select>
                                                 </div>
                                               </>
                                             ) : (
                                               <div className="column">
-                                                <span className="rowHeadingMobile">{capitalizeWords(item)}</span>
+                                                <span className="rowHeadingMobile">{dataa.id === "ucas-ni" && item === "nfq_level" ? "NFQ Level" : capitalizeWords(item)}</span>
                                                 <MyCareerGuidanceInputField
                                                   placeholder={row[item]}
                                                   type="input"
@@ -1714,7 +1770,7 @@ const MyChoicesEdit = () => {
                                       {item === "code" || item === "title" || item === "college" ? (
                                         <>
                                           <div className="column">
-                                            <span className="rowHeadingMobile">{capitalizeWords(item)}</span>
+                                            <span className="rowHeadingMobile">{dataa.id === "ucas-ni" && item === "code" ? "Course Code" : dataa.id === "ucas-ni" && item === "nfq_level" ? "NFQ Level" : capitalizeWords(item)}</span>
                                             <Select
                                               showSearch
                                               placeholder={`Select ${item}`}
@@ -1771,7 +1827,7 @@ const MyChoicesEdit = () => {
                                         </>
                                       ) : (
                                         <div className="column">
-                                          <span className="rowHeadingMobile">{capitalizeWords(item)}</span>
+                                          <span className="rowHeadingMobile">{dataa.id === "ucas-ni" && item === "nfq_level" ? "NFQ Level" : capitalizeWords(item)}</span>
                                           <MyCareerGuidanceInputField
                                             placeholder={item}
                                             type="input"

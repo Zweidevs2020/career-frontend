@@ -70,6 +70,11 @@ const MyChoices = () => {
       name: "Apprenticeships",
     },
     {
+      id: "ucas-ni",
+      icon: Choice1,
+      name: "UCAS Northern Ireland",
+    },
+    {
       id: "other",
       icon: Choice5,
       name: "Other Options",
