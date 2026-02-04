@@ -1124,6 +1124,11 @@ const MyChoicesEdit = () => {
                                                 defaultValue={item === "code" ? text : `${text},${record.code}`}
                                                 bordered={false}
                                                 popupMatchSelectWidth={false}
+                                                getPopupContainer={(trigger) => trigger.parentNode}
+                                                dropdownStyle={{ minWidth: "500px", maxWidth: "90vw" }}
+                                                dropdownRender={(menu) => (
+                                                  <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
+                                                )}
                                                 onFocus={() => {
                                                   if (!record.editable) {
                                                     eidtThisRow(record)
@@ -1287,6 +1292,11 @@ const MyChoicesEdit = () => {
                                           }
                                           optionFilterProp="children"
                                           className="inputSelectFieldStyle"
+                                          getPopupContainer={(trigger) => trigger.parentNode}
+                                          dropdownStyle={{ minWidth: "500px", maxWidth: "90vw" }}
+                                          dropdownRender={(menu) => (
+                                            <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
+                                          )}
                                           ref={inputRef}
                                           defaultValue={
                                             item === "code"
@@ -1444,6 +1454,11 @@ const MyChoicesEdit = () => {
                                                 defaultValue={row[item]}
                                                 bordered={false}
                                                 popupMatchSelectWidth={false}
+                                                getPopupContainer={(trigger) => trigger.parentNode}
+                                                dropdownStyle={{ minWidth: "500px", maxWidth: "90vw" }}
+                                                dropdownRender={(menu) => (
+                                                  <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
+                                                )}
                                                 onFocus={() => {
                                                   if (!row.editable) {
                                                     eidtThisRow(row)
@@ -1470,7 +1485,15 @@ const MyChoicesEdit = () => {
                                                         row={option}
                                                         label={option[item]}
                                                       >
-                                                        {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})` : ""}`}
+                                                        <div style={{ padding: "4px 0" }}>
+                                                          <div style={{ fontWeight: 600, fontSize: "14px", marginBottom: "2px", color: "#1476B7" }}>
+                                                            {option.title}
+                                                          </div>
+                                                          <div style={{ fontSize: "12px", color: "#666" }}>
+                                                            {option.code} • {option.college}
+                                                            {option?.abbreviation && ` • ${option.abbreviation}`}
+                                                          </div>
+                                                        </div>
                                                       </Select.Option>
                                                     )
                                                   })}
@@ -1567,8 +1590,13 @@ const MyChoicesEdit = () => {
                                                     className="inputSelectFieldStyle"
                                                     ref={inputRef}
                                                     defaultValue={row[item]}
-                                                    bordered={false}
-                                                    popupMatchSelectWidth={false}
+                                              bordered={false}
+                                              popupMatchSelectWidth={false}
+                                              getPopupContainer={(trigger) => trigger.parentNode}
+                                              dropdownStyle={{ width: "calc(100vw - 40px)", maxWidth: "500px" }}
+                                              dropdownRender={(menu) => (
+                                                <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
+                                              )}
                                                     onFocus={() => {
                                                       if (!row.editable) {
                                                         eidtThisRow(row)
@@ -1597,7 +1625,15 @@ const MyChoicesEdit = () => {
                                                             row={option}
                                                             label={option[item]}
                                                           >
-                                                            {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})` : ""}`}
+                                                            <div style={{ padding: "4px 0" }}>
+                                                              <div style={{ fontWeight: 600, fontSize: "14px", marginBottom: "2px", color: "#1476B7" }}>
+                                                                {option.title}
+                                                              </div>
+                                                              <div style={{ fontSize: "12px", color: "#666" }}>
+                                                                {option.code} • {option.college}
+                                                                {option?.abbreviation && ` • ${option.abbreviation}`}
+                                                              </div>
+                                                            </div>
                                                           </Select.Option>
                                                         )
                                                       })}
@@ -1688,8 +1724,13 @@ const MyChoicesEdit = () => {
                                               className="inputSelectFieldStyle"
                                               ref={inputRef}
                                               defaultValue={row[item]}
-                                              bordered={false}
-                                              popupMatchSelectWidth={false}
+                                                    bordered={false}
+                                                    popupMatchSelectWidth={false}
+                                                    getPopupContainer={(trigger) => trigger.parentNode}
+                                                    dropdownStyle={{ width: "calc(100vw - 40px)", maxWidth: "500px" }}
+                                                    dropdownRender={(menu) => (
+                                                      <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
+                                                    )}
                                               suffixIcon={
                                                 <Image
                                                   preview={false}
@@ -1713,7 +1754,15 @@ const MyChoicesEdit = () => {
                                                       row={option}
                                                       label={option[item]}
                                                     >
-                                                      {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})` : ""}`}
+                                                      <div style={{ padding: "4px 0" }}>
+                                                        <div style={{ fontWeight: 600, fontSize: "14px", marginBottom: "2px", color: "#1476B7" }}>
+                                                          {option.title}
+                                                        </div>
+                                                        <div style={{ fontSize: "12px", color: "#666" }}>
+                                                          {option.code} • {option.college}
+                                                          {option?.abbreviation && ` • ${option.abbreviation}`}
+                                                        </div>
+                                                      </div>
                                                     </Select.Option>
                                                   )
                                                 })}
