@@ -250,12 +250,6 @@ const CAOCalculator = ({ closePopup }) => {
 
       return newArray
     })
-
-    if (record?.name && record?.level && value) {
-      const updatedGradeId = [...gradeId]
-      updatedGradeId[record.No] = newGradeId
-      calCulateData(updatedGradeId)
-    }
   }
 
   const isDeleteButtonDisabled = dataLength < 6
