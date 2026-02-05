@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useState, useRef } from "react";
 import {
   DndContext,
@@ -44,7 +46,7 @@ import dropdownIcon from "../../assets/dropdownIcon.svg";
 import EditOutlined from "../../assets/uil_edit.svg";
 
 import { Link } from "react-router-dom";
-import {debounce} from 'lodash'
+import { debounce } from 'lodash'
 
 import "./myChoicesEdit.css";
 
@@ -93,7 +95,7 @@ const TertiaryEdit = () => {
     };
   }, []);
 
-  const getChoiceRecord = async (runLoading =  true) => {
+  const getChoiceRecord = async (runLoading = true) => {
     setColums(['title', 'college', 'duration', 'level', 'course_information']);
     setShowRows(10);
     setLoadingFirst(false);
@@ -153,29 +155,29 @@ const TertiaryEdit = () => {
     }
   }, [showRowsData, myData]);
 
-    useEffect(() => {
+  useEffect(() => {
 
-      if (showRows !== null) {
+    if (showRows !== null) {
 
-        const newData = Array.from({ length: showRows }, () => {
+      const newData = Array.from({ length: showRows }, () => {
 
-          const rowData = { dataId: uuid4(), id: null };
+        const rowData = { dataId: uuid4(), id: null };
 
-          columns.forEach((column) => {
+        columns.forEach((column) => {
 
-            rowData[column] = null;
-
-          });
-
-          return rowData;
+          rowData[column] = null;
 
         });
 
-        setShowRowsData(newData);
+        return rowData;
 
-      }
+      });
 
-    }, [showRows]);
+      setShowRowsData(newData);
+
+    }
+
+  }, [showRows]);
 
   const handleChangeTable = (e, rowData) => {
     const { name, value, id } = e.target;
@@ -472,7 +474,7 @@ const TertiaryEdit = () => {
     return () => {
       disableEventListeners(); // Cleanup on component unmount
     };
-  }, [data, enableEventListeners, disableEventListeners]);
+  }, [data]);
   const handleAddRowMobile = async (record) => {
     for (const key in record) {
       if (key !== "id" && record[key] === null) {
@@ -542,9 +544,9 @@ const TertiaryEdit = () => {
 
       ...(isDragging
         ? {
-            position: "relative",
-            zIndex: 9999,
-          }
+          position: "relative",
+          zIndex: 9999,
+        }
         : {}),
     };
 
@@ -608,9 +610,9 @@ const TertiaryEdit = () => {
       cursor: "move",
       ...(isDragging
         ? {
-            position: "relative",
-            zIndex: 9999,
-          }
+          position: "relative",
+          zIndex: 9999,
+        }
         : {}),
     };
 
@@ -645,7 +647,7 @@ const TertiaryEdit = () => {
                   <a onClick={() => eidtThisRow(comingRow)}>
                     <Image
                       preview={false}
-                      src={EditOutlined}
+                      src={EditOutlined || "/placeholder.svg"}
                       style={{
                         color: "#1476b7",
                         cursor: "pointer",
@@ -848,8 +850,8 @@ const TertiaryEdit = () => {
                               return (
                                 <>
                                   {item === "code" ||
-                                  item === "title" ||
-                                  item === "college" ? (
+                                    item === "title" ||
+                                    item === "college" ? (
                                     <>
                                       <Column
                                         title={item.toLowerCase() === 'point' ? 'Points' : capitalizeWords(item)}
@@ -885,7 +887,7 @@ const TertiaryEdit = () => {
                                               suffixIcon={
                                                 <Image
                                                   preview={false}
-                                                  src={dropdownIcon}
+                                                  src={dropdownIcon || "/placeholder.svg"}
                                                   width={15}
                                                   style={{ marginRight: 10 }}
                                                 />
@@ -912,7 +914,7 @@ const TertiaryEdit = () => {
                                                     row={option}
                                                     label={option[item]}
                                                   >
-                                                    {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})`: ''}`}
+                                                    {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})` : ''}`}
                                                   </Select.Option>
                                                 );
                                               })}
@@ -1047,8 +1049,8 @@ const TertiaryEdit = () => {
                         return (
                           <>
                             {item === "code" ||
-                            item === "title" ||
-                            item === "college" ? (
+                              item === "title" ||
+                              item === "college" ? (
                               <>
                                 <Column
                                   title={capitalizeWords(item)}
@@ -1065,9 +1067,8 @@ const TertiaryEdit = () => {
                                           item === "code"
                                             ? text
                                             : !text
-                                            ? undefined
-                                            : `${text ?? ""},${
-                                                record.code ?? ""
+                                              ? undefined
+                                              : `${text ?? ""},${record.code ?? ""
                                               }`
                                         }
                                         optionFilterProp="children"
@@ -1077,9 +1078,8 @@ const TertiaryEdit = () => {
                                           item === "code"
                                             ? text
                                             : !text
-                                            ? undefined
-                                            : `${text ?? ""},${
-                                                record.code ?? ""
+                                              ? undefined
+                                              : `${text ?? ""},${record.code ?? ""
                                               }`
                                         }
                                         bordered={false}
@@ -1087,7 +1087,7 @@ const TertiaryEdit = () => {
                                         suffixIcon={
                                           <Image
                                             preview={false}
-                                            src={dropdownIcon}
+                                            src={dropdownIcon || "/placeholder.svg"}
                                             width={15}
                                             style={{ marginRight: 10 }}
                                           />
@@ -1110,9 +1110,9 @@ const TertiaryEdit = () => {
                                             value,
                                             option,
                                             rowNum +
-                                              data.filter(
-                                                (item) => item.id !== null
-                                              ).length
+                                            data.filter(
+                                              (item) => item.id !== null
+                                            ).length
                                           );
                                         }}
                                         optionLabelProp="label"
@@ -1130,7 +1130,7 @@ const TertiaryEdit = () => {
                                               row={option}
                                               label={option[item]}
                                             >
-                                              {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})`: ''}`}
+                                              {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})` : ''}`}
                                             </Select.Option>
                                           );
                                         })}
@@ -1253,8 +1253,8 @@ const TertiaryEdit = () => {
                                   <div className="remaining-columns">
                                     {columns.map((item, index) =>
                                       item === "code" ||
-                                      item === "title" ||
-                                      item === "college" ? (
+                                        item === "title" ||
+                                        item === "college" ? (
                                         <>
                                           <div
                                             className="column"
@@ -1274,6 +1274,11 @@ const TertiaryEdit = () => {
                                               defaultValue={row[item]}
                                               bordered={false}
                                               popupMatchSelectWidth={false}
+                                              getPopupContainer={(trigger) => trigger.parentNode}
+                                              dropdownStyle={{ width: "calc(100vw - 40px)", maxWidth: "500px" }}
+                                              dropdownRender={(menu) => (
+                                                <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
+                                              )}
                                               onFocus={() => {
                                                 if (!row.editable) {
                                                   eidtThisRow(row);
@@ -1282,7 +1287,7 @@ const TertiaryEdit = () => {
                                               suffixIcon={
                                                 <Image
                                                   preview={false}
-                                                  src={dropdownIcon}
+                                                  src={dropdownIcon || "/placeholder.svg"}
                                                   width={15}
                                                   style={{ marginRight: 10 }}
                                                 />
@@ -1305,7 +1310,15 @@ const TertiaryEdit = () => {
                                                     row={option}
                                                     label={option[item]}
                                                   >
-                                                    {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})`: ''}`}
+                                                    <div style={{ padding: "4px 0" }}>
+                                                      <div style={{ fontWeight: 600, fontSize: "14px", marginBottom: "2px", color: "#1476B7" }}>
+                                                        {option.title}
+                                                      </div>
+                                                      <div style={{ fontSize: "12px", color: "#666" }}>
+                                                        {option.code} • {option.college}
+                                                        {option?.abbreviation && ` • ${option.abbreviation}`}
+                                                      </div>
+                                                    </div>
                                                   </Select.Option>
                                                 );
                                               })}
@@ -1385,7 +1398,7 @@ const TertiaryEdit = () => {
                                           <a onClick={() => eidtThisRow(row)}>
                                             <Image
                                               preview={false}
-                                              src={EditOutlined}
+                                              src={EditOutlined || "/placeholder.svg"}
                                               style={{
                                                 color: "#1476b7",
                                                 cursor: "pointer",
@@ -1417,8 +1430,8 @@ const TertiaryEdit = () => {
                                       {columns.map((item, index) => (
                                         <>
                                           {item === "code" ||
-                                          item === "title" ||
-                                          item === "college" ? (
+                                            item === "title" ||
+                                            item === "college" ? (
                                             <>
                                               <div
                                                 className="column"
@@ -1438,6 +1451,11 @@ const TertiaryEdit = () => {
                                                   defaultValue={row[item]}
                                                   bordered={false}
                                                   popupMatchSelectWidth={false}
+                                                  getPopupContainer={(trigger) => trigger.parentNode}
+                                                  dropdownStyle={{ width: "calc(100vw - 40px)", maxWidth: "500px" }}
+                                                  dropdownRender={(menu) => (
+                                                    <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
+                                                  )}
                                                   onFocus={() => {
                                                     if (!row.editable) {
                                                       eidtThisRow(row);
@@ -1446,7 +1464,7 @@ const TertiaryEdit = () => {
                                                   suffixIcon={
                                                     <Image
                                                       preview={false}
-                                                      src={dropdownIcon}
+                                                      src={dropdownIcon || "/placeholder.svg"}
                                                       width={15}
                                                       style={{
                                                         marginRight: 10,
@@ -1472,7 +1490,15 @@ const TertiaryEdit = () => {
                                                           row={option}
                                                           label={option[item]}
                                                         >
-                                                          {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})`: ''}`}
+                                                          <div style={{ padding: "4px 0" }}>
+                                                            <div style={{ fontWeight: 600, fontSize: "14px", marginBottom: "2px", color: "#1476B7" }}>
+                                                              {option.title}
+                                                            </div>
+                                                            <div style={{ fontSize: "12px", color: "#666" }}>
+                                                              {option.code} • {option.college}
+                                                              {option?.abbreviation && ` • ${option.abbreviation}`}
+                                                            </div>
+                                                          </div>
                                                         </Select.Option>
                                                       );
                                                     }
@@ -1532,7 +1558,7 @@ const TertiaryEdit = () => {
                                     <a onClick={() => eidtThisRow(row)}>
                                       <Image
                                         preview={false}
-                                        src={EditOutlined}
+                                        src={EditOutlined || "/placeholder.svg"}
                                         style={{
                                           color: "#1476b7",
                                           cursor: "pointer",
@@ -1564,8 +1590,8 @@ const TertiaryEdit = () => {
                                 {columns.map((item, index) => (
                                   <>
                                     {item === "code" ||
-                                    item === "title" ||
-                                    item === "college" ? (
+                                      item === "title" ||
+                                      item === "college" ? (
                                       <>
                                         <div
                                           className="column"
@@ -1585,10 +1611,15 @@ const TertiaryEdit = () => {
                                             defaultValue={row[item]}
                                             bordered={false}
                                             popupMatchSelectWidth={false}
+                                            getPopupContainer={(trigger) => trigger.parentNode}
+                                            dropdownStyle={{ width: "calc(100vw - 40px)", maxWidth: "500px" }}
+                                            dropdownRender={(menu) => (
+                                              <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
+                                            )}
                                             suffixIcon={
                                               <Image
                                                 preview={false}
-                                                src={dropdownIcon}
+                                                src={dropdownIcon || "/placeholder.svg"}
                                                 width={15}
                                                 style={{
                                                   marginRight: 10,
@@ -1613,7 +1644,15 @@ const TertiaryEdit = () => {
                                                   row={option}
                                                   label={option[item]}
                                                 >
-                                                  {`${option.title}, ${option.code}, ${option.college} ${option?.abbreviation ? `, (${option?.abbreviation})`: ''}`}
+                                                  <div style={{ padding: "4px 0" }}>
+                                                    <div style={{ fontWeight: 600, fontSize: "14px", marginBottom: "2px", color: "#1476B7" }}>
+                                                      {option.title}
+                                                    </div>
+                                                    <div style={{ fontSize: "12px", color: "#666" }}>
+                                                      {option.code} • {option.college}
+                                                      {option?.abbreviation && ` • ${option.abbreviation}`}
+                                                    </div>
+                                                  </div>
                                                 </Select.Option>
                                               );
                                             })}
