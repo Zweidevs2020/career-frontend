@@ -313,7 +313,6 @@ const DaySeven = () => {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       if (isDirty) {
-        autoSave(formDataRef.current);
       }
     };
   }, [isDirty]);
@@ -321,7 +320,7 @@ const DaySeven = () => {
   // Handle date change
   const handleDateChange = (date, dateString) => {
     setFormData({ ...formData, date: dateString });
-    setIsDirty(true);
+    setIsDirty(true); sessionStorage.setItem("unsave", "true");
   };
 
   // Handle input changes for both text and job fields
@@ -334,7 +333,7 @@ const DaySeven = () => {
     } else {
       setFormData({ ...formData, [field]: value });
     }
-    setIsDirty(true);
+    setIsDirty(true); sessionStorage.setItem("unsave", "true");
   };
 
   const populateForm = async (data) => {
@@ -497,7 +496,7 @@ const DaySeven = () => {
         const apiUrl = API_URL.WORK_DIARY;
         await postApiWithoutAuth(apiUrl, payload);
         message.success("Data submitted successfully!");
-        setIsDirty(false);
+        setIsDirty(false); sessionStorage.removeItem("unsave");
       } catch (error) {
         message.error("Something went wrong while submitting data.");
         console.error("Error:", error);
@@ -510,7 +509,7 @@ const DaySeven = () => {
         const url = `${API_URL.WORK_DIARY}update-day/?day=Day7`; // Adjust day dynamically as needed
         const response = await putApiWithAuth(url, updatePayload);
         message.success("Data updated successfully!");
-        setIsDirty(false);
+        setIsDirty(false); sessionStorage.removeItem("unsave");
       } catch (error) {
         message.error("Something went wrong while updating data.");
         console.error("Error:", error);
@@ -531,7 +530,7 @@ const DaySeven = () => {
       thoughtsAndFeelings: "",
     };
     setFormData(initialFormData);
-    setIsDirty(false);
+    setIsDirty(false); sessionStorage.removeItem("unsave");
   };
 
   useEffect(() => {

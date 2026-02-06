@@ -104,7 +104,6 @@ const DayTwo = () => {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       if (isDirty) {
-        autoSave(formDataRef.current);
       }
     };
   }, [isDirty]);
@@ -367,7 +366,7 @@ const DayTwo = () => {
         const apiUrl = API_URL.WORK_DIARY;
         await postApiWithoutAuth(apiUrl, payload);
         message.success("Data submitted successfully!");
-        setIsDirty(false);
+        setIsDirty(false); sessionStorage.removeItem("unsave");
       } catch (error) {
         message.error("Something went wrong while submitting data.");
         console.error("Error:", error);
@@ -380,7 +379,7 @@ const DayTwo = () => {
         const url = `${API_URL.WORK_DIARY}update-day/?day=Day2`; // Adjust day dynamically as needed
         const response = await putApiWithAuth(url, updatePayload);
         message.success("Data updated successfully!");
-        setIsDirty(false);
+        setIsDirty(false); sessionStorage.removeItem("unsave");
       } catch (error) {
         message.error("Something went wrong while updating data.");
         console.error("Error:", error);
@@ -405,7 +404,7 @@ const DayTwo = () => {
       breakTimes: "",
       lunchActivity: "",
     });
-    setIsDirty(false);
+    setIsDirty(false); sessionStorage.removeItem("unsave");
   };
 
   // Fetch diary data on mount
@@ -426,7 +425,7 @@ const DayTwo = () => {
             style={{ width: "100%" }}
             onChange={(date, dateString) => {
               setFormData({ ...formData, date: dateString });
-              setIsDirty(true);
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
             }}
             value={formData.date ? moment(formData.date) : null}
           />
@@ -437,7 +436,7 @@ const DayTwo = () => {
             value={formData.onTime}
             onChange={(e) => {
               setFormData({ ...formData, onTime: e.target.value });
-              setIsDirty(true);
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
             }}
           >
             <Radio value="Yes">Yes</Radio>
@@ -451,7 +450,7 @@ const DayTwo = () => {
               value={formData.reasonForLateness}
               onChange={(e) => {
                 setFormData({ ...formData, reasonForLateness: e.target.value });
-                setIsDirty(true);
+                setIsDirty(true); sessionStorage.setItem("unsave", "true");
               }}
               placeholder="Provide a reason"
             />
@@ -463,7 +462,7 @@ const DayTwo = () => {
             value={formData.whoMetOnArrival}
             onChange={(e) => {
               setFormData({ ...formData, whoMetOnArrival: e.target.value });
-              setIsDirty(true);
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
             }}
             placeholder="Enter name"
           />
@@ -474,7 +473,7 @@ const DayTwo = () => {
             value={formData.supervisorName}
             onChange={(e) => {
               setFormData({ ...formData, supervisorName: e.target.value });
-              setIsDirty(true);
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
             }}
             placeholder="Enter supervisor's name"
           />
@@ -485,7 +484,7 @@ const DayTwo = () => {
             value={formData.peopleCount}
             onChange={(e) => {
               setFormData({ ...formData, peopleCount: e.target.value });
-              setIsDirty(true);
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
             }}
             placeholder="Enter the number of people"
           />
@@ -506,7 +505,7 @@ const DayTwo = () => {
                           idx === index ? e.target.value : j
                         ),
                       });
-                      setIsDirty(true);
+                      setIsDirty(true); sessionStorage.setItem("unsave", "true");
                     }}
                     placeholder={`Job ${index + 1}`}
                   />
@@ -521,7 +520,7 @@ const DayTwo = () => {
             value={formData.ableToDoTasks}
             onChange={(e) => {
               setFormData({ ...formData, ableToDoTasks: e.target.value });
-              setIsDirty(true);
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
             }}
             rows={4}
             placeholder="Explain if you were able to do the tasks"
@@ -533,7 +532,7 @@ const DayTwo = () => {
             value={formData.breakTimes}
             onChange={(e) => {
               setFormData({ ...formData, breakTimes: e.target.value });
-              setIsDirty(true);
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
             }}
             rows={4}
             placeholder="Describe your break times"
@@ -545,7 +544,7 @@ const DayTwo = () => {
             value={formData.lunchActivity}
             onChange={(e) => {
               setFormData({ ...formData, lunchActivity: e.target.value });
-              setIsDirty(true);
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
             }}
             rows={4}
             placeholder="Describe what you did at lunchtime"

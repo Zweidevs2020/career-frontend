@@ -103,7 +103,6 @@ const DayOne = () => {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       if (isDirty) {
-        autoSave(formDataRef.current);
       }
     };
   }, [isDirty]);
@@ -290,7 +289,7 @@ const DayOne = () => {
         const url = `${API_URL.WORK_DIARY}update-day/?day=Day1`;
         const response = await putApiWithAuth(url, updatePayload);
         message.success("Data updated successfully!");
-        setIsDirty(false);
+        setIsDirty(false); sessionStorage.removeItem("unsave");
       } catch (error) {
         message.error("Something went wrong while updating data.");
         console.error("Error:", error);
@@ -303,7 +302,7 @@ const DayOne = () => {
         const apiUrl = API_URL.WORK_DIARY;
         await postApiWithoutAuth(apiUrl, payload);
         message.success("Data submitted successfully!");
-        setIsDirty(false);
+        setIsDirty(false); sessionStorage.removeItem("unsave");
       } catch (error) {
         message.error("Something went wrong while submitting the data.");
         console.error("Error:", error);
@@ -329,7 +328,7 @@ const DayOne = () => {
       reasonForLateness: "",
       whoMetOnArrival: "",
     });
-    setIsDirty(false);
+    setIsDirty(false); sessionStorage.removeItem("unsave");
   };
 
   useEffect(() => {
@@ -349,7 +348,7 @@ const DayOne = () => {
             style={{ width: "100%", marginTop: "8px" }}
             onChange={(date, dateString) => {
               setFormData({ ...formData, date: dateString });
-              setIsDirty(true);
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
             }}
             value={formData.date ? moment(formData.date) : null}
           />
@@ -364,7 +363,7 @@ const DayOne = () => {
             value={formData.onTime}
             onChange={(e) => {
               setFormData({ ...formData, onTime: e.target.value });
-              setIsDirty(true);
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
             }}
             style={{ display: "flex", gap: "16px" }}
           >
@@ -384,7 +383,7 @@ const DayOne = () => {
               value={formData.reasonForLateness}
               onChange={(e) => {
                 setFormData({ ...formData, reasonForLateness: e.target.value });
-                setIsDirty(true);
+                setIsDirty(true); sessionStorage.setItem("unsave", "true");
               }}
               placeholder="Explain the reason for lateness"
             />
@@ -401,7 +400,7 @@ const DayOne = () => {
             value={formData.whoMetOnArrival}
             onChange={(e) => {
               setFormData({ ...formData, whoMetOnArrival: e.target.value });
-              setIsDirty(true);
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
             }}
             placeholder="Enter the name of the person you met"
           />
@@ -418,7 +417,7 @@ const DayOne = () => {
             value={formData.supervisorName}
             onChange={(e) => {
               setFormData({ ...formData, supervisorName: e.target.value });
-              setIsDirty(true);
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
             }}
             placeholder="Enter supervisor's name"
           />
@@ -435,7 +434,7 @@ const DayOne = () => {
             value={formData.peopleCount}
             onChange={(e) => {
               setFormData({ ...formData, peopleCount: e.target.value });
-              setIsDirty(true);
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
             }}
             placeholder="Enter the number"
           />
@@ -459,7 +458,7 @@ const DayOne = () => {
                           idx === index ? e.target.value : j
                         ),
                       });
-                      setIsDirty(true);
+                      setIsDirty(true); sessionStorage.setItem("unsave", "true");
                     }}
                     placeholder={`Job ${index + 1}`}
                   />
@@ -478,7 +477,7 @@ const DayOne = () => {
             value={formData.ableToDoTasks}
             onChange={(e) => {
               setFormData({ ...formData, ableToDoTasks: e.target.value });
-              setIsDirty(true);
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
             }}
             rows={4}
             placeholder="Explain if you were able to do them."
@@ -495,7 +494,7 @@ const DayOne = () => {
             value={formData.breakTimes}
             onChange={(e) => {
               setFormData({ ...formData, breakTimes: e.target.value });
-              setIsDirty(true);
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
             }}
             rows={4}
             placeholder="Describe your break times."
@@ -512,7 +511,7 @@ const DayOne = () => {
             value={formData.lunchActivity}
             onChange={(e) => {
               setFormData({ ...formData, lunchActivity: e.target.value });
-              setIsDirty(true);
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
             }}
             rows={4}
             placeholder="Describe your lunch activity."

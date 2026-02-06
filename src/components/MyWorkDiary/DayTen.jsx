@@ -121,7 +121,6 @@ const DayTen = () => {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       if (isDirty) {
-        autoSave(formDataRef.current);
       }
     };
   }, [isDirty]);
@@ -129,7 +128,7 @@ const DayTen = () => {
   // Handle date change
   const handleDateChange = (date, dateString) => {
     setFormData({ ...formData, date: dateString });
-    setIsDirty(true);
+    setIsDirty(true); sessionStorage.setItem("unsave", "true");
   };
 
   // Handle input changes for both text and skill fields
@@ -142,13 +141,13 @@ const DayTen = () => {
     } else {
       setFormData({ ...formData, [field]: value });
     }
-    setIsDirty(true);
+    setIsDirty(true); sessionStorage.setItem("unsave", "true");
   };
 
   // Handle radio button changes for yes/no fields
   const handleRadioChange = (e, field) => {
     setFormData({ ...formData, [field]: e.target.value });
-    setIsDirty(true);
+    setIsDirty(true); sessionStorage.setItem("unsave", "true");
   };
 
   // Handle performance rating changes
@@ -157,7 +156,7 @@ const DayTen = () => {
       ...formData,
       performanceRatings: { ...formData.performanceRatings, [field]: value },
     });
-    setIsDirty(true);
+    setIsDirty(true); sessionStorage.setItem("unsave", "true");
   };
 
   // Handle form reset
@@ -182,7 +181,7 @@ const DayTen = () => {
       comparisonDifference: "",
     };
     setFormData(initialFormData);
-    setIsDirty(false);
+    setIsDirty(false); sessionStorage.removeItem("unsave");
   };
 
   const populateForm = async (data) => {
@@ -340,7 +339,7 @@ const DayTen = () => {
       const response = await putApiWithAuth(url, updatePayload);
       console.log("Updated data:", updatePayload);
       message.success("Data updated successfully!");
-      setIsDirty(false);
+      setIsDirty(false); sessionStorage.removeItem("unsave");
     } catch (error) {
       message.error("Something went wrong while updating data.");
       console.error("Error:", error);
