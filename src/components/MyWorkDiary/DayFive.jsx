@@ -303,10 +303,99 @@ const DayFive = () => {
 
   const [formData, setFormData] = useState(savedFormData);
   const [loading, setLoading] = useState(false);
+  const [isDirty, setIsDirty] = useState(false);
+  const formDataRef = React.useRef(formData);
+
+  useEffect(() => {
+    formDataRef.current = formData;
+  }, [formData]);
+
+  const autoSave = async (data) => {
+    const questionsAndAnswers = [
+      ...data.jobs.map((job, index) => ({
+        question: `Job ${index + 1}`,
+        answer: job,
+      })),
+      {
+        question: "Have you made any progress on achieving your goal (p37)?",
+        answer: data.goalProgress,
+      },
+      data.goalProgress === "No" && {
+        question: "Why did you make or not make progress?",
+        answer: data.whyProgress,
+      },
+      {
+        question: "How was your timekeeping?",
+        answer: data.timekeeping,
+      },
+      {
+        question: "What is your personal presentation like?",
+        answer: data.presentation,
+      },
+      {
+        question: "How are you completing your tasks?",
+        answer: data.taskCompletion,
+      },
+      {
+        question: "What was the worst part of the first five days?",
+        answer: data.worstPart,
+      },
+      {
+        question: "How can you improve this for next week?",
+        answer: data.improvement,
+      },
+    ].filter(Boolean);
+
+    const payload = [
+      {
+        day: "Day5",
+        date: data.date || "",
+        questionsAndAnswers: questionsAndAnswers,
+      },
+    ];
+
+    const updatePayload = {
+      day: "Day5",
+      date: data.date || "",
+      questionsAndAnswers: questionsAndAnswers,
+    };
+
+    if (data.date) {
+      try {
+        const url = `${API_URL.WORK_DIARY}update-day/?day=Day5`;
+        await putApiWithAuth(url, updatePayload);
+      } catch (error) {
+        console.error("Auto-save error:", error);
+      }
+    } else {
+      try {
+        await postApiWithoutAuth(API_URL.WORK_DIARY, payload);
+      } catch (error) {
+        console.error("Auto-save error:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (isDirty) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      if (isDirty) {
+        autoSave(formDataRef.current);
+      }
+    };
+  }, [isDirty]);
 
   // Handle date change
   const handleDateChange = (date, dateString) => {
     setFormData({ ...formData, date: dateString });
+    setIsDirty(true);
   };
 
   // Handle input changes for both text and job fields
@@ -319,6 +408,7 @@ const DayFive = () => {
     } else {
       setFormData({ ...formData, [field]: value });
     }
+    setIsDirty(true);
   };
 
   const populateForm = async (data) => {
@@ -489,6 +579,7 @@ const DayFive = () => {
         const apiUrl = API_URL.WORK_DIARY;
         await postApiWithoutAuth(apiUrl, payload);
         message.success("Data submitted successfully!");
+        setIsDirty(false);
       } catch (error) {
         message.error("Something went wrong while submitting data.");
         console.error("Error:", error);
@@ -501,6 +592,7 @@ const DayFive = () => {
         const url = `${API_URL.WORK_DIARY}update-day/?day=Day5`; // Adjust day dynamically as needed
         const response = await putApiWithAuth(url, updatePayload);
         message.success("Data updated successfully!");
+        setIsDirty(false);
       } catch (error) {
         message.error("Something went wrong while updating data.");
         console.error("Error:", error);
@@ -524,7 +616,7 @@ const DayFive = () => {
       improvement: "",
     };
     setFormData(initialFormData);
-    localStorage.setItem("dayFiveFormData", JSON.stringify(initialFormData)); // Reset localStorage
+    setIsDirty(false);
   };
 
   useEffect(() => {
@@ -665,14 +757,14 @@ const DayFive = () => {
         {/* Submit Button */}
         <Col span={24} style={{ textAlign: "right", marginTop: "16px" }}>
           <Button
-            className="border-blue-500"
+            type="primary"
             onClick={handleSubmit}
             loading={loading}
-            style={{ marginRight: "8px" }}
+            style={{ marginRight: "8px", backgroundColor: "#1476B7" }}
           >
             Submit
           </Button>
-          <Button type="default" onClick={handleReset}>
+          <Button type="default" onClick={handleReset} style={{ backgroundColor: "#F5222D", color: "white" }}>
             Reset
           </Button>
         </Col>

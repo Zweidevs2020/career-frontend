@@ -241,10 +241,87 @@ const DaySeven = () => {
 
   const [formData, setFormData] = useState(savedFormData);
   const [loading, setLoading] = useState(false);
+  const [isDirty, setIsDirty] = useState(false);
+  const formDataRef = React.useRef(formData);
+
+  useEffect(() => {
+    formDataRef.current = formData;
+  }, [formData]);
+
+  const autoSave = async (data) => {
+    const questionsAndAnswers = [
+      ...data.jobs.map((job, index) => ({
+        question: `Job ${index + 1}`,
+        answer: job,
+      })),
+      {
+        question: "What skills are needed for your job?",
+        answer: data.skillsNeeded,
+      },
+      {
+        question: "Do your skills fit this line of work? Why?",
+        answer: data.skillsFit,
+      },
+      {
+        question: "Do you think you need further education?",
+        answer: data.furtherEducation,
+      },
+      {
+        question: "What were your thoughts and feelings about the day?",
+        answer: data.thoughtsAndFeelings,
+      },
+    ];
+
+    const payload = [
+      {
+        day: "Day7",
+        date: data.date || "",
+        questionsAndAnswers: questionsAndAnswers,
+      },
+    ];
+
+    const updatePayload = {
+      day: "Day7",
+      date: data.date || "",
+      questionsAndAnswers: questionsAndAnswers,
+    };
+
+    if (data.date) {
+      try {
+        const url = `${API_URL.WORK_DIARY}update-day/?day=Day7`;
+        await putApiWithAuth(url, updatePayload);
+      } catch (error) {
+        console.error("Auto-save error:", error);
+      }
+    } else {
+      try {
+        await postApiWithoutAuth(API_URL.WORK_DIARY, payload);
+      } catch (error) {
+        console.error("Auto-save error:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (isDirty) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      if (isDirty) {
+        autoSave(formDataRef.current);
+      }
+    };
+  }, [isDirty]);
 
   // Handle date change
   const handleDateChange = (date, dateString) => {
     setFormData({ ...formData, date: dateString });
+    setIsDirty(true);
   };
 
   // Handle input changes for both text and job fields
@@ -257,6 +334,7 @@ const DaySeven = () => {
     } else {
       setFormData({ ...formData, [field]: value });
     }
+    setIsDirty(true);
   };
 
   const populateForm = async (data) => {
@@ -419,6 +497,7 @@ const DaySeven = () => {
         const apiUrl = API_URL.WORK_DIARY;
         await postApiWithoutAuth(apiUrl, payload);
         message.success("Data submitted successfully!");
+        setIsDirty(false);
       } catch (error) {
         message.error("Something went wrong while submitting data.");
         console.error("Error:", error);
@@ -431,6 +510,7 @@ const DaySeven = () => {
         const url = `${API_URL.WORK_DIARY}update-day/?day=Day7`; // Adjust day dynamically as needed
         const response = await putApiWithAuth(url, updatePayload);
         message.success("Data updated successfully!");
+        setIsDirty(false);
       } catch (error) {
         message.error("Something went wrong while updating data.");
         console.error("Error:", error);
@@ -451,6 +531,7 @@ const DaySeven = () => {
       thoughtsAndFeelings: "",
     };
     setFormData(initialFormData);
+    setIsDirty(false);
   };
 
   useEffect(() => {
@@ -550,13 +631,14 @@ const DaySeven = () => {
         {/* Submit Button */}
         <Col span={24} style={{ textAlign: "right", marginTop: "16px" }}>
           <Button
+            type="primary"
             onClick={handleSubmit}
             loading={loading}
-            style={{ marginRight: "8px" }}
+            style={{ marginRight: "8px", backgroundColor: "#1476B7" }}
           >
             Submit
           </Button>
-          <Button type="default" onClick={handleReset}>
+          <Button type="default" onClick={handleReset} style={{ backgroundColor: "#F5222D", color: "white" }}>
             Reset
           </Button>
         </Col>
