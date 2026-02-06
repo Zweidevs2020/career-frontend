@@ -20,10 +20,84 @@ const DayNine = () => {
 
   const [formData, setFormData] = useState(savedFormData);
   const [loading, setLoading] = useState(false);
+  const [isDirty, setIsDirty] = useState(false);
+  const formDataRef = React.useRef(formData);
+
+  useEffect(() => {
+    formDataRef.current = formData;
+  }, [formData]);
+
+  const autoSave = async (data) => {
+    const questionsAndAnswers = [
+      {
+        question: "Jobs performed",
+        answer: data.jobs.join(", "),
+      },
+      {
+        question:
+          "What haven't you done that you'd like to do to achieve your goal?",
+        answer: data.goalAchievePlan || "",
+      },
+      {
+        question: "How will you implement this on your last day?",
+        answer: data.lastDayImplementation || "",
+      },
+      {
+        question: "What were your thoughts and feelings about the day?",
+        answer: data.thoughtsAndFeelings || "",
+      },
+    ];
+
+    const payload = [
+      {
+        day: "Day9",
+        date: data.date || "",
+        questionsAndAnswers: questionsAndAnswers,
+      },
+    ];
+
+    const updatePayload = {
+      day: "Day9",
+      date: data.date || "",
+      questionsAndAnswers: questionsAndAnswers,
+    };
+
+    if (data.date) {
+      try {
+        const url = `${API_URL.WORK_DIARY}update-day/?day=Day9`;
+        await putApiWithAuth(url, updatePayload);
+      } catch (error) {
+        console.error("Auto-save error:", error);
+      }
+    } else {
+      try {
+        await postApiWithoutAuth(API_URL.WORK_DIARY, payload);
+      } catch (error) {
+        console.error("Auto-save error:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (isDirty) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      if (isDirty) {
+        autoSave(formDataRef.current);
+      }
+    };
+  }, [isDirty]);
 
   // Handle date change
   const handleDateChange = (date, dateString) => {
     setFormData({ ...formData, date: dateString });
+    setIsDirty(true);
   };
 
   // Handle input changes for both text and job fields
@@ -36,6 +110,7 @@ const DayNine = () => {
     } else {
       setFormData({ ...formData, [field]: value });
     }
+    setIsDirty(true);
   };
 
   // Handle form reset
@@ -48,6 +123,7 @@ const DayNine = () => {
       thoughtsAndFeelings: "",
     };
     setFormData(initialFormData);
+    setIsDirty(false);
   };
 
   const populateForm = async (data) => {
@@ -171,6 +247,7 @@ const DayNine = () => {
       await putApiWithAuth(url, updatePayload);
       console.log("Updated data:", updatePayload);
       message.success("Data updated successfully!");
+      setIsDirty(false);
     } catch (error) {
       message.error("Something went wrong while updating data.");
       console.error("Error:", error);
@@ -263,14 +340,16 @@ const DayNine = () => {
         {/* Submit Button */}
         <Col span={24} style={{ textAlign: "right", marginTop: "16px" }}>
           <Button
-            className="border-blue-500"
+            type="primary"
             onClick={handleSubmit}
             loading={loading}
-            style={{ marginRight: "8px" }}
+            style={{ marginRight: "8px", backgroundColor: "#1476B7" }}
           >
             Submit
           </Button>
-          <Button onClick={handleReset}>Reset</Button>
+          <Button type="default" onClick={handleReset} style={{ backgroundColor: "#F5222D", color: "white" }}>
+            Reset
+          </Button>
         </Col>
       </Row>
     </div>

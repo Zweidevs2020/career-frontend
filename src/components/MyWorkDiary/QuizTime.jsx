@@ -188,10 +188,16 @@ const QuizTime = () => {
 
         {/* Submit Button */}
         <Col span={24} style={{ textAlign: "end", marginTop: "24px" }}>
-          <Button style={{ marginRight: "8px" }} onClick={handleSubmit}>
+          <Button
+            type="primary"
+            style={{ marginRight: "8px", backgroundColor: "#1476B7" }}
+            onClick={handleSubmit}
+          >
             Submit
           </Button>
-          <Button onClick={handleReset}>Reset</Button>
+          <Button type="default" onClick={handleReset} style={{ backgroundColor: "#F5222D", color: "white" }}>
+            Reset
+          </Button>
         </Col>
 
         {/* Score Display */}
