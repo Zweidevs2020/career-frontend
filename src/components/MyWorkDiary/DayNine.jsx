@@ -89,7 +89,6 @@ const DayNine = () => {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       if (isDirty) {
-        autoSave(formDataRef.current);
       }
     };
   }, [isDirty]);
@@ -97,7 +96,7 @@ const DayNine = () => {
   // Handle date change
   const handleDateChange = (date, dateString) => {
     setFormData({ ...formData, date: dateString });
-    setIsDirty(true);
+    setIsDirty(true); sessionStorage.setItem("unsave", "true");
   };
 
   // Handle input changes for both text and job fields
@@ -110,7 +109,7 @@ const DayNine = () => {
     } else {
       setFormData({ ...formData, [field]: value });
     }
-    setIsDirty(true);
+    setIsDirty(true); sessionStorage.setItem("unsave", "true");
   };
 
   // Handle form reset
@@ -123,7 +122,7 @@ const DayNine = () => {
       thoughtsAndFeelings: "",
     };
     setFormData(initialFormData);
-    setIsDirty(false);
+    setIsDirty(false); sessionStorage.removeItem("unsave");
   };
 
   const populateForm = async (data) => {
@@ -247,7 +246,7 @@ const DayNine = () => {
       await putApiWithAuth(url, updatePayload);
       console.log("Updated data:", updatePayload);
       message.success("Data updated successfully!");
-      setIsDirty(false);
+      setIsDirty(false); sessionStorage.removeItem("unsave");
     } catch (error) {
       message.error("Something went wrong while updating data.");
       console.error("Error:", error);

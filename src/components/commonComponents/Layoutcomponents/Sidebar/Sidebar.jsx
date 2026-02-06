@@ -209,16 +209,28 @@ const Sidebar = ({ children, flags }) => {
   };
 
   const componentsSwtich = (key) => {
-    // If currently on "MyChoices" and trying to leave, show confirmation
-    // if (location.pathname === "/my-choice-edit" && key !== "MyChoices") {
-    //   const confirmSwitch = window.confirm(
-    //     "Are you sure you want to change routes? "
-    //   );
-    //   if (!confirmSwitch) {
-    //     // If the user cancels, don't switch the route
-    //     return;
-    //   }
-    // }
+    // If currently on a page with unsaved changes and trying to leave, show confirmation
+    if (
+      sessionStorage.getItem("unsave") &&
+      sessionStorage.getItem("unsave") === "true"
+    ) {
+      Modal.confirm({
+        title: "Unsaved Changes",
+        content: "You have unsaved changes. Are you sure you want to leave this page?",
+        okText: "Leave",
+        cancelText: "Stay",
+        okButtonProps: { type: "primary", danger: true },
+        onOk: () => {
+          sessionStorage.removeItem("unsave");
+          performNavigation(key);
+        },
+      });
+      return;
+    }
+    performNavigation(key);
+  };
+
+  const performNavigation = (key) => {
     setSelectedMenuItem(key);
 
     if (key === "Overview") {
@@ -335,19 +347,7 @@ const Sidebar = ({ children, flags }) => {
                 mode="inline"
                 className="sideBarStyle"
                 onClick={(e) => {
-                  if (
-                    sessionStorage.getItem("unsave") &&
-                    Boolean(sessionStorage.getItem("unsave"))
-                  ) {
-                    const confirm = window.confirm(
-                      "You have unsaved changes. Are you sure you want to leave this page?"
-                    );
-                    if (confirm) {
-                      componentsSwtich(e.key);
-                    }
-                  } else {
-                    componentsSwtich(e.key);
-                  }
+                  componentsSwtich(e.key);
                 }}
               >
                 <Menu.Item
@@ -903,12 +903,14 @@ const Sidebar = ({ children, flags }) => {
               selectedKeys={selectedMenuItem}
               mode="inline"
               className=""
-              onClick={(e) => componentsSwtich(e.key)}
+              onClick={(e) => {
+                componentsSwtich(e.key);
+              }}
             >
               <Menu.Item
                 key="Overview"
                 onClick={() => {
-                  componentsSwtich("Overview"); // You can keep this line if needed
+                  // Handled by Menu.onClick
                   onClose(); // Close the Drawer
                 }}
               >
