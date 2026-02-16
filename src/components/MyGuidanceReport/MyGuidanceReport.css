@@ -1,3 +1,126 @@
+.questionCard {
+  transition: all 0.3s ease;
+  border: none !important;
+}
+
+.mainWizardCard {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wizardBtnDefault {
+  background: white !important;
+  color: #1476B7 !important;
+  border: 2px solid #1476B7 !important;
+  font-weight: 600 !important;
+  transition: all 0.3s !important;
+}
+
+.wizardBtnDefault:hover {
+  background: #f0f7ff !important;
+  transform: scale(1.02);
+}
+
+.wizardBtnActive {
+  background: #1476B7 !important;
+  color: white !important;
+  border: 2px solid #1476B7 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 12px rgba(20, 118, 183, 0.4) !important;
+}
+
+.optionCardDefault {
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 15px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s;
+}
+
+.optionCardDefault:hover {
+  border-color: #1476B7;
+  background: #f9fafb;
+}
+
+.optionCardActive {
+  background: #1476B7;
+  border: 1px solid #1476B7;
+  border-radius: 12px;
+  padding: 15px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 10px rgba(20, 118, 183, 0.2);
+}
+
+.customCheckbox .ant-checkbox-inner {
+  border-radius: 4px;
+}
+
+.navBtnPrimary {
+  background: #1476B7 !important;
+  border: none !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  height: 48px !important;
+  padding: 0 30px !important;
+  box-shadow: 0 4px 10px rgba(20, 118, 183, 0.3) !important;
+}
+
+.navBtnSecondary {
+  background: white !important;
+  border: 2px solid #E5E7EB !important;
+  border-radius: 10px !important;
+  color: #4B5563 !important;
+  font-weight: 600 !important;
+  height: 48px !important;
+  transition: all 0.2s !important;
+}
+
+.navBtnSecondary:hover:not(:disabled) {
+  border-color: #9CA3AF !important;
+  color: #1F2937 !important;
+  background: #F9FAFB !important;
+}
+
+.recentReportBtn {
+  color: #1476B7 !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  text-decoration: underline !important;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.welcomeHaddingText {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1476B7;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.ant-progress-inner {
+  background-color: #d1d5db !important;
+}
+
+.ant-btn-primary {
+  box-shadow: 0 2px 4px rgba(20, 118, 183, 0.3);
+}
+
+.ant-btn-default:hover {
+  color: #1476B7 !important;
+  border-color: #1476B7 !important;
+}
+
 .noDataChoices {
   display: flex;
   justify-content: center;
