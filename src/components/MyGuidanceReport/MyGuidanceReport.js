@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from "react"
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api"
 import {
   Button,
-  Checkbox,
   Form,
   Layout,
   Row,
@@ -664,11 +663,8 @@ const MyChoices = () => {
                   <div
                     onClick={() => handleCheckboxChange({ target: { name: opt.name, checked: !checkboxes[opt.name] } })}
                     className={checkboxes[opt.name] ? "optionCardActive" : "optionCardDefault"}
+                    style={{ justifyContent: "center" }}
                   >
-                    <Checkbox
-                      checked={checkboxes[opt.name]}
-                      className="customCheckbox"
-                    />
                     <Text strong style={{ color: checkboxes[opt.name] ? "#FFFFFF" : "#374151", fontSize: "15px" }}>
                       {opt.label}
                     </Text>

@@ -15,17 +15,21 @@
   transition: all 0.3s !important;
 }
 
-.wizardBtnDefault:hover {
-  background: #f0f7ff !important;
-  transform: scale(1.02);
-}
-
 .wizardBtnActive {
   background: #1476B7 !important;
   color: white !important;
   border: 2px solid #1476B7 !important;
   font-weight: 700 !important;
   box-shadow: 0 4px 12px rgba(20, 118, 183, 0.4) !important;
+}
+
+.wizardBtnActive:hover, .wizardBtnActive:focus {
+  background: #1476B7 !important;
+  color: white !important;
+}
+
+.wizardBtnActive span {
+  color: white !important;
 }
 
 .optionCardDefault {
@@ -40,14 +44,9 @@
   transition: all 0.2s;
 }
 
-.optionCardDefault:hover {
-  border-color: #1476B7;
-  background: #f9fafb;
-}
-
 .optionCardActive {
-  background: #1476B7;
-  border: 1px solid #1476B7;
+  background: #1476B7 !important;
+  border: 1px solid #1476B7 !important;
   border-radius: 12px;
   padding: 15px 20px;
   cursor: pointer;
@@ -55,6 +54,18 @@
   align-items: center;
   gap: 12px;
   box-shadow: 0 4px 10px rgba(20, 118, 183, 0.2);
+}
+
+.optionCardActive span {
+  color: #FFFFFF !important;
+}
+
+.optionCardActive:hover span {
+  color: #FFFFFF !important;
+}
+
+.optionCardDefault span {
+  transition: color 0.2s;
 }
 
 .customCheckbox .ant-checkbox-inner {
