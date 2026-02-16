@@ -259,6 +259,10 @@ const MyChoices = () => {
       [name]: true,
       [otherName]: false,
     })
+    // Auto advance for YES/NO questions
+    setTimeout(() => {
+      handleNext()
+    }, 300)
   }
 
   const handleNext = () => {
@@ -663,8 +667,10 @@ const MyChoices = () => {
                   <div
                     onClick={() => handleCheckboxChange({ target: { name: opt.name, checked: !checkboxes[opt.name] } })}
                     className={checkboxes[opt.name] ? "optionCardActive" : "optionCardDefault"}
-                    style={{ justifyContent: "center" }}
                   >
+                    <div className="selectionCircle">
+                      {checkboxes[opt.name] && <div className="selectionInner" />}
+                    </div>
                     <Text strong style={{ color: checkboxes[opt.name] ? "#FFFFFF" : "#374151", fontSize: "15px" }}>
                       {opt.label}
                     </Text>
@@ -688,24 +694,28 @@ const MyChoices = () => {
           </Button>
 
           <Space size={15}>
-            <Button
-              onClick={handleSkip}
-              size="large"
-              className="navBtnSecondary"
-            >
-              Skip
-            </Button>
-            <Button
-              type="primary"
-              onClick={handleNext}
-              loading={loading && currentStep === questions.length - 1}
-              size="large"
-              className="navBtnPrimary"
-              icon={currentStep === questions.length - 1 ? <CheckCircleOutlined /> : <ArrowRightOutlined />}
-              iconPosition="right"
-            >
-              {currentStep === questions.length - 1 ? "Generate Report" : "Next"}
-            </Button>
+            {question.type === "multiple" && (
+              <>
+                <Button
+                  onClick={handleSkip}
+                  size="large"
+                  className="navBtnSecondary"
+                >
+                  Skip
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={handleNext}
+                  loading={loading && currentStep === questions.length - 1}
+                  size="large"
+                  className="navBtnPrimary"
+                  icon={currentStep === questions.length - 1 ? <CheckCircleOutlined /> : <ArrowRightOutlined />}
+                  iconPosition="right"
+                >
+                  {currentStep === questions.length - 1 ? "Generate Report" : "Next"}
+                </Button>
+              </>
+            )}
           </Space>
         </div>
       </Card>
