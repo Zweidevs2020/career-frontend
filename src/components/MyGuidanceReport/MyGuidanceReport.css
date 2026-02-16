@@ -64,6 +64,30 @@
   color: #FFFFFF !important;
 }
 
+.selectionCircle {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid #E5E7EB;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.optionCardActive .selectionCircle {
+  border-color: white;
+  background: transparent;
+}
+
+.selectionInner {
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 2px;
+}
+
 .optionCardDefault span {
   transition: color 0.2s;
 }
