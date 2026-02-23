@@ -284,6 +284,8 @@ const Sidebar = ({ children, flags }) => {
       setSelectedMenuItem("ChatBot");
     } else if (location.pathname === "/work-diary") {
       setSelectedMenuItem("Work");
+    } else if (location.pathname === "/my-study") {
+      setSelectedMenuItem("MyStudy");
     }
   }, [location]);
 
@@ -303,17 +305,17 @@ const Sidebar = ({ children, flags }) => {
       case "CAOCalculator":
         return "#DCFCEF";
       case "MyGoals":
-        return "#FFFFFF";
+        return "#ead1dc";
       case "CoverLater":
         return "#FCF3DC";
       case "SelfAssessment":
         return "#DCF1FC";
       case "MyStudy":
-        return "#F2FAED";
+        return "#ffbaba";
       case "MyChoices":
         return "#F3EDFA";
       case "EducationalGuidance":
-        return "#FAD2D2";
+        return "#fdbe85";
       case "ChatBot":
         return "#E0E0E0";
       case "Work":
