@@ -134,14 +134,14 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-.welcomeHaddingText {
+/* .welcomeHaddingText {
   font-family: 'DM Sans', sans-serif;
   font-size: 32px;
   font-weight: 700;
   color: #1476B7;
   margin-bottom: 20px;
   text-align: center;
-}
+} */
 
 .ant-progress-inner {
   background-color: #d1d5db !important;
