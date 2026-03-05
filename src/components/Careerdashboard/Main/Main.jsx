@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import searchicon from "../../../assets/searchicon.svg";
+import React, { memo, useCallback, useState } from "react";
 // import imgcard from "../../../assets/1.png";
 // import imgcard2 from "../../../assets/2.png";
 // import imgcard3 from "../../../assets/3.png";
@@ -18,53 +17,44 @@ import imgcard8 from "../../../assets/17.png";
 import imgcard9 from "../../../assets/18.png";
 import winningCup from "../../../assets/winningCup.svg";
 import { MyCareerGuidanceButton } from "../../../components/commonComponents";
-import { useLocation, useNavigate } from "react-router-dom";
-import { API_URL } from "../../../utils/constants";
-import { getApiWithAuth } from "../../../utils/api";
-import { Spin, Modal } from "antd";
-import bookImage from "../../../assets/bookImage.png";
+import { useNavigate } from "react-router-dom";
+import { Modal } from "antd";
 import "../Main/Main.css";
+
 const cards = [
-  { src: imgcard, navigateTo: "/cao-calculator" },
-  { src: imgcard4, navigateTo: "/my-goals" },
-  { src: imgcard2, navigateTo: "/cover-letter" },
-  { src: imgcard5, navigateTo: "/self-assesment" },
-  { src: imgcard3, navigateTo: "/my-study" },
-  { src: imgcard7, navigateTo: "/my-choices" },
-  { src: imgcard6, navigateTo: "/educational-guidance" },
-  { src: imgcard8, navigateTo: "/my-guidance-report" },
-  { src: imgcard9, navigateTo: "/work-diary" },
+  { src: imgcard, navigateTo: "/cao-calculator", alt: "My CAO Points" },
+  { src: imgcard4, navigateTo: "/my-goals", alt: "My Goals" },
+  { src: imgcard2, navigateTo: "/cover-letter", alt: "My Career Choices" },
+  { src: imgcard5, navigateTo: "/self-assesment", alt: "My Self Assessment" },
+  { src: imgcard3, navigateTo: "/my-study", alt: "My CV" },
+  { src: imgcard7, navigateTo: "/my-choices", alt: "My Choices" },
+  { src: imgcard6, navigateTo: "/educational-guidance", alt: "My Study Timetable" },
+  { src: imgcard8, navigateTo: "/my-guidance-report", alt: "My Guidance Report" },
+  { src: imgcard9, navigateTo: "/work-diary", alt: "My Work Experience" },
 ];
+
+const GuidanceCard = memo(({ src, alt, isPriority, onClick }) => (
+  <button type="button" className="careerGuidenceCard" onClick={onClick}>
+    <img
+      src={src}
+      alt={alt}
+      loading={isPriority ? "eager" : "lazy"}
+      fetchPriority={isPriority ? "high" : "auto"}
+      decoding="async"
+      width="900"
+      height="900"
+    />
+  </button>
+));
+
 const Main = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [educationGuidance, setEducationGuidance] = useState([]);
-  const [singlequizData, setSinglequizData] = useState({});
+  const [singlequizData] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    getducationGuidance();
-  }, []);
-
-  const getducationGuidance = async () => {
-    setLoading(true);
-    const response = await getApiWithAuth(API_URL.GETGOALS);
-    if (response?.data?.status === 200) {
-      setEducationGuidance(response.data.data);
-      setLoading(false);
-    } else {
-      setLoading(false);
-    }
-  };
-
-  const showModal = (scoreView) => {
-    setSinglequizData(scoreView);
-    setIsModalOpen(true);
-  };
-
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     setIsModalOpen(false);
-  };
+  }, []);
 
   return (
     <>
@@ -77,13 +67,13 @@ const Main = () => {
       </div>
       <div className="careerGuidenceGrid">
         {cards.map((card, index) => (
-          <div
+          <GuidanceCard
             key={index}
-            className="careerGuidenceCard"
+            src={card.src}
+            alt={card.alt}
+            isPriority={index < 3}
             onClick={() => navigate(card.navigateTo)}
-          >
-            <img src={card.src} alt="card" />
-          </div>
+          />
         ))}
       </div>
 

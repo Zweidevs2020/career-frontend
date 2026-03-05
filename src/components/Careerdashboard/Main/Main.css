@@ -8,6 +8,14 @@
 .careerGuidenceCard {
   width: 100%;
   cursor: pointer;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  content-visibility: auto;
+  contain-intrinsic-size: 280px;
 }
 
 .careerGuidenceCard img {
