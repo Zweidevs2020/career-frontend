@@ -75,27 +75,14 @@ const Main = () => {
           </h1>
         </div>
       </div>
-      <div className="grid grid-cols-12 gap-3 px-3 careerGuidenceGrid">
+      <div className="careerGuidenceGrid">
         {cards.map((card, index) => (
           <div
             key={index}
-            // className="col-span-6 rounded-xl"
-            className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto m-auto"
-            onClick={() => {
-              navigate(card.navigateTo);
-            }}
-            style={{ width: "100%", height: "160px" }}
+            className="careerGuidenceCard"
+            onClick={() => navigate(card.navigateTo)}
           >
-            <img
-              src={card.src}
-              className=" bg-cover "
-              style={{
-                width: "100%",
-                height: "160px",
-                cursor: "pointer",
-                borderRadius: "10px",
-              }}
-            />
+            <img src={card.src} alt="card" />
           </div>
         ))}
       </div>
