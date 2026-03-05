@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Button, Input, Radio, message, DatePicker } from "antd";
 import {
   getApiWithAuth,
@@ -24,6 +24,88 @@ const DayOne = () => {
     whoMetOnArrival: "",
   });
   const [loading, setLoading] = useState(false);
+  const [isDirty, setIsDirty] = useState(false);
+  const formDataRef = React.useRef(formData);
+
+  useEffect(() => {
+    formDataRef.current = formData;
+  }, [formData]);
+
+  const autoSave = async (data) => {
+    const questionsAndAnswers = [
+      { question: "Were you on time?", answer: data.onTime },
+      data.onTime === "No" && {
+        question: "Why were you late?",
+        answer: data.reasonForLateness,
+      },
+      {
+        question: "Who did you meet on arrival?",
+        answer: data.whoMetOnArrival,
+      },
+      { question: "Supervisor Name", answer: data.supervisorName },
+      {
+        question: "Number of People Working With",
+        answer: data.peopleCount,
+      },
+      ...data.jobs.map((job, index) => ({
+        question: `Job ${index + 1}`,
+        answer: job,
+      })),
+      {
+        question: "Were you able to do the tasks? Why?",
+        answer: data.ableToDoTasks,
+      },
+      { question: "Break Times", answer: data.breakTimes },
+      {
+        question: "What did you do at lunchtime?",
+        answer: data.lunchActivity,
+      },
+    ].filter(Boolean);
+
+    const payload = [
+      {
+        day: data.day,
+        date: data.date || "",
+        questionsAndAnswers: questionsAndAnswers,
+      },
+    ];
+
+    const updatePayload = {
+      day: data.day,
+      date: data.date || "",
+      questionsAndAnswers: questionsAndAnswers,
+    };
+
+    if (data.date) {
+      try {
+        const url = `${API_URL.WORK_DIARY}update-day/?day=Day1`;
+        await putApiWithAuth(url, updatePayload);
+      } catch (error) {
+        console.error("Auto-save error:", error);
+      }
+    } else {
+      try {
+        await postApiWithoutAuth(API_URL.WORK_DIARY, payload);
+      } catch (error) {
+        console.error("Auto-save error:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (isDirty) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      if (isDirty) {
+      }
+    };
+  }, [isDirty]);
 
   const populateForm = async (data) => {
     const updatedFormData = { ...formData };
@@ -207,6 +289,7 @@ const DayOne = () => {
         const url = `${API_URL.WORK_DIARY}update-day/?day=Day1`;
         const response = await putApiWithAuth(url, updatePayload);
         message.success("Data updated successfully!");
+        setIsDirty(false); sessionStorage.removeItem("unsave");
       } catch (error) {
         message.error("Something went wrong while updating data.");
         console.error("Error:", error);
@@ -219,6 +302,7 @@ const DayOne = () => {
         const apiUrl = API_URL.WORK_DIARY;
         await postApiWithoutAuth(apiUrl, payload);
         message.success("Data submitted successfully!");
+        setIsDirty(false); sessionStorage.removeItem("unsave");
       } catch (error) {
         message.error("Something went wrong while submitting the data.");
         console.error("Error:", error);
@@ -244,6 +328,7 @@ const DayOne = () => {
       reasonForLateness: "",
       whoMetOnArrival: "",
     });
+    setIsDirty(false); sessionStorage.removeItem("unsave");
   };
 
   useEffect(() => {
@@ -261,9 +346,10 @@ const DayOne = () => {
           <label style={{ fontWeight: "bold" }}>Date:</label>
           <DatePicker
             style={{ width: "100%", marginTop: "8px" }}
-            onChange={(date, dateString) =>
-              setFormData({ ...formData, date: dateString })
-            }
+            onChange={(date, dateString) => {
+              setFormData({ ...formData, date: dateString });
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
+            }}
             value={formData.date ? moment(formData.date) : null}
           />
         </Col>
@@ -275,9 +361,10 @@ const DayOne = () => {
           <Radio.Group
             name="onTime"
             value={formData.onTime}
-            onChange={(e) =>
-              setFormData({ ...formData, onTime: e.target.value })
-            }
+            onChange={(e) => {
+              setFormData({ ...formData, onTime: e.target.value });
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
+            }}
             style={{ display: "flex", gap: "16px" }}
           >
             <Radio value="Yes">Yes</Radio>
@@ -294,9 +381,10 @@ const DayOne = () => {
               type="text"
               name="reasonForLateness"
               value={formData.reasonForLateness}
-              onChange={(e) =>
-                setFormData({ ...formData, reasonForLateness: e.target.value })
-              }
+              onChange={(e) => {
+                setFormData({ ...formData, reasonForLateness: e.target.value });
+                setIsDirty(true); sessionStorage.setItem("unsave", "true");
+              }}
               placeholder="Explain the reason for lateness"
             />
           </Col>
@@ -310,9 +398,10 @@ const DayOne = () => {
             type="text"
             name="whoMetOnArrival"
             value={formData.whoMetOnArrival}
-            onChange={(e) =>
-              setFormData({ ...formData, whoMetOnArrival: e.target.value })
-            }
+            onChange={(e) => {
+              setFormData({ ...formData, whoMetOnArrival: e.target.value });
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
+            }}
             placeholder="Enter the name of the person you met"
           />
         </Col>
@@ -326,9 +415,10 @@ const DayOne = () => {
             type="text"
             name="supervisorName"
             value={formData.supervisorName}
-            onChange={(e) =>
-              setFormData({ ...formData, supervisorName: e.target.value })
-            }
+            onChange={(e) => {
+              setFormData({ ...formData, supervisorName: e.target.value });
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
+            }}
             placeholder="Enter supervisor's name"
           />
         </Col>
@@ -342,9 +432,10 @@ const DayOne = () => {
             type="number"
             name="peopleCount"
             value={formData.peopleCount}
-            onChange={(e) =>
-              setFormData({ ...formData, peopleCount: e.target.value })
-            }
+            onChange={(e) => {
+              setFormData({ ...formData, peopleCount: e.target.value });
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
+            }}
             placeholder="Enter the number"
           />
         </Col>
@@ -360,14 +451,15 @@ const DayOne = () => {
                   <Input
                     type="text"
                     value={job}
-                    onChange={(e) =>
+                    onChange={(e) => {
                       setFormData({
                         ...formData,
                         jobs: formData.jobs.map((j, idx) =>
                           idx === index ? e.target.value : j
                         ),
-                      })
-                    }
+                      });
+                      setIsDirty(true); sessionStorage.setItem("unsave", "true");
+                    }}
                     placeholder={`Job ${index + 1}`}
                   />
                 </Col>
@@ -383,9 +475,10 @@ const DayOne = () => {
           <Input.TextArea
             name="ableToDoTasks"
             value={formData.ableToDoTasks}
-            onChange={(e) =>
-              setFormData({ ...formData, ableToDoTasks: e.target.value })
-            }
+            onChange={(e) => {
+              setFormData({ ...formData, ableToDoTasks: e.target.value });
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
+            }}
             rows={4}
             placeholder="Explain if you were able to do them."
           />
@@ -399,9 +492,10 @@ const DayOne = () => {
           <Input.TextArea
             name="breakTimes"
             value={formData.breakTimes}
-            onChange={(e) =>
-              setFormData({ ...formData, breakTimes: e.target.value })
-            }
+            onChange={(e) => {
+              setFormData({ ...formData, breakTimes: e.target.value });
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
+            }}
             rows={4}
             placeholder="Describe your break times."
           />
@@ -415,9 +509,10 @@ const DayOne = () => {
           <Input.TextArea
             name="lunchActivity"
             value={formData.lunchActivity}
-            onChange={(e) =>
-              setFormData({ ...formData, lunchActivity: e.target.value })
-            }
+            onChange={(e) => {
+              setFormData({ ...formData, lunchActivity: e.target.value });
+              setIsDirty(true); sessionStorage.setItem("unsave", "true");
+            }}
             rows={4}
             placeholder="Describe your lunch activity."
           />
@@ -425,16 +520,17 @@ const DayOne = () => {
 
         <Col span={24} className="text-end">
           <Button
+            type="primary"
             htmlType="submit"
             loading={loading}
-            style={{ marginTop: "20px" }}
+            style={{ marginTop: "20px", backgroundColor: "#1476B7" }}
           >
             Submit
           </Button>
           <Button
             type="default"
             onClick={handleReset}
-            style={{ marginLeft: "16px", marginTop: "20px" }}
+            style={{ marginLeft: "16px", marginTop: "20px", backgroundColor: "#F5222D", color: "white" }}
           >
             Reset
           </Button>

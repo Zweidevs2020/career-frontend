@@ -1,11 +1,24 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api"
-import { Button, Checkbox, Form, Layout, Row, Col, Grid, message, Spin, Typography } from "antd"
+import {
+  Button,
+  Form,
+  Layout,
+  Row,
+  Col,
+  Grid,
+  message,
+  Spin,
+  Typography,
+  Progress,
+  Card,
+  Space,
+} from "antd"
 import ContentComponent from "../layoutComponents/contentComponent"
 import { MyCareerGuidanceInputField } from "../../components/commonComponents"
-import { SendOutlined } from "@ant-design/icons"
+import { SendOutlined, ArrowLeftOutlined, ArrowRightOutlined, CheckCircleOutlined } from "@ant-design/icons"
 import html2pdf from "html2pdf.js"
 import styles from "./myGuidanceReport.module.css"
 import "./MyGuidanceReport.css"
@@ -16,31 +29,29 @@ const { Title, Text } = Typography
 
 // Enhanced professional report styling
 const backgroundStyle = {
-  background: "#ffffff", // Clean white background like the reference images
-  padding: "40px", // More generous padding
-  borderRadius: "8px", // Subtle rounded corners
-  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)", // Professional shadow
+  background: "#ffffff",
+  padding: "40px",
+  borderRadius: "8px",
+  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
   maxWidth: "100%",
   wordWrap: "break-word",
   color: "#333",
-  fontFamily: "'Arial', 'Helvetica', sans-serif", // Professional font stack
+  fontFamily: "'Arial', 'Helvetica', sans-serif",
   fontSize: "16px",
   lineHeight: "1.6",
   margin: "20px 0",
 }
 
-// Button background style to match the background gradient
-// Button base style to match the background gradient
 const buttonStyle = {
-  background: "linear-gradient(135deg, #3788d8, #C0C0C0)", // Same gradient as background
-  color: "#3788d8", // Text color (dark gray)
-  border: "1px solid #3788d8", // Silver border to match background
-  padding: "10px 20px", // Padding inside the button
-  borderRadius: "8px", // Slightly rounded corners
-  fontSize: "16px", // Font size
-  fontWeight: "bold", // Bold text
-  cursor: "pointer", // Pointer cursor on hover
-  transition: "background 0.3s ease, transform 0.2s, color 0.3s", // Smooth transitions
+  background: "linear-gradient(135deg, #3788d8, #C0C0C0)",
+  color: "#3788d8",
+  border: "1px solid #3788d8",
+  padding: "10px 20px",
+  borderRadius: "8px",
+  fontSize: "16px",
+  fontWeight: "bold",
+  cursor: "pointer",
+  transition: "background 0.3s ease, transform 0.2s, color 0.3s",
 }
 
 const MyChoices = () => {
@@ -56,58 +67,138 @@ const MyChoices = () => {
   const [disableFields, setDisableFields] = useState(false)
   const [regenerateAnswerSpinner, setRegenerateAnswerSpinner] = useState(false)
   const [isSpinnerOuter, setIsSpinnerOuter] = useState(false)
-  const [showWelcomeText, setShowWelcomeText] = useState(true) // New state
+  const [showWelcomeText, setShowWelcomeText] = useState(true)
   const [loading, setLoading] = useState(false)
   const [loadingRecentReport, setLoadingRecentReport] = useState(false)
+  const [currentStep, setCurrentStep] = useState(0)
+
   const [checkboxes, setCheckboxes] = useState({
     predictedPointsYes: false,
     predictedPointsNo: false,
     statedGoalsYes: false,
     statedGoalsNo: false,
-    // From My CV (keeping previous field names)
-    skills: false,
-    interest: false, // Changed from 'interests' to 'interest' to match previous payload
-    qualities: false, // Added to match previous payload (was 'interests' in UI)
-    // From My Self Assessment (keeping previous field names)
-    values_assessment: false,
-    interest_assessment: false,
-    mis: false, // Changed from 'intelligenceScore' to 'mis' to match previous payload
-    // Education options (keeping previous structure)
-    level5: false,
-    level6_7: false,
+    misYes: false,
+    misNo: false,
+    valuesYes: false,
+    valuesNo: false,
+    interestYes: false,
+    interestNo: false,
+    exemptIrishYes: false,
+    exemptIrishNo: false,
+    exemptThirdLanguageYes: false,
+    exemptThirdLanguageNo: false,
+    useCVYes: false,
+    useCVNo: false,
     level8: false,
+    level6_7: false,
+    level5: false,
     apprenticeship: false,
-    otherOptions: false, // New option
-    // Where Do I Want To Go (new section)
+    tertiaryDegrees: false,
+    ucas: false,
+    dublin: false,
     leinster: false,
     munster: false,
     connacht: false,
     ulster: false,
-    greaterDublin: false,
+    // Legacy mapping support
+    skills: false,
+    interest: false,
+    qualities: false,
+    values_assessment: false,
+    interest_assessment: false,
+    mis: false,
   })
+
+  const questions = [
+    {
+      title: "Subjects & Predicted Results",
+      question: "Do you want your subjects and predicted results to be considered?",
+      type: "yesno",
+      names: { yes: "predictedPointsYes", no: "predictedPointsNo" },
+    },
+    {
+      title: "Goals",
+      question: "Do you want us to consider your goals?",
+      type: "yesno",
+      names: { yes: "statedGoalsYes", no: "statedGoalsNo" },
+    },
+    {
+      title: "Multiple Intelligence",
+      question: "Will we include your multiple intelligence score?",
+      type: "yesno",
+      names: { yes: "misYes", no: "misNo" },
+    },
+    {
+      title: "Values Score",
+      question: "Will we include your values score?",
+      type: "yesno",
+      names: { yes: "valuesYes", no: "valuesNo" },
+    },
+    {
+      title: "Occupation Interest",
+      question: "Will we include your occupation Interest score?",
+      type: "yesno",
+      names: { yes: "interestYes", no: "interestNo" },
+    },
+    {
+      title: "Irish Language",
+      question: "Are you exempt from Irish?",
+      type: "yesno",
+      names: { yes: "exemptIrishYes", no: "exemptIrishNo" },
+    },
+    {
+      title: "3rd Language",
+      question: "Are you exempt from a 3rd Language?",
+      type: "yesno",
+      names: { yes: "exemptThirdLanguageYes", no: "exemptThirdLanguageNo" },
+    },
+    {
+      title: "C.V. Information",
+      question: "Will we use information from your C. V. ?",
+      type: "yesno",
+      names: { yes: "useCVYes", no: "useCVNo" },
+    },
+    {
+      title: "Qualification Type",
+      question: "Select (one or many) the type of qualification you want suggestions from.",
+      type: "multiple",
+      options: [
+        { label: "Level 8", name: "level8" },
+        { label: "Level 6/7", name: "level6_7" },
+        { label: "Level 5 PLC", name: "level5" },
+        { label: "Apprenticeships", name: "apprenticeship" },
+        { label: "Tertiary Degrees", name: "tertiaryDegrees" },
+        { label: "UCAS in Northern Ireland", name: "ucas" },
+      ],
+    },
+    {
+      title: "Study Location",
+      question: "Select (one or many) where would you like to study or train?",
+      type: "multiple",
+      options: [
+        { label: "Dublin", name: "dublin" },
+        { label: "Leinster", name: "leinster" },
+        { label: "Munster", name: "munster" },
+        { label: "Connacht", name: "connacht" },
+        { label: "Ulster", name: "ulster" },
+      ],
+    },
+  ]
+
   const [data, setData] = useState({
     question: "",
     questionId: "",
   })
-  // State to manage hover effect
   const [isHovered, setIsHovered] = useState(false)
 
-  // Button hover style
   const buttonHoverStyle = {
-    background: isHovered ? "linear-gradient(135deg, #C0C0C0, #3788d8)" : "linear-gradient(135deg, #ffffff, #3788d8)", // Reverse gradient on hover
-    color: isHovered ? "#fff" : "#333", // Change text color on hover (light text on dark background)
-    transform: isHovered ? "scale(1.05)" : "scale(1)", // Slight scale effect on hover
+    background: isHovered ? "linear-gradient(135deg, #C0C0C0, #3788d8)" : "linear-gradient(135deg, #ffffff, #3788d8)",
+    color: isHovered ? "#fff" : "#333",
+    transform: isHovered ? "scale(1.05)" : "scale(1)",
   }
 
-  // Handle mouse enter (hover)
-  const handleMouseEnter = () => {
-    setIsHovered(true)
-  }
-
-  // Handle mouse leave
-  const handleMouseLeave = () => {
-    setIsHovered(false)
-  }
+  const handleMouseEnter = () => setIsHovered(true)
+  const handleMouseLeave = () => setIsHovered(false)
 
   const onMessageChange = (e) => {
     const { name, value } = e.target
@@ -119,7 +210,7 @@ const MyChoices = () => {
 
     setIsSpinnerOuter(true)
     setDisableFields(true)
-    setShowWelcomeText(false) // Hide welcome text when sending a message
+    setShowWelcomeText(false)
 
     try {
       const response = await postApiWithAuth(`/ai-report/generate-guidance-report/`, {
@@ -143,7 +234,7 @@ const MyChoices = () => {
           ],
         }))
         setPostResponse(receivedResponse)
-        message.success("Data submitted successfully,please click download report")
+        message.success("Data submitted successfully, please click download report")
       }
     } catch (error) {
       console.error("Error sending message:", error)
@@ -156,37 +247,52 @@ const MyChoices = () => {
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target
+    setCheckboxes({
+      ...checkboxes,
+      [name]: checked,
+    })
+  }
 
-    // Handle logic for "Predicted Points and Subject" and "My Stated Goals"
-    if (name === "predictedPointsYes" || name === "predictedPointsNo") {
-      setCheckboxes({
-        ...checkboxes,
-        predictedPointsYes: name === "predictedPointsYes" ? checked : false,
-        predictedPointsNo: name === "predictedPointsNo" ? checked : false,
-      })
-    } else if (name === "statedGoalsYes" || name === "statedGoalsNo") {
-      setCheckboxes({
-        ...checkboxes,
-        statedGoalsYes: name === "statedGoalsYes" ? checked : false,
-        statedGoalsNo: name === "statedGoalsNo" ? checked : false,
-      })
+  const handleYesNoChange = (name, otherName) => {
+    setCheckboxes({
+      ...checkboxes,
+      [name]: true,
+      [otherName]: false,
+    })
+    // Auto advance for YES/NO questions
+    setTimeout(() => {
+      handleNext()
+    }, 300)
+  }
+
+  const handleNext = () => {
+    if (currentStep < questions.length - 1) {
+      setCurrentStep(currentStep + 1)
     } else {
-      // For other checkboxes, allow multiple selections
-      setCheckboxes({
-        ...checkboxes,
-        [name]: checked,
-      })
+      handleSubmit()
+    }
+  }
+
+  const handleBack = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1)
+    }
+  }
+
+  const handleSkip = () => {
+    if (currentStep < questions.length - 1) {
+      setCurrentStep(currentStep + 1)
+    } else {
+      handleSubmit()
     }
   }
 
   const formatAllTags = (htmlContent) => {
-    // Create a temporary div to hold the raw HTML content
     const tempDiv = document.createElement("div")
     tempDiv.innerHTML = htmlContent
 
-    // Enhanced professional styling to match the reference images
     const styles = {
-       title: {
+      title: {
         fontSize: "28px",
         fontWeight: "bold",
         marginBottom: "20px",
@@ -215,7 +321,6 @@ const MyChoices = () => {
         fontFamily: "'Arial', 'Helvetica', sans-serif",
       },
       h3: {
-        
         fontSize: "18px",
         fontWeight: "bold",
         marginBottom: "8px",
@@ -328,7 +433,6 @@ const MyChoices = () => {
       },
     }
 
-    // Apply styles to all tags
     Object.keys(styles).forEach((tag) => {
       const elements = tempDiv.querySelectorAll(tag)
       elements.forEach((element) => {
@@ -339,7 +443,6 @@ const MyChoices = () => {
       })
     })
 
-    // Add professional document styling to the container
     tempDiv.style.maxWidth = "100%"
     tempDiv.style.margin = "0 auto"
     tempDiv.style.backgroundColor = "#ffffff"
@@ -350,11 +453,7 @@ const MyChoices = () => {
   }
 
   const handleDownloadPdf = (gptResponse) => {
-    console.log(gptResponse, "pdf")
-    // Format the HTML content before rendering it in the PDF
     const formattedContent = formatAllTags(gptResponse)
-
-    // Create a container for the HTML content to render
     const element = document.createElement("div")
     element.style.breakInside = "auto"
     element.style.breakAfter = "auto"
@@ -363,7 +462,7 @@ const MyChoices = () => {
 
     const options = {
       filename: "career_guidance_report.pdf",
-      margin: [0.75, 0.75, 0.75, 0.75], // Professional margins
+      margin: [0.75, 0.75, 0.75, 0.75],
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: {
         scale: 2,
@@ -379,7 +478,6 @@ const MyChoices = () => {
       },
     }
 
-    // Generate PDF from the HTML content using html2pdf.js
     html2pdf().set(options).from(element).save()
   }
 
@@ -390,24 +488,38 @@ const MyChoices = () => {
       predictedPointsNo: false,
       statedGoalsYes: false,
       statedGoalsNo: false,
+      misYes: false,
+      misNo: false,
+      valuesYes: false,
+      valuesNo: false,
+      interestYes: false,
+      interestNo: false,
+      exemptIrishYes: false,
+      exemptIrishNo: false,
+      exemptThirdLanguageYes: false,
+      exemptThirdLanguageNo: false,
+      useCVYes: false,
+      useCVNo: false,
+      level8: false,
+      level6_7: false,
+      level5: false,
+      apprenticeship: false,
+      tertiaryDegrees: false,
+      ucas: false,
+      dublin: false,
+      leinster: false,
+      munster: false,
+      connacht: false,
+      ulster: false,
       skills: false,
       interest: false,
       qualities: false,
       values_assessment: false,
       interest_assessment: false,
       mis: false,
-      level5: false,
-      level6_7: false,
-      level8: false,
-      apprenticeship: false,
-      otherOptions: false,
-      leinster: false,
-      munster: false,
-      connacht: false,
-      ulster: false,
-      greaterDublin: false,
     })
     setIsCodeVisible(true)
+    setCurrentStep(0)
   }
 
   const DownloadReort = () => {
@@ -415,7 +527,6 @@ const MyChoices = () => {
       handleDownloadPdf(gptResponse)
       setLoading(false)
       setIsSpinnerOuter(false)
-      return
     }
   }
 
@@ -425,26 +536,29 @@ const MyChoices = () => {
     const payload = {
       predicted_points_and_subjects: checkboxes.predictedPointsYes ? "Yes" : "No",
       my_stated_goals: checkboxes.statedGoalsYes ? "Yes" : "No",
-      skills: checkboxes.skills ? "Yes" : "No",
-      interest: checkboxes.interest ? "Yes" : "No",
-      qualities: checkboxes.qualities ? "Yes" : "No",
-      mis: checkboxes.mis ? "Yes" : "No",
-      values_assessment: checkboxes.values_assessment ? "Yes" : "No",
-      interest_assessment: checkboxes.interest_assessment ? "Yes" : "No",
+      skills: checkboxes.useCVYes ? "Yes" : "No",
+      interest: checkboxes.useCVYes ? "Yes" : "No",
+      qualities: checkboxes.useCVYes ? "Yes" : "No",
+      mis: checkboxes.misYes ? "Yes" : "No",
+      values_assessment: checkboxes.valuesYes ? "Yes" : "No",
+      interest_assessment: checkboxes.interestYes ? "Yes" : "No",
       education_options: [
         checkboxes.level5 ? "level 5(plc)" : null,
         checkboxes.level6_7 ? "level 6/7" : null,
         checkboxes.level8 ? "level 8" : null,
         checkboxes.apprenticeship ? "apprentices" : null,
-        checkboxes.otherOptions ? "other options" : null,
+        checkboxes.tertiaryDegrees ? "tertiary degrees" : null,
+        checkboxes.ucas ? "UCAS" : null,
       ].filter(Boolean),
       locations: [
         checkboxes.leinster ? "Leinster" : null,
         checkboxes.munster ? "Munster" : null,
         checkboxes.connacht ? "Connacht" : null,
         checkboxes.ulster ? "Ulster" : null,
-        checkboxes.greaterDublin ? "Greater Dublin" : null,
+        checkboxes.dublin ? "Greater Dublin" : null,
       ].filter(Boolean),
+      exempt_irish: checkboxes.exemptIrishYes ? "Yes" : "No",
+      exempt_third_language: checkboxes.exemptThirdLanguageYes ? "Yes" : "No",
     }
 
     try {
@@ -467,7 +581,6 @@ const MyChoices = () => {
 
   const handleShowRecentReport = async () => {
     setLoadingRecentReport(true)
-
     try {
       const response = await getApiWithAuth(`ai-report/get-generated-guidance-report/`)
       if (response?.data?.data?.success && response?.data?.data?.message) {
@@ -485,240 +598,200 @@ const MyChoices = () => {
     }
   }
 
-  const additionalContent = ""
-  const updatedResponse = additionalContent + gptResponse + additionalContent
+  const updatedResponse = gptResponse
+
+  const renderQuestion = () => {
+    const question = questions[currentStep]
+    return (
+      <Card
+        className="mainWizardCard"
+        style={{
+          borderRadius: "20px",
+          boxShadow: "0 12px 24px rgba(0,0,0,0.1)",
+          maxWidth: "850px",
+          margin: "20px auto",
+          background: "#FFFFFF",
+          border: "none",
+        }}
+      >
+        {/* Progress Indicator */}
+        <div style={{ marginBottom: "40px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px" }}>
+            <Text strong style={{ color: "#1476B7" }}>Question {currentStep + 1} of {questions.length}</Text>
+            <Text type="secondary">{Math.round(((currentStep + 1) / questions.length) * 100)}% Complete</Text>
+          </div>
+          <Progress
+            percent={Math.round(((currentStep + 1) / questions.length) * 100)}
+            showInfo={false}
+            strokeColor="#1476B7"
+            trailColor="#E5E7EB"
+            strokeWidth={10}
+          />
+        </div>
+
+        {/* Question Header */}
+        <div style={{ textAlign: "center", marginBottom: "50px" }}>
+          <Title level={2} style={{ color: "#1476B7", fontWeight: "700", marginBottom: "15px" }}>
+            {question.title}
+          </Title>
+          <Text style={{ fontSize: "20px", color: "#4B5563", display: "block", maxWidth: "600px", margin: "0 auto" }}>
+            {question.question}
+          </Text>
+        </div>
+
+        {/* Selection Area */}
+        <div style={{ minHeight: "220px", display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "50px" }}>
+          {question.type === "yesno" ? (
+            <Space size={30}>
+              <Button
+                size="large"
+                className={checkboxes[question.names.yes] ? "wizardBtnActive" : "wizardBtnDefault"}
+                onClick={() => handleYesNoChange(question.names.yes, question.names.no)}
+                style={{ width: "160px", height: "60px", fontSize: "18px", borderRadius: "12px" }}
+              >
+                YES
+              </Button>
+              <Button
+                size="large"
+                className={checkboxes[question.names.no] ? "wizardBtnActive" : "wizardBtnDefault"}
+                onClick={() => handleYesNoChange(question.names.no, question.names.yes)}
+                style={{ width: "160px", height: "60px", fontSize: "18px", borderRadius: "12px" }}
+              >
+                NO
+              </Button>
+            </Space>
+          ) : (
+            <Row gutter={[20, 20]} style={{ width: "100%", maxWidth: "700px" }}>
+              {question.options.map((opt) => (
+                <Col xs={24} sm={12} key={opt.name}>
+                  <div
+                    onClick={() => handleCheckboxChange({ target: { name: opt.name, checked: !checkboxes[opt.name] } })}
+                    className={checkboxes[opt.name] ? "optionCardActive" : "optionCardDefault"}
+                  >
+                    <div className="selectionCircle">
+                      {checkboxes[opt.name] && <div className="selectionInner" />}
+                    </div>
+                    <Text strong style={{ color: checkboxes[opt.name] ? "#FFFFFF" : "#374151", fontSize: "15px" }}>
+                      {opt.label}
+                    </Text>
+                  </div>
+                </Col>
+              ))}
+            </Row>
+          )}
+        </div>
+
+        {/* Navigation Footer */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #F3F4F6", paddingTop: "30px" }}>
+          <Button
+            onClick={handleBack}
+            disabled={currentStep === 0}
+            icon={<ArrowLeftOutlined />}
+            size="large"
+            className="navBtnSecondary"
+          >
+            Back
+          </Button>
+
+          <Space size={15}>
+            {question.type === "multiple" && (
+              <>
+                <Button
+                  onClick={handleSkip}
+                  size="large"
+                  className="navBtnSecondary"
+                >
+                  Skip
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={handleNext}
+                  loading={loading && currentStep === questions.length - 1}
+                  size="large"
+                  className="navBtnPrimary"
+                  icon={currentStep === questions.length - 1 ? <CheckCircleOutlined /> : <ArrowRightOutlined />}
+                  iconPosition="right"
+                >
+                  {currentStep === questions.length - 1 ? "Generate Report" : "Next"}
+                </Button>
+              </>
+            )}
+          </Space>
+        </div>
+      </Card>
+    )
+  }
 
   return (
-    <>
-      <div className={styles.educationalGuidanceMainDiv}>
-        <div className={styles.educationalGuidanceSecondDiv}>
-          <div className="welcomeHaddingText ">My Guidance Report</div>
-          <Layout>
-            <ContentComponent>
-              <section
-                style={{
-                  minHeight: "55vh",
-                  paddingTop: 20,
-                  height: "100%",
-                  background: "#E0E0E0",
-                }}
-              >
-                <Form layout="vertical">
-                  <Row className="justify-between">
-                    <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                      <Title level={4}>Please Choose Options Below:</Title>
-                      <Text>Choose options to generate the report.</Text>
-                    </Col>
-                    {isCodeVisible ? (
-                      <Col xs={24} sm={12} md={12} lg={12} xl={12} className="text-right">
-                        <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", flexWrap: "wrap" }}>
-                          <Button
-                            className="saveData"
-                            onClick={handleShowRecentReport}
-                            loading={loadingRecentReport}
-                            style={{ marginBottom: "8px" }}
-                          >
-                            Recent Report
-                          </Button>
-                          <Button
-                            className="saveData"
-                            onClick={handleSubmit}
-                            loading={loading}
-                            type="primary"
-                            style={{ marginBottom: "8px" }}
-                          >
-                            Generate Report
-                          </Button>
-                        </div>
-                      </Col>
-                    ) : (
-                      <Col xs={24} sm={12} md={12} lg={12} xl={12} className="text-right">
-                        <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", flexWrap: "wrap" }}>
-                          <Button
-                            className="saveData"
-                            onClick={handleShowRecentReport}
-                            loading={loadingRecentReport}
-                            style={{ marginBottom: "8px" }}
-                          >
-                            Recent Report
-                          </Button>
-                          <Button
-                            className="saveData"
-                            onClick={handleReset}
-                            loading={loading}
-                            style={{ marginBottom: "8px" }}
-                          >
-                            Reset Report
-                          </Button>
-                        </div>
-                      </Col>
-                    )}
-                  </Row>
+    <div className={styles.educationalGuidanceMainDiv}>
+      <div className={styles.educationalGuidanceSecondDiv}>
+        <div className="welcomeHaddingText">My Guidance Report</div>
+        <Layout style={{ background: "transparent" }}>
+          <ContentComponent>
+            <section
+              style={{
+                minHeight: "75vh",
+                padding: "10px",
+                background: "#E0E0E0",
+              }}
+            >
+              {isCodeVisible ? (
+                <div style={{ animation: "fadeIn 0.5s ease-in-out" }}>
+                  <div style={{ textAlign: "center", marginBottom: "30px" }}>
+                    <Title level={3} style={{ color: "#374151" }}>Help us create your best guidance report</Title>
+                  </div>
+                  
+                  {renderQuestion()}
 
-                  <Row gutter={[16, 16]} style={{ marginTop: "1rem" }}>
-                    <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                      <Title level={5}>Predicted Points and Subjects</Title>
-                      <Checkbox
-                        name="predictedPointsYes"
-                        checked={checkboxes.predictedPointsYes}
-                        onChange={handleCheckboxChange}
-                      >
-                        Yes
-                      </Checkbox>
-                      <Checkbox
-                        name="predictedPointsNo"
-                        checked={checkboxes.predictedPointsNo}
-                        onChange={handleCheckboxChange}
-                      >
-                        No
-                      </Checkbox>
+                  <div style={{ textAlign: "center", marginTop: "40px" }}>
+                    <Button
+                      onClick={handleShowRecentReport}
+                      loading={loadingRecentReport}
+                      type="text"
+                      className="recentReportBtn  "
+                    >
+                      View your most recent report
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <Row className="justify-between" style={{ marginBottom: "20px" }}>
+                    <Col>
+                      <Title level={4}>Generated Report</Title>
                     </Col>
-                    <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                      <Title level={5}>My Stated Goals</Title>
-                      <Checkbox
-                        name="statedGoalsYes"
-                        checked={checkboxes.statedGoalsYes}
-                        onChange={handleCheckboxChange}
-                      >
-                        Yes
-                      </Checkbox>
-                      <Checkbox name="statedGoalsNo" checked={checkboxes.statedGoalsNo} onChange={handleCheckboxChange}>
-                        No
-                      </Checkbox>
+                    <Col>
+                      <Space>
+                        <Button
+                          onClick={handleShowRecentReport}
+                          loading={loadingRecentReport}
+                          style={{ borderRadius: "10px" }}
+                          className="border border-gray-600"
+                        >
+                          Recent Report
+                        </Button>
+                        <Button
+                          onClick={handleReset}
+                          style={{ borderRadius: "10px" }}
+                          className="border border-gray-600"
+                        >
+                          Reset & New Report
+                        </Button>
+                      </Space>
                     </Col>
                   </Row>
 
-                  <Title level={5} style={{ marginTop: "1rem" }}>
-                    From My CV
-                  </Title>
-                  <Row gutter={[16, 16]}>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-                      <Checkbox name="skills" checked={checkboxes.skills} onChange={handleCheckboxChange}>
-                        Skills
-                      </Checkbox>
-                    </Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-                      <Checkbox name="interest" checked={checkboxes.interest} onChange={handleCheckboxChange}>
-                        Interests
-                      </Checkbox>
-                    </Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-                      <Checkbox name="qualities" checked={checkboxes.qualities} onChange={handleCheckboxChange}>
-                        Qualities
-                      </Checkbox>
+                  <Row className="p-1 bg-none" style={backgroundStyle}>
+                    <Col span={24}>
+                      <div
+                        ref={contentRef}
+                        className={styles.gptResponse}
+                        dangerouslySetInnerHTML={{ __html: updatedResponse }}
+                      ></div>
                     </Col>
                   </Row>
 
-                  <Title level={5} style={{ marginTop: "1rem" }}>
-                    From My Self Assessment
-                  </Title>
-                  <Row gutter={[16, 16]}>
-                    <Col xs={24} sm={8} md={8} lg={8} xl={8}>
-                      <Checkbox
-                        name="values_assessment"
-                        checked={checkboxes.values_assessment}
-                        onChange={handleCheckboxChange}
-                      >
-                        Values Assessment
-                      </Checkbox>
-                    </Col>
-                    <Col xs={24} sm={8} md={8} lg={8} xl={8}>
-                      <Checkbox
-                        name="interest_assessment"
-                        checked={checkboxes.interest_assessment}
-                        onChange={handleCheckboxChange}
-                      >
-                        Occupation Interest Assessment
-                      </Checkbox>
-                    </Col>
-                    <Col xs={24} sm={8} md={8} lg={8} xl={8}>
-                      <Checkbox name="mis" checked={checkboxes.mis} onChange={handleCheckboxChange}>
-                        Multiple Intelligence
-                      </Checkbox>
-                    </Col>
-                  </Row>
-
-                  <Title level={5} style={{ marginTop: "1rem" }}>
-                    What Type of Courses Do You Require
-                  </Title>
-                  <Row gutter={[16, 16]}>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-                      <Checkbox name="level8" checked={checkboxes.level8} onChange={handleCheckboxChange}>
-                        Level 8 Hons Degrees
-                      </Checkbox>
-                    </Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-                      <Checkbox name="level6_7" checked={checkboxes.level6_7} onChange={handleCheckboxChange}>
-                        Level 6/7 Ord Degrees of Higher Cert
-                      </Checkbox>
-                    </Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-                      <Checkbox name="level5" checked={checkboxes.level5} onChange={handleCheckboxChange}>
-                        Level 5 PLC/ Further Ed
-                      </Checkbox>
-                    </Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-                      <Checkbox
-                        name="apprenticeship"
-                        checked={checkboxes.apprenticeship}
-                        onChange={handleCheckboxChange}
-                      >
-                        Level 5/6/7 or 8 Apprenticeships
-                      </Checkbox>
-                    </Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-                      <Checkbox name="otherOptions" checked={checkboxes.otherOptions} onChange={handleCheckboxChange}>
-                        Other Options
-                      </Checkbox>
-                    </Col>
-                  </Row>
-
-                  <Title level={5} style={{ marginTop: "1rem" }}>
-                    Where Do I Want To Go?
-                  </Title>
-                  <Row gutter={[16, 16]}>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-                      <Checkbox name="leinster" checked={checkboxes.leinster} onChange={handleCheckboxChange}>
-                        Leinster
-                      </Checkbox>
-                    </Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-                      <Checkbox name="munster" checked={checkboxes.munster} onChange={handleCheckboxChange}>
-                        Munster
-                      </Checkbox>
-                    </Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-                      <Checkbox name="connacht" checked={checkboxes.connacht} onChange={handleCheckboxChange}>
-                        Connacht
-                      </Checkbox>
-                    </Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-                      <Checkbox name="ulster" checked={checkboxes.ulster} onChange={handleCheckboxChange}>
-                        Ulster
-                      </Checkbox>
-                    </Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={6}>
-                      <Checkbox name="greaterDublin" checked={checkboxes.greaterDublin} onChange={handleCheckboxChange}>
-                        Greater Dublin
-                      </Checkbox>
-                    </Col>
-                  </Row>
-                </Form>
-              </section>
-            </ContentComponent>
-            {isCodeVisible ? (
-              ""
-            ) : (
-              <>
-                <Row className="p-1 bg-none" style={backgroundStyle}>
-                  <Col span={20}>
-                    <div
-                      ref={contentRef}
-                      className={styles.gptResponse}
-                      dangerouslySetInnerHTML={{ __html: updatedResponse }}
-                    ></div>
-                  </Col>
-                  <Col>
+                  <div style={{ textAlign: "right", marginTop: "20px" }}>
                     <Button
                       className="saveData"
                       onClick={DownloadReort}
@@ -726,53 +799,49 @@ const MyChoices = () => {
                       onMouseEnter={handleMouseEnter}
                       onMouseLeave={handleMouseLeave}
                     >
-                      Download
+                      Download PDF
                     </Button>
-                  </Col>
-                </Row>
+                  </div>
 
-                <Footer
-                  style={{
-                    background: "rgb(250, 248, 253)",
-                    padding: "24px 0px",
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Row className="align-middle justify-around">
-                    <Col className="w-[65rem] mr-3">
+                  <Footer
+                    style={{
+                      background: "transparent",
+                      padding: "24px 0px",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <div style={{ width: "100%", maxWidth: "800px" }}>
                       <Form onFinish={onSend}>
                         <MyCareerGuidanceInputField
                           className={styles.messageInput}
                           ref={inputRef}
-                          placeholder="Send a message"
+                          placeholder="Ask a follow-up question or provide feedback..."
                           onChange={onMessageChange}
                           name="question"
                           autoFocus
                           inputValue={data.question}
                           suffix={
                             disableFields ? (
-                              <Spin className="spinStyle" />
+                              <Spin />
                             ) : (
                               <SendOutlined
-                                style={{
-                                  color: "grey",
-                                }}
+                                style={{ color: "#1476B7", cursor: "pointer" }}
                                 onClick={() => onSend()}
                               />
                             )
                           }
                         />
                       </Form>
-                    </Col>
-                  </Row>
-                </Footer>
-              </>
-            )}
-          </Layout>
-        </div>
+                    </div>
+                  </Footer>
+                </>
+              )}
+            </section>
+          </ContentComponent>
+        </Layout>
       </div>
-    </>
+    </div>
   )
 }
 

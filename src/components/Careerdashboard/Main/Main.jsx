@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import searchicon from "../../../assets/searchicon.svg";
+import React, { memo, useCallback, useState } from "react";
 // import imgcard from "../../../assets/1.png";
 // import imgcard2 from "../../../assets/2.png";
 // import imgcard3 from "../../../assets/3.png";
@@ -7,64 +6,55 @@ import searchicon from "../../../assets/searchicon.svg";
 // import imgcard5 from "../../../assets/5.png";
 // import imgcard6 from "../../../assets/6.png";
 // import imgcard7 from "../../../assets/7.png";
-import imgcard from "../../../assets/1.jpg";
-import imgcard2 from "../../../assets/2.jpg";
-import imgcard3 from "../../../assets/3.jpg";
-import imgcard4 from "../../../assets/4.jpg";
-import imgcard5 from "../../../assets/5.jpg";
-import imgcard6 from "../../../assets/6.jpg";
-import imgcard7 from "../../../assets/7.jpg";
-import imgcard8 from "../../../assets/8.jpg";
-import imgcard9 from "../../../assets/9.jpg";
+import imgcard from "../../../assets/66.png";
+import imgcard2 from "../../../assets/13.png";
+import imgcard3 from "../../../assets/16.png";
+import imgcard4 from "../../../assets/67.png";
+import imgcard5 from "../../../assets/14.png";
+import imgcard6 from "../../../assets/15.png";
+import imgcard7 from "../../../assets/12.png";
+import imgcard8 from "../../../assets/17.png";
+import imgcard9 from "../../../assets/18.png";
 import winningCup from "../../../assets/winningCup.svg";
 import { MyCareerGuidanceButton } from "../../../components/commonComponents";
-import { useLocation, useNavigate } from "react-router-dom";
-import { API_URL } from "../../../utils/constants";
-import { getApiWithAuth } from "../../../utils/api";
-import { Spin, Modal } from "antd";
-import bookImage from "../../../assets/bookImage.png";
+import { useNavigate } from "react-router-dom";
+import { Modal } from "antd";
 import "../Main/Main.css";
+
 const cards = [
-  { src: imgcard, navigateTo: "/cao-calculator" },
-  { src: imgcard4, navigateTo: "/my-goals" },
-  { src: imgcard2, navigateTo: "/cover-letter" },
-  { src: imgcard5, navigateTo: "/self-assesment" },
-  { src: imgcard3, navigateTo: "/my-study" },
-  { src: imgcard7, navigateTo: "/my-choices" },
-  { src: imgcard6, navigateTo: "/educational-guidance" },
-  { src: imgcard8, navigateTo: "/my-guidance-report" },
-  { src: imgcard9, navigateTo: "/work-diary" },
+  { src: imgcard, navigateTo: "/cao-calculator", alt: "My CAO Points" },
+  { src: imgcard4, navigateTo: "/my-goals", alt: "My Goals" },
+  { src: imgcard2, navigateTo: "/cover-letter", alt: "My Career Choices" },
+  { src: imgcard5, navigateTo: "/self-assesment", alt: "My Self Assessment" },
+  { src: imgcard3, navigateTo: "/my-study", alt: "My CV" },
+  { src: imgcard7, navigateTo: "/my-choices", alt: "My Choices" },
+  { src: imgcard6, navigateTo: "/educational-guidance", alt: "My Study Timetable" },
+  { src: imgcard8, navigateTo: "/my-guidance-report", alt: "My Guidance Report" },
+  { src: imgcard9, navigateTo: "/work-diary", alt: "My Work Experience" },
 ];
+
+const GuidanceCard = memo(({ src, alt, onClick }) => (
+  <button type="button" className="careerGuidenceCard" onClick={onClick}>
+    <img
+      src={src}
+      alt={alt}
+      loading="eager"
+      fetchPriority="high"
+      decoding="async"
+      width="600"
+      height="600"
+    />
+  </button>
+));
+
 const Main = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [educationGuidance, setEducationGuidance] = useState([]);
-  const [singlequizData, setSinglequizData] = useState({});
+  const [singlequizData] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    getducationGuidance();
-  }, []);
-
-  const getducationGuidance = async () => {
-    setLoading(true);
-    const response = await getApiWithAuth(API_URL.GETGOALS);
-    if (response?.data?.status === 200) {
-      setEducationGuidance(response.data.data);
-      setLoading(false);
-    } else {
-      setLoading(false);
-    }
-  };
-
-  const showModal = (scoreView) => {
-    setSinglequizData(scoreView);
-    setIsModalOpen(true);
-  };
-
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     setIsModalOpen(false);
-  };
+  }, []);
 
   return (
     <>
@@ -75,28 +65,14 @@ const Main = () => {
           </h1>
         </div>
       </div>
-      <div className="grid grid-cols-12 gap-3 px-3 careerGuidenceGrid">
+      <div className="careerGuidenceGrid">
         {cards.map((card, index) => (
-          <div
+          <GuidanceCard
             key={index}
-            // className="col-span-6 rounded-xl"
-            className="col-span-6 rounded-xl xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 sm:m-auto m-auto"
-            onClick={() => {
-              navigate(card.navigateTo);
-            }}
-            style={{ width: "100%", height: "160px" }}
-          >
-            <img
-              src={card.src}
-              className=" bg-cover "
-              style={{
-                width: "100%",
-                height: "160px",
-                cursor: "pointer",
-                borderRadius: "10px",
-              }}
-            />
-          </div>
+            src={card.src}
+            alt={card.alt}
+            onClick={() => navigate(card.navigateTo)}
+          />
         ))}
       </div>
 

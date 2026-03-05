@@ -31,10 +31,104 @@ const DayTen = () => {
 
   const [formData, setFormData] = useState(savedFormData);
   const [loading, setLoading] = useState(false);
+  const [isDirty, setIsDirty] = useState(false);
+  const formDataRef = React.useRef(formData);
+
+  useEffect(() => {
+    formDataRef.current = formData;
+  }, [formData]);
+
+  const autoSave = async (data) => {
+    const questionsAndAnswers = [
+      {
+        question: "What have you learned about yourself during the ten days?",
+        answer: data.selfLearning || "", // Use empty string if no answer
+      },
+      {
+        question:
+          "List all the skills you demonstrated during your work experience:",
+        answer: data.demonstratedSkills.join(", "), // Join skills into a single string
+      },
+      {
+        question: "Did you achieve your goals?",
+        answer: data.goalsAchieved || "",
+      },
+      data.goalsAchieved === "No" && {
+        question: "Why?",
+        answer: data.goalsAchievedExplanation || "",
+      },
+      {
+        question: "What was the worst thing about the ten days?",
+        answer: data.worstExperience || "",
+      },
+      {
+        question: "What was the best experience?",
+        answer: data.bestExperience || "",
+      },
+      {
+        question: "Rate your performance in various areas",
+        answer: JSON.stringify(data.performanceRatings),
+      },
+      {
+        question:
+          "Compare this to how your supervisor rated you. Are they similar?",
+        answer: data.supervisorComparison || "",
+      },
+      data.supervisorComparison === "No" && {
+        question: "If no, why do you think there is a difference?",
+        answer: data.comparisonDifference || "",
+      },
+    ].filter(Boolean);
+
+    const payload = [
+      {
+        day: "Day10",
+        date: data.date || "",
+        questionsAndAnswers: questionsAndAnswers,
+      },
+    ];
+
+    const updatePayload = {
+      day: "Day10",
+      date: data.date || "",
+      questionsAndAnswers: questionsAndAnswers,
+    };
+
+    if (data.date) {
+      try {
+        const url = `${API_URL.WORK_DIARY}update-day/?day=Day10`;
+        await putApiWithAuth(url, updatePayload);
+      } catch (error) {
+        console.error("Auto-save error:", error);
+      }
+    } else {
+      try {
+        await postApiWithoutAuth(API_URL.WORK_DIARY, payload);
+      } catch (error) {
+        console.error("Auto-save error:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (isDirty) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      if (isDirty) {
+      }
+    };
+  }, [isDirty]);
 
   // Handle date change
   const handleDateChange = (date, dateString) => {
     setFormData({ ...formData, date: dateString });
+    setIsDirty(true); sessionStorage.setItem("unsave", "true");
   };
 
   // Handle input changes for both text and skill fields
@@ -47,11 +141,13 @@ const DayTen = () => {
     } else {
       setFormData({ ...formData, [field]: value });
     }
+    setIsDirty(true); sessionStorage.setItem("unsave", "true");
   };
 
   // Handle radio button changes for yes/no fields
   const handleRadioChange = (e, field) => {
     setFormData({ ...formData, [field]: e.target.value });
+    setIsDirty(true); sessionStorage.setItem("unsave", "true");
   };
 
   // Handle performance rating changes
@@ -60,6 +156,7 @@ const DayTen = () => {
       ...formData,
       performanceRatings: { ...formData.performanceRatings, [field]: value },
     });
+    setIsDirty(true); sessionStorage.setItem("unsave", "true");
   };
 
   // Handle form reset
@@ -84,6 +181,7 @@ const DayTen = () => {
       comparisonDifference: "",
     };
     setFormData(initialFormData);
+    setIsDirty(false); sessionStorage.removeItem("unsave");
   };
 
   const populateForm = async (data) => {
@@ -241,6 +339,7 @@ const DayTen = () => {
       const response = await putApiWithAuth(url, updatePayload);
       console.log("Updated data:", updatePayload);
       message.success("Data updated successfully!");
+      setIsDirty(false); sessionStorage.removeItem("unsave");
     } catch (error) {
       message.error("Something went wrong while updating data.");
       console.error("Error:", error);
@@ -423,14 +522,16 @@ const DayTen = () => {
         {/* Submit and Reset Buttons */}
         <Col span={24} style={{ textAlign: "right", marginTop: "16px" }}>
           <Button
-            className="border-blue-500"
+            type="primary"
             onClick={handleSubmit}
             loading={loading}
-            style={{ marginRight: "10px" }}
+            style={{ marginRight: "10px", backgroundColor: "#1476B7" }}
           >
             Submit
           </Button>
-          <Button onClick={handleReset}>Reset</Button>
+          <Button type="default" onClick={handleReset} style={{ backgroundColor: "#F5222D", color: "white" }}>
+            Reset
+          </Button>
         </Col>
       </Row>
     </div>
