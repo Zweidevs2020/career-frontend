@@ -33,16 +33,16 @@ const cards = [
   { src: imgcard9, navigateTo: "/work-diary", alt: "My Work Experience" },
 ];
 
-const GuidanceCard = memo(({ src, alt, isPriority, onClick }) => (
+const GuidanceCard = memo(({ src, alt, onClick }) => (
   <button type="button" className="careerGuidenceCard" onClick={onClick}>
     <img
       src={src}
       alt={alt}
-      loading={isPriority ? "eager" : "lazy"}
-      fetchPriority={isPriority ? "high" : "auto"}
+      loading="eager"
+      fetchPriority="high"
       decoding="async"
-      width="900"
-      height="900"
+      width="600"
+      height="600"
     />
   </button>
 ));
@@ -71,7 +71,6 @@ const Main = () => {
             key={index}
             src={card.src}
             alt={card.alt}
-            isPriority={index < 3}
             onClick={() => navigate(card.navigateTo)}
           />
         ))}
