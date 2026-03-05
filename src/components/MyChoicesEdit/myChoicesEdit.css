@@ -145,6 +145,38 @@
     color: #333333;
 }
 
+.courseWebpageBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 132px;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 1px solid #1476b7;
+  background: #1476b7;
+  color: #ffffff;
+  font-family: "Poppins";
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.courseWebpageBtn:hover {
+  background: #0f659d;
+  border-color: #0f659d;
+  color: #ffffff;
+}
+
+.courseWebpageBtn.disabled,
+.courseWebpageBtn:disabled {
+  background: #9dbfd6;
+  border-color: #9dbfd6;
+  color: #ffffff;
+  cursor: not-allowed;
+}
+
 @media only screen and (max-width: 780px) {
 
   .old-data input,
