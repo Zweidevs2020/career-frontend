@@ -1,5 +1,6 @@
-import { Spin, Button, Row, Col } from "antd";
+import { Spin, Button, Row, Col, message } from "antd";
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import DayOne from "./DayOne";
 import DayTwo from "./DayTwo";
 import DayThree from "./DayThree";
@@ -11,9 +12,12 @@ import DayEight from "./DayEight";
 import DayNine from "./DayNine";
 import DayTen from "./DayTen";
 import QuizTime from "./QuizTime";
+import { API_URL } from "../../utils/constants";
+import { getToken } from "../../utils/LocalStorage";
 
 const WorkDiary = () => {
   const [loading, setLoading] = useState(false);
+  const [downloadLoading, setDownloadLoading] = useState(false);
   const [activeDay, setActiveDay] = useState("");
   const [currentDay, setCurrentDay] = useState(1);
   const [hoveredDay, setHoveredDay] = useState(null); // Track which day is being hovered
@@ -69,6 +73,54 @@ const WorkDiary = () => {
     setActiveDay(dayKey);
   };
 
+  const handleDownloadWorkDiary = async () => {
+    const token = getToken();
+
+    if (!token) {
+      message.error("Student token not found. Please log in again.");
+      return;
+    }
+
+    setDownloadLoading(true);
+    try {
+      const baseUrl = process.env.REACT_APP_BASE_URL || "";
+      const normalizedBase = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+      const downloadUrl = `${normalizedBase}${API_URL.WORK_DIARY_DOWNLOAD}`;
+
+      const response = await axios.get(downloadUrl, {
+        responseType: "blob",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const blob = new Blob([response.data], {
+        type:
+          response.headers["content-type"] ||
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      });
+      const downloadLink = document.createElement("a");
+      const objectUrl = window.URL.createObjectURL(blob);
+      const contentDisposition = response.headers["content-disposition"];
+      const filenameMatch = contentDisposition?.match(/filename="?([^"]+)"?/);
+      const filename = filenameMatch?.[1] || "work-diary.docx";
+
+      downloadLink.href = objectUrl;
+      downloadLink.setAttribute("download", filename);
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      downloadLink.remove();
+      window.URL.revokeObjectURL(objectUrl);
+
+      message.success("Work diary downloaded successfully.");
+    } catch (error) {
+      console.error("Error downloading work diary:", error);
+      message.error("Failed to download work diary. Please try again.");
+    } finally {
+      setDownloadLoading(false);
+    }
+  };
+
   const renderActiveComponent = () => {
     const day = dayComponents.find((d) => d.key === activeDay);
     return day ? day.component : null;
@@ -80,10 +132,34 @@ const WorkDiary = () => {
         <Spin className="spinStyle" />
       ) : (
         <div style={{backgroundColor: "#CEF5E0"}}>
-          <div className="topContainer">
+          <div
+            className="topContainer"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingRight: "40px",
+              gap: "12px",
+            }}
+          >
             <div>
               <h5 className="goalHeading">My Work Diary</h5>
             </div>
+            <Button
+              type="primary"
+              onClick={handleDownloadWorkDiary}
+              loading={downloadLoading}
+              style={{
+                marginLeft: "auto",
+                backgroundColor: "#1476B7",
+                borderColor: "#1476B7",
+                borderRadius: "10px",
+                fontWeight: 500,
+                boxShadow: "0 4px 12px rgba(20, 118, 183, 0.25)",
+              }}
+            >
+              Download Work Diary
+            </Button>
             {/* <div className="subHead">
               <h className="subHeading">
                 Writing down your goal increases your chances of success. Fill
