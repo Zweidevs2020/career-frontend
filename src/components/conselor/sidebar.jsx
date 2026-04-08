@@ -9,7 +9,7 @@ const navigationItems = [
   { name: "My Study", icon: "📚" },
   { name: "My Choices", icon: "🔀" },
   { name: "My Educational Guidance", icon: "🎓" },
-  { name: "My Guidance Report", icon: "📊" },
+  { name: "My Report (AI)", icon: "📊" },
   { name: "My Work Diary", icon: "💼" },
 ];
 

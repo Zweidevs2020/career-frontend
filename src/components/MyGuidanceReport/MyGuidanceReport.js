@@ -725,7 +725,7 @@ const MyChoices = () => {
   return (
     <div className={styles.educationalGuidanceMainDiv}>
       <div className={styles.educationalGuidanceSecondDiv}>
-        <div className="welcomeHaddingText">My Guidance Report</div>
+        <div className="welcomeHaddingText">My Report (AI)  </div>
         <Layout style={{ background: "transparent" }}>
           <ContentComponent>
             <section

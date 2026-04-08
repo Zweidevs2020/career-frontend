@@ -105,7 +105,7 @@ export default function CounselorSidebar() {
     },
     {
       icon: <EducationalSvg fill={selectedMenuItem === "Educational Guidance" ? "#1476B7" : "#BDBDBD"} />,
-      label: "My Guidance Report",
+      label: "My Report (AI)",
       path: id ? `/consellor/student-educational-report/${id}` : "#",
       activeState: "Educational Guidance",
     },

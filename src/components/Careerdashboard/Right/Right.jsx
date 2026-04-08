@@ -45,7 +45,7 @@ const Right = () => {
   const getPsychometricTestNames = async () => {
     const response = await getApiWithAuth(API_URL.GETPSYCHOMETRICTEST);
    
-    setPsychometricTestResult(response.data.data)
+    setPsychometricTestResult(response?.data?.data || [])
     if (response?.data?.status === 200) {
       const filterSCore = response.data.data.filter(
         (item) => item.score === null
