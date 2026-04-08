@@ -548,7 +548,7 @@ const Sidebar = ({ children, flags }) => {
                   }}
                 >
                   <span className="textStyling" style={{ color: selectedMenuItem === "ChatBot" ? "#1476B7" : "#737373" }}>
-                    My Guidance Report
+                    My Report (AI)
                     {selectedMenuItem === "ChatBot" ? (
                       <span> &nbsp;&#x25cf; </span>
                     ) : null}
@@ -1030,7 +1030,7 @@ const Sidebar = ({ children, flags }) => {
                 }}
               >
                 <span className="textStyling">
-                  My Guidance Report
+                  My Report (AI)
                   {selectedMenuItem === "ChatBot" ? (
                     <span> &nbsp;&#x25cf; </span>
                   ) : null}

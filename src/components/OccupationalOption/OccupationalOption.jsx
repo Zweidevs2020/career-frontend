@@ -37,6 +37,41 @@ const OccupationalOption = () => {
     `Lorem ipsum dolor sit amet consectetur adipisicing elit Hic minus fuga nemo perspiciatis nihil dolor ipsum at possimus vel accusamus recusandae quam fugiat qu idem veniam voluptates atque est sequi iste`
       .split(" ")
       .join(", ");
+
+  const escapeHtml = (text = "") =>
+    text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+
+  const formatProfessionalHtml = (content = "") => {
+    if (!content || typeof content !== "string") return "";
+
+    const trimmed = content.trim();
+    const hasHtmlTags = /<\/?[a-z][\s\S]*>/i.test(trimmed);
+    if (hasHtmlTags) return trimmed;
+
+    const numberedPoints = trimmed.match(/\d+\.\s[\s\S]*?(?=(?:\s+\d+\.\s)|$)/g);
+    if (numberedPoints && numberedPoints.length > 1) {
+      const listItems = numberedPoints
+        .map((point) => point.replace(/^\d+\.\s*/, "").trim())
+        .filter(Boolean)
+        .map((point) => `<li>${escapeHtml(point)}</li>`)
+        .join("");
+
+      return `<ol>${listItems}</ol>`;
+    }
+
+    const lines = trimmed
+      .split(/\n+/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+
+    return lines.map((line) => `<p>${escapeHtml(line)}</p>`).join("");
+  };
+
   return (
     <div className="mySelfTwo">
       <div style={{ display: "flex", justifyContent: "flex-start" }}>
@@ -66,13 +101,21 @@ const OccupationalOption = () => {
                   style={{ fontWeight: 600 }}
                 >
                 </div>
-                <div className="textStyle18 pt-1 pb-3">{item.description}</div>
+                <div
+                  className={`${styles.htmlParser} textStyle18 pt-1 pb-3`}
+                  dangerouslySetInnerHTML={{
+                    __html: formatProfessionalHtml(item.description),
+                  }}
+                ></div>
               </div>
             );
           })
         ) : (
           <>
-          <div className={styles.htmlParser} dangerouslySetInnerHTML={{__html: (idData.idea)}}></div>
+          <div
+            className={styles.htmlParser}
+            dangerouslySetInnerHTML={{ __html: formatProfessionalHtml(idData.idea) }}
+          ></div>
           
           </>
         )}
