@@ -28,6 +28,7 @@ const ConselorWorkDiary = () => {
   const { id } = useParams()
   const [workExperience, setWorkExperience] = useState([])
   const [loading, setLoading] = useState(false)
+  const [downloadLoading, setDownloadLoading] = useState(false)
   const [activeTab, setActiveTab] = useState("Day 1")
 
   // --- 1. Cookie helper (same as before) ---
@@ -106,6 +107,53 @@ const ConselorWorkDiary = () => {
     return data.length > 0
   }
 
+  const handleDownloadWorkDiary = async () => {
+    const token = getCookie("conselorToken")
+
+    if (!token) {
+      message.error("Unauthorized access. Please log in.")
+      return
+    }
+
+    setDownloadLoading(true)
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}${API_URL.COUNSELOR_WORK_DIARY_DOWNLOAD}${id}/`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          responseType: "blob",
+        },
+      )
+
+      if (response.status === 200) {
+        const url = window.URL.createObjectURL(new Blob([response.data]))
+        const link = document.createElement("a")
+        link.href = url
+
+        const contentDisposition = response.headers["content-disposition"]
+        let fileName = `work-diary-${id}.docx`
+        if (contentDisposition) {
+          const match = contentDisposition.match(/filename="?([^"]+)"?/)
+          if (match) fileName = match[1]
+        }
+
+        link.setAttribute("download", fileName)
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        window.URL.revokeObjectURL(url)
+        message.success("Work diary downloaded successfully!")
+      } else {
+        message.error("Failed to download work diary.")
+      }
+    } catch (error) {
+      console.error("Error downloading work diary:", error)
+      message.error("An error occurred while downloading the work diary.")
+    } finally {
+      setDownloadLoading(false)
+    }
+  }
+
   return (
     <div className="p-6">
       {/* Inline style block for our fade-in animation */}
@@ -115,7 +163,18 @@ const ConselorWorkDiary = () => {
       <StudentInformation />
 
       {/* Heading */}
-      <h1 className="text-2xl font-bold mb-2">My Work Diary</h1>
+      <div className="flex items-center justify-between gap-3 mb-2">
+        <h1 className="text-2xl font-bold mb-0">My Work Diary</h1>
+        <button
+          onClick={handleDownloadWorkDiary}
+          disabled={downloadLoading}
+          className={`px-4 py-2 rounded-lg text-white font-medium transition-all ${
+            downloadLoading ? "bg-blue-300 cursor-not-allowed" : "bg-[#1476B7] hover:bg-[#0f639b]"
+          }`}
+        >
+          {downloadLoading ? "Downloading..." : "Download Work Diary"}
+        </button>
+      </div>
       <p className="text-gray-600 mb-6">
         Writing down your goal increases your chances of success. Fill out this form to view any time or print and put
         you can see daily.

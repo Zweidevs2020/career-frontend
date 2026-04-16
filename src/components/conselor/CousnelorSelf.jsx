@@ -12,6 +12,10 @@ const CounselorSelf = () => {
   const { id } = useParams()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
+  const [screenSize, setScreenSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  })
 
   const getCookie = (name) => {
     const cookies = document.cookie.split("; ")
@@ -27,6 +31,17 @@ const CounselorSelf = () => {
   useEffect(() => {
     if (id) fetchStudentData()
   }, [id])
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize({ width: window.innerWidth, height: window.innerHeight })
+    }
+
+    window.addEventListener("resize", handleResize)
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
 
   const fetchStudentData = async () => {
     setLoading(true)
@@ -67,73 +82,69 @@ const CounselorSelf = () => {
       {loading ? (
         <p>Loading...</p>
       ) : data?.length > 0 ? (
-        data.map((item, index) => {
-          // Apply conditional color logic based on test_name
-          let chartColor
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
+          {data.map((item, index) => {
+            // Apply conditional color logic based on test_name
+            let chartColor
 
-          if (item?.test_name === "Occupational Values Assesment") {
-            chartColor = "#87aded"
-          } else if (item?.test_name === "Occupational Interest Assesment") {
-            chartColor = "#b9bab8"
-          } else {
-            chartColor = "#a4eba9"
-          }
+            if (item?.test_name === "Occupational Values Assesment") {
+              chartColor = "#87aded"
+            } else if (item?.test_name === "Occupational Interest Assesment") {
+              chartColor = "#b9bab8"
+            } else {
+              chartColor = "#a4eba9"
+            }
 
-          const chartOptions = {
-            chart: {
-              id: `chart-${index}`,
-              toolbar: {
-                show: false,
-              },
-            },
-            colors: [chartColor], 
-            plotOptions: {
-              bar: {
-                horizontal: true,
-                columnWidth: "50%",
-                barHeight: "50%",
-                colors: {
-                  backgroundBarColors: ["#f2f2f2"], 
+            const chartOptions = {
+              chart: {
+                id: `chart-${index}`,
+                toolbar: {
+                  show: false,
                 },
               },
-            },
-            dataLabels: {
-              enabled: false,
-            },
-            tooltip: {
-              y: {
-                formatter: (val) => val,
-                title: {
-                  formatter: () => "",
+              colors: [chartColor],
+              plotOptions: {
+                bar: {
+                  horizontal: true,
+                  columnWidth: "50%",
+                  barHeight: "50%",
+                  colors: {
+                    backgroundBarColors: ["#f2f2f2"],
+                  },
                 },
               },
-            },
-            xaxis: {
-              categories: item.labels || [],
-            },
-          }
-          const chartSeries = [
-            {
-              name: item.test_name || "Scores",
-              data: item.scores || [],
-            },
-          ]
+              dataLabels: {
+                enabled: false,
+              },
+              tooltip: {
+                y: {
+                  formatter: (val) => val,
+                  title: {
+                    formatter: () => "",
+                  },
+                },
+              },
+              xaxis: {
+                categories: (item.labels || []).map((label) => (typeof label === "string" ? label.split("/") : label)),
+              },
+            }
+            const chartSeries = [
+              {
+                name: item.test_name || "Scores",
+                data: item.scores || [],
+              },
+            ]
 
-          return (
-            <div key={index} className="mb-6 p-4 bg-white shadow rounded">
-              <h2 className="text-xl font-bold mb-2">{item.test_name}</h2>
-              <div style={{ overflow: "auto" }}>
-                <Chart
-                  options={chartOptions}
-                  series={chartSeries}
-                  type="bar"
-                  width={window.innerWidth > 748 ? "450" : "330"}
-                  height={320}
-                />
+            return (
+              <div key={index} className="ms-3 mt-5">
+                <h2 className="text-xl font-bold mb-2">{item.test_name}</h2>
+                <div style={{ overflow: "auto" }}>
+                  <Chart options={chartOptions} series={chartSeries} type="bar" width={screenSize.width > 748 ? 450 : 330} height={320} />
+                </div>
               </div>
-            </div>
-          )
-        })
+            )
+          })}
+        </div>
       ) : (
         <p className="text-center text-red-500 font-bold">No data entered from student</p>
       )}

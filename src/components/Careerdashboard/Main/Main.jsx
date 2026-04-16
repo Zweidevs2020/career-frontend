@@ -29,7 +29,7 @@ const cards = [
   { src: imgcard3, navigateTo: "/my-study", alt: "My CV" },
   { src: imgcard7, navigateTo: "/my-choices", alt: "My Choices" },
   { src: imgcard6, navigateTo: "/educational-guidance", alt: "My Study Timetable" },
-  { src: imgcard8, navigateTo: "/my-guidance-report", alt: "My Guidance Report" },
+  { src: imgcard8, navigateTo: "/my-guidance-report", alt: "My Report (AI)" },
   { src: imgcard9, navigateTo: "/work-diary", alt: "My Work Experience" },
 ];
 
@@ -58,14 +58,8 @@ const Main = () => {
 
   return (
     <>
-      <div className="h-[40px] w-[100%] flex items-center justify-between careerGuidenceSearchPDiv">
-        <div className="h-[40px] w-[53%] flex items-center ml-3  sm:flex sm:items-center sm:justify-start md:flex md:items-center md:justify-start md:h-[40px] md:w-[60%] lg:flex lg:items-center lg:justify-start  lg:h-[40px] lg:w-[60%] custom-heading sm:w-[100%] sm:ml-0">
-          <h1 className="text-[18px] sm:text-[15px]  text-[#474749] font-bold ml-1 sm:text-center w-[100%]">
-            Career Guidance
-          </h1>
-        </div>
-      </div>
-      <div className="careerGuidenceGrid">
+     
+      <div className="careerGuidenceGrid mt-4">
         {cards.map((card, index) => (
           <GuidanceCard
             key={index}

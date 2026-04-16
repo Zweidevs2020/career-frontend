@@ -46,6 +46,8 @@ export const API_URL = {
   SENDCV: "cv/sendcv/",
   CREATEPAYMENT: "user/create-payment/",
   WORK_DIARY: "/diary/api/work-experience-questions/",
+  WORK_DIARY_DOWNLOAD: "/diary/api/work-diary/download/",
+  COUNSELOR_WORK_DIARY_DOWNLOAD: "/diary/api/work-diary/counsellor/download/",
   SUBS: "user/subscription/expiry/",
   CONSELOR_SIGN_IN: "/user/counselor/login/",
   CONSELOR_LIST_STUDENTS: "/user/counselor/students/v2/",
