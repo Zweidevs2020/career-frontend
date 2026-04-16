@@ -16,6 +16,7 @@ import { getApiWithAuth, patchApiWithAuth, deleteApiWithAuth, putApiWithAuth, po
 import dropdownIcon from "../../assets/dropdownIcon.svg"
 import EditOutlined from "../../assets/uil_edit.svg"
 
+import { Link } from "react-router-dom"
 import { debounce } from "lodash"
 
 import "./myChoicesEdit.css"
@@ -669,26 +670,6 @@ const MyChoicesEdit = () => {
       .join(" ")
   }
 
-  const getCourseInfoLink = (value, record = {}) => {
-    const candidates = [
-      value,
-      record?.course_information,
-      record?.courseInformation,
-      record?.course_information_link,
-      record?.course_webpage,
-      record?.course_url,
-      record?.website,
-      record?.url,
-      record?.link,
-    ]
-    const found = candidates.find((item) => typeof item === "string" && item.trim() !== "")
-    if (!found) return ""
-    const trimmed = found.trim()
-    if (/^https?:\/\//i.test(trimmed)) return trimmed
-    if (/^www\./i.test(trimmed)) return `https://${trimmed}`
-    return trimmed
-  }
-
   const Row = ({ children, ...props }) => {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
       id: props["data-row-key"],
@@ -1230,20 +1211,9 @@ const MyChoicesEdit = () => {
                                         className="tableHeadingStyle"
                                         render={(text, record) => (
                                           <>
-                                            {getCourseInfoLink(text, record) ? (
-                                              <a
-                                                href={getCourseInfoLink(text, record)}
-                                                className="courseWebpageBtn"
-                                                target="_blank"
-                                                rel="noreferrer"
-                                              >
-                                                Course Webpage
-                                              </a>
-                                            ) : (
-                                              <button type="button" className="courseWebpageBtn disabled" disabled>
-                                                Course Webpage
-                                              </button>
-                                            )}
+                                            <Link to={text} className="linkStyle" target={"_blank"}>
+                                              {text}
+                                            </Link>
                                           </>
                                         )}
                                       />
@@ -1595,20 +1565,9 @@ const MyChoicesEdit = () => {
                                                 .join(" ")}
                                             </span>
 
-                                            {getCourseInfoLink(row[item], row) ? (
-                                              <a
-                                                href={getCourseInfoLink(row[item], row)}
-                                                className="courseWebpageBtn"
-                                                target="_blank"
-                                                rel="noreferrer"
-                                              >
-                                                Course Webpage
-                                              </a>
-                                            ) : (
-                                              <button type="button" className="courseWebpageBtn disabled" disabled>
-                                                Course Webpage
-                                              </button>
-                                            )}
+                                            <Link to={row[item]} className="linkStyle" target={"_blank"}>
+                                              {row[item]}
+                                            </Link>
                                           </div>
                                         ) : (
                                           <div className="column" key={`${row.dataId}-${index}`}>
