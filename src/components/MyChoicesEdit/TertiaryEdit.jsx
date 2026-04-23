@@ -105,7 +105,9 @@ const TertiaryEdit = () => {
     setLoadingFirst(true);
     const dropdown_options_response = await getApiWithAuth(`/choices/tertiary-degree/`);
     if (dropdown_options_response.data.status === 200) {
-      const userData = dropdown_options_response.data.data.user_data || [];
+      const userData = (dropdown_options_response.data.data.user_data || []).slice().sort((a, b) => {
+        return (Number(a.order_number) || 0) - (Number(b.order_number) || 0);
+      });
       const levelData = dropdown_options_response.data.data.level_data || [];
       setMyData(userData);
       setDropDownOptions(levelData);
@@ -699,21 +701,26 @@ const TertiaryEdit = () => {
   const onDragEnd = async ({ active, over }) => {
     if (active?.id && over?.id) {
       if (active?.id !== over?.id) {
+        let nextData = null;
         setData((prev) => {
           const activeIndex = prev.findIndex((i) => i.dataId === active?.id);
 
           const overIndex = prev.findIndex((i) => i.dataId === over?.id);
-          const checkArray = arrayMove(prev, activeIndex, overIndex);
-          const swapArray = checkArray.filter((item) => item.id !== null);
-          const check = swapArray.map(async (item, index) => {
-            updateOrderMultitimes(dataa.id, item.id, {
-              order_number: index + 1,
-            });
-          });
-          Promise.all(check).then(getTableRecord(), getTableRecord());
-
-          return arrayMove(prev, activeIndex, overIndex);
+          nextData = arrayMove(prev, activeIndex, overIndex).map((item, index) => ({
+            ...item,
+            rowNo: index,
+          }));
+          return nextData;
         });
+
+        const swapArray = (nextData || []).filter((item) => item.id !== null);
+        const check = swapArray.map((item, index) =>
+          updateOrderMultitimes(dataa.id, item.id, {
+            order_number: index + 1,
+          }),
+        );
+        await Promise.all(check);
+        await getTableRecord();
       }
     }
     {

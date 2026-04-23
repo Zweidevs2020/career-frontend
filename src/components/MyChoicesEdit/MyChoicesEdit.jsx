@@ -304,7 +304,10 @@ const MyChoicesEdit = () => {
   const getTableRecord = async () => {
     const response = await getApiWithAuth(`choices/${dataa.id}/`)
     if (response.data.status === 200) {
-      setOldData(response.data.data.user_data)
+      const userData = (response.data.data.user_data || []).slice().sort((a, b) => {
+        return (Number(a.order_number) || 0) - (Number(b.order_number) || 0)
+      })
+      setOldData(userData)
       if (isApprentice) {
         const apprenticeData = response.data.data.level_data
         const transformedData = apprenticeData.map((item) => ({
@@ -829,28 +832,37 @@ const MyChoicesEdit = () => {
   const onDragEnd = async ({ active, over }) => {
     if (active?.id && over?.id) {
       if (active?.id !== over?.id) {
+        let nextData = null
         setData((prev) => {
           const activeIndex = prev.findIndex((i) => i.dataId === active?.id)
 
           const overIndex = prev.findIndex((i) => i.dataId === over?.id)
-          const checkArray = arrayMove(prev, activeIndex, overIndex)
-          const swapArray = checkArray.filter((item) => item.id !== null)
-          const check = swapArray.map(async (item, index) => {
-            updateOrderMultitimes(dataa.id, item.id, {
-              order_number: index + 1,
-            })
-          })
-          Promise.all(check).then(getTableRecord(), getTableRecord())
-
-          return arrayMove(prev, activeIndex, overIndex)
+          nextData = arrayMove(prev, activeIndex, overIndex).map((item, index) => ({
+            ...item,
+            rowNo: index,
+          }))
+          return nextData
         })
+
+        const swapArray = (nextData || []).filter((item) => item.id !== null)
+        const check = swapArray.map((item, index) =>
+          updateOrderMultitimes(dataa.id, item.id, {
+            order_number: index + 1,
+          }),
+        )
+        await Promise.all(check)
+        await getTableRecord()
       }
     }
     isMobile && window.location.reload()
   }
 
   const updateOrderMultitimes = async (id, activeIndexId, swapArrayOrder) => {
-    const updateUrl = id === "ucas-ni" ? `choices/ucas-ni/${activeIndexId}/` : `choices/update-${id}/${activeIndexId}/`
+    const updateUrl = id === "ucas-ni"
+      ? `choices/ucas-ni/${activeIndexId}/`
+      : isApprentice
+        ? `choices/apprentice/${activeIndexId}/`
+        : `choices/update-${id}/${activeIndexId}/`
     const respose1 =
       id === "ucas-ni"
         ? await putApiWithAuth(updateUrl, swapArrayOrder)
@@ -862,9 +874,15 @@ const MyChoicesEdit = () => {
 
   const updateOrder2 = async (id, overIndexId, orderUpdate2) => {
     setLoadingFirst(true)
-    const updateUrl = id === "ucas-ni" ? `choices/ucas-ni/${overIndexId}/` : `choices/update-${id}/${overIndexId}/`
+    const updateUrl = id === "ucas-ni"
+      ? `choices/ucas-ni/${overIndexId}/`
+      : isApprentice
+        ? `choices/apprentice/${overIndexId}/`
+        : `choices/update-${id}/${overIndexId}/`
     const respose2 =
-      id === "ucas-ni" ? await putApiWithAuth(updateUrl, orderUpdate2) : await patchApiWithAuth(updateUrl, orderUpdate2)
+      id === "ucas-ni"
+        ? await putApiWithAuth(updateUrl, orderUpdate2)
+        : await patchApiWithAuth(updateUrl, orderUpdate2)
 
     if (respose2.data.status === 200) {
       getTableRecord()
