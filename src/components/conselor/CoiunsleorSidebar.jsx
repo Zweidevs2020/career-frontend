@@ -32,6 +32,22 @@ export default function CounselorSidebar() {
   const [selectedMenuItem, setSelectedMenuItem] = useState("Overview")
   const [loading, setLoading] = useState(false)
 
+  const buildCvFileName = (firstName = "", lastName = "", fallback = "") => {
+    const slug = (value = "") =>
+      value
+        .toString()
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+
+    const first = slug(firstName)
+    const last = slug(lastName)
+    const fallbackSlug = slug(fallback)
+    const namePart = [first, last].filter(Boolean).join("-") || fallbackSlug || "student"
+    return `${namePart}-CV.docx`
+  }
+
   const fetchStudentCV = async () => {
     setLoading(true)
     const token = getCookie("conselorToken")
@@ -43,6 +59,13 @@ export default function CounselorSidebar() {
     }
 
     try {
+      const studentDetailResponse = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}${API_URL.CONSELOR_STUDENT_Details}${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
+
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}${API_URL.CONSELOR_STUDENT_Details}${id}/cv/download/`,
         {
@@ -59,10 +82,12 @@ export default function CounselorSidebar() {
         link.href = url
 
         const contentDisposition = response.headers["content-disposition"]
-        let fileName = "student_cv.docx" // Default filename
+        const firstName = studentDetailResponse?.data?.first_name || ""
+        const lastName = studentDetailResponse?.data?.last_name || ""
+        let fileName = buildCvFileName(firstName, lastName, id)
         if (contentDisposition) {
           const match = contentDisposition.match(/filename="(.+)"/)
-          if (match) fileName = match[1]
+          if (match && !/^(filename|student_cv)\.docx$/i.test(match[1])) fileName = match[1]
         }
 
         console.log("File Name:", fileName)
