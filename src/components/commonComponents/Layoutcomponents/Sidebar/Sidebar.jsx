@@ -470,6 +470,7 @@ const Sidebar = ({ children, flags }) => {
                 </Menu.Item>
                 <Menu.Item
                   key="MyStudy"
+                  className="myStudyMenuItem"
                   icon={
                     <StudySvg
                       fill={
@@ -982,6 +983,7 @@ const Sidebar = ({ children, flags }) => {
               </Menu.Item>
               <Menu.Item
                 key="MyStudy"
+                className="myStudyMenuItem"
                 onClick={() => {
                   componentsSwtich("MyStudy"); // You can keep this line if needed
                   onClose(); // Close the Drawer
