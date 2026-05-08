@@ -16,6 +16,16 @@
     height: inherit;
 }
 
+.educationalGuidanceMainDiv .fc {
+    background-color: #ffffff;
+    padding: 6px;
+}
+
+.educationalGuidanceMainDiv .fc-theme-standard td,
+.educationalGuidanceMainDiv .fc-theme-standard th {
+    background-color: #ffffff;
+}
+
 .fc-timegrid-event .fc-event-main {
     padding: 1px 1px 1px;
 }
