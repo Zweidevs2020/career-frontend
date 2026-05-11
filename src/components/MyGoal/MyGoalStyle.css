@@ -53,6 +53,7 @@
   background-color: #F8FAFC;
   width: 94%;
   height: 100vh;
+  border-radius: 8px;
 
 }
 
@@ -462,4 +463,3 @@
   }
 
 }
-

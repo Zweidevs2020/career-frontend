@@ -1,0 +1,11 @@
+.workDiaryInnerPanel [style*="text-align: right"] {
+  margin-top: 24px !important;
+  padding-bottom: 8px;
+}
+
+.workDiaryInnerPanel [style*="text-align: right"] .ant-btn {
+  min-width: 110px;
+  height: 46px;
+  border-radius: 10px;
+  font-weight: 500;
+}

@@ -19,6 +19,7 @@
 .educationalGuidanceMainDiv .fc {
     background-color: #ffffff;
     padding: 6px;
+    border-radius: 8px;
 }
 
 .educationalGuidanceMainDiv .fc-theme-standard td,
