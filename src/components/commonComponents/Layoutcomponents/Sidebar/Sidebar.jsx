@@ -363,7 +363,7 @@ const Sidebar = ({ children, flags }) => {
                   }
                   style={{
                     background: getActiveBackgroundColor("Overview"),
-                    borderRadius: "0px",
+                    borderRadius: selectedMenuItem === "Overview" ? "10px" : "0px",
                   }}
                 >
                   <span className="textStyling" style={{ color: selectedMenuItem === "Overview" ? "#1476B7" : "#737373" }}>
@@ -386,7 +386,7 @@ const Sidebar = ({ children, flags }) => {
                   }
                   style={{
                     background: getActiveBackgroundColor("CAOCalculator"),
-                    borderRadius: "0px",
+                    borderRadius: selectedMenuItem === "CAOCalculator" ? "10px" : "0px",
                   }}
                 >
                   <span className="textStyling" style={{ color: selectedMenuItem === "CAOCalculator" ? "#1476B7" : "#737373" }}>
@@ -407,7 +407,7 @@ const Sidebar = ({ children, flags }) => {
                   }
                   style={{
                     background: getActiveBackgroundColor("MyGoals"),
-                    borderRadius: "0px",
+                    borderRadius: selectedMenuItem === "MyGoals" ? "10px" : "0px",
                   }}
                 >
                   <span
@@ -435,7 +435,7 @@ const Sidebar = ({ children, flags }) => {
                   }
                   style={{
                     background: getActiveBackgroundColor("CoverLater"),
-                    borderRadius: "0px",
+                    borderRadius: selectedMenuItem === "CoverLater" ? "10px" : "0px",
                   }}
                 >
                   <span className="textStyling" style={{ color: selectedMenuItem === "CoverLater" ? "#1476B7" : "#737373" }}>
@@ -458,7 +458,7 @@ const Sidebar = ({ children, flags }) => {
                   }
                   style={{
                     background: getActiveBackgroundColor("SelfAssessment"),
-                    borderRadius: "0px",
+                    borderRadius: selectedMenuItem === "SelfAssessment" ? "10px" : "0px",
                   }}
                 >
                   <span className="textStyling" style={{ color: selectedMenuItem === "SelfAssessment" ? "#1476B7" : "#737373" }}>
@@ -480,7 +480,7 @@ const Sidebar = ({ children, flags }) => {
                   }
                   style={{
                     background: getActiveBackgroundColor("MyStudy"),
-                    borderRadius: "0px",
+                    borderRadius: selectedMenuItem === "MyStudy" ? "10px" : "0px",
                   }}
                 >
                   <span className="textStyling" style={{ color: selectedMenuItem === "MyStudy" ? "#1476B7" : "#737373" }}>
@@ -501,7 +501,7 @@ const Sidebar = ({ children, flags }) => {
                   }
                   style={{
                     background: getActiveBackgroundColor("MyChoices"),
-                    borderRadius: "0px",
+                    borderRadius: selectedMenuItem === "MyChoices" ? "10px" : "0px",
                   }}
                 >
                   <span className="textStyling" style={{ color: selectedMenuItem === "MyChoices" ? "#1476B7" : "#737373" }}>
@@ -524,7 +524,7 @@ const Sidebar = ({ children, flags }) => {
                   }
                   style={{
                     background: getActiveBackgroundColor("EducationalGuidance"),
-                    borderRadius: "0px",
+                    borderRadius: selectedMenuItem === "EducationalGuidance" ? "10px" : "0px",
                   }}
                 >
                   <span className="textStyling" style={{ color: selectedMenuItem === "EducationalGuidance" ? "#1476B7" : "#737373" }}>
@@ -545,7 +545,7 @@ const Sidebar = ({ children, flags }) => {
                   }
                   style={{
                     background: getActiveBackgroundColor("ChatBot"),
-                    borderRadius: "0px",
+                    borderRadius: selectedMenuItem === "ChatBot" ? "10px" : "0px",
                   }}
                 >
                   <span className="textStyling" style={{ color: selectedMenuItem === "ChatBot" ? "#1476B7" : "#737373" }}>
@@ -564,7 +564,7 @@ const Sidebar = ({ children, flags }) => {
                   }
                   style={{
                     background: getActiveBackgroundColor("Work"),
-                    borderRadius: "0px",
+                    borderRadius: selectedMenuItem === "Work" ? "10px" : "0px",
                   }}
                 >
                   <span className="textStyling" style={{ color: selectedMenuItem === "Work" ? "#1476B7" : "#737373" }}>

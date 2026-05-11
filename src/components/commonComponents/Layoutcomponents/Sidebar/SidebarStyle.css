@@ -41,8 +41,30 @@
 }
 
 .backgroundColorSidebar .ant-menu-item-selected {
-  border-radius: 0 !important;
-  box-shadow: inset 6px 0 0 #f8fafc !important;
+  border-radius: 10px 0 0 10px !important;
+  margin-left: 12px !important;
+  margin-right: 0 !important;
+  width: calc(100% - 12px) !important;
+  box-shadow: none !important;
+}
+
+.backgroundColorSidebar .ant-menu.ant-menu-inline .ant-menu-item.ant-menu-item-selected,
+.backgroundColorSidebar .ant-menu.ant-menu-vertical .ant-menu-item.ant-menu-item-selected {
+  border-radius: 10px 0 0 10px !important;
+  margin-left: 12px !important;
+  margin-right: 0 !important;
+  width: calc(100% - 12px) !important;
+}
+
+.marginContent {
+  padding-right: 16px !important;
+  background-color: #F8FAFC !important;
+}
+
+.site-layout-background {
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  overflow: hidden;
 }
 
 .textStyling {
@@ -785,26 +807,6 @@
   /* margin-top: 50px;
   margin-bottom: 50px; */
 }
-
-.myStudyMenuItem.ant-menu-item,
-.myStudyMenuItem.ant-menu-item-selected {
-  border-radius: 0 !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  width: 100% !important;
-}
-
-.myStudyMenuItem.ant-menu-item-selected {
-  box-shadow: inset 6px 0 0 #f8fafc !important;
-}
-
-.backgroundColorSidebar .ant-menu .myStudyMenuItem.ant-menu-item,
-.backgroundColorSidebar .ant-menu .myStudyMenuItem.ant-menu-item-selected {
-  border-radius: 0 !important;
-  margin-inline: 0 !important;
-  width: 100% !important;
-}
-
 
 @media only screen and (max-width: 740px) and (min-width: 541px) {
   .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
