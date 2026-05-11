@@ -4,9 +4,16 @@
   }
 
   
-  .selfassessment {
+.selfassessment {
     background-color: rgb(220, 241, 252);
     width: 100%;
     min-height: 90vh;
     padding: 20px;
+}
+
+.selfassessmentInner {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 10px 12px 20px 12px;
+    margin-top: 10px;
 }

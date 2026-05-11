@@ -98,21 +98,21 @@ const Selfassesment = () => {
     <>
       <div className="selfassessment" >
         <div className="welcomeHaddingText ">Self Assessment Results</div>
-
-        {loading ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              minHeight: "400px",
-            }}
-          >
-            <Spin size="large" />
-          </div>
-        ) : (
-          <div style={{ display: "flex", flexWrap: "wrap" }}>
-            {psychometricTest?.map((mapData, index) => {
+        <div className="selfassessmentInner">
+          {loading ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                minHeight: "400px",
+              }}
+            >
+              <Spin size="large" />
+            </div>
+          ) : (
+            <div style={{ display: "flex", flexWrap: "wrap" }}>
+              {psychometricTest?.map((mapData, index) => {
               let chartColor
               if (mapData.name == "Occupational Values Assesment") {
                 chartColor = "#87aded"
@@ -141,35 +141,22 @@ const Selfassesment = () => {
                   title: { text: mapData?.name },
                 }
               }
-              return (
-                <>
-                  <div key={mapData.id} className={`ms-3 mt-5`}>
-                    <div className={`${!mapData.complete ? "grayed-out-container" : ""}`}>
-                      <Chart
-                        options={chartOptions}
-                        series={chartOptions.series}
-                        type="bar"
-                        width={screenSize.width > 748 ? 450 : 330}
-                        height={320}
-                      />
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "center" }}>
-                      {!mapData.complete ? (
-                        <MyCareerGuidanceButton
-                          label="Take Test"
-                          className="takebutton"
-                          type="button"
-                          htmlType="button"
-                          onClick={() =>
-                            navigate("/self-assesment-test", {
-                              state: { data: mapData },
-                            })
-                          }
+                return (
+                  <>
+                    <div key={mapData.id} className={`ms-3 mt-5`}>
+                      <div className={`${!mapData.complete ? "grayed-out-container" : ""}`}>
+                        <Chart
+                          options={chartOptions}
+                          series={chartOptions.series}
+                          type="bar"
+                          width={screenSize.width > 748 ? 450 : 330}
+                          height={320}
                         />
-                      ) : (
-                        <div>
+                      </div>
+                      <div style={{ display: "flex", justifyContent: "center" }}>
+                        {!mapData.complete ? (
                           <MyCareerGuidanceButton
-                            label="Retake"
+                            label="Take Test"
                             className="takebutton"
                             type="button"
                             htmlType="button"
@@ -179,26 +166,40 @@ const Selfassesment = () => {
                               })
                             }
                           />
-                          <MyCareerGuidanceButton
-                            label="View Results"
-                            className="viewResultButton"
-                            type="button ms-3"
-                            htmlType="button"
-                            onClick={() =>
-                              navigate("/occupation", {
-                                state: { data: mapData },
-                              })
-                            }
-                          />
-                        </div>
-                      )}
+                        ) : (
+                          <div>
+                            <MyCareerGuidanceButton
+                              label="Retake"
+                              className="takebutton"
+                              type="button"
+                              htmlType="button"
+                              onClick={() =>
+                                navigate("/self-assesment-test", {
+                                  state: { data: mapData },
+                                })
+                              }
+                            />
+                            <MyCareerGuidanceButton
+                              label="View Results"
+                              className="viewResultButton"
+                              type="button ms-3"
+                              htmlType="button"
+                              onClick={() =>
+                                navigate("/occupation", {
+                                  state: { data: mapData },
+                                })
+                              }
+                            />
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </>
-              )
-            })}
-          </div>
-        )}
+                  </>
+                )
+              })}
+            </div>
+          )}
+        </div>
       </div>
 
       <Modal

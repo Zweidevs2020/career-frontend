@@ -77,6 +77,24 @@ const Interest = ({ setCurrent, current }) => {
     }
   };
 
+  const getCvFileName = () => {
+    const slug = (value = "") =>
+      value
+        .toString()
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+
+    const firstName = slug(userData?.first_name);
+    const lastName = slug(userData?.last_name);
+    const fullName = slug(userData?.full_name);
+    const namePart =
+      [firstName, lastName].filter(Boolean).join("-") || fullName || "student";
+
+    return `${namePart}-CV.docx`;
+  };
+
   const SavePdf = async (e) => {
     e.preventDefault();
     try {
@@ -99,7 +117,7 @@ const Interest = ({ setCurrent, current }) => {
       var downloadUrl = URL.createObjectURL(blob);
       link.href = downloadUrl;
       link.style = "display: none";
-      link.download = "filename.docx";
+      link.download = getCvFileName();
       document.body.appendChild(link);
       link.click();
       link.remove();
