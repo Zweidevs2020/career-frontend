@@ -171,6 +171,21 @@
   box-shadow: 0 6px 14px rgba(20, 118, 183, 0.32) !important;
 }
 
+.createNewReportBtn,
+.createNewReportBtn span,
+.createNewReportBtn:hover,
+.createNewReportBtn:hover span,
+.createNewReportBtn:focus,
+.createNewReportBtn:focus span,
+.createNewReportBtn:active,
+.createNewReportBtn:active span,
+.ant-btn-default.createNewReportBtn:hover,
+.ant-btn-default.createNewReportBtn:hover span,
+.ant-btn-default.createNewReportBtn:focus,
+.ant-btn-default.createNewReportBtn:focus span {
+  color: #ffffff !important;
+}
+
 .createNewReportBtn::before {
   content: "";
   position: absolute;
