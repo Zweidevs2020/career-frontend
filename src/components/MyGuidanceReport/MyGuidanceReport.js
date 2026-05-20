@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api"
 import {
   Button,
@@ -23,7 +23,6 @@ import html2pdf from "html2pdf.js"
 import styles from "./myGuidanceReport.module.css"
 import "./MyGuidanceReport.css"
 
-const { Footer } = Layout
 const { useBreakpoint } = Grid
 const { Title, Text } = Typography
 
@@ -42,18 +41,6 @@ const backgroundStyle = {
   margin: "20px 0",
 }
 
-const buttonStyle = {
-  background: "linear-gradient(135deg, #3788d8, #C0C0C0)",
-  color: "#3788d8",
-  border: "1px solid #3788d8",
-  padding: "10px 20px",
-  borderRadius: "8px",
-  fontSize: "16px",
-  fontWeight: "bold",
-  cursor: "pointer",
-  transition: "background 0.3s ease, transform 0.2s, color 0.3s",
-}
-
 const MyChoices = () => {
   const contentRef = useRef()
   const screens = useBreakpoint()
@@ -70,6 +57,8 @@ const MyChoices = () => {
   const [showWelcomeText, setShowWelcomeText] = useState(true)
   const [loading, setLoading] = useState(false)
   const [loadingRecentReport, setLoadingRecentReport] = useState(false)
+  const [checkingInitialReport, setCheckingInitialReport] = useState(true)
+  const [hasExistingReport, setHasExistingReport] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
 
   const [checkboxes, setCheckboxes] = useState({
@@ -189,17 +178,6 @@ const MyChoices = () => {
     question: "",
     questionId: "",
   })
-  const [isHovered, setIsHovered] = useState(false)
-
-  const buttonHoverStyle = {
-    background: isHovered ? "linear-gradient(135deg, #C0C0C0, #3788d8)" : "linear-gradient(135deg, #ffffff, #3788d8)",
-    color: isHovered ? "#fff" : "#333",
-    transform: isHovered ? "scale(1.05)" : "scale(1)",
-  }
-
-  const handleMouseEnter = () => setIsHovered(true)
-  const handleMouseLeave = () => setIsHovered(false)
-
   const onMessageChange = (e) => {
     const { name, value } = e.target
     setData({ ...data, [name]: value })
@@ -483,6 +461,7 @@ const MyChoices = () => {
 
   const handleReset = () => {
     setGptResponse("")
+    setHasExistingReport(false)
     setCheckboxes({
       predictedPointsYes: false,
       predictedPointsNo: false,
@@ -568,6 +547,7 @@ const MyChoices = () => {
         setIsCodeVisible(false)
         const responseGptData = response?.data?.data?.message
         setGptResponse(responseGptData)
+        setHasExistingReport(true)
       } else {
         throw new Error("Failed to submit data")
       }
@@ -579,24 +559,45 @@ const MyChoices = () => {
     }
   }
 
-  const handleShowRecentReport = async () => {
+  const handleShowRecentReport = useCallback(async ({ silentIfMissing = false, showSuccessMessage = true } = {}) => {
     setLoadingRecentReport(true)
     try {
       const response = await getApiWithAuth(`ai-report/get-generated-guidance-report/`)
       if (response?.data?.data?.success && response?.data?.data?.message) {
-        message.success("Recent report loaded successfully!")
+        if (showSuccessMessage) {
+          message.success("Recent report loaded successfully!")
+        }
         setIsCodeVisible(false)
         setGptResponse(response?.data?.data?.message)
+        setHasExistingReport(true)
+        return true
       } else {
-        message.info("No recent report found. Please generate a new report.")
+        setHasExistingReport(false)
+        if (!silentIfMissing) {
+          message.info("No recent report found. Please generate a new report.")
+        }
+        return false
       }
     } catch (error) {
-      message.error("Error loading recent report")
+      if (!silentIfMissing) {
+        message.error("Error loading recent report")
+      }
       console.error("API call failed:", error)
+      return false
     } finally {
       setLoadingRecentReport(false)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    const loadMostRecentReport = async () => {
+      setCheckingInitialReport(true)
+      await handleShowRecentReport({ silentIfMissing: true, showSuccessMessage: false })
+      setCheckingInitialReport(false)
+    }
+
+    loadMostRecentReport()
+  }, [handleShowRecentReport])
 
   const updatedResponse = gptResponse
 
@@ -735,7 +736,12 @@ const MyChoices = () => {
                 background: "#E0E0E0",
               }}
             >
-              {isCodeVisible ? (
+              {checkingInitialReport ? (
+                <div className="initialReportLoader">
+                  <Spin size="large" />
+                  <Text style={{ marginTop: "12px", color: "#4B5563" }}>Loading your most recent report...</Text>
+                </div>
+              ) : isCodeVisible ? (
                 <div style={{ animation: "fadeIn 0.5s ease-in-out" }}>
                   <div style={{ textAlign: "center", marginBottom: "30px" }}>
                     <Title level={3} style={{ color: "#374151" }}>Help us create your best guidance report</Title>
@@ -756,9 +762,17 @@ const MyChoices = () => {
                 </div>
               ) : (
                 <>
+                  <div className="reportTopActionBar">
+                    <Button
+                      onClick={handleReset}
+                      className="createNewReportBtn"
+                    >
+                      Create a New Report
+                    </Button>
+                  </div>
                   <Row className="justify-between" style={{ marginBottom: "20px" }}>
                     <Col>
-                      <Title level={4}>Generated Report</Title>
+                      <Title level={4}>{hasExistingReport ? "Most Recent Report" : "Generated Report"}</Title>
                     </Col>
                     <Col>
                       <Space>
@@ -769,13 +783,6 @@ const MyChoices = () => {
                           className="border border-gray-600"
                         >
                           Recent Report
-                        </Button>
-                        <Button
-                          onClick={handleReset}
-                          style={{ borderRadius: "10px" }}
-                          className="border border-gray-600"
-                        >
-                          Reset & New Report
                         </Button>
                       </Space>
                     </Col>
@@ -791,27 +798,8 @@ const MyChoices = () => {
                     </Col>
                   </Row>
 
-                  <div style={{ textAlign: "right", marginTop: "20px" }}>
-                    <Button
-                      className="saveData"
-                      onClick={DownloadReort}
-                      style={{ ...buttonStyle, ...buttonHoverStyle }}
-                      onMouseEnter={handleMouseEnter}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      Download PDF
-                    </Button>
-                  </div>
-
-                  <Footer
-                    style={{
-                      background: "transparent",
-                      padding: "24px 0px",
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <div style={{ width: "100%", maxWidth: "800px" }}>
+                  <div className="reportActionInputRow">
+                    <div className="reportActionInputCol">
                       <Form onFinish={onSend}>
                         <MyCareerGuidanceInputField
                           className={styles.messageInput}
@@ -834,7 +822,15 @@ const MyChoices = () => {
                         />
                       </Form>
                     </div>
-                  </Footer>
+                    <div className="reportActionButtonCol">
+                      <Button
+                        className="createNewReportBtn"
+                        onClick={DownloadReort}
+                      >
+                        Download PDF
+                      </Button>
+                    </div>
+                  </div>
                 </>
               )}
             </section>
