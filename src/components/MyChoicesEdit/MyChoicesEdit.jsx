@@ -1249,7 +1249,7 @@ const MyChoicesEdit = () => {
                                         dataIndex={item}
                                         key={item}
                                         disabled
-                                        className="tableHeadingStyle "
+                                        className={`${isApprentice && item === "level" ? "tableHeadingStyle levelColumnNarrow" : "tableHeadingStyle"}`}
                                         onCell={(record) => ({
                                           onClick: () => {
                                             if (!record.editable) {
@@ -1424,7 +1424,7 @@ const MyChoicesEdit = () => {
                                     .join(" ")}
                                   dataIndex={item}
                                   key={item}
-                                  className="tableHeadingStyle"
+                                  className={`${isApprentice && item === "level" ? "tableHeadingStyle levelColumnNarrow" : "tableHeadingStyle"}`}
                                   onCell={(record) => ({
                                     onClick: () => {
                                       if (!record.editable) {
