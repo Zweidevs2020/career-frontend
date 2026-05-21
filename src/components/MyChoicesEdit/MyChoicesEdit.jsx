@@ -673,6 +673,19 @@ const MyChoicesEdit = () => {
       .join(" ")
   }
 
+  const getDesktopColumnClass = (item) => {
+    if (item === "code") {
+      return "tableHeadingStyle codeColumnNarrow"
+    }
+    if (item === "point" || item === "points") {
+      return "tableHeadingStyle pointsColumnNarrow"
+    }
+    if (item === "level" || item === "nfq_level") {
+      return "tableHeadingStyle levelColumnNarrow"
+    }
+    return "tableHeadingStyle"
+  }
+
   const Row = ({ children, ...props }) => {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
       id: props["data-row-key"],
@@ -1151,7 +1164,7 @@ const MyChoicesEdit = () => {
                                       <><Column
                                         dataIndex={item}
                                         key={item}
-                                        className="tableHeadingStyle"
+                                        className={getDesktopColumnClass(item)}
                                         title={
                                           dataa.id === "ucas-ni" && item === "code"
                                             ? "Course Code"
@@ -1249,7 +1262,7 @@ const MyChoicesEdit = () => {
                                         dataIndex={item}
                                         key={item}
                                         disabled
-                                        className={`${isApprentice && item === "level" ? "tableHeadingStyle levelColumnNarrow" : "tableHeadingStyle"}`}
+                                        className={getDesktopColumnClass(item)}
                                         onCell={(record) => ({
                                           onClick: () => {
                                             if (!record.editable) {
@@ -1340,7 +1353,7 @@ const MyChoicesEdit = () => {
                                     }
                                     dataIndex={item}
                                     key={item}
-                                    className="tableHeadingStyle"
+                                    className={getDesktopColumnClass(item)}
                                     render={(text, record, rowNum) => (
                                       <>
                                         <Select
@@ -1424,7 +1437,7 @@ const MyChoicesEdit = () => {
                                     .join(" ")}
                                   dataIndex={item}
                                   key={item}
-                                  className={`${isApprentice && item === "level" ? "tableHeadingStyle levelColumnNarrow" : "tableHeadingStyle"}`}
+                                  className={getDesktopColumnClass(item)}
                                   onCell={(record) => ({
                                     onClick: () => {
                                       if (!record.editable) {

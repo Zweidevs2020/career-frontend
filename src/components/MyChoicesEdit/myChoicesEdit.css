@@ -8,6 +8,18 @@
   min-width: 170px;
 }
 
+.codeColumnNarrow {
+  min-width: 150px !important;
+  max-width: 150px !important;
+  width: 150px !important;
+}
+
+.pointsColumnNarrow {
+  min-width: 140px !important;
+  max-width: 140px !important;
+  width: 140px !important;
+}
+
 .levelColumnNarrow {
   min-width: 152px !important;
   max-width: 152px !important;
