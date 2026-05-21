@@ -517,6 +517,13 @@ const TertiaryEdit = () => {
       .join(" ");
   };
 
+  const getDesktopColumnClass = (item) => {
+    if (item === "level") {
+      return "tableHeadingStyle levelColumnNarrow";
+    }
+    return "tableHeadingStyle";
+  };
+
   const Row = ({ children, ...props }) => {
     const {
       attributes,
@@ -864,7 +871,7 @@ const TertiaryEdit = () => {
                                         title={item.toLowerCase() === 'point' ? 'Points' : capitalizeWords(item)}
                                         dataIndex={item}
                                         key={item}
-                                        className="tableHeadingStyle"
+                                        className={getDesktopColumnClass(item)}
                                         render={(text, record, rowNum) => (
                                           <>
                                             <Select
@@ -965,7 +972,7 @@ const TertiaryEdit = () => {
                                       dataIndex={item}
                                       key={item}
                                       disabled
-                                      className="tableHeadingStyle "
+                                      className={getDesktopColumnClass(item)}
                                       onCell={(record) => ({
                                         onClick: () => {
                                           if (!record.editable) {
@@ -1063,7 +1070,7 @@ const TertiaryEdit = () => {
                                   title={capitalizeWords(item)}
                                   dataIndex={item}
                                   key={item}
-                                  className="tableHeadingStyle"
+                                  className={getDesktopColumnClass(item)}
                                   render={(text, record, rowNum) => (
                                     <>
                                       <Select
@@ -1158,7 +1165,7 @@ const TertiaryEdit = () => {
                                   .join(" ")}
                                 dataIndex={item}
                                 key={item}
-                                className="tableHeadingStyle"
+                                className={getDesktopColumnClass(item)}
                                 onCell={(record) => ({
                                   onClick: () => {
                                     if (!record.editable) {
