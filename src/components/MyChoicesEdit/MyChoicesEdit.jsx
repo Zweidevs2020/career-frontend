@@ -732,10 +732,10 @@ const MyChoicesEdit = () => {
               style={{
                 touchAction: "none",
                 cursor: "move",
-                marginRight: 30,
                 position: "absolute",
-                top: "42%",
-                left: "0px",
+                top: "50%",
+                left: "10px",
+                transform: "translateY(-50%)",
               }}
             />
           ) : null}
@@ -959,7 +959,7 @@ const MyChoicesEdit = () => {
                 dataIndex="rowNo"
                 key="rowNo"
                 className="firstTableHeadingStyle"
-                render={(text) => <span style={{ paddingLeft: 10 }}>{text + 1}</span>}
+                render={(text) => <span style={{ paddingLeft: 22 }}>{text + 1}</span>}
               />
               <Column
                 title="Idea"
@@ -1098,9 +1098,9 @@ const MyChoicesEdit = () => {
           <div style={{ background: "white" }}>
             <div className="coaInnerf8fafcDivtest">
               {isMobile ? (
-                <div className="h-[40px] w-[15%] bg-[#1476B7] rounded-lg flex items-center justify-evenly mx-2">
+                <div className="h-[40px] w-[15%] bg-[#1476B7] rounded-lg flex items-center justify-evenly mx-2 backButtonWrapperChoicesEdit">
                   <button
-                    className="text-[#fff] flex items-center"
+                    className="text-[#fff] flex items-center backButtonActionChoicesEdit"
                     onClick={async () => {
                       await saveUnsavedOtherOptions()
                       navigate("/my-choices")
@@ -1110,9 +1110,9 @@ const MyChoicesEdit = () => {
                   </button>
                 </div>
               ) : (
-                <div className=" h-[40px] w-[10%] bg-[#1476B7] rounded-lg flex items-center justify-evenly backDesktopButtonChoicesEdit">
+                <div className=" h-[40px] w-[10%] bg-[#1476B7] rounded-lg flex items-center justify-evenly backDesktopButtonChoicesEdit backButtonWrapperChoicesEdit">
                   <button
-                    className="text-[#fff] flex items-center"
+                    className="text-[#fff] flex items-center backButtonActionChoicesEdit"
                     onClick={async () => {
                       await saveUnsavedOtherOptions()
                       navigate("/my-choices")
@@ -1155,7 +1155,7 @@ const MyChoicesEdit = () => {
                                 dataIndex="rowNo"
                                 key="rowNo"
                                 className="firstTableHeadingStyle"
-                                render={(text) => <span style={{ paddingLeft: 10 }}>{text + 1}</span>}
+                                render={(text) => <span style={{ paddingLeft: 22 }}>{text + 1}</span>}
                               />
                               {columns.map((item, index) => {
                                 return (
@@ -1336,7 +1336,7 @@ const MyChoicesEdit = () => {
                           dataIndex="rowNo"
                           key="rowNo"
                           className="firstTableHeadingStyle"
-                          render={(text) => <span style={{ paddingLeft: 10 }}>{text + 1}</span>}
+                          render={(text) => <span style={{ paddingLeft: 22 }}>{text + 1}</span>}
                         />
                         {columns.map((item, index) => {
                           return (
