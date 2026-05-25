@@ -657,159 +657,60 @@ const CAOCalculator = ({ closePopup }) => {
                 />
               </div>
             </div>
-            <div className="coaPointsWidth coaPointsWidth">
-              <div
-                style={{
-                  background: "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(25, 132, 255, 0.1) 100%)",
-                }}
-              >
-                <div style={{ padding: 10 }}>
-                  <div>
-                    <div className="textStyle18">My CAO Points.</div>
-                    <div className="coaPointTextMain">
-                      <div className="coaPointTextStyle">Points</div>
-                      <div>{finalData.points ? finalData.points : 0}</div>
-                    </div>
-                    <hr />
-                    <div className="coaPointTextMain">
-                      <div className="coaPointTextStyle">Bonus Points</div>
-                      <div>{finalData.bonus_points ? finalData.bonus_points : 0}</div>
-                    </div>
-
-                    <hr />
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        marginTop: 20,
-                      }}
-                    >
-                      <div className="circularBarMainDiv">
-                        <div style={{ width: 130 }}>
-                          <CircularProgressbarWithChildren
-                            value={finalData}
-                            minValue={0}
-                            maxValue={1000}
-                            styles={buildStyles({
-                              rotation: 0.72,
-                              strokeLinecap: "dashboard",
-                              textSize: "19px",
-                              pathTransitionDuration: 0.5,
-                              pathColor: "#1476B7",
-                              textColor: "#263238",
-                              trailColor: "#d6d6d6",
-                            })}
-                          >
-                            <div className="caoHeadingText" style={{ fontSize: "26px" }}>
-                              {finalData.total_points ? finalData.total_points : 0}
-                            </div>
-                            <div className="cao2ndText">
-                              <strong className="font-bold text-black">Points</strong>
-                            </div>
-                          </CircularProgressbarWithChildren>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-                <MyCareerGuidanceButton
-                  label="Clear All"
-                  className="clearAllButton"
-                  type="primary"
-                  htmlType="button"
-                  onClick={clearAllData}
-                />
-                <MyCareerGuidanceButton
-                  label="Calculate"
-                  className="calculateButton"
-                  type="primary"
-                  htmlType="button"
-                  onClick={calCulateData}
-                  loading={loading}
-                />
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="coaSubjectDiv p-3">
             <div className="coaPointsWidth">
-              <div
-                style={{
-                  background: "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(25, 132, 255, 0.1) 100%)",
-                }}
-              >
-                <div style={{ padding: 10 }}>
-                  <div>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <div className="textStyle18"> Points</div>
-                      <div className="">
+              <div className="coaPointsCard">
+                <div className="coaPointsPanelBackground">
+                  <div style={{ padding: 10 }}>
+                    <div>
+                      <div className="textStyle18">My CAO Points.</div>
+                      <div className="coaPointTextMain">
+                        <div className="coaPointTextStyle">Points</div>
                         <div>{finalData.points ? finalData.points : 0}</div>
                       </div>
-                    </div>
-                    <hr />
-                    <hr />
-
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        marginTop: 10,
-                      }}
-                    >
-                      <div className="textStyle18"> Bonus Points</div>
-                      <div className="">
+                      <hr />
+                      <div className="coaPointTextMain">
+                        <div className="coaPointTextStyle">Bonus Points</div>
                         <div>{finalData.bonus_points ? finalData.bonus_points : 0}</div>
                       </div>
-                    </div>
 
-                    <hr />
-
-                    <hr />
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        marginTop: 20,
-                      }}
-                    >
-                      <div className="circularBarMainDiv">
-                        <div style={{ width: 130 }}>
-                          <CircularProgressbarWithChildren
-                            value={finalData}
-                            minValue={0}
-                            maxValue={1000}
-                            styles={buildStyles({
-                              rotation: 0.72,
-                              strokeLinecap: "dashboard",
-                              textSize: "19px",
-                              pathTransitionDuration: 0.5,
-                              pathColor: "#1476B7",
-                              textColor: "#263238",
-                              trailColor: "#d6d6d6",
-                            })}
-                          >
-                            <div className="caoHeadingText" style={{ fontSize: "26px" }}>
-                              {finalData.total_points ? finalData.total_points : 0}
-                            </div>
-                            <div className="cao2ndText">
-                              <strong className="font-bold text-black">Points</strong>
-                            </div>
-                          </CircularProgressbarWithChildren>
+                      <hr />
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          marginTop: 20,
+                        }}
+                      >
+                        <div className="circularBarMainDiv">
+                          <div style={{ width: 130 }}>
+                            <CircularProgressbarWithChildren
+                              value={finalData}
+                              minValue={0}
+                              maxValue={1000}
+                              styles={buildStyles({
+                                rotation: 0.72,
+                                strokeLinecap: "dashboard",
+                                textSize: "19px",
+                                pathTransitionDuration: 0.5,
+                                pathColor: "#1476B7",
+                                textColor: "#263238",
+                                trailColor: "#d6d6d6",
+                              })}
+                            >
+                              <div className="caoHeadingText" style={{ fontSize: "26px" }}>
+                                {finalData.total_points ? finalData.total_points : 0}
+                              </div>
+                              <div className="cao2ndText">
+                                <strong className="font-bold text-black">Points</strong>
+                              </div>
+                            </CircularProgressbarWithChildren>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div>
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                <div style={{ display: "flex", justifyContent: "space-evenly" }}>
                   <MyCareerGuidanceButton
                     label="Clear All"
                     className="clearAllButton"
@@ -817,8 +718,6 @@ const CAOCalculator = ({ closePopup }) => {
                     htmlType="button"
                     onClick={clearAllData}
                   />
-                </div>
-                <div style={{ display: "flex", justifyContent: "center" }}>
                   <MyCareerGuidanceButton
                     label="Calculate"
                     className="calculateButton"
@@ -827,6 +726,103 @@ const CAOCalculator = ({ closePopup }) => {
                     onClick={calCulateData}
                     loading={loading}
                   />
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="coaSubjectDiv p-3">
+            <div className="coaPointsWidth">
+              <div className="coaPointsCard">
+                <div className="coaPointsPanelBackground">
+                  <div style={{ padding: 10 }}>
+                    <div>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <div className="textStyle18"> Points</div>
+                        <div className="">
+                          <div>{finalData.points ? finalData.points : 0}</div>
+                        </div>
+                      </div>
+                      <hr />
+                      <hr />
+
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          marginTop: 10,
+                        }}
+                      >
+                        <div className="textStyle18"> Bonus Points</div>
+                        <div className="">
+                          <div>{finalData.bonus_points ? finalData.bonus_points : 0}</div>
+                        </div>
+                      </div>
+
+                      <hr />
+
+                      <hr />
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          marginTop: 20,
+                        }}
+                      >
+                        <div className="circularBarMainDiv">
+                          <div style={{ width: 130 }}>
+                            <CircularProgressbarWithChildren
+                              value={finalData}
+                              minValue={0}
+                              maxValue={1000}
+                              styles={buildStyles({
+                                rotation: 0.72,
+                                strokeLinecap: "dashboard",
+                                textSize: "19px",
+                                pathTransitionDuration: 0.5,
+                                pathColor: "#1476B7",
+                                textColor: "#263238",
+                                trailColor: "#d6d6d6",
+                              })}
+                            >
+                              <div className="caoHeadingText" style={{ fontSize: "26px" }}>
+                                {finalData.total_points ? finalData.total_points : 0}
+                              </div>
+                              <div className="cao2ndText">
+                                <strong className="font-bold text-black">Points</strong>
+                              </div>
+                            </CircularProgressbarWithChildren>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <MyCareerGuidanceButton
+                      label="Clear All"
+                      className="clearAllButton"
+                      type="primary"
+                      htmlType="button"
+                      onClick={clearAllData}
+                    />
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <MyCareerGuidanceButton
+                      label="Calculate"
+                      className="calculateButton"
+                      type="primary"
+                      htmlType="button"
+                      onClick={calCulateData}
+                      loading={loading}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
