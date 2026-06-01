@@ -102,7 +102,7 @@
 }
 
 .coaInnerf8fafcDiv {
-  background-color: #DCFCEF;
+  background-color: #91DBC6;
   width: 100%;
   padding: 20px;
   height: 80vh;
@@ -111,7 +111,7 @@
 .coaSubjectDiv {
   width: 100%;
   min-height: 50vh;
-  background-color: #DCFCEF;
+  background-color: #91DBC6;
   display: flex;
   justify-content: space-between;
 }
@@ -124,6 +124,14 @@
   width: 35%;
 }
 
+.coaPointsCard {
+  background-color: #FAFAFA;
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid #ededed;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
 .coaPointTextMain {
   display: flex;
   justify-content: space-between;
@@ -134,6 +142,10 @@
 .coaPointTextStyle {
   font-size: 12px;
   color: rgba(38, 50, 56, 0.92);
+}
+
+.coaPointsPanelBackground {
+  background-color: #FAFAFA;
 }
 
 .circularBarMainDiv {
@@ -214,10 +226,10 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   }
 
   .coaInnerf8fafcDiv {
-    background-color: #DCFCEF;
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
+    background-color: #91DBC6;
     padding: 5px;
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
   }
 
   .selectFieldStyle {
@@ -257,9 +269,9 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
 
   .coaInnerf8fafcDiv {
 
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
     padding: 10px;
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
   }
 
   .coaPointsWidth {
@@ -277,7 +289,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   }
   .coaInnerf8fafcDiv {
 
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
     padding: 10px;
   }
 
@@ -311,7 +323,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   }
 
   .coaInnerf8fafcDiv {
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
     padding: 10px;
   }
 
@@ -372,7 +384,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   }
 
   .coaInnerf8fafcDiv {
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
     padding: 10px;
   }
 
@@ -394,7 +406,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
     width: 100%;
   }
   .coaInnerf8fafcDiv {
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
     padding: 7px;
   }
 
@@ -431,8 +443,8 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   }
 
   .coaInnerf8fafcDiv {
-    background-color: #DCFCEF;
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
+    background-color: #91DBC6;
     padding: 7px;
   }
 
@@ -454,8 +466,8 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
     width: 100%;
   }
   .coaInnerf8fafcDiv {
-    background-color: #DCFCEF;
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
+    background-color: #91DBC6;
     padding: 5px;
   }
 
@@ -471,7 +483,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
 @media (max-width: 1234px) {
   .coaSubjectDiv {
     display: block;
-    background: #DCFCEF;
+    background: #91DBC6;
   }
 
   .coaPointsWidth {

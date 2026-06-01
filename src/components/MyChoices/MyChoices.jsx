@@ -166,7 +166,7 @@ const MyChoices = () => {
           <div
             style={{
               marginTop: 10,
-              background: "#F3EDFA",
+              background: "#BB9BE0",
               minHeight: 168,
               borderRadius: 10,
               padding: 15,

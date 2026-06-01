@@ -123,10 +123,112 @@
 }
 
 .recentReportBtn {
-  color: #1476B7 !important;
+  color: #F9FAFB !important;
   font-weight: 600 !important;
   font-size: 16px !important;
   text-decoration: underline !important;
+}
+
+.initialReportLoader {
+  min-height: 55vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.reportTopActionBar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.createNewReportBtn {
+  border-radius: 10px !important;
+  border: 1px solid #1476B7 !important;
+  background: linear-gradient(135deg, #1476B7, #2890D6) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  min-height: 48px !important;
+  padding: 0 24px !important;
+  transition: all 0.28s ease !important;
+  box-shadow: 0 6px 16px rgba(20, 118, 183, 0.25) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.createNewReportBtn:hover,
+.createNewReportBtn:focus {
+  background: linear-gradient(135deg, #0f67a1, #1f89d2) !important;
+  color: #ffffff !important;
+  border-color: #0f67a1 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(20, 118, 183, 0.38) !important;
+}
+
+.createNewReportBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 14px rgba(20, 118, 183, 0.32) !important;
+}
+
+.createNewReportBtn,
+.createNewReportBtn span,
+.createNewReportBtn:hover,
+.createNewReportBtn:hover span,
+.createNewReportBtn:focus,
+.createNewReportBtn:focus span,
+.createNewReportBtn:active,
+.createNewReportBtn:active span,
+.ant-btn-default.createNewReportBtn:hover,
+.ant-btn-default.createNewReportBtn:hover span,
+.ant-btn-default.createNewReportBtn:focus,
+.ant-btn-default.createNewReportBtn:focus span {
+  color: #ffffff !important;
+}
+
+.createNewReportBtn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 70%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0));
+  transition: left 0.45s ease;
+}
+
+.createNewReportBtn:hover::before,
+.createNewReportBtn:focus::before {
+  left: 140%;
+}
+
+.reportActionInputRow {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.reportActionInputCol {
+  flex: 1;
+}
+
+.reportActionButtonCol {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media only screen and (max-width: 767px) {
+  .reportActionInputRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .reportActionButtonCol {
+    justify-content: flex-start;
+  }
 }
 
 @keyframes fadeIn {

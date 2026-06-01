@@ -132,7 +132,7 @@ const WorkDiary = () => {
       {loading ? (
         <Spin className="spinStyle" />
       ) : (
-        <div style={{backgroundColor: "#CEF5E0"}}>
+        <div style={{backgroundColor: "#5DC889"}}>
           <div
             className="topContainer"
             style={{

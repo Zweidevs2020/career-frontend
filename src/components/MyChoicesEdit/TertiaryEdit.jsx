@@ -517,6 +517,13 @@ const TertiaryEdit = () => {
       .join(" ");
   };
 
+  const getDesktopColumnClass = (item) => {
+    if (item === "level") {
+      return "tableHeadingStyle levelColumnNarrow";
+    }
+    return "tableHeadingStyle";
+  };
+
   const Row = ({ children, ...props }) => {
     const {
       attributes,
@@ -570,10 +577,10 @@ const TertiaryEdit = () => {
               style={{
                 touchAction: "none",
                 cursor: "move",
-                marginRight: 30,
                 position: "absolute",
-                top: "42%",
-                left: "0px",
+                top: "50%",
+                left: "10px",
+                transform: "translateY(-50%)",
               }}
             />
           ) : null}
@@ -786,20 +793,20 @@ const TertiaryEdit = () => {
           <div style={{ background: "white" }}>
             <div className="coaInnerf8fafcDivtest">
               {isMobile ? (
-                <div className="h-[40px] w-[15%] bg-[#1476B7] rounded-lg flex items-center justify-evenly mx-2">
+                <div className="h-[40px] w-[15%] bg-[#1476B7] rounded-lg flex items-center justify-evenly mx-2 backButtonWrapperChoicesEdit">
                   <button
-                    class="text-[#fff] flex items-center"
+                    className="text-[#fff] flex items-center backButtonActionChoicesEdit"
                     onClick={() => {
                       navigate("/my-choices");
                     }}
                   >
-                    <span class="ml-1">Back</span>
+                    <span className="ml-1">Back</span>
                   </button>
                 </div>
               ) : (
-                <div className="h-[40px] w-[10%] bg-[#1476B7] rounded-lg flex items-center justify-evenly backDesktopButtonChoicesEdit">
+                <div className="h-[40px] w-[10%] bg-[#1476B7] rounded-lg flex items-center justify-evenly backDesktopButtonChoicesEdit backButtonWrapperChoicesEdit">
                   <button
-                    className="text-[#fff] flex items-center"
+                    className="text-[#fff] flex items-center backButtonActionChoicesEdit"
                     onClick={() => {
                       navigate("/my-choices");
                     }}
@@ -848,7 +855,7 @@ const TertiaryEdit = () => {
                               key="rowNo"
                               className="firstTableHeadingStyle"
                               render={(text) => (
-                                <span style={{ paddingLeft: 10 }}>
+                                <span style={{ paddingLeft: 22 }}>
                                   {text + 1}
                                 </span>
                               )}
@@ -864,7 +871,7 @@ const TertiaryEdit = () => {
                                         title={item.toLowerCase() === 'point' ? 'Points' : capitalizeWords(item)}
                                         dataIndex={item}
                                         key={item}
-                                        className="tableHeadingStyle"
+                                        className={getDesktopColumnClass(item)}
                                         render={(text, record, rowNum) => (
                                           <>
                                             <Select
@@ -965,7 +972,7 @@ const TertiaryEdit = () => {
                                       dataIndex={item}
                                       key={item}
                                       disabled
-                                      className="tableHeadingStyle "
+                                      className={getDesktopColumnClass(item)}
                                       onCell={(record) => ({
                                         onClick: () => {
                                           if (!record.editable) {
@@ -1049,7 +1056,7 @@ const TertiaryEdit = () => {
                         key="rowNo"
                         className="firstTableHeadingStyle"
                         render={(text) => (
-                          <span style={{ paddingLeft: 10 }}>{text + 1}</span>
+                          <span style={{ paddingLeft: 22 }}>{text + 1}</span>
                         )}
                       />
                       {columns.map((item, index) => {
@@ -1063,7 +1070,7 @@ const TertiaryEdit = () => {
                                   title={capitalizeWords(item)}
                                   dataIndex={item}
                                   key={item}
-                                  className="tableHeadingStyle"
+                                  className={getDesktopColumnClass(item)}
                                   render={(text, record, rowNum) => (
                                     <>
                                       <Select
@@ -1158,7 +1165,7 @@ const TertiaryEdit = () => {
                                   .join(" ")}
                                 dataIndex={item}
                                 key={item}
-                                className="tableHeadingStyle"
+                                className={getDesktopColumnClass(item)}
                                 onCell={(record) => ({
                                   onClick: () => {
                                     if (!record.editable) {

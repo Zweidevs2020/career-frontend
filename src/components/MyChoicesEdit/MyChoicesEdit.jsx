@@ -673,6 +673,19 @@ const MyChoicesEdit = () => {
       .join(" ")
   }
 
+  const getDesktopColumnClass = (item) => {
+    if (item === "code") {
+      return "tableHeadingStyle codeColumnNarrow"
+    }
+    if (item === "point" || item === "points") {
+      return "tableHeadingStyle pointsColumnNarrow"
+    }
+    if (item === "level" || item === "nfq_level") {
+      return "tableHeadingStyle levelColumnNarrow"
+    }
+    return "tableHeadingStyle"
+  }
+
   const Row = ({ children, ...props }) => {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
       id: props["data-row-key"],
@@ -719,10 +732,10 @@ const MyChoicesEdit = () => {
               style={{
                 touchAction: "none",
                 cursor: "move",
-                marginRight: 30,
                 position: "absolute",
-                top: "42%",
-                left: "0px",
+                top: "50%",
+                left: "10px",
+                transform: "translateY(-50%)",
               }}
             />
           ) : null}
@@ -946,7 +959,7 @@ const MyChoicesEdit = () => {
                 dataIndex="rowNo"
                 key="rowNo"
                 className="firstTableHeadingStyle"
-                render={(text) => <span style={{ paddingLeft: 10 }}>{text + 1}</span>}
+                render={(text) => <span style={{ paddingLeft: 22 }}>{text + 1}</span>}
               />
               <Column
                 title="Idea"
@@ -1085,9 +1098,9 @@ const MyChoicesEdit = () => {
           <div style={{ background: "white" }}>
             <div className="coaInnerf8fafcDivtest">
               {isMobile ? (
-                <div className="h-[40px] w-[15%] bg-[#1476B7] rounded-lg flex items-center justify-evenly mx-2">
+                <div className="h-[40px] w-[15%] bg-[#1476B7] rounded-lg flex items-center justify-evenly mx-2 backButtonWrapperChoicesEdit">
                   <button
-                    className="text-[#fff] flex items-center"
+                    className="text-[#fff] flex items-center backButtonActionChoicesEdit"
                     onClick={async () => {
                       await saveUnsavedOtherOptions()
                       navigate("/my-choices")
@@ -1097,9 +1110,9 @@ const MyChoicesEdit = () => {
                   </button>
                 </div>
               ) : (
-                <div className=" h-[40px] w-[10%] bg-[#1476B7] rounded-lg flex items-center justify-evenly backDesktopButtonChoicesEdit">
+                <div className=" h-[40px] w-[10%] bg-[#1476B7] rounded-lg flex items-center justify-evenly backDesktopButtonChoicesEdit backButtonWrapperChoicesEdit">
                   <button
-                    className="text-[#fff] flex items-center"
+                    className="text-[#fff] flex items-center backButtonActionChoicesEdit"
                     onClick={async () => {
                       await saveUnsavedOtherOptions()
                       navigate("/my-choices")
@@ -1142,7 +1155,7 @@ const MyChoicesEdit = () => {
                                 dataIndex="rowNo"
                                 key="rowNo"
                                 className="firstTableHeadingStyle"
-                                render={(text) => <span style={{ paddingLeft: 10 }}>{text + 1}</span>}
+                                render={(text) => <span style={{ paddingLeft: 22 }}>{text + 1}</span>}
                               />
                               {columns.map((item, index) => {
                                 return (
@@ -1151,7 +1164,7 @@ const MyChoicesEdit = () => {
                                       <><Column
                                         dataIndex={item}
                                         key={item}
-                                        className="tableHeadingStyle"
+                                        className={getDesktopColumnClass(item)}
                                         title={
                                           dataa.id === "ucas-ni" && item === "code"
                                             ? "Course Code"
@@ -1249,7 +1262,7 @@ const MyChoicesEdit = () => {
                                         dataIndex={item}
                                         key={item}
                                         disabled
-                                        className="tableHeadingStyle "
+                                        className={getDesktopColumnClass(item)}
                                         onCell={(record) => ({
                                           onClick: () => {
                                             if (!record.editable) {
@@ -1323,7 +1336,7 @@ const MyChoicesEdit = () => {
                           dataIndex="rowNo"
                           key="rowNo"
                           className="firstTableHeadingStyle"
-                          render={(text) => <span style={{ paddingLeft: 10 }}>{text + 1}</span>}
+                          render={(text) => <span style={{ paddingLeft: 22 }}>{text + 1}</span>}
                         />
                         {columns.map((item, index) => {
                           return (
@@ -1340,7 +1353,7 @@ const MyChoicesEdit = () => {
                                     }
                                     dataIndex={item}
                                     key={item}
-                                    className="tableHeadingStyle"
+                                    className={getDesktopColumnClass(item)}
                                     render={(text, record, rowNum) => (
                                       <>
                                         <Select
@@ -1424,7 +1437,7 @@ const MyChoicesEdit = () => {
                                     .join(" ")}
                                   dataIndex={item}
                                   key={item}
-                                  className="tableHeadingStyle"
+                                  className={getDesktopColumnClass(item)}
                                   onCell={(record) => ({
                                     onClick: () => {
                                       if (!record.editable) {

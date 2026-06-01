@@ -8,6 +8,24 @@
   min-width: 170px;
 }
 
+.codeColumnNarrow {
+  min-width: 150px !important;
+  max-width: 150px !important;
+  width: 150px !important;
+}
+
+.pointsColumnNarrow {
+  min-width: 140px !important;
+  max-width: 140px !important;
+  width: 140px !important;
+}
+
+.levelColumnNarrow {
+  min-width: 152px !important;
+  max-width: 152px !important;
+  width: 152px !important;
+}
+
 .firstTableHeadingStyle {
   color: #1476b7 !important;
   font-weight: bold !important;
@@ -57,8 +75,26 @@
 
 .coaInnerf8fafcDivtest {
   height: 100%;
-  background: #F3EDFA;
-;
+  background: #BB9BE0;
+  padding: 10px 14px 12px 14px;
+}
+
+.backButtonWrapperChoicesEdit {
+  margin: 6px 0 10px 4px;
+  overflow: hidden;
+}
+
+.backButtonActionChoicesEdit {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 0;
 }
 
 .emptyTable thead {
