@@ -86,7 +86,7 @@ const OccupationalOption = () => {
       <div>
           <div
             className="textStyle18 pt-5 pb-3"
-            style={{ color: "#1476B7", fontWeight: 600 }}
+            style={{ color: "#363636", fontWeight: 600 }}
           >
             {infoData.item.question_type} {infoData.buttonitem.name}
           </div>

@@ -303,23 +303,23 @@ const Sidebar = ({ children, flags }) => {
       case "Overview":
         return "#F5F5F5";
       case "CAOCalculator":
-        return "#DCFCEF";
+        return "#91DBC6";
       case "MyGoals":
-        return "#ead1dc";
+        return "#e06eb1";
       case "CoverLater":
-        return "#FCF3DC";
+        return "#DBAC0E";
       case "SelfAssessment":
-        return "#DCF1FC";
+        return "#6895D9";
       case "MyStudy":
-        return "#ffbaba";
+        return "#f04f62";
       case "MyChoices":
-        return "#F3EDFA";
+        return "#BB9BE0";
       case "EducationalGuidance":
-        return "#fdbe85";
+        return "#f0884d";
       case "ChatBot":
-        return "#E0E0E0";
+        return "#7C8791";
       case "Work":
-        return "#CEF5E0";
+        return "#5DC889";
       default:
         return "transparent";
     }
@@ -389,7 +389,7 @@ const Sidebar = ({ children, flags }) => {
                     borderRadius: selectedMenuItem === "CAOCalculator" ? "10px" : "0px",
                   }}
                 >
-                  <span className="textStyling" style={{ color: selectedMenuItem === "CAOCalculator" ? "#1476B7" : "#737373" }}>
+                  <span className="textStyling" style={{ color: selectedMenuItem === "CAOCalculator" ? "#ebeced" : "#737373" }}>
                     My CAO Calculator{" "}
                     {selectedMenuItem === "CAOCalculator" ? (
                       <span> &nbsp;&nbsp;&#x25cf; </span>
@@ -413,7 +413,7 @@ const Sidebar = ({ children, flags }) => {
                   <span
                     className="textStyling"
                     style={{
-                      color: selectedMenuItem === "MyGoals" ? "#1476B7" : "#737373",
+                      color: selectedMenuItem === "MyGoals" ? "#ebeced" : "#737373",
                     }}
                   >
                     My Goals{" "}
@@ -438,7 +438,7 @@ const Sidebar = ({ children, flags }) => {
                     borderRadius: selectedMenuItem === "CoverLater" ? "10px" : "0px",
                   }}
                 >
-                  <span className="textStyling" style={{ color: selectedMenuItem === "CoverLater" ? "#1476B7" : "#737373" }}>
+                  <span className="textStyling" style={{ color: selectedMenuItem === "CoverLater" ? "#ebeced" : "#737373" }}>
                     My CV{" "}
                     {selectedMenuItem === "CoverLater" ? (
                       <span> &nbsp;&nbsp;&#x25cf; </span>
@@ -461,7 +461,7 @@ const Sidebar = ({ children, flags }) => {
                     borderRadius: selectedMenuItem === "SelfAssessment" ? "10px" : "0px",
                   }}
                 >
-                  <span className="textStyling" style={{ color: selectedMenuItem === "SelfAssessment" ? "#1476B7" : "#737373" }}>
+                  <span className="textStyling" style={{ color: selectedMenuItem === "SelfAssessment" ? "#ebeced" : "#737373" }}>
                     My Self Assessment{" "}
                     {selectedMenuItem === "SelfAssessment" ? (
                       <span> &nbsp;&nbsp;&#x25cf; </span>
@@ -483,7 +483,7 @@ const Sidebar = ({ children, flags }) => {
                     borderRadius: selectedMenuItem === "MyStudy" ? "10px" : "0px",
                   }}
                 >
-                  <span className="textStyling" style={{ color: selectedMenuItem === "MyStudy" ? "#1476B7" : "#737373" }}>
+                  <span className="textStyling" style={{ color: selectedMenuItem === "MyStudy" ? "#ebeced" : "#737373" }}>
                     My Study{" "}
                     {selectedMenuItem === "MyStudy" ? (
                       <span> &nbsp;&nbsp;&#x25cf; </span>
@@ -504,7 +504,7 @@ const Sidebar = ({ children, flags }) => {
                     borderRadius: selectedMenuItem === "MyChoices" ? "10px" : "0px",
                   }}
                 >
-                  <span className="textStyling" style={{ color: selectedMenuItem === "MyChoices" ? "#1476B7" : "#737373" }}>
+                  <span className="textStyling" style={{ color: selectedMenuItem === "MyChoices" ? "#ebeced" : "#737373" }}>
                     My Choices{" "}
                     {selectedMenuItem === "MyChoices" ? (
                       <span> &nbsp;&nbsp;&#x25cf; </span>
@@ -527,7 +527,7 @@ const Sidebar = ({ children, flags }) => {
                     borderRadius: selectedMenuItem === "EducationalGuidance" ? "10px" : "0px",
                   }}
                 >
-                  <span className="textStyling" style={{ color: selectedMenuItem === "EducationalGuidance" ? "#1476B7" : "#737373" }}>
+                  <span className="textStyling" style={{ color: selectedMenuItem === "EducationalGuidance" ? "#ebeced" : "#737373" }}>
                     My Educational Guidance
                     {selectedMenuItem === "EducationalGuidance" ? (
                       <span> &nbsp;&#x25cf; </span>
@@ -548,7 +548,7 @@ const Sidebar = ({ children, flags }) => {
                     borderRadius: selectedMenuItem === "ChatBot" ? "10px" : "0px",
                   }}
                 >
-                  <span className="textStyling" style={{ color: selectedMenuItem === "ChatBot" ? "#1476B7" : "#737373" }}>
+                  <span className="textStyling" style={{ color: selectedMenuItem === "ChatBot" ? "#ebeced" : "#737373" }}>
                     My Report (AI)
                     {selectedMenuItem === "ChatBot" ? (
                       <span> &nbsp;&#x25cf; </span>
@@ -567,7 +567,7 @@ const Sidebar = ({ children, flags }) => {
                     borderRadius: selectedMenuItem === "Work" ? "10px" : "0px",
                   }}
                 >
-                  <span className="textStyling" style={{ color: selectedMenuItem === "Work" ? "#1476B7" : "#737373" }}>
+                  <span className="textStyling" style={{ color: selectedMenuItem === "Work" ? "#ebeced" : "#737373" }}>
                     My Work Diary
                     {selectedMenuItem === "Work" ? (
                       <span> &nbsp;&#x25cf; </span>

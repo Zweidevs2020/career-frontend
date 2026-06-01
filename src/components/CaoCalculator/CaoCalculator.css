@@ -102,7 +102,7 @@
 }
 
 .coaInnerf8fafcDiv {
-  background-color: #DCFCEF;
+  background-color: #91DBC6;
   width: 100%;
   padding: 20px;
   height: 80vh;
@@ -111,7 +111,7 @@
 .coaSubjectDiv {
   width: 100%;
   min-height: 50vh;
-  background-color: #DCFCEF;
+  background-color: #91DBC6;
   display: flex;
   justify-content: space-between;
 }
@@ -226,10 +226,10 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   }
 
   .coaInnerf8fafcDiv {
-    background-color: #DCFCEF;
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
+    background-color: #91DBC6;
     padding: 5px;
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
   }
 
   .selectFieldStyle {
@@ -269,9 +269,9 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
 
   .coaInnerf8fafcDiv {
 
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
     padding: 10px;
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
   }
 
   .coaPointsWidth {
@@ -289,7 +289,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   }
   .coaInnerf8fafcDiv {
 
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
     padding: 10px;
   }
 
@@ -323,7 +323,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   }
 
   .coaInnerf8fafcDiv {
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
     padding: 10px;
   }
 
@@ -384,7 +384,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   }
 
   .coaInnerf8fafcDiv {
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
     padding: 10px;
   }
 
@@ -406,7 +406,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
     width: 100%;
   }
   .coaInnerf8fafcDiv {
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
     padding: 7px;
   }
 
@@ -443,8 +443,8 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   }
 
   .coaInnerf8fafcDiv {
-    background-color: #DCFCEF;
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
+    background-color: #91DBC6;
     padding: 7px;
   }
 
@@ -466,8 +466,8 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
     width: 100%;
   }
   .coaInnerf8fafcDiv {
-    background-color: #DCFCEF;
-    background-color: #DCFCEF;
+    background-color: #91DBC6;
+    background-color: #91DBC6;
     padding: 5px;
   }
 
@@ -483,7 +483,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
 @media (max-width: 1234px) {
   .coaSubjectDiv {
     display: block;
-    background: #DCFCEF;
+    background: #91DBC6;
   }
 
   .coaPointsWidth {

@@ -567,7 +567,7 @@ const MyStudy = () => {
       <div
         className="educationalGuidanceMainDiv"
         style={{
-          backgroundColor: "#ffbaba",
+          backgroundColor: "#f04f62",
           borderRadius: "10px",
           overflow: "hidden",
         }}

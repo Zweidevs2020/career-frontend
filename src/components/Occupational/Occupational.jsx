@@ -203,11 +203,12 @@ const Occupational = () => {
                     <div>
                       <div
                         className="textStyle18 pt-1 pb-3"
-                        style={{ color: "#1476B7", fontWeight: 600 }}
+                        style={{ color: "#ebeced", fontWeight: 600 }}
                       >
                         {item.question_type}
                       </div>
-                      <div className="textStyle18 pt-1 pb-3">
+                      <div className="textStyle18 pt-1 pb-3"
+                      style={{ color: "#363636" }}>
                         {item.description}
                       </div>
                       <div>

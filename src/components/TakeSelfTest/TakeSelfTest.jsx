@@ -94,7 +94,7 @@ const TakeSelfTest = () => {
     <>
       <div className="selfassessment" id="targetSectionId">
         <div className="welcomeHaddingText pb-4">{quizData.name}</div>
-        <div className="textDescription pb-4">{quizData.intro}</div>
+        <div className="textDescription pb-4 text-white">{quizData.intro}</div>
         <div className="selfassessment">
           {loading ? (
             <Spin className="spinStyle" />

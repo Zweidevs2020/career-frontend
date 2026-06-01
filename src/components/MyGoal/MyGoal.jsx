@@ -173,7 +173,7 @@ const MyGoal = () => {
         <Spin className="spinStyle" />
       ) : (
         <div className="mainPage ">
-          <div className="topContainer bg-[#ead1dc]">
+          <div className="topContainer bg-[#e06eb1]">
             <div>
               <h5 className="goalHeading">My Goals</h5>
             </div>
@@ -185,7 +185,7 @@ const MyGoal = () => {
               </h>
             </div>
           </div>
-          <div className="lowerContainer2 bg-[#ead1dc]">
+          <div className="lowerContainer2 bg-[#e06eb1]">
             <div className="lowerContainer">
               <div className="inputContainer">
                 <h style={{ color: "#111928" }}>What I want to:</h>
