@@ -735,7 +735,7 @@ const MyChoices = () => {
               style={{
                 minHeight: "75vh",
                 padding: "10px",
-                background: "#E0E0E0",
+                background: "#7C8791",
               }}
             >
               {checkingInitialReport ? (
