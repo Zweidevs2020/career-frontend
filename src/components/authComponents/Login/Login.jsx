@@ -22,6 +22,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { setSubscribe } = useSubscribe();
   const [loading, setLoading] = useState(false);
+  const [guestLoading, setGuestLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("student");
   const [data, setData] = useState({});
   const onChangeHandle = (e) => {
@@ -52,6 +53,36 @@ const Login = () => {
     } else {
       setLoading(false);
       message.success(response?.data?.detail);
+    }
+  };
+
+  const handleGuestSignIn = async () => {
+    setGuestLoading(true);
+
+    try {
+      const response = await postApiWithoutAuth(API_URL.SIGNUP_GUEST, {});
+      const accessToken = response?.data?.access_token;
+
+      if (
+        (response?.status === 200 || response?.status === 201) &&
+        accessToken
+      ) {
+        message.success("Guest sign in successful");
+        setToken(accessToken);
+        setSubscribe(response?.data?.is_subscribed ?? true);
+        navigate("/dashboard");
+      } else {
+        const errorMessage =
+          typeof response?.data?.message === "string"
+            ? response.data.message
+            : response?.data?.detail || "Guest sign in failed. Please try again.";
+
+        message.error(errorMessage);
+      }
+    } catch (error) {
+      message.error("Something went wrong. Please try again.");
+    } finally {
+      setGuestLoading(false);
     }
   };
   // const handlerSubmit2 = async () => {
@@ -195,6 +226,19 @@ navigate("/counsellor-Dashboard");
                 type="primary"
                 htmlType="submit"
                 loading={loading}
+                disabled={guestLoading}
+              />
+              <div className="guestDivider">
+                <span>or</span>
+              </div>
+              <MyCareerGuidanceButton
+                label="Continue as Guest"
+                className="guestSignInButton"
+                type="default"
+                htmlType="button"
+                loading={guestLoading}
+                disabled={loading}
+                onClick={handleGuestSignIn}
               />
               <div
                 className="textStyle16"
