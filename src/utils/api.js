@@ -51,22 +51,10 @@ const handleUnauthorizedResponse = () => {
   }, 700);
 };
 
-const isUserMeRequest = (config) => {
-  try {
-    const requestUrl = new URL(config?.url || "", config?.baseURL || BASE_URL);
-    return requestUrl.pathname.replace(/\/$/, "") === "/user/me";
-  } catch (error) {
-    return (config?.url || "").replace(/\/$/, "") === "user/me";
-  }
-};
-
 baseInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (
-      error?.response?.status === 401 &&
-      isUserMeRequest(error?.config)
-    ) {
+    if (error?.response?.status === 401) {
       handleUnauthorizedResponse();
     }
 
