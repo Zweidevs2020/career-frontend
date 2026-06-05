@@ -362,19 +362,21 @@ const MyGoal = () => {
               <div className="buttonGoal">
                 <Button
                   loading={loading3}
-                  className="download"
+                  className="createNewReportBtn"
                   onClick={() => DownloadBtn()}
                 >
-                  Dowload PDF
+                  Download PDF
                 </Button>
+              <div className="mr-8">
                 <Button
                   loading={loading2}
-                  className="saveData"
+                  className="createNewReportBtn"
                   onClick={() => SaveInput()}
                 >
-                  {" "}
                   Save Data
                 </Button>
+                </div>
+
               </div>
               <br />
             </div>

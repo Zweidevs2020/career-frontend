@@ -73,11 +73,7 @@
   justify-content: center;
 }
 
-.addSubjectButton:hover {
-  color: white !important;
-  background: #1476b7 !important;
-  border: none !important;
-}
+
 
 .calculateButton {
   color: white;

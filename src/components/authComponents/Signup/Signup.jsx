@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import sideAuthImage from "../../../assets/kid-front-page (1).jpg";
-import myCareerGuidanceIcon from "../../../assets/my-guidance-logo.png";
+import myCareerGuidanceIcon from "../../../assets/newlogo.png";
 import usernameIcon from "../../../assets/usernameIcon.svg";
 import nameIcon from "../../../assets/nameIcon.svg";
 import lockIcon from "../../../assets/lockIcon.svg";

@@ -1,5 +1,6 @@
 import { useState } from "react";
 // import { Eye, EyeOff } from "lucide-react";
+import newLogo from "../../assets/newlogo.png";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({
@@ -66,7 +67,7 @@ export default function LoginForm() {
         <div className="lg:grid gap-14 ">
           <div className="mb-16">
             <img
-              src="/myCareerGuidanceIcon.png"
+              src={newLogo}
               alt="My Guidance Logo"
               className="h-8"
             />

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import sideAuthImage from "../../../assets/kid-front-page (1).jpg";
-import myCareerGuidanceIcon from "../../../assets/my-guidance-logo.png";
+import myCareerGuidanceIcon from "../../../assets/newlogo.png";
 import usernameIcon from "../../../assets/usernameIcon.svg";
 import lockIcon from "../../../assets/lockIcon.svg";
 import phoneIcon from "../../../assets/phone.svg";
@@ -56,35 +56,7 @@ const Login = () => {
     }
   };
 
-  const handleGuestSignIn = async () => {
-    setGuestLoading(true);
-
-    try {
-      const response = await postApiWithoutAuth(API_URL.SIGNUP_GUEST, {});
-      const accessToken = response?.data?.access_token;
-
-      if (
-        (response?.status === 200 || response?.status === 201) &&
-        accessToken
-      ) {
-        message.success("Guest sign in successful");
-        setToken(accessToken);
-        setSubscribe(response?.data?.is_subscribed ?? true);
-        navigate("/dashboard");
-      } else {
-        const errorMessage =
-          typeof response?.data?.message === "string"
-            ? response.data.message
-            : response?.data?.detail || "Guest sign in failed. Please try again.";
-
-        message.error(errorMessage);
-      }
-    } catch (error) {
-      message.error("Something went wrong. Please try again.");
-    } finally {
-      setGuestLoading(false);
-    }
-  };
+  
   // const handlerSubmit2 = async () => {
   //   navigate("/conselorDashboard");
   // };
@@ -228,18 +200,7 @@ navigate("/counsellor-Dashboard");
                 loading={loading}
                 disabled={guestLoading}
               />
-              <div className="guestDivider">
-                <span>or</span>
-              </div>
-              <MyCareerGuidanceButton
-                label="Continue as Guest"
-                className="guestSignInButton"
-                type="default"
-                htmlType="button"
-                loading={guestLoading}
-                disabled={loading}
-                onClick={handleGuestSignIn}
-              />
+             
               <div
                 className="textStyle16"
                 style={{ display: "flex", justifyContent: "center" }}

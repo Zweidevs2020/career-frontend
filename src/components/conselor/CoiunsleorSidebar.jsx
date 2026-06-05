@@ -5,6 +5,7 @@ import { Link, useParams, useLocation } from "react-router-dom"
 import axios from "axios"
 import { message } from "antd"
 import { API_URL } from "../../utils/constants"
+import newLogo from "../../assets/newlogo.png"
 import {
   AssesmentSvg,
   CalculatorSvg,
@@ -192,7 +193,7 @@ export default function CounselorSidebar() {
             gap: "10px",
           }}
         >
-          <img src="/admin.svg" alt="Logo" width={150} height={32} />
+          <img src={newLogo} alt="Logo" width={150} height={32} />
         </div>
 
         <nav style={{ marginTop: "20px" }}>

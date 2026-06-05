@@ -65,48 +65,9 @@
   color: #ffffff;
 }
 
-.guestDivider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 4px 0 12px;
-  color: #8a8a8a;
-  font-family: "Poppins";
-  font-size: 13px;
-  line-height: 20px;
-}
 
-.guestDivider::before,
-.guestDivider::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: #e8e8e8;
-}
 
-.guestSignInButton {
-  margin-bottom: 16px;
-  border: 1px solid #1476b7;
-  background: #ffffff;
-  border-radius: 15px;
-  height: 45px;
-  width: 100%;
-  font-family: "Poppins";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  text-align: center;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #1476b7;
-}
 
-.guestSignInButton:hover,
-.guestSignInButton:focus {
-  border-color: #1476b7 !important;
-  color: #1476b7 !important;
-}
 
 .allRights {
   font-family: "Lato";
