@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { DatePicker, Space, Spin, message, Radio, Button } from "antd";
+import { DatePicker, Space, Spin, message, Radio, Button, Modal } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import dayjs from "dayjs";
 import jsPDF from "jspdf";
@@ -103,33 +103,34 @@ const MyGoal = () => {
     }
   }
 
-  const DownloadBtn = async () => {
-    setLoading3(true);
-    const res = await getApiWithAuth(API_URL.GETMYGOALPDF);
-    if (res.data.status === 200) {
-      const data = res.data.data;
+const DownloadBtn = async () => {
+  setLoading3(true);
+  const res = await getApiWithAuth(API_URL.GETMYGOALPDF);
+  if (res.data.status === 200) {
+    const data = res.data.data;
 
-      const pdfBytes = Uint8Array.from(
-        [...data].map((char) => char.charCodeAt(0))
-      );
+    const pdfBytes = Uint8Array.from(
+      [...data].map((char) => char.charCodeAt(0))
+    );
 
-      const pdfDoc = await PDFDocument.load(pdfBytes);
-      const pages = pdfDoc.getPages();
+    const pdfDoc = await PDFDocument.load(pdfBytes);
+    const pages = pdfDoc.getPages();
 
-      const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
+    const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
 
-      // Create a temporary link element
-      const link = document.createElement("a");
-      link.href = pdfDataUri;
-      link.download = `${proffession}.pdf`;
+    const link = document.createElement("a");
+    link.href = pdfDataUri;
+    link.download = `${proffession}.pdf`;
+    link.dispatchEvent(new MouseEvent("click"));
 
-      // Simulate a click event to trigger the file download
-      link.dispatchEvent(new MouseEvent("click"));
-      setLoading3(false);
-    } else {
-      setLoading3(false);
-    }
-  };
+    // ✅ ADD THIS
+    message.success("PDF downloaded successfully!");
+
+    setLoading3(false);
+  } else {
+    setLoading3(false);
+  }
+};
 
   const SaveInput = async () => {
     if (realistic) {
@@ -200,42 +201,6 @@ const MyGoal = () => {
                   className="inputCarrer sm:text-[8px] md:text-[10px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
                 />
               </div>
-
-              {/* <div className="inputContainer">
-                <h style={{ color: "#111928" }}>
-                  Specific goal for week/month/term/year:
-                </h>
-              </div>
-              <div className="inputGoal">
-                <div className="mt-3 mb-3">
-                  <Radio.Group
-                    name="input"
-                    onChange={(e) => setGoal(e.target.value)}
-                    value={goal}
-                  >
-                    <Space direction="horizontal">
-                      <Radio value={"week"}>Week</Radio>
-                      <Radio value={"month"}>Month</Radio>
-                      <Radio value={"term"}>Term</Radio>
-                      <Radio value={"year"}>Year</Radio>
-                    </Space>
-                  </Radio.Group>
-                </div>
-                <div className="textAreaMyGoal">
-                  <TextArea
-                    placeholder="Get more organized with a daily planner"
-                    value={description}
-                    style={{
-                      border: "2px solid grey",
-                      lineHeight: "normal",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                    className="inputCarrer sm:text-[8px] md:text-[10px] xl:text-[11px] px-2 h-[50px] sm:w-[30%] sm:h-[35px] md:h-[38px] w-[97%] rounded-md border-solid border-2 border-gray-400 outline-none "
-                    onChange={(e) => setDescription(e.target.value)}
-                  ></TextArea>
-                </div>
-              </div> */}
               <div className="inputContainer">
                 <h style={{ color: "#111928" }}>
                   2 Actions to achieve the above:
@@ -362,19 +327,21 @@ const MyGoal = () => {
               <div className="buttonGoal">
                 <Button
                   loading={loading3}
-                  className="download"
+                  className="createNewReportBtn"
                   onClick={() => DownloadBtn()}
                 >
-                  Dowload PDF
+                  Download PDF
                 </Button>
+              <div className="mr-8">
                 <Button
                   loading={loading2}
-                  className="saveData"
+                  className="createNewReportBtn"
                   onClick={() => SaveInput()}
                 >
-                  {" "}
                   Save Data
                 </Button>
+                </div>
+
               </div>
               <br />
             </div>

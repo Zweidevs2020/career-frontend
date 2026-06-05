@@ -169,6 +169,25 @@ const Right = () => {
                   plotOptions: {
                     bar: {
                       horizontal: true,
+                      barHeight: '60%',
+                      distributed: false
+                    },
+                  },
+                  yaxis: {
+                    labels: {
+                      show: true,
+                      style: {
+                        fontSize: '12px',
+                        fontWeight: 500,
+                        colors: ['#474749'],
+                      },
+                      offsetY: 9,
+                    },
+                  },
+                  xaxis: {
+                    ...options.xaxis,
+                    labels: {
+                      show: true,
                     },
                   },
                   colors: [chartColor],

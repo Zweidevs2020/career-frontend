@@ -151,38 +151,40 @@
   font-weight: 600 !important;
   min-height: 48px !important;
   padding: 0 24px !important;
-  transition: all 0.28s ease !important;
-  box-shadow: 0 6px 16px rgba(20, 118, 183, 0.25) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 12px rgba(20, 118, 183, 0.25) !important;
   position: relative;
   overflow: hidden;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
 }
 
 .createNewReportBtn:hover,
-.createNewReportBtn:focus {
+.createNewReportBtn:focus,
+.ant-btn.createNewReportBtn:hover,
+.ant-btn.createNewReportBtn:focus {
   background: linear-gradient(135deg, #0f67a1, #1f89d2) !important;
   color: #ffffff !important;
   border-color: #0f67a1 !important;
-  transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(20, 118, 183, 0.38) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(20, 118, 183, 0.4) !important;
 }
 
-.createNewReportBtn:active {
-  transform: translateY(0);
-  box-shadow: 0 6px 14px rgba(20, 118, 183, 0.32) !important;
-}
-
-.createNewReportBtn,
-.createNewReportBtn span,
-.createNewReportBtn:hover,
-.createNewReportBtn:hover span,
-.createNewReportBtn:focus,
-.createNewReportBtn:focus span,
 .createNewReportBtn:active,
+.ant-btn.createNewReportBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(20, 118, 183, 0.3) !important;
+}
+
+.createNewReportBtn span,
+.createNewReportBtn:hover span,
+.createNewReportBtn:focus span,
 .createNewReportBtn:active span,
-.ant-btn-default.createNewReportBtn:hover,
-.ant-btn-default.createNewReportBtn:hover span,
-.ant-btn-default.createNewReportBtn:focus,
-.ant-btn-default.createNewReportBtn:focus span {
+.ant-btn.createNewReportBtn span,
+.ant-btn.createNewReportBtn:hover span,
+.ant-btn.createNewReportBtn:focus span,
+.ant-btn.createNewReportBtn:active span {
   color: #ffffff !important;
 }
 

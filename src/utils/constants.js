@@ -2,6 +2,7 @@ export const API_URL = {
   GETUSER: "user/me",
   GETUSER2: "user/me/",
   SIGNIN: "auth/jwt/create/",
+  SIGNUP_GUEST: "user/signup-guest/",
   GETUSERSCHOOL: "user/schools",
   SINGUPUSER: "user/signup/",
   FORGETPASSWORD: "user/forget-password/otp",

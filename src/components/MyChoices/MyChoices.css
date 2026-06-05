@@ -51,12 +51,22 @@
   max-width: 144px;
   height: 41px;
   background: #1476b7;
+  color: #fff;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
   border-radius: 12px;
   cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
 }
+
+.addChoicesButton:hover {
+  background: #0f67a1;
+  box-shadow: 0 4px 12px rgba(20, 118, 183, 0.3);
+  transform: translateY(-1px);
+}
+
 .removeChoicesButton{
   width: 91px;
   height: 41px;
@@ -68,7 +78,15 @@
   cursor: pointer;
   border: 1px solid #1476B7;
   color: #1476b7;
+  transition: all 0.3s ease;
+}
 
+.removeChoicesButton:hover {
+  background: #f8fbff;
+  border-color: #0f67a1;
+  color: #0f67a1;
+  box-shadow: 0 4px 12px rgba(20, 118, 183, 0.1);
+  transform: translateY(-1px);
 }
 /* ////////////////// */
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import sideAuthImage from "../../../assets/kid-front-page (1).jpg";
-import myCareerGuidanceIcon from "../../../assets/my-guidance-logo.png";
+import myCareerGuidanceIcon from "../../../assets/newlogo.png";
 import usernameIcon from "../../../assets/usernameIcon.svg";
 import lockIcon from "../../../assets/lockIcon.svg";
 import phoneIcon from "../../../assets/phone.svg";
@@ -22,6 +22,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { setSubscribe } = useSubscribe();
   const [loading, setLoading] = useState(false);
+  const [guestLoading, setGuestLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("student");
   const [data, setData] = useState({});
   const onChangeHandle = (e) => {
@@ -54,6 +55,8 @@ const Login = () => {
       message.success(response?.data?.detail);
     }
   };
+
+  
   // const handlerSubmit2 = async () => {
   //   navigate("/conselorDashboard");
   // };
@@ -195,7 +198,9 @@ navigate("/counsellor-Dashboard");
                 type="primary"
                 htmlType="submit"
                 loading={loading}
+                disabled={guestLoading}
               />
+             
               <div
                 className="textStyle16"
                 style={{ display: "flex", justifyContent: "center" }}

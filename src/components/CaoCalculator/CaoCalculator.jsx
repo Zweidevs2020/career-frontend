@@ -46,6 +46,8 @@ const CAOCalculator = ({ closePopup }) => {
     total_points: 0,
   })
 
+  const getResponseBody = (response) => response?.data?.data ?? response?.data
+
   const [screenSize, setScreenSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -498,8 +500,10 @@ const CAOCalculator = ({ closePopup }) => {
       setLoading(true)
 
       const response = await postApiWithAuth(API_URL.CALCULATEDATA, filteredData)
-      if (response.data.data.success) {
-        setFinalData(response.data.data.data)
+      const responseBody = getResponseBody(response)
+
+      if (responseBody?.success) {
+        setFinalData(responseBody.data)
         // getCurrectSelectedValues()
         getFiltersData()
         await getCurrectSelectedValues()
@@ -545,19 +549,25 @@ const CAOCalculator = ({ closePopup }) => {
     let newData = []
     try {
       const response = await getApiWithAuth(`calculator/user-points/`)
-      const checkLength = response.data.data[0].grades.map((obj) => ({
+      const userPointsData = getResponseBody(response) || []
+      const selectedPoint = userPointsData[0]
+      const selectedGrades = selectedPoint?.grades || []
+      const checkLength = selectedGrades.map((obj) => ({
         grade: obj.id,
       }))
       if (checkLength.length > 0) {
         const response2 = await postApiWithAuth(
           API_URL.CALCULATEDATA,
-          response.data.data[0].grades.map((obj) => ({ grade: obj.id })),
+          selectedGrades.map((obj) => ({ grade: obj.id })),
         )
-        if (response2.data.data.success) {
-          setFinalData(response2.data.data.data)
+        const responseBody2 = getResponseBody(response2)
+
+        if (responseBody2?.success) {
+          setFinalData(responseBody2.data)
           const response = await getApiWithAuth(`calculator/user-points/`)
-          setDataId(response.data.data[0].id)
-          setDataLength(response.data.data.length)
+          const userPointsData = getResponseBody(response) || []
+          setDataId(userPointsData[0]?.id)
+          setDataLength(userPointsData.length)
 
           setLoading(false)
         } else {
@@ -571,7 +581,7 @@ const CAOCalculator = ({ closePopup }) => {
         })
       }
 
-      if (response.data.data.length === 0) {
+      if (userPointsData.length === 0) {
         for (let i = 0; i < tableData.length; i++) {
           const ND = {
             No: i,
@@ -581,21 +591,26 @@ const CAOCalculator = ({ closePopup }) => {
           }
           newData.push(ND)
         }
-      } else if (response.data.data.length !== 0) {
-        newData = response?.data?.data[0]?.grades.map((item, index) => {
-          const filterSubjects = data.filter((SubItem) => SubItem.id == item?.subject)
+      } else if (userPointsData.length !== 0) {
+        newData = selectedGrades
+          .map((item, index) => {
+            const filterSubject = data.find((SubItem) => SubItem.id == item?.subject)
+            const filterLevel = filterSubject?.level?.find((levelItem) => levelItem.level__id == item.level)
 
-          const filterLevel = filterSubjects[0].level.filter((levelItem) => levelItem.level__id == item.level)
+            if (!filterSubject || !filterLevel) {
+              return null
+            }
 
-          const newObj = {
-            id: item.id,
-            No: index,
-            name: filterSubjects[0].name,
-            level: filterLevel[0].level__subjectlevel,
-            grades: item.grade,
-          }
-          return newObj
-        })
+            const newObj = {
+              id: item.id,
+              No: index,
+              name: filterSubject.name,
+              level: filterLevel.level__subjectlevel,
+              grades: item.grade,
+            }
+            return newObj
+          })
+          .filter(Boolean)
 
         const newGradeIds = []
         for (let i = 0; i < newData?.length; i++) {
@@ -603,7 +618,7 @@ const CAOCalculator = ({ closePopup }) => {
             `calculator/check-level-grade/?level=${newData[i].level}&subject=${newData[i].name}`,
           )
 
-          if (response1.data.status === 200) {
+          if (response1?.data?.status === 200) {
             filterGrade = response1?.data?.data.filter((gradeItem) => gradeItem.grade == newData[i]?.grades)
             if (filterGrade.length > 0 && filterGrade[0]?.pk) {
               newGradeIds.push({ grade: filterGrade[0].pk })
@@ -615,7 +630,7 @@ const CAOCalculator = ({ closePopup }) => {
       }
     } catch (error) {
     } finally {
-      const remainingEmptyRows = tableData.length - newData.length
+      const remainingEmptyRows = Math.max(tableData.length - newData.length, 0)
       const emptyRows = Array.from({ length: remainingEmptyRows }, (_, index) => ({
         No: newData.length + index,
         name: null,
