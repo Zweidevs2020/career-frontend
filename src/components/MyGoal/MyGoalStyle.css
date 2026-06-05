@@ -162,6 +162,68 @@
   color: white;
 }
 
+.createNewReportBtn {
+  border-radius: 10px !important;
+  border: 1px solid #1476B7 !important;
+  background: linear-gradient(135deg, #1476B7, #2890D6) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  min-height: 48px !important;
+  padding: 0 24px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 12px rgba(20, 118, 183, 0.25) !important;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.createNewReportBtn:hover,
+.createNewReportBtn:focus,
+.ant-btn.createNewReportBtn:hover,
+.ant-btn.createNewReportBtn:focus {
+  background: linear-gradient(135deg, #0f67a1, #1f89d2) !important;
+  color: #ffffff !important;
+  border-color: #0f67a1 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(20, 118, 183, 0.4) !important;
+}
+
+.createNewReportBtn:active,
+.ant-btn.createNewReportBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(20, 118, 183, 0.3) !important;
+}
+
+.createNewReportBtn span,
+.createNewReportBtn:hover span,
+.createNewReportBtn:focus span,
+.createNewReportBtn:active span,
+.ant-btn.createNewReportBtn span,
+.ant-btn.createNewReportBtn:hover span,
+.ant-btn.createNewReportBtn:focus span,
+.ant-btn.createNewReportBtn:active span {
+  color: #ffffff !important;
+}
+
+.createNewReportBtn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 70%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0));
+  transition: left 0.45s ease;
+}
+
+.createNewReportBtn:hover::before,
+.createNewReportBtn:focus::before {
+  left: 140%;
+}
+
 .spinStyle {
   height: 80vh;
   display: flex;

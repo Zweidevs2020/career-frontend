@@ -119,6 +119,7 @@
 .responseButton:hover {
   background-color: #ee3124 !important;
   border-color: #ee3124 !important;
+  color: #fff !important;
 }
 
 .messageArrayQuestion {

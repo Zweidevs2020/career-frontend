@@ -123,7 +123,7 @@ const Selfassesment = () => {
               }
               let chartOptions
               if (mapData?.test_results?.length > 0) {
-                const labels = mapData?.test_results[0]?.question_scores?.map((score) => score.question.split("/"))
+                const labels = mapData?.test_results[0]?.question_scores?.map((score) => score.question)
                 const series = mapData?.test_results[0]?.question_scores?.map((score) => score.score)
                 const title = mapData.name
                 chartOptions = {
@@ -132,6 +132,25 @@ const Selfassesment = () => {
                   series: [{ data: series }],
                   title: { text: title },
                   colors: [chartColor],
+                  plotOptions: {
+                    ...options.plotOptions,
+                    bar: {
+                      ...options.plotOptions.bar,
+                      horizontal: true,
+                      barHeight: '60%',
+                    },
+                  },
+                  yaxis: {
+                    labels: {
+                      show: true,
+                      style: {
+                        fontSize: '12px',
+                        fontWeight: 500,
+                        colors: ['#474749'],
+                      },
+                      offsetY: 4,
+                    },
+                  },
                 }
               } else {
                 chartOptions = {

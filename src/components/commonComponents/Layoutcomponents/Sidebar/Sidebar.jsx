@@ -16,8 +16,8 @@ import {
   Button,
   message,
 } from "antd";
-import mycareer from "../../../../assets/my-guidance-logo1.png";
-import myCareer from "../../../../assets/myCareerlogo.png";
+import mycareer from "../../../../assets/newlogo.png";
+import myCareer from "../../../../assets/newlogo.png";
 import logout from "../../../../assets/logout.svg";
 import logout1 from "../../../../assets/logout1.svg";
 import edit from "../../../../assets/edit.svg";
@@ -341,7 +341,7 @@ const Sidebar = ({ children, flags }) => {
         >
           <Sider className="backgroundColorSidebar">
             <div className="logoStyle my-2">
-              <img src={mycareer} alt="cyberLegendLogo" width="70%" />
+              <img src={mycareer} alt="cyberLegendLogo" style={{ width: "70%", height: "auto", objectFit: "contain" }} />
             </div>
             <div className="selectTextMain">
               <Menu
@@ -1104,7 +1104,7 @@ const Sidebar = ({ children, flags }) => {
                   marginRight: !isSidebarOpen ? "-1rem" : "0",
                 }}
               >
-                <img src={myCareer} alt="cyberLegendLogo" width="50%" />
+                <img src={myCareer} alt="cyberLegendLogo" style={{ width: "50%", height: "auto", objectFit: "contain" }} />
               </div>
 
               <div

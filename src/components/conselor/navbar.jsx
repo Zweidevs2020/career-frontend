@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Col, Row } from "antd";
 import { useLocation, useNavigate } from "react-router-dom"; // Import navigation
 import { LeftCircleOutlined, LogoutOutlined } from "@ant-design/icons";
+import newLogo from "../../assets/newlogo.png";
 
 const Navbar = () => {
   const navigate = useNavigate(); // React Router navigation
@@ -50,7 +51,7 @@ const Navbar = () => {
               }
             }
           >
-            <img src="/admin.svg" alt="Logo" width={150} height={32} />
+            <img src={newLogo} alt="Logo" width={150} height={32} />
           </div>
         )}
       </Col>

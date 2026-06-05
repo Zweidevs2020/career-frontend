@@ -1,5 +1,5 @@
 import React from "react";
-import mycareer from "../../../assets/mycareer.png";
+import mycareer from "../../../assets/newlogo.png";
 import Group from "../../../assets/Group.svg";
 import logout from "../../../assets/logout.svg";
 import Home from "../../../assets/Home.svg";
