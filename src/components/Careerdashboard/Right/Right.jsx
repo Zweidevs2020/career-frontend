@@ -181,7 +181,7 @@ const Right = () => {
                         fontWeight: 500,
                         colors: ['#474749'],
                       },
-                      offsetY: 0,
+                      offsetY: 9,
                     },
                   },
                   xaxis: {

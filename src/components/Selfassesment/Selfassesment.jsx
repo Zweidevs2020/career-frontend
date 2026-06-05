@@ -148,7 +148,7 @@ const Selfassesment = () => {
                         fontWeight: 500,
                         colors: ['#474749'],
                       },
-                      offsetY: 0,
+                      offsetY: 4,
                     },
                   },
                 }
