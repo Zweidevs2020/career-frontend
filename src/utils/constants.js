@@ -5,6 +5,7 @@ export const API_URL = {
   SIGNUP_GUEST: "user/signup-guest/",
   GETUSERSCHOOL: "user/schools",
   SINGUPUSER: "user/signup/",
+  FREE_TRIAL_SIGNUP: "user/free-trial/signup/",
   FORGETPASSWORD: "user/forget-password/otp",
   OTPCONFIRM: "user/otp/confirm",
   NEWPASSWORD: "user/reset-password",

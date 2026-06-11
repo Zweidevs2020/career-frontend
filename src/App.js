@@ -7,6 +7,7 @@ import {
 import {
   Login,
   Signup,
+  CounselorSignup,
   EmailVerification,
   ForgetPassword,
   NewPasword,
@@ -69,6 +70,14 @@ function App() {
           element={
             <PublicRoute restricted>
               <Signup />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/counselor-signup"
+          element={
+            <PublicRoute restricted>
+              <CounselorSignup />
             </PublicRoute>
           }
         />
