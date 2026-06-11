@@ -294,15 +294,15 @@ Counsellor Login"
                 htmlType="submit"
                 loading={loading}
               />
-              {/* <div
+              <div
                 className="textStyle16"
-                style={{ display: "flex", justifyContent: "center" }}
+                style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}
               >
                 Don't have an account?&nbsp;&nbsp;
-                <Link to="/sign-up" className="linkStyle">
+                <Link to="/counselor-signup" className="linkStyle">
                   Sign Up
                 </Link>
-              </div> */}
+              </div>
             </Form>
           </Tabs.TabPane>
         </Tabs>
