@@ -31,6 +31,8 @@ const CounselorSignup = () => {
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState("");
+  const [showSplashScreen, setShowSplashScreen] = useState(false);
+  const [loginLoading, setLoginLoading] = useState(false);
 
   const showModal = (content) => {
     setModalContent(content);
@@ -92,18 +94,14 @@ const CounselorSignup = () => {
 
       if (response.status === 200 || response.status === 201) {
         message.success(
-          response.data.message || "Your My Guidance Free Trial is ready! You can now log in."
+          response.data.message || "Your My Guidance Free Trial is ready!"
         );
 
         const isSubscribed = response.data.is_subscribed || false;
         setSubscribe(isSubscribed);
         
-        // Set conselorToken cookie
-        document.cookie = `conselorToken=${
-          response.data.access
-        }; path=/; max-age=${7 * 24 * 60 * 60}; Secure; SameSite=Strict`;
-        
-        navigate("/counsellor-Dashboard");
+        setShowSplashScreen(true);
+        setLoading(false);
       } else {
         setLoading(false);
         message.error(response.data.message || "Signup failed");
@@ -114,8 +112,93 @@ const CounselorSignup = () => {
     }
   };
 
+  const handleLoginAsStudent = async () => {
+    setLoginLoading(true);
+    try {
+      const response = await postApiWithoutAuth(API_URL.SIGNIN, {
+        email: data.email.toLowerCase(),
+        password: data.password,
+      });
+      if (response?.status === 200) {
+        message.success("Logged in as Student");
+        setToken(response?.data?.access);
+        setSubscribe(response.data.is_subscribed);
+        if (response.data.is_subscribed) {
+          navigate("/dashboard");
+        } else {
+          navigate("/checkout");
+        }
+      } else {
+        message.error(response.data.message || "Student login failed");
+      }
+    } catch (error) {
+      console.error(error);
+      message.error("Something went wrong during student login.");
+    } finally {
+      setLoginLoading(false);
+    }
+  };
+
+  const handleLoginAsCounselor = async () => {
+    setLoginLoading(true);
+    try {
+      const response = await postApiWithoutAuth(API_URL.CONSELOR_SIGN_IN, {
+        email: data.email.toLowerCase(),
+        password: data.password,
+      });
+      if (response?.status === 200) {
+        message.success("Logged in as Counselor");
+        document.cookie = `conselorToken=${
+          response?.data?.access
+        }; path=/; max-age=${7 * 24 * 60 * 60}; Secure; SameSite=Strict`;
+        navigate("/counsellor-Dashboard");
+      } else {
+        message.error(response.data.message || "Counselor login failed");
+      }
+    } catch (error) {
+      console.error(error);
+      message.error("Something went wrong during counselor login.");
+    } finally {
+      setLoginLoading(false);
+    }
+  };
+
   return (
     <div className="mainDiv">
+      {showSplashScreen && (
+        <div className="splash-overlay">
+          <div className="splash-content">
+            <div className="splash-logo">
+              <Image
+                preview={false}
+                src={myCareerGuidanceIcon}
+                width={180}
+              />
+            </div>
+            <h2 className="splash-title">Welcome to My Guidance!</h2>
+            <p className="splash-text">
+              Your account has been created successfully. How would you like to continue?
+            </p>
+            <div className="splash-buttons">
+              <MyCareerGuidanceButton
+                label="Login as Student"
+                className="splash-button"
+                type="primary"
+                onClick={handleLoginAsStudent}
+                loading={loginLoading}
+              />
+              <MyCareerGuidanceButton
+                label="Login as Counselor"
+                className="splash-button"
+                type="primary"
+                onClick={handleLoginAsCounselor}
+                loading={loginLoading}
+                style={{ backgroundColor: "#1476b7", borderColor: "#1476b7" }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
       <div className="leftDiv">
         <Image
           preview={false}
