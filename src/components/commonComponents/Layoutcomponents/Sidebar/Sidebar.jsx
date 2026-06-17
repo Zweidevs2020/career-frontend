@@ -55,15 +55,18 @@ import {
   MenuFoldOutlined,
   MenuOutlined,
   PlusOutlined,
+  PlayCircleOutlined,
 } from "@ant-design/icons";
 import { useSubscribe } from "../../../../context/subscribe";
 import { AnalogClock } from "../../../clock/clock";
+import { DemoVideoModal } from "../../index";
 const { Content, Sider, Header } = Layout;
 const Sidebar = ({ children, flags }) => {
   const { setSubscribe } = useSubscribe();
   const navigate = useNavigate();
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDemoVideoModalOpen, setIsDemoVideoModalOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState("Overview");
   const [userData, setUserData] = useState({});
@@ -623,6 +626,22 @@ const Sidebar = ({ children, flags }) => {
                   }
                 />
               </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: 10,
+                }}
+              >
+                <MyCareerGuidanceButton
+                  label="Demo Video"
+                  className="logoutButton"
+                  type="primary"
+                  htmlType="button"
+                  onClick={() => setIsDemoVideoModalOpen(true)}
+                  icon={<PlayCircleOutlined style={{ fontSize: "18px", paddingRight: 4 }} />}
+                />
+              </div>
             </div>
           </Sider>
           <Layout className="site-layout">
@@ -1088,6 +1107,22 @@ const Sidebar = ({ children, flags }) => {
                 onClick={logoutUser}
               />
             </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: 10,
+              }}
+              className="careerBtnDiv"
+            >
+              <MyCareerGuidanceButton
+                label="Demo Video"
+                className="mobLogoutBtn"
+                type="primary"
+                htmlType="button"
+                onClick={() => setIsDemoVideoModalOpen(true)}
+              />
+            </div>
           </Drawer>
 
           <Layout className="site-layout">
@@ -1352,6 +1387,11 @@ const Sidebar = ({ children, flags }) => {
           </Layout>
         </Layout>
       )}
+      <DemoVideoModal
+        open={isDemoVideoModalOpen}
+        onClose={() => setIsDemoVideoModalOpen(false)}
+        apiUrl={API_URL.STUDENT_DEMO_VIDEO}
+      />
     </>
   );
 };

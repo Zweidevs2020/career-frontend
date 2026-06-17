@@ -1,3 +1,4 @@
 import MyCareerGuidanceInputField from "./MyCareerGuidanceInputField";
 import MyCareerGuidanceButton from "./MyCareerGuidanceButton";
-export { MyCareerGuidanceInputField, MyCareerGuidanceButton };
+import DemoVideoModal from "./DemoVideoModal/DemoVideoModal";
+export { MyCareerGuidanceInputField, MyCareerGuidanceButton, DemoVideoModal };
