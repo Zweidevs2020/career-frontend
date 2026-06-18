@@ -67,6 +67,18 @@ const Sidebar = ({ children, flags }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDemoVideoModalOpen, setIsDemoVideoModalOpen] = useState(false);
+  const [showFloatingButton, setShowFloatingButton] = useState(false);
+  const [isFloatingButtonDismissed, setIsFloatingButtonDismissed] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!isFloatingButtonDismissed) {
+        setShowFloatingButton(true);
+      }
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [isFloatingButtonDismissed]);
+
   const [collapsed, setCollapsed] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState("Overview");
   const [userData, setUserData] = useState({});
@@ -1387,6 +1399,30 @@ const Sidebar = ({ children, flags }) => {
           </Layout>
         </Layout>
       )}
+
+      {/* Floating Demo Video Button */}
+      {showFloatingButton && !isFloatingButtonDismissed && (
+        <div 
+          className="fixed bottom-6 right-6 z-[2000] flex items-center bg-[#1476B7] text-white rounded-full shadow-2xl transition-all duration-500 hover:scale-105"
+          style={{ padding: '2px' }}
+        >
+          <div 
+            className="flex items-center cursor-pointer py-2 px-4 hover:bg-[#10629a] rounded-l-full transition-colors"
+            onClick={() => setIsDemoVideoModalOpen(true)}
+          >
+            <PlayCircleOutlined className="text-xl mr-2" />
+            <span className="font-semibold whitespace-nowrap">Watch Demo Video</span>
+          </div>
+          <div 
+            className="flex items-center justify-center cursor-pointer p-2 hover:bg-[#10629a] rounded-r-full border-l border-white/20 transition-colors"
+            onClick={() => setIsFloatingButtonDismissed(true)}
+            title="Dismiss"
+          >
+            <CloseOutlined className="text-sm" />
+          </div>
+        </div>
+      )}
+
       <DemoVideoModal
         open={isDemoVideoModalOpen}
         onClose={() => setIsDemoVideoModalOpen(false)}
