@@ -62,6 +62,14 @@
   font-weight: 500;
 }
 
+.clearAllButton:hover,
+.clearAllButton:focus,
+.clearAllButton:active {
+  color: white;
+  border-color: #1476b7;
+  background: #1476b7;
+}
+
 .addSubjectButton {
   color: white;
   border: none;
@@ -75,6 +83,15 @@
   justify-content: center;
 }
 
+.addSubjectButton:hover,
+.addSubjectButton:focus,
+.addSubjectButton:active {
+  color: white;
+  background: #ffffff;
+  border: 2px solid #1476b7;
+  
+}
+
 
 
 .calculateButton {
@@ -86,6 +103,14 @@
   height: 40px;
   margin-top: 10px;
   font-weight: 500;
+}
+
+.calculateButton:hover,
+.calculateButton:focus,
+.calculateButton:active {
+  color: white;
+  border-color: #1476b7;
+  background: #1476b7;
 }
 
 .caoMainDiv {

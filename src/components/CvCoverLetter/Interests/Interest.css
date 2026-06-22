@@ -37,8 +37,16 @@
     width: 144px;
     height: 45px !important;
     background: #1476B7;
+    color: white;
     font-size: 14px;
     border-radius: 12px;
+}
+
+.interestButton:hover,
+.interestButton:focus,
+.interestButton:active {
+    background: #1476B7;
+    color: white;
 }
 
 .interestItemLable .ant-form-item-label{
@@ -58,6 +66,14 @@
     color: #1476B7; 
 }
 
+.interestButtonBack:hover,
+.interestButtonBack:focus,
+.interestButtonBack:active {
+    background: #FFFFFF;
+    border-color: #1476B7;
+    color: #1476B7;
+}
+
 @media (max-width: 768px) {
     .interestHead{ 
         font-size: 14px;
@@ -73,4 +89,3 @@
     }
     
 }
-

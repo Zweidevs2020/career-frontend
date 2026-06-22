@@ -162,6 +162,13 @@
   color: white;
 }
 
+.buttonGoalPage:hover,
+.buttonGoalPage:focus,
+.buttonGoalPage:active {
+  background-color: #1476B7;
+  color: white;
+}
+
 .createNewReportBtn {
   border-radius: 10px !important;
   border: 1px solid #1476B7 !important;

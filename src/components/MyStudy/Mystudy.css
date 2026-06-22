@@ -147,6 +147,13 @@
     border-radius: 10px;
 }
 
+.saveData:hover,
+.saveData:focus,
+.saveData:active {
+    background-color: #1476B7;
+    color: white !important;
+}
+
 .download {
     background-color: #1476B7;
     color: white !important;
@@ -155,7 +162,21 @@
     border-radius: 10px;
 }
 
+.download:hover,
+.download:focus,
+.download:active {
+    background-color: #1476B7;
+    color: white !important;
+}
+
 button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-button.viewResultButton.editBtn {
+    background-color: #1476B7;
+    color: white;
+}
+
+button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-button.viewResultButton.editBtn:hover,
+button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-button.viewResultButton.editBtn:focus,
+button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-button.viewResultButton.editBtn:active {
     background-color: #1476B7;
     color: white;
 }
@@ -168,6 +189,14 @@ button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-button.viewResultButt
 
 button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-button.takebutton.deleteBtn {
     background: red;
+    color: white;
+}
+
+button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-button.takebutton.deleteBtn:hover,
+button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-button.takebutton.deleteBtn:focus,
+button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-button.takebutton.deleteBtn:active {
+    background: red;
+    color: white;
 }
 
 fc-scrollgrid-sync-inner {

@@ -81,8 +81,16 @@
   width: 144px;
   height: 45px !important;
   background: #1476B7;
+  color: white;
   font-size: 14px;
   border-radius: 12px;
+}
+
+.profileButton:hover,
+.profileButton:focus,
+.profileButton:active {
+  background: #1476B7;
+  color: white;
 }
 
 .disabledBtn,

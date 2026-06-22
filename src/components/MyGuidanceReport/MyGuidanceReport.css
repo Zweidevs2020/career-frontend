@@ -255,11 +255,6 @@
   box-shadow: 0 2px 4px rgba(20, 118, 183, 0.3);
 }
 
-.ant-btn-default:hover {
-  color: #1476B7 !important;
-  border-color: #1476B7 !important;
-}
-
 .noDataChoices {
   display: flex;
   justify-content: center;
@@ -303,11 +298,19 @@
   max-width: 144px;
   height: 41px;
   background: #1476b7;
+  color: #ffffff;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
   border-radius: 12px;
   cursor: pointer;
+}
+
+.addChoicesButton:hover,
+.addChoicesButton:focus,
+.addChoicesButton:active {
+  background: #1476b7;
+  color: #ffffff;
 }
 .removeChoicesButton{
   width: 91px;
@@ -321,6 +324,14 @@
   border: 1px solid #1476B7;
   color: #1476b7;
 
+}
+
+.removeChoicesButton:hover,
+.removeChoicesButton:focus,
+.removeChoicesButton:active {
+  background: #ffffff;
+  border-color: #1476B7;
+  color: #1476b7;
 }
 /* ////////////////// */
 
