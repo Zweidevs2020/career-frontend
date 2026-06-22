@@ -35,11 +35,13 @@
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
-.addSubjectContainer{
+
+.addSubjectContainer {
   display: flex;
   justify-content: flex-end;
   width: 102%;
 }
+
 .clearAllButton {
   /* color: #a8a8a8;
   border-radius: 8px solid;
@@ -68,7 +70,7 @@
   height: 45px !important;
   margin-top: 10px;
   font-weight: 500;
-  display:flex;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
@@ -212,7 +214,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   .caoMainDiv {
     /* padding: 5px; */
   }
- 
+
   .coaSubjectDiv {
     flex-direction: column;
   }
@@ -251,10 +253,12 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   .caoMainDiv {
     /* padding: 20px; */
   }
-  .addSubjectContainer{
-  
+
+  .addSubjectContainer {
+
     width: 100%;
   }
+
   .coaSubjectDiv {
     flex-direction: column !important;
   }
@@ -279,10 +283,12 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   .coaSubjectWidth {
     width: 60%;
   }
-  .addSubjectContainer{
-  
+
+  .addSubjectContainer {
+
     width: 100%;
   }
+
   .coaInnerf8fafcDiv {
 
     background-color: #91DBC6;
@@ -305,10 +311,12 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
     width: 100% !important;
   }
-  .addSubjectContainer{
-  
+
+  .addSubjectContainer {
+
     width: 100%;
   }
+
   .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow,
   .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow {
     width: 100%;
@@ -332,42 +340,50 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
     width: 35%;
   }
 }
+
 @media only screen and (min-width: 1771px) and (max-width: 1950px) {
-  .addSubjectContainer{
-  
+  .addSubjectContainer {
+
     width: 104%;
   }
+
   .coaPointsWidth {
     width: 28%;
   }
 }
+
 @media only screen and (min-width: 1712px) and (max-width: 1770px) {
-  .addSubjectContainer{
-  
+  .addSubjectContainer {
+
     width: 110%;
   }
+
   .coaPointsWidth {
     width: 25%;
   }
 }
+
 @media only screen and (min-width: 1561px) and (max-width: 1711px) {
-  .addSubjectContainer{
-  display: flex;
-  justify-content: flex-start;
+  .addSubjectContainer {
+    display: flex;
+    justify-content: flex-start;
     width: 100%;
   }
+
   .coaPointsWidth {
     width: 19%;
   }
 }
+
 @media (max-width: 1540px) {
 
   .coaSubjectWidth .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow.ant-select-show-search,
   .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
     width: 100% !important;
   }
-  .addSubjectContainer{
-  
+
+  .addSubjectContainer {
+
     width: 100%;
   }
 
@@ -375,6 +391,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow {
     width: 180px;
   }
+
   .coaSubjectWidth {
     width: 63%;
   }
@@ -393,14 +410,17 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
     width: 30%;
   }
 }
+
 @media (max-width: 1310px) {
   .coaSubjectWidth {
     width: 62%;
   }
-  .addSubjectContainer{
-  
+
+  .addSubjectContainer {
+
     width: 100%;
   }
+
   .coaInnerf8fafcDiv {
     background-color: #91DBC6;
     padding: 7px;
@@ -417,6 +437,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
 
 
 }
+
 @media (max-width: 1280px) {
 
   /* .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
@@ -426,14 +447,17 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {
     width: 100% !important;
   }
-  .addSubjectContainer{
-  
+
+  .addSubjectContainer {
+
     width: 100%;
   }
+
   .ant-select.selectFieldStyle.ant-select-single.ant-select-show-arrow,
   .ant-select.selectFieldStyle.css-ed5zg0.ant-select-single.ant-select-show-arrow {
     width: 160px;
   }
+
   .coaSubjectWidth {
     width: 65%;
   }
@@ -453,14 +477,17 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
     width: 32%;
   }
 }
+
 @media (max-width: 1196px) {
   .coaSubjectWidth {
     width: 55%;
   }
-  .addSubjectContainer{
-  
+
+  .addSubjectContainer {
+
     width: 100%;
   }
+
   .coaInnerf8fafcDiv {
     background-color: #91DBC6;
     background-color: #91DBC6;
@@ -476,6 +503,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
     width: 27.5%;
   }
 }
+
 @media (max-width: 1234px) {
   .coaSubjectDiv {
     display: block;
@@ -485,10 +513,12 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   .coaPointsWidth {
     width: 100%;
   }
-  .addSubjectContainer{
-  
+
+  .addSubjectContainer {
+
     width: 100%;
   }
+
   .coaSubjectWidth {
     width: 100%;
   }
@@ -533,7 +563,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
     display: flex;
     flex-direction: column;
     width: 100%;
-  } 
+  }
 
   .caoHeadingText {
     font-size: 19px;

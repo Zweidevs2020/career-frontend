@@ -192,16 +192,7 @@ const Right = () => {
                   },
                   colors: [chartColor],
                   tooltip: {
-                    y: {
-                      formatter: function(val) {
-                        return val
-                      },
-                      title: {
-                        formatter: function (seriesName) {
-                          return ''
-                        }
-                      }
-                    }
+                    enabled: false
                   }
                 };
 
