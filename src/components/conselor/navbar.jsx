@@ -69,23 +69,24 @@ const Navbar = () => {
         className="flex justify-end sm:justify-end"
       >
         <div className="flex items-end pr-12 gap-2">
-          <Button
-            type="default"
-            icon={<PlayCircleOutlined />}
-            className="md:text-[15px] sm:text-[8px] text-white xs:text-[8px] md:x-4 py-1 xs:px-1 xs:py-0 sm:px-3 sm:py-2 bg-[#1476b7] h-10"
-            onClick={() => setIsDemoVideoModalOpen(true)}
-          >
-            Demo Video
-          </Button>
-          <Button
-            type="default"
-            icon={<LogoutOutlined />}
-            className="md:text-[15px] sm:text-[8px] text-white xs:text-[8px] md:x-4 py-1 xs:px-1 xs:py-0 sm:px-3 sm:py-2 bg-[#1476b7] h-10"
-            onClick={handleLogout} // Calls logout function
-          >
-            Logout
-          </Button>
-        </div>
+  <Button
+    type="default"
+    icon={<PlayCircleOutlined />}
+    className="md:text-[15px] sm:text-[8px] text-white xs:text-[8px] md:x-4 py-1 xs:px-1 xs:py-0 sm:px-3 sm:py-2 bg-[#1476b7] h-10 border-none transition-all duration-300 ease-in-out hover:bg-white hover:text-[#1476b7] hover:border-2 hover:border-[#1476b7] hover:shadow-lg hover:-translate-y-0.5"
+    onClick={() => setIsDemoVideoModalOpen(true)}
+  >
+    Demo Video
+  </Button>
+
+  <Button
+    type="default"
+    icon={<LogoutOutlined />}
+    className="md:text-[15px] sm:text-[8px] text-white xs:text-[8px] md:x-4 py-1 xs:px-1 xs:py-0 sm:px-3 sm:py-2 bg-[#1476b7] h-10 border-none transition-all duration-300 ease-in-out hover:bg-white hover:text-[#1476b7] hover:border-2 hover:border-[#1476b7] hover:shadow-lg hover:-translate-y-0.5"
+    onClick={handleLogout}
+  >
+    Logout
+  </Button>
+</div>
       </Col>
       <DemoVideoModal
         open={isDemoVideoModalOpen}

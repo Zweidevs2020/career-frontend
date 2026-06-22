@@ -212,6 +212,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #ffffff;
+}
+
+.logoutButton:hover,
+.logoutButton:focus,
+.logoutButton:active {
+  background: #1476b7;
+  color: #ffffff;
 }
 
 .modalStyleClass2 {

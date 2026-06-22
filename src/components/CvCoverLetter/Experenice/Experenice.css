@@ -73,8 +73,16 @@
     width: 144px;
     height: 45px !important;
     background: #1476B7;
+    color: white;
     font-size: 14px;
     border-radius: 12px;
+}
+
+.expButton:hover,
+.expButton:focus,
+.expButton:active {
+    background: #1476B7;
+    color: white;
 }
 
 .expButtonBack,
@@ -86,6 +94,16 @@
     border-radius: 12px;
     color: white;
     background: #1476B7;
+}
+
+.expButtonBack:hover,
+.expButtonBack:focus,
+.expButtonBack:active,
+.expButtonNext:hover,
+.expButtonNext:focus,
+.expButtonNext:active {
+    background: #1476B7;
+    color: white;
 }
 
 .expAddButton {
@@ -104,6 +122,14 @@
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
+}
+
+.expAddButton:hover,
+.expAddButton:focus,
+.expAddButton:active {
+    background: #FFFFFF;
+    border-color: #1984FF;
+    color: #1984FF;
 }
 
 .expCheckBox {

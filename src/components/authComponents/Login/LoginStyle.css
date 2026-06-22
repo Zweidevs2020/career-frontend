@@ -65,6 +65,13 @@
   color: #ffffff;
 }
 
+.signInButton:hover,
+.signInButton:focus,
+.signInButton:active {
+  background: #1476b7;
+  color: #ffffff;
+}
+
 
 
 

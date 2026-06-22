@@ -47,6 +47,26 @@ word-wrap: break-word;
   font-weight: 500;
 }
 
+.parentRightDashboardDivBtnDiv button,
+.rightGraphBtn button,
+.leftGraphBtn button {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
+.parentRightDashboardDivBtnDiv button:hover,
+.parentRightDashboardDivBtnDiv button:focus,
+.rightGraphBtn button:hover,
+.rightGraphBtn button:focus,
+.leftGraphBtn button:hover,
+.leftGraphBtn button:focus {
+  color: inherit;
+}
+
 .dashboardRightHeadingDiv {
   color: #474749;
   font-family: Poppins;
@@ -211,4 +231,3 @@ word-wrap: break-word;
     width: 120px;
   }
 }
-
