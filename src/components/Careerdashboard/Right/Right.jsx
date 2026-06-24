@@ -101,17 +101,13 @@ const Right = () => {
    
   }, [psychometricTestName]);
 
-  // const chartColors = ["#b9bab8", "#87aded", "#a4eba9"];
-  const chartColors = ["#440542", "#592422", "#1a6f73"];
-  const assessmentColors = {
-    'Occupational Values Assessment': '#87aded',
-    'Occupational Interest Assessment': '#a4eba9',
-    'Intelligence Assessment': '#a4eba9',
-  };
+  // green is first → always applied to index 0 (highest value, data is sorted descending)
+  const BAR_COLORS = ['#5CC85A', '#FF9800', '#E91E8C', '#3949AB', '#00BCD4', '#9C27B0', '#FF5722', '#795548'];
   return (
     <>
       <div
-        className="h-[100%] w-[100%]  flex flex-col rightContainerStyle"
+        className="w-[100%] flex flex-col rightContainerStyle"
+        style={{ height: 'calc(100vh - 64px)', overflowY: 'auto' }}
 
       >
         <div className="w-[90%]">
@@ -150,29 +146,53 @@ const Right = () => {
                 //  {psychometricTestResult.map((item1, index1) => {
                 const labels = item.scores.map((score) => score.name.split("/"));
                 const series = item.scores.map((score) => score.score);
-                let chartColor;
-              
-                if (item.test_name == 'Occupational Values Assesment') {
-
-                  chartColor = '#87aded';
-                } else if (item.test_name == 'Occupational Interest Assesment') {
-                  chartColor = '#b9bab8';
-                } else {
-                  chartColor = '#a4eba9';
-                }
-
                 const chartOptions = {
                   ...options,
                   labels,
                   series: [{ data: series }],
-
+                  chart: {
+                    ...options.chart,
+                    dropShadow: {
+                      enabled: true,
+                      top: 3,
+                      left: 1,
+                      blur: 5,
+                      opacity: 0.12,
+                    },
+                  },
                   plotOptions: {
                     bar: {
                       horizontal: true,
-                      barHeight: '60%',
-                      distributed: false
+                      barHeight: '50%',
+                      distributed: true,
+                      borderRadius: 8,
+                      borderRadiusApplication: 'end',
+                      colors: {
+                        backgroundBarColors: ['#e8e8e8'],
+                        backgroundBarOpacity: 1,
+                        backgroundBarRadius: 8,
+                      },
                     },
                   },
+                  fill: {
+                    type: 'gradient',
+                    gradient: {
+                      type: 'vertical',
+                      shadeIntensity: 0.3,
+                      opacityFrom: 1,
+                      opacityTo: 1,
+                      shade: 'light',
+                      stops: [0, 100],
+                    },
+                  },
+                  grid: {
+                    xaxis: { lines: { show: true } },
+                    yaxis: { lines: { show: false } },
+                    strokeDashArray: 5,
+                    borderColor: '#d5d5d5',
+                  },
+                  colors: BAR_COLORS,
+                  legend: { show: false },
                   yaxis: {
                     labels: {
                       show: true,
@@ -186,14 +206,9 @@ const Right = () => {
                   },
                   xaxis: {
                     ...options.xaxis,
-                    labels: {
-                      show: true,
-                    },
+                    labels: { show: true },
                   },
-                  colors: [chartColor],
-                  tooltip: {
-                    enabled: false
-                  }
+                  tooltip: { enabled: false },
                 };
 
                 return (
@@ -235,7 +250,7 @@ const Right = () => {
                         series={chartOptions.series}
                         type="bar"
                         width="100%"
-                        height={320}
+                        height={Math.max(220, series.length * 30 + 50)}
                       />
                     </div>
                     <hr />

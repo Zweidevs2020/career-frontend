@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+.lp-root {
+  font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Responsive: stack layout on smaller screens */
+@media (max-width: 1360px) {
+  .lp-main-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 1120px) {
+  .lp-cards-top {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .lp-cards-bottom {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .lp-cta-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .lp-cta-divider {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .lp-cards-top,
+  .lp-cards-bottom {
+    grid-template-columns: 1fr !important;
+  }
+}

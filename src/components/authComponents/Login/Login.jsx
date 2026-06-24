@@ -99,7 +99,10 @@ navigate("/counsellor-Dashboard");
   return (
     <div className="mainDiv">
       <div className="leftDiv">
-        <Image preview={false} src={myCareerGuidanceIcon} width={207} />
+        <Link to="/" style={{ display: 'inline-block', width: 'fit-content' }}>
+          <Image preview={false} src={myCareerGuidanceIcon} width={207} style={{ cursor: 'pointer' }} />
+        </Link>
+        
         <Tabs
           activeKey={activeTab}
           onChange={(activeTab) => {

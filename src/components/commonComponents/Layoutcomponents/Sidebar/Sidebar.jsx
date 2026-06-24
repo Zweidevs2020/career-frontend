@@ -638,22 +638,24 @@ const Sidebar = ({ children, flags }) => {
                   }
                 />
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: 10,
-                }}
-              >
-                <MyCareerGuidanceButton
-                  label="Demo Video"
-                  className="logoutButton"
-                  type="primary"
-                  htmlType="button"
-                  onClick={() => setIsDemoVideoModalOpen(true)}
-                  icon={<PlayCircleOutlined style={{ fontSize: "18px", paddingRight: 4 }} />}
-                />
-              </div>
+              {userData.is_free_trial && (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: 10,
+                  }}
+                >
+                  <MyCareerGuidanceButton
+                    label="Demo Video"
+                    className="logoutButton"
+                    type="primary"
+                    htmlType="button"
+                    onClick={() => setIsDemoVideoModalOpen(true)}
+                    icon={<PlayCircleOutlined style={{ fontSize: "18px", paddingRight: 4 }} />}
+                  />
+                </div>
+              )}
             </div>
           </Sider>
           <Layout className="site-layout">
@@ -1119,22 +1121,24 @@ const Sidebar = ({ children, flags }) => {
                 onClick={logoutUser}
               />
             </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: 10,
-              }}
-              className="careerBtnDiv"
-            >
-              <MyCareerGuidanceButton
-                label="Demo Video"
-                className="mobLogoutBtn"
-                type="primary"
-                htmlType="button"
-                onClick={() => setIsDemoVideoModalOpen(true)}
-              />
-            </div>
+            {userData.is_free_trial && (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: 10,
+                }}
+                className="careerBtnDiv"
+              >
+                <MyCareerGuidanceButton
+                  label="Demo Video"
+                  className="mobLogoutBtn"
+                  type="primary"
+                  htmlType="button"
+                  onClick={() => setIsDemoVideoModalOpen(true)}
+                />
+              </div>
+            )}
           </Drawer>
 
           <Layout className="site-layout">
@@ -1400,8 +1404,8 @@ const Sidebar = ({ children, flags }) => {
         </Layout>
       )}
 
-      {/* Floating Demo Video Button */}
-      {showFloatingButton && !isFloatingButtonDismissed && (
+      {/* Floating Demo Video Button — only visible during free trial */}
+      {userData.is_free_trial && showFloatingButton && !isFloatingButtonDismissed && (
         <div 
           className="fixed bottom-6 right-6 z-[2000] flex items-center bg-[#1476B7] text-white rounded-full shadow-2xl transition-all duration-500 hover:scale-105"
           style={{ padding: '2px' }}
