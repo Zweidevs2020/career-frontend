@@ -13,6 +13,7 @@ import {
   NewPasword,
 } from "./components/authComponents";
 import CareerDashboard from "./components/Careerdashboard";
+import LandingPage from "./components/LandingPage/LandingPage";
 import PublicRoute from "./routes/PublicRouting";
 import PrivateRoute from "./routes/PrivateRouting";
 import "./App.css";
@@ -59,6 +60,14 @@ function App() {
       <Routes>
         <Route
           path="/"
+          element={
+            <PublicRoute restricted>
+              <LandingPage />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/login"
           element={
             <PublicRoute restricted>
               <Login />

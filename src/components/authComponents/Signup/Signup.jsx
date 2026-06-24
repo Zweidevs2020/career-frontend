@@ -182,11 +182,17 @@ const Signup = () => {
   return (
     <div className="mainDiv">
       <div className="leftDiv">
-        <Image
-          preview={false}
-          src={myCareerGuidanceIcon || "/placeholder.svg"}
-          width={207}
-        />
+        <Link to="/" style={{ display: 'inline-block', width: 'fit-content' }}>
+          <Image
+            preview={false}
+            src={myCareerGuidanceIcon || "/placeholder.svg"}
+            width={207}
+            style={{ cursor: 'pointer' }}
+          />
+        </Link>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', color: '#1476b7', margin: '15px 0', textDecoration: 'none', fontWeight: 500, fontSize: '15px' }}>
+          <span style={{ marginRight: '6px', fontSize: '18px', lineHeight: 1 }}>←</span> Back to Home
+        </Link>
         <Form
           onFinish={handlerSaveSubmit}
           className="formStyle"
