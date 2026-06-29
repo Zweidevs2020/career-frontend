@@ -6,13 +6,12 @@ import Steps from "./Steps/Steps";
 import Interest from "./Interests/Interest";
 import Reference from "./Reference/Reference";
 import Education from "./Eductaion/Education";
-import emailIcon from "../../assets/image 2.png";
-import docxIcon from "../../assets/images.png";
 import Experenice from "./Experenice/Experenice";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import { API_URL } from "../../utils/constants";
 import { useLocation } from "react-router-dom";
-import { MailOutlined } from "@ant-design/icons";
+import docxIcon from "../../assets/file.webp";
+import emailIcon from "../../assets/m.png";
 import { Form, message, Popconfirm, Popover } from "antd";
 import {
   MyCareerGuidanceInputField,
@@ -215,29 +214,33 @@ const CvCoverLetter = () => {
             {downloadBtn && (
               <span
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "10px",
                   cursor: "pointer",
                   marginTop: 5,
+                  marginRight: "12px",
+                  padding: "6px 20px 6px 10px",
+                  borderRadius: "50px",
+                  background: "#ffffff",
+                  border: "1.5px solid #dce6f4",
+                  boxShadow: "0 2px 10px rgba(20,80,183,0.10)",
+                  color: "#1b2440",
+                  fontWeight: 600,
+                  fontSize: "14px",
+                  userSelect: "none",
                 }}
                 onClick={() => {
                   downloadDocs();
                 }}
               >
-                <img
-                  src={docxIcon}
-                  className="responsive-image"
-                  style={{ marginRight: "1rem", width: 25, height: 25 }}
-                />
+                <img src={docxIcon} style={{ width: 38, height: 38, flexShrink: 0 }} alt="" />
                 <Popover
                   title="Download Word Document"
                   placement="bottom"
                   style={{ width: "10px" }}
                 >
-                  <span style={{ marginRight: "2.5rem", width: "100%" }}>
-                    {" "}
-                    Download Word Doc
-                  </span>
+                  <span style={{ whiteSpace: "nowrap" }}>Download Word Doc</span>
                 </Popover>
               </span>
             )}
@@ -292,26 +295,30 @@ const CvCoverLetter = () => {
               >
                 <span
                   style={{
-                    display: "flex",
-                    justifyContent: "space-between",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "10px",
                     cursor: "pointer",
                     marginTop: 5,
+                    padding: "6px 20px 6px 10px",
+                    borderRadius: "50px",
+                    background: "#ffffff",
+                    border: "1.5px solid #dce6f4",
+                    boxShadow: "0 2px 10px rgba(20,80,183,0.10)",
+                    color: "#1b2440",
+                    fontWeight: 600,
+                    fontSize: "14px",
+                    userSelect: "none",
                   }}
                 >
-                  <img
-                    src={emailIcon}
-                    className="responsive-image"
-                    style={{ marginRight: "1rem", width: 20, height: 20 }}
-                  />
+                  <img src={emailIcon} style={{ width: 36, height: 36, flexShrink: 0, objectFit: "contain" }} alt="" />
                   <Popover
                     title="Send Email"
                     placement="bottom"
                     style={{ width: "10px" }}
                   >
-                    <span style={{ width: "100%" }}> Send Email</span>
+                    <span style={{ whiteSpace: "nowrap" }}>Send Email</span>
                   </Popover>
-
-                  {/* <span style={{ width: "100%" }}> Send to My Email</span> */}
                 </span>
               </Popover>
             )}

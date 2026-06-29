@@ -83,17 +83,17 @@ const LandingPage = () => {
     <div className="lp-root min-h-screen flex flex-col bg-white text-[#1b2440] px-7 pt-[18px] pb-[14px]">
 
       {/* ── HEADER ── */}
-      <header className="flex items-center justify-between gap-6 pb-[18px] border-b border-[#e7edf6]">
+      <header className="lp-header flex items-center justify-between gap-6 pb-[18px] border-b border-[#e7edf6]">
         <button
           type="button"
           className="border-0 p-0 bg-transparent cursor-pointer leading-none"
           onClick={() => navigate("/")}
           aria-label="My Guidance home"
         >
-          <img src="/newlogo.png" alt="My Guidance" className="block w-[220px] h-auto" />
+          <img src="/newlogo.png" alt="My Guidance" className="lp-logo-img block w-[220px] h-auto" />
         </button>
 
-        <div className="flex items-center gap-4">
+        <div className="lp-header-actions flex items-center gap-4">
           <button
             type="button"
             className="min-w-[110px] h-[54px] px-7 rounded-full text-base font-semibold bg-white text-[#1c2742] border-2 border-[#1f72e6] cursor-pointer transition-all duration-[180ms] ease-in-out hover:-translate-y-px"
@@ -117,7 +117,7 @@ const LandingPage = () => {
 
         {/* LEFT: full-bleed student photo with copy overlaid */}
         <section
-          className="relative min-h-[620px] rounded-[28px] overflow-hidden"
+          className="lp-hero relative min-h-[620px] rounded-[28px] overflow-hidden"
           aria-label="Students section"
         >
           {/* Background photo covering the whole left side */}
@@ -244,7 +244,7 @@ const LandingPage = () => {
       >
         {/* Student pricing half */}
         <div
-          className="grid items-center gap-[22px] px-[22px] py-6"
+          className="lp-cta-half grid items-center gap-[22px] px-[22px] py-6"
           style={{ gridTemplateColumns: "auto minmax(0,1fr) auto" }}
         >
           <div className="min-w-[114px] text-center">
@@ -290,7 +290,7 @@ const LandingPage = () => {
 
         {/* Counsellor half */}
         <div
-          className="grid items-center gap-[22px] px-[22px] py-6"
+          className="lp-cta-half grid items-center gap-[22px] px-[22px] py-6"
           style={{ gridTemplateColumns: "auto minmax(0,1fr) auto" }}
         >
           <div className="w-[76px] h-[76px] rounded-full bg-[#e4efff] flex items-center justify-center text-[#176fe5] flex-none" aria-hidden="true">
