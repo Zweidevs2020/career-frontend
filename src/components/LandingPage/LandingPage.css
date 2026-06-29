@@ -38,3 +38,63 @@
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ── Mobile: ≤ 640px ── */
+@media (max-width: 640px) {
+  .lp-root {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  .lp-header {
+    gap: 10px !important;
+  }
+
+  .lp-logo-img {
+    width: 148px !important;
+  }
+
+  .lp-header-actions {
+    gap: 8px !important;
+  }
+
+  .lp-header-actions button {
+    min-width: 78px !important;
+    height: 42px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    font-size: 0.84rem !important;
+  }
+
+  .lp-hero {
+    min-height: 440px !important;
+  }
+
+  /* Stack CTA inner layout vertically */
+  .lp-cta-half {
+    grid-template-columns: 1fr !important;
+    justify-items: center !important;
+    text-align: center !important;
+    gap: 14px !important;
+    padding: 18px !important;
+  }
+
+  .lp-cta-half > button {
+    min-width: auto !important;
+    width: 100%;
+  }
+}
+
+/* ── Extra small: ≤ 390px ── */
+@media (max-width: 390px) {
+  .lp-logo-img {
+    width: 128px !important;
+  }
+
+  .lp-header-actions button {
+    min-width: 68px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    font-size: 0.79rem !important;
+  }
+}
