@@ -10,7 +10,7 @@ import Experenice from "./Experenice/Experenice";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
 import { API_URL } from "../../utils/constants";
 import { useLocation } from "react-router-dom";
-import docxIcon from "../../assets/file.webp";
+import docxIcon from "../../assets/file.png";
 import emailIcon from "../../assets/m.png";
 import { Form, message, Popconfirm, Popover } from "antd";
 import {
