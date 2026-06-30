@@ -81,74 +81,61 @@ const Occupational = () => {
 
   const scores = educationGuidance.map((item) => item.score);
   const questionTypes = educationGuidance.map((item) => item.question_type);
-  let chartColor;
+  const BAR_COLORS = ['#5CC85A', '#FF9800', '#E91E8C', '#3949AB', '#00BCD4', '#9C27B0', '#FF5722', '#795548'];
 
-  if (educationGuidance[0]?.test_name == "Occupational Values Assesment") {
-    chartColor = "#87aded";
-  } else if (
-    educationGuidance[0]?.test_name == "Occupational Interest Assesment"
-  ) {
-    chartColor = "#b9bab8";
-  } else {
-    chartColor = "#a4eba9";
-  }
-
-  const series = [
-    {
-      data: scores,
-    },
-  ];
+  const series = [{ data: scores }];
 
   const options = {
     chart: {
       id: "bar",
-      toolbar: {
-        show: false,
-      },
-      height: 350,
+      toolbar: { show: false },
+      dropShadow: { enabled: true, top: 3, left: 1, blur: 5, opacity: 0.12 },
     },
     plotOptions: {
       bar: {
         horizontal: true,
-        columnWidth: "50%",
+        barHeight: '50%',
+        distributed: true,
+        borderRadius: 8,
+        borderRadiusApplication: 'end',
         colors: {
-          backgroundBarColors: ["white"],
+          backgroundBarColors: ['#e8e8e8'],
+          backgroundBarOpacity: 1,
+          backgroundBarRadius: 8,
         },
       },
     },
-    dataLabels: {
-      enabled: false,
-    },
-    xaxis: {
-      categories: questionTypes,
-    },
-    colors: [chartColor],
-    series: [
-      {
-        data: scores,
-      },
-    ],
-    title: {
-      text: educationGuidance[0]?.test_name,
-      align: "center",
-    },
-    // tooltip: {
-    //   y: {
-    //     formatter: (value) => value,
-    //   },
-    // },
-    tooltip: {
-      y: {
-        formatter: function (val) {
-          return val;
-        },
-        title: {
-          formatter: function (seriesName) {
-            return "";
-          },
-        },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        type: 'vertical',
+        shadeIntensity: 0.3,
+        opacityFrom: 1,
+        opacityTo: 1,
+        shade: 'light',
+        stops: [0, 100],
       },
     },
+    grid: {
+      xaxis: { lines: { show: true } },
+      yaxis: { lines: { show: false } },
+      strokeDashArray: 5,
+      borderColor: '#d5d5d5',
+    },
+    dataLabels: { enabled: false },
+    xaxis: { categories: questionTypes, labels: { show: true } },
+    colors: BAR_COLORS,
+    series: [{ data: scores }],
+    title: { text: educationGuidance[0]?.test_name, align: "center" },
+    legend: { show: false },
+    yaxis: {
+      labels: {
+        show: true,
+        style: { fontSize: '12px', fontWeight: 500, colors: ['#474749'] },
+        offsetY: 4,
+      },
+    },
+    tooltip: { enabled: false },
   };
 
   return (
@@ -183,7 +170,6 @@ const Occupational = () => {
               <div
                 style={{
                   backgroundColor: "white",
-                  height: 410,
                   width: "95%",
                   padding: 15,
                   border: 20,
@@ -194,7 +180,7 @@ const Occupational = () => {
                   series={options.series}
                   type="bar"
                   width={"100%"}
-                  height={350}
+                  height={Math.max(220, scores.length * 30 + 50)}
                 />
               </div>
               <div className="mt-5 pt-5">
