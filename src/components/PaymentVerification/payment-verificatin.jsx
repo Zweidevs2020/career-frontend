@@ -4,10 +4,12 @@ import { useEffect, useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import { LoadingOutlined, CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons"
 import { getApiWithAuth } from "../../utils/api"
+import { useSubscribe } from "../../context/subscribe"
 
 const PaymentVerification = () => {
   const location = useLocation()
   const navigate = useNavigate()
+  const { setSubscribe } = useSubscribe()
 
   const queryParams = new URLSearchParams(location.search)
   const sessionId = queryParams.get("session_id")
@@ -35,6 +37,7 @@ const PaymentVerification = () => {
       if (data.status === 200) {
         setStatus("Payment verified successfully!")
         setIsSuccess(true)
+        setSubscribe(true)
         setTimeout(() => {
           navigate("/dashboard")
         }, 2000)
