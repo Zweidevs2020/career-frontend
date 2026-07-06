@@ -308,7 +308,7 @@ const LandingPage = () => {
               className="m-0 text-[#1b2440] font-bold leading-[1.22]"
               style={{ fontSize: "clamp(1.14rem, 1.35vw, 1.38rem)" }}
             >
-              Are you a counsellor?
+              Are you a Guidance Counsellor?
             </h3>
             <p
               className="mt-2 m-0 text-[#56607d] leading-[1.72]"
@@ -324,7 +324,7 @@ const LandingPage = () => {
             style={{ boxShadow: "0 10px 20px rgba(31,114,230,0.08)" }}
             onClick={() => navigate("/counselor-signup")}
           >
-            FOR COUNSELLORS &rarr;
+            For Guidance Counsellor &rarr;
           </button>
         </div>
       </section>

@@ -565,9 +565,9 @@ const MyStudy = () => {
   return (
     <>
       <div
-        className="educationalGuidanceMainDiv"
+        className="educationalGuidanceMainDiv !bg-[#f04f62] !bg-none"
         style={{
-          backgroundColor: "#f04f62",
+        
           borderRadius: "10px",
           overflow: "hidden",
         }}
@@ -579,7 +579,7 @@ const MyStudy = () => {
             alignItems: "center",
           }}
         >
-          <div className="welcomeHaddingText pb-4">My Study Timetable</div>
+          <div className="welcomeHaddingText pb-4 !text-white">My Study Timetable</div>
           {/* <Button
             className="takebutton"
             type="primary"
