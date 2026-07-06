@@ -179,7 +179,7 @@ const DownloadBtn = async () => {
               <h5 className="goalHeading">My Goals</h5>
             </div>
             <div className="subHead">
-              <h className="subHeading">
+              <h className="subHeading !text-white">
                 Writing down your goal increases your chances of success. Fill
                 out this form to view any time or print and put you can see
                 daily.

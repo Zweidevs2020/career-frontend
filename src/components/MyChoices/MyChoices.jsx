@@ -162,7 +162,7 @@ const MyChoices = () => {
     <>
       <div className="educationalGuidanceMain">
         <div className="educationalGuidanceSecond ">
-          <div className="welcomeHaddingText pb-3" >My Choices</div>
+          <div className="welcomeHaddingText ml-4 !text-white" >My Choices</div>
           <div
             style={{
               marginTop: 10,

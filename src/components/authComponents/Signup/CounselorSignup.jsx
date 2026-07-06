@@ -216,7 +216,7 @@ const CounselorSignup = () => {
           className="formStyle"
           autoComplete={false}
         >
-          <div className="welcomeHaddingText">Hello Counselor</div>
+          <div className="welcomeHaddingText">Hello Guidance Counsellor</div>
           <div className="textStyle18" style={{ marginBottom: 15 }}>
             <span className="text-blue-800 font-semibold">Signup for Free Trial</span>
           </div>

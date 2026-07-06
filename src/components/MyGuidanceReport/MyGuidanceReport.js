@@ -728,7 +728,7 @@ const MyChoices = () => {
   return (
     <div className={styles.educationalGuidanceMainDiv}>
       <div className={styles.educationalGuidanceSecondDiv}>
-        <div className="welcomeHaddingText">My Report (AI)  </div>
+        <div className="welcomeHaddingText !text-white">My Report (AI)  </div>
         <Layout style={{ background: "transparent" }}>
           <ContentComponent>
             <section
@@ -773,16 +773,18 @@ const MyChoices = () => {
                     </Button>
                   </div>
                   <Row className="justify-between" style={{ marginBottom: "20px" }}>
-                    <Col>
-                      <Title level={4}>{hasExistingReport ? "Most Recent Report" : "Generated Report"}</Title>
-                    </Col>
+                  <Col>
+  <Title level={4} style={{ color: "#fff" }}>
+    {hasExistingReport ? "Most Recent Report" : "Generated Report"}
+  </Title>
+</Col>
                     <Col>
                       <Space>
                         <Button
                           onClick={handleShowRecentReport}
                           loading={loadingRecentReport}
                           style={{ borderRadius: "10px" }}
-                          className="border border-gray-600"
+                          className="border border-gray-600 "
                         >
                           Recent Report
                         </Button>

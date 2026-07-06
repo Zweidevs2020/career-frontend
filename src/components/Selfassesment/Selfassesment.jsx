@@ -100,7 +100,7 @@ const Selfassesment = () => {
   return (
     <>
       <div className="selfassessment" >
-        <div className="welcomeHaddingText ">Self Assessment Results</div>
+        <div className="welcomeHaddingText !text-white">Self Assessment Results</div>
         <div className="selfassessmentInner">
           {loading ? (
             <div

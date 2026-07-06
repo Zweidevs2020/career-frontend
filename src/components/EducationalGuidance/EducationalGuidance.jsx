@@ -80,7 +80,7 @@ const EducationalGuidance = () => {
   return (
     <>
       <div className="educationalGuidanceMainDiv">
-        <div className="welcomeHaddingText pb-3">My Educational Guidance</div>
+        <div className="welcomeHaddingText pb-6 !text-white">My Educational Guidance</div>
         <div className="educationalGuidanceSecondDiv">
           {loading ? (
             <Spin className="spinStyle" />
