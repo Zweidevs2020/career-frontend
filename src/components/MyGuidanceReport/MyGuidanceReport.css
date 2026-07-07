@@ -139,7 +139,10 @@
 
 .reportTopActionBar {
   display: flex;
+  flex-direction: row;
   justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 16px;
 }
 
@@ -158,6 +161,10 @@
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
+}
+
+.reportDownloadBtn {
+  min-width: 160px;
 }
 
 .createNewReportBtn:hover,
@@ -217,19 +224,10 @@
   flex: 1;
 }
 
-.reportActionButtonCol {
-  display: flex;
-  justify-content: flex-end;
-}
-
 @media only screen and (max-width: 767px) {
   .reportActionInputRow {
     flex-direction: column;
     align-items: stretch;
-  }
-
-  .reportActionButtonCol {
-    justify-content: flex-start;
   }
 }
 

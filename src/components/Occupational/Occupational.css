@@ -1,21 +1,85 @@
 .occupationOptionBackground {
-    border: 1px solid lightblue;
-    border-radius: 15px;
+    border: 1px solid rgba(20, 118, 183, 0.14);
+    border-radius: 16px;
     background: #fff;
-    padding: 10px;
-    box-shadow: 2px 2px 2px lightblue;
+    padding: 12px;
+    box-shadow: 0 10px 24px rgba(20, 118, 183, 0.08);
 }
 
 .mySelf {
-  background-color: #6895D9;
+  background: #6895D9;
   width: 100%;
   min-height: 90vh;
-  padding: 20px;
+  padding: 24px;
+}
+
+.occupationPageShell {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 .mySelfTwo {
-    background: #6895D9;
-    width: 100%;
-    min-height: 80vh;
-    padding: 20px;
+  background: #ffffff;
+  width: 100%;
+  min-height: 80vh;
+  padding: 24px;
+  border-radius: 24px;
+  box-shadow: 0 18px 48px rgba(16, 46, 91, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+}
+
+.occupationPageCard {
+  background: #ffffff;
+  width: 100%;
+  min-height: 80vh;
+  padding: 28px;
+  border-radius: 24px;
+  box-shadow: 0 18px 48px rgba(16, 46, 91, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+}
+
+.occupationPageTopRow {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+}
+
+.occupationPageTitle {
+  color: #2f3944;
+  margin-bottom: 20px;
+}
+
+.occupationResultsSurface {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.occupationLoadingCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 55vh;
+}
+
+@media (max-width: 913px) {
+  .mySelf {
+    padding: 12px;
+  }
+
+  .occupationPageCard,
+  .mySelfTwo {
+    min-height: auto;
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .occupationPageTitle {
+    font-size: 22px;
+  }
+
+  .occupationResultsSurface {
+    gap: 18px;
+  }
 }
