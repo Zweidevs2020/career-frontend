@@ -771,6 +771,12 @@ const MyChoices = () => {
                     >
                       Create a New Report
                     </Button>
+                    <Button
+                      className="createNewReportBtn reportDownloadBtn"
+                      onClick={DownloadReort}
+                    >
+                      Download PDF
+                    </Button>
                   </div>
                   <Row className="justify-between" style={{ marginBottom: "20px" }}>
                   <Col>
@@ -825,14 +831,6 @@ const MyChoices = () => {
                           }
                         />
                       </Form>
-                    </div>
-                    <div className="reportActionButtonCol">
-                      <Button
-                        className="createNewReportBtn"
-                        onClick={DownloadReort}
-                      >
-                        Download PDF
-                      </Button>
                     </div>
                   </div>
                 </>

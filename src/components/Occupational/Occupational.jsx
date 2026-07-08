@@ -140,14 +140,18 @@ const Occupational = () => {
 
   return (
     <>
-      <div className="mySelf">
+      <div className="mySelf occupationPageShell ">
         {loading ? (
-          <Spin className="spinStyle" />
+          <div className="occupationPageCard occupationLoadingCard">
+            <Spin className="spinStyle" />
+          </div>
         ) : educationGuidance?.length === 0 ? (
-          <div className="quizDetailsStyle">No Data Found</div>
+          <div className="occupationPageCard occupationLoadingCard">
+            <div className="quizDetailsStyle">No Data Found</div>
+          </div>
         ) : (
-          <>
-            <div style={{ display: "flex", justifyContent: "flex-start" }}>
+          <div className="occupationPageCard">
+            <div className="occupationPageTopRow">
               <Button
                 className="skillsButton"
                 type="primary"
@@ -158,21 +162,23 @@ const Occupational = () => {
                     navigate("/self-assesment");
                   }
                 }}
-              >
-                Back
-              </Button>
+                >
+                  Back
+                </Button>
             </div>
-            <div className="welcomeHaddingText ">
+            <div className="welcomeHaddingText occupationPageTitle">
               {educationGuidance[0]?.test_name}
             </div>
 
-            <div className="mySelfTwo">
+            <div className="occupationResultsSurface">
               <div
                 style={{
                   backgroundColor: "white",
-                  width: "95%",
+                  width: "100%",
                   padding: 15,
-                  border: 20,
+                  borderRadius: 18,
+                  boxShadow: "0 12px 28px rgba(0, 0, 0, 0.06)",
+                  border: "1px solid rgba(20, 118, 183, 0.08)",
                 }}
               >
                 <Chart
@@ -189,7 +195,7 @@ const Occupational = () => {
                     <div>
                       <div
                         className="textStyle18 pt-1 pb-3"
-                        style={{ color: "#ebeced", fontWeight: 600 }}
+                        style={{ color: "#030303", fontWeight: 600 }}
                       >
                         {item.question_type}
                       </div>
@@ -236,7 +242,7 @@ const Occupational = () => {
                 })}
               </div>
             </div>
-          </>
+          </div>
         )}
       </div>
     </>

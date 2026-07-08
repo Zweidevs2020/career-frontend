@@ -73,17 +73,18 @@ const OccupationalOption = () => {
   };
 
   return (
-    <div className="mySelfTwo">
-      <div style={{ display: "flex", justifyContent: "flex-start" }}>
-        <Button
-          className="skillsButton"
-          type="primary"
-          onClick={() => navigate(-1)}
-        >
-          Back
-        </Button>
-      </div>
-      <div>
+    <div className={styles.occupationPageShell}>
+      <div className={styles.occupationPageCard}>
+        <div className={styles.occupationPageTopRow}>
+          <Button
+            className="skillsButton"
+            type="primary"
+            onClick={() => navigate(-1)}
+          >
+            Back
+          </Button>
+        </div>
+        <div>
           <div
             className="textStyle18 pt-5 pb-3"
             style={{ color: "#363636", fontWeight: 600 }}
@@ -91,34 +92,33 @@ const OccupationalOption = () => {
             {infoData.item.question_type} {infoData.buttonitem.name}
           </div>
 
-
-        {infoData.buttonitem.path === "study-tips" ? (
-          idDataArray?.map((item, index) => {
-            return (
-              <div>
-                <div
-                  className="textStyle18 pt-1 pb-3"
-                  style={{ fontWeight: 600 }}
-                >
+          {infoData.buttonitem.path === "study-tips" ? (
+            idDataArray?.map((item, index) => {
+              return (
+                <div>
+                  <div
+                    className="textStyle18 pt-1 pb-3"
+                    style={{ fontWeight: 600 }}
+                  >
+                  </div>
+                  <div
+                    className={`${styles.htmlParser} textStyle18 pt-1 pb-3`}
+                    dangerouslySetInnerHTML={{
+                      __html: formatProfessionalHtml(item.description),
+                    }}
+                  ></div>
                 </div>
-                <div
-                  className={`${styles.htmlParser} textStyle18 pt-1 pb-3`}
-                  dangerouslySetInnerHTML={{
-                    __html: formatProfessionalHtml(item.description),
-                  }}
-                ></div>
-              </div>
-            );
-          })
-        ) : (
-          <>
-          <div
-            className={styles.htmlParser}
-            dangerouslySetInnerHTML={{ __html: formatProfessionalHtml(idData.idea) }}
-          ></div>
-          
-          </>
-        )}
+              );
+            })
+          ) : (
+            <>
+              <div
+                className={styles.htmlParser}
+                dangerouslySetInnerHTML={{ __html: formatProfessionalHtml(idData.idea) }}
+              ></div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
