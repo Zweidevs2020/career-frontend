@@ -99,7 +99,10 @@ navigate("/counsellor-Dashboard");
   return (
     <div className="mainDiv">
       <div className="leftDiv">
-        <Image preview={false} src={myCareerGuidanceIcon} width={207} />
+        <Link to="/" style={{ display: 'inline-block', width: 'fit-content' }}>
+          <Image preview={false} src={myCareerGuidanceIcon} width={207} style={{ cursor: 'pointer' }} />
+        </Link>
+        
         <Tabs
           activeKey={activeTab}
           onChange={(activeTab) => {
@@ -294,15 +297,15 @@ Counsellor Login"
                 htmlType="submit"
                 loading={loading}
               />
-              {/* <div
+              <div
                 className="textStyle16"
-                style={{ display: "flex", justifyContent: "center" }}
+                style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}
               >
                 Don't have an account?&nbsp;&nbsp;
-                <Link to="/sign-up" className="linkStyle">
+                <Link to="/counselor-signup" className="linkStyle">
                   Sign Up
                 </Link>
-              </div> */}
+              </div>
             </Form>
           </Tabs.TabPane>
         </Tabs>

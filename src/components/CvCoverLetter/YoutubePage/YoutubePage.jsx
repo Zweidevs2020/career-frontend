@@ -9,38 +9,33 @@ const YoutubePage = () => {
   return (
     <>
       <div className="youtubeContainerStyle">
-        <div className="dashboardRightHeadingDiv">
-          {data.youtube_title ? data.youtube_title : "YouTube Video"}{" "}
+        <div className="youtubeContentSurface">
+          <div className="dashboardRightHeadingDiv youtubePageHeading">
+            {data?.youtube_title ? data.youtube_title : "YouTube Video"}{" "}
+          </div>
+          <div className="youtubeVideoFrame">
+            <div className="container">
+              <iframe
+                className="responsive-iframe"
+                src={videoId}
+                title="YouTube Video"
+                frameBorder="0"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+          <MyCareerGuidanceButton
+            label="Test Yourself"
+            className="resultDataButton"
+            type="button"
+            htmlType="button"
+            onClick={() =>
+              navigate("/educational-guidance-test", {
+                state: { data: data },
+              })
+            }
+          />
         </div>
-        <div className="container">
-          <iframe
-            className="responsive-iframe"
-            src={videoId}
-            title="YouTube Video"
-            frameBorder="0"
-            allowFullScreen
-          ></iframe>
-        </div>
-        {/* <iframe
-          width="90%"
-          height="500px"
-
-          src={videoId}
-          title="YouTube Video"
-          frameBorder="0"
-          allowFullScreen
-        ></iframe> */}
-        <MyCareerGuidanceButton
-          label="Test Yourself"
-          className="resultDataButton"
-          type="button"
-          htmlType="button"
-          onClick={() =>
-            navigate("/educational-guidance-test", {
-              state: { data: data },
-            })
-          }
-        />
       </div>
     </>
   );

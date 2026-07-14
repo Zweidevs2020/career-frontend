@@ -55,15 +55,30 @@ import {
   MenuFoldOutlined,
   MenuOutlined,
   PlusOutlined,
+  PlayCircleOutlined,
 } from "@ant-design/icons";
 import { useSubscribe } from "../../../../context/subscribe";
 import { AnalogClock } from "../../../clock/clock";
+import { DemoVideoModal } from "../../index";
 const { Content, Sider, Header } = Layout;
 const Sidebar = ({ children, flags }) => {
   const { setSubscribe } = useSubscribe();
   const navigate = useNavigate();
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDemoVideoModalOpen, setIsDemoVideoModalOpen] = useState(false);
+  const [showFloatingButton, setShowFloatingButton] = useState(false);
+  const [isFloatingButtonDismissed, setIsFloatingButtonDismissed] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!isFloatingButtonDismissed) {
+        setShowFloatingButton(true);
+      }
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [isFloatingButtonDismissed]);
+
   const [collapsed, setCollapsed] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState("Overview");
   const [userData, setUserData] = useState({});
@@ -623,6 +638,24 @@ const Sidebar = ({ children, flags }) => {
                   }
                 />
               </div>
+              {userData.is_free_trial && (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: 10,
+                  }}
+                >
+                  <MyCareerGuidanceButton
+                    label="Demo Video"
+                    className="logoutButton"
+                    type="primary"
+                    htmlType="button"
+                    onClick={() => setIsDemoVideoModalOpen(true)}
+                    icon={<PlayCircleOutlined style={{ fontSize: "18px", paddingRight: 4 }} />}
+                  />
+                </div>
+              )}
             </div>
           </Sider>
           <Layout className="site-layout">
@@ -1088,6 +1121,24 @@ const Sidebar = ({ children, flags }) => {
                 onClick={logoutUser}
               />
             </div>
+            {userData.is_free_trial && (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: 10,
+                }}
+                className="careerBtnDiv"
+              >
+                <MyCareerGuidanceButton
+                  label="Demo Video"
+                  className="mobLogoutBtn"
+                  type="primary"
+                  htmlType="button"
+                  onClick={() => setIsDemoVideoModalOpen(true)}
+                />
+              </div>
+            )}
           </Drawer>
 
           <Layout className="site-layout">
@@ -1352,6 +1403,35 @@ const Sidebar = ({ children, flags }) => {
           </Layout>
         </Layout>
       )}
+
+      {/* Floating Demo Video Button — only visible during free trial */}
+      {userData.is_free_trial && showFloatingButton && !isFloatingButtonDismissed && (
+        <div 
+          className="fixed bottom-6 right-6 z-[2000] flex items-center bg-[#1476B7] text-white rounded-full shadow-2xl transition-all duration-500 hover:scale-105"
+          style={{ padding: '2px' }}
+        >
+          <div 
+            className="flex items-center cursor-pointer py-2 px-4 hover:bg-[#10629a] rounded-l-full transition-colors"
+            onClick={() => setIsDemoVideoModalOpen(true)}
+          >
+            <PlayCircleOutlined className="text-xl mr-2" />
+            <span className="font-semibold whitespace-nowrap">Watch Demo Video</span>
+          </div>
+          <div 
+            className="flex items-center justify-center cursor-pointer p-2 hover:bg-[#10629a] rounded-r-full border-l border-white/20 transition-colors"
+            onClick={() => setIsFloatingButtonDismissed(true)}
+            title="Dismiss"
+          >
+            <CloseOutlined className="text-sm" />
+          </div>
+        </div>
+      )}
+
+      <DemoVideoModal
+        open={isDemoVideoModalOpen}
+        onClose={() => setIsDemoVideoModalOpen(false)}
+        apiUrl={API_URL.STUDENT_DEMO_VIDEO}
+      />
     </>
   );
 };

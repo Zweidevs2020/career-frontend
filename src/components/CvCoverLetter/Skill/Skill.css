@@ -38,8 +38,16 @@ background-color: rgb(252, 243, 220);
     width: 144px;
     height: 45px !important;
     background: #1476B7;
+    color: white;
     font-size: 14px;
     border-radius: 12px;
+}
+
+.skillsButton:hover,
+.skillsButton:focus,
+.skillsButton:active {
+    background: #1476B7;
+    color: white;
 }
 
 .skillsButtonBack{
@@ -50,6 +58,13 @@ background-color: rgb(252, 243, 220);
     background: #1476B7;
     border-radius: 12px;
     color: white; 
+}
+
+.skillsButtonBack:hover,
+.skillsButtonBack:focus,
+.skillsButtonBack:active {
+    background: #1476B7;
+    color: white;
 }
 
 .skillItemLable .ant-form-item-label{

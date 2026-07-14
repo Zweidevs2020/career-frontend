@@ -84,49 +84,60 @@ const CounselorSelf = () => {
       ) : data?.length > 0 ? (
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {data.map((item, index) => {
-            // Apply conditional color logic based on test_name
-            let chartColor
-
-            if (item?.test_name === "Occupational Values Assesment") {
-              chartColor = "#87aded"
-            } else if (item?.test_name === "Occupational Interest Assesment") {
-              chartColor = "#b9bab8"
-            } else {
-              chartColor = "#a4eba9"
-            }
+            const BAR_COLORS = ['#5CC85A', '#FF9800', '#E91E8C', '#3949AB', '#00BCD4', '#9C27B0', '#FF5722', '#795548'];
 
             const chartOptions = {
               chart: {
                 id: `chart-${index}`,
-                toolbar: {
-                  show: false,
-                },
+                toolbar: { show: false },
+                dropShadow: { enabled: true, top: 3, left: 1, blur: 5, opacity: 0.12 },
               },
-              colors: [chartColor],
               plotOptions: {
                 bar: {
                   horizontal: true,
-                  columnWidth: "50%",
-                  barHeight: "50%",
+                  barHeight: '50%',
+                  distributed: true,
+                  borderRadius: 8,
+                  borderRadiusApplication: 'end',
                   colors: {
-                    backgroundBarColors: ["#f2f2f2"],
+                    backgroundBarColors: ['#e8e8e8'],
+                    backgroundBarOpacity: 1,
+                    backgroundBarRadius: 8,
                   },
                 },
               },
-              dataLabels: {
-                enabled: false,
-              },
-              tooltip: {
-                y: {
-                  formatter: (val) => val,
-                  title: {
-                    formatter: () => "",
-                  },
+              fill: {
+                type: 'gradient',
+                gradient: {
+                  type: 'vertical',
+                  shadeIntensity: 0.3,
+                  opacityFrom: 1,
+                  opacityTo: 1,
+                  shade: 'light',
+                  stops: [0, 100],
                 },
               },
+              grid: {
+                xaxis: { lines: { show: true } },
+                yaxis: { lines: { show: false } },
+                strokeDashArray: 5,
+                borderColor: '#d5d5d5',
+              },
+              colors: BAR_COLORS,
+              legend: { show: false },
+              dataLabels: { enabled: false },
               xaxis: {
                 categories: (item.labels || []).map((label) => (typeof label === "string" ? label.split("/") : label)),
+                labels: { show: true },
               },
+              yaxis: {
+                labels: {
+                  show: true,
+                  style: { fontSize: '12px', fontWeight: 500, colors: ['#474749'] },
+                  offsetY: 4,
+                },
+              },
+              tooltip: { enabled: false },
             }
             const chartSeries = [
               {
@@ -139,7 +150,7 @@ const CounselorSelf = () => {
               <div key={index} className="ms-3 mt-5">
                 <h2 className="text-xl font-bold mb-2">{item.test_name}</h2>
                 <div style={{ overflow: "auto" }}>
-                  <Chart options={chartOptions} series={chartSeries} type="bar" width={screenSize.width > 748 ? 450 : 330} height={320} />
+                  <Chart options={chartOptions} series={chartSeries} type="bar" width={screenSize.width > 748 ? 450 : 330} height={Math.max(220, (item.scores || []).length * 30 + 50)} />
                 </div>
               </div>
             )

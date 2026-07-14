@@ -648,7 +648,7 @@ const CAOCalculator = ({ closePopup }) => {
   return (
     <div className="caoMainDiv" style={{ backgroundColor: "#91DBC6" }}>
       <div className="coaInnerf8fafcDiv bg-[#91DBC6]">
-        <div className="welcomeHaddingText bg-[#91DBC6]">My CAO Points: </div>
+        <div className="welcomeHaddingText bg-[#91DBC6] !text-white">My CAO Points: </div>
 
         {screenSize.width > "748" ? (
           <div className="coaSubjectDiv p-3 bg-[#91DBC6]">

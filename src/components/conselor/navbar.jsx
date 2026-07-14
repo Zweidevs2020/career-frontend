@@ -56,23 +56,25 @@ const Navbar = () => {
         )}
       </Col>
 
-      {/* Logout Button - Smaller on Mobile */}
+      {/* Buttons Section - Grouped on the right */}
       <Col
-        xs={6}
-        sm={6}
-        md={4}
-        lg={4}
-        xl={3}
-        className="flex justify-center sm:justify-end m"
+        xs={12}
+        sm={12}
+        md={10}
+        lg={10}
+        xl={8}
+        className="flex justify-end sm:justify-end"
       >
-        <Button
-          type="default"
-          icon={<LogoutOutlined />}
-          className="md:text-[15px] sm:text-[8px] text-white xs:text-[8px] md:x-4 py-1 xs:px-1 xs:py-0 sm:px-3 sm:py-2 bg-[#1476b7] h-10"
-          onClick={handleLogout} // Calls logout function
-        >
-          Logout
-        </Button>
+        <div className="flex items-end pr-12 gap-2">
+          <Button
+            type="default"
+            icon={<LogoutOutlined />}
+            className="md:text-[15px] sm:text-[8px] text-white xs:text-[8px] md:x-4 py-1 xs:px-1 xs:py-0 sm:px-3 sm:py-2 bg-[#1476b7] h-10 border-none transition-all duration-300 ease-in-out hover:bg-white hover:text-[#1476b7] hover:border-2 hover:border-[#1476b7] hover:shadow-lg hover:-translate-y-0.5"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
+        </div>
       </Col>
     </Row>
   );

@@ -77,6 +77,9 @@ const Selfassesment = () => {
     setIsModalOpen(false)
   }
 
+  // green is first → always applied to index 0 (highest value, data is sorted descending)
+  const BAR_COLORS = ['#5CC85A', '#FF9800', '#E91E8C', '#3949AB', '#00BCD4', '#9C27B0', '#FF5722', '#795548'];
+
   const [screenSize, setScreenSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -97,7 +100,7 @@ const Selfassesment = () => {
   return (
     <>
       <div className="selfassessment" >
-        <div className="welcomeHaddingText ">Self Assessment Results</div>
+        <div className="welcomeHaddingText !text-white">Self Assessment Results</div>
         <div className="selfassessmentInner">
           {loading ? (
             <div
@@ -113,14 +116,6 @@ const Selfassesment = () => {
           ) : (
             <div style={{ display: "flex", flexWrap: "wrap" }}>
               {psychometricTest?.map((mapData, index) => {
-              let chartColor
-              if (mapData.name == "Occupational Values Assesment") {
-                chartColor = "#87aded"
-              } else if (mapData.name == "Occupational Interest Assesment") {
-                chartColor = "#b9bab8"
-              } else {
-                chartColor = "#a4eba9"
-              }
               let chartOptions
               if (mapData?.test_results?.length > 0) {
                 const labels = mapData?.test_results[0]?.question_scores?.map((score) => score.question)
@@ -131,15 +126,49 @@ const Selfassesment = () => {
                   labels,
                   series: [{ data: series }],
                   title: { text: title },
-                  colors: [chartColor],
-                  plotOptions: {
-                    ...options.plotOptions,
-                    bar: {
-                      ...options.plotOptions.bar,
-                      horizontal: true,
-                      barHeight: '60%',
+                  chart: {
+                    ...options.chart,
+                    dropShadow: {
+                      enabled: true,
+                      top: 3,
+                      left: 1,
+                      blur: 5,
+                      opacity: 0.12,
                     },
                   },
+                  plotOptions: {
+                    bar: {
+                      horizontal: true,
+                      barHeight: '50%',
+                      distributed: true,
+                      borderRadius: 8,
+                      borderRadiusApplication: 'end',
+                      colors: {
+                        backgroundBarColors: ['#e8e8e8'],
+                        backgroundBarOpacity: 1,
+                        backgroundBarRadius: 8,
+                      },
+                    },
+                  },
+                  fill: {
+                    type: 'gradient',
+                    gradient: {
+                      type: 'vertical',
+                      shadeIntensity: 0.3,
+                      opacityFrom: 1,
+                      opacityTo: 1,
+                      shade: 'light',
+                      stops: [0, 100],
+                    },
+                  },
+                  grid: {
+                    xaxis: { lines: { show: true } },
+                    yaxis: { lines: { show: false } },
+                    strokeDashArray: 5,
+                    borderColor: '#d5d5d5',
+                  },
+                  colors: BAR_COLORS,
+                  legend: { show: false },
                   yaxis: {
                     labels: {
                       show: true,
@@ -169,7 +198,7 @@ const Selfassesment = () => {
                           series={chartOptions.series}
                           type="bar"
                           width={screenSize.width > 748 ? 450 : 330}
-                          height={320}
+                          height={Math.max(220, (chartOptions.series[0]?.data?.length || 5) * 30 + 50)}
                         />
                       </div>
                       <div style={{ display: "flex", justifyContent: "center" }}>

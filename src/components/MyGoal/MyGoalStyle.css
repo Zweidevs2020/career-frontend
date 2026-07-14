@@ -5,7 +5,7 @@
   line-height: 36px;
   letter-spacing: 0em;
   text-align: left;
-  color: #474749;
+  color: #fcfcff;
   ;
 
 }
@@ -158,6 +158,13 @@
   border-radius: 5%;
   height: 100%;
   width: 25%;
+  background-color: #1476B7;
+  color: white;
+}
+
+.buttonGoalPage:hover,
+.buttonGoalPage:focus,
+.buttonGoalPage:active {
   background-color: #1476B7;
   color: white;
 }

@@ -66,8 +66,16 @@
     width: 144px;
     height: 45px !important;
     background: #1476B7;
+    color: white;
     font-size: 14px;
     border-radius: 12px;
+}
+
+.eduButton:hover,
+.eduButton:focus,
+.eduButton:active {
+    background: #1476B7;
+    color: white;
 }
 
 .eduButtonBack,
@@ -78,6 +86,16 @@
     background-color: #1476B7;
     font-size: 14px;
     border-radius: 12px;
+    color: white;
+}
+
+.eduButtonBack:hover,
+.eduButtonBack:focus,
+.eduButtonBack:active,
+.eduButtonNext:hover,
+.eduButtonNext:focus,
+.eduButtonNext:active {
+    background-color: #1476B7;
     color: white;
 }
 
@@ -101,6 +119,14 @@
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
+}
+
+.eduAddButton:hover,
+.eduAddButton:focus,
+.eduAddButton:active {
+    background: #FFFFFF;
+    border-color: #1984FF;
+    color: #1984FF;
 }
 
 .eduJunDiv {

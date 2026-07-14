@@ -5,6 +5,7 @@ export const API_URL = {
   SIGNUP_GUEST: "user/signup-guest/",
   GETUSERSCHOOL: "user/schools",
   SINGUPUSER: "user/signup/",
+  FREE_TRIAL_SIGNUP: "user/free-trial/signup/",
   FORGETPASSWORD: "user/forget-password/otp",
   OTPCONFIRM: "user/otp/confirm",
   NEWPASSWORD: "user/reset-password",
@@ -53,4 +54,6 @@ export const API_URL = {
   CONSELOR_SIGN_IN: "/user/counselor/login/",
   CONSELOR_LIST_STUDENTS: "/user/counselor/students/v2/",
   CONSELOR_STUDENT_Details: "user/counselor/students/",
+  STUDENT_DEMO_VIDEO: "user/student/demo-video/",
+  COUNSELLOR_DEMO_VIDEO: "user/counsellor/demo-video/",
 };

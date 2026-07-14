@@ -64,7 +64,9 @@ baseInstance.interceptors.response.use(
 
 export const getApiWithoutAuth = async (url) => {
   try {
-    const res = await baseInstance.get(url);
+    const res = await baseInstance.get(url, {
+      headers: { Authorization: "" },
+    });
     return {
       data: res.data,
     };
