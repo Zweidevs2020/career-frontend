@@ -593,53 +593,38 @@ const MyStudy = () => {
           <Spin className="spinStyle" />
         ) : (
           <>
-            <FullCalendar
-              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-              headerToolbar={
-                isMobile
-                  ? {
-                      left: "prev,next",
-                      center: "",
-                      right: "",
-                    }
-                  : {
-                      left: "",
-                      center: "",
-                      right: "",
-                    }
-              }
-              initialView={isMobile ? "timeGridDay" : "timeGridWeek"}
-              events={calenderData}
-              eventContent={renderEventContent}
-              eventClick={handleDateSelect}
-              longPressDelay={300}
-              select={(arg) => {
-                handleDateSelect(arg.start, arg.end);
-              }}
-              selectable={true}
-              editable={true}
-              weekends={true}
-              eventDrop={handleEventDrop}
-              eventResize={handleEventResize}
-              allDaySlot={false}
-              height="100vh"
-              initialDate={
-                weekDay
-                  ? moment().startOf("week").add(weekDay, "days").toDate()
-                  : null
-              }
-              dayMaxEventRows={isMobile ? 5 : 5}
-              dayHeaderContent={(args) => {
-                const date = args.date;
-
-                const dayOfWeek = date.toLocaleString("default", {
-                  weekday: "long",
-                });
-
-                return `${dayOfWeek}`;
-              }}
-              slotMinTime="06:00:00"
-            />
+          
+            <div className="fc-custom-wrapper">
+  <FullCalendar
+    plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+    headerToolbar={
+      isMobile
+        ? { left: "prev,next", center: "", right: "" }
+        : { left: "", center: "", right: "" }
+    }
+    initialView={isMobile ? "timeGridDay" : "timeGridWeek"}
+    events={calenderData}
+    eventContent={renderEventContent}
+    eventClick={handleDateSelect}
+    longPressDelay={300}
+    select={(arg) => handleDateSelect(arg.start, arg.end)}
+    selectable={true}
+    editable={true}
+    weekends={true}
+    eventDrop={handleEventDrop}
+    eventResize={handleEventResize}
+    allDaySlot={false}
+    height="100vh"
+    initialDate={
+      weekDay ? moment().startOf("week").add(weekDay, "days").toDate() : null
+    }
+    dayMaxEventRows={isMobile ? 5 : 5}
+    dayHeaderContent={(args) =>
+      args.date.toLocaleString("default", { weekday: "long" })
+    }
+    slotMinTime="06:00:00"
+  />
+</div>
           </>
         )}
       </div>

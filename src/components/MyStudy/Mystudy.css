@@ -50,61 +50,94 @@
     display: none;
 }
 
-.fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
-
-    margin-left: 23rem;
-}
-
 .fc .fc-button-primary {
     background-color: #1476B7;
     border: none;
-    color: white;
-    width: 5rem;
+    color: #ffffff;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: clamp(12px, 3.2vw, 14px);
+    line-height: 1;
+    letter-spacing: 0.2px;
+    padding: clamp(6px, 2vw, 10px) clamp(12px, 4vw, 20px);
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(20, 118, 183, 0.25);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    flex-shrink: 1;
+    min-width: 0;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 }
 
 .fc .fc-button-primary:hover {
-    background-color: #1476B7;
-    border: none;
-    color: white;
+    background-color: #115d92;
+    box-shadow: 0 3px 8px rgba(20, 118, 183, 0.35);
 }
 
+.fc .fc-button-primary:active {
+    transform: scale(0.97);
+}
+
+.fc .fc-button-primary:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(20, 118, 183, 0.25);
+}
 
 .fc .fc-button {
-    border-radius: 12px;
+    border-radius: 8px;
 }
 
-.fc-direction-ltr .fc-button-group>.fc-button:not(:last-child) {
-    border-bottom-right-radius: 12px;
-    border-top-right-radius: 12px !important;
+.fc-direction-ltr .fc-button-group>.fc-button {
+    border-radius: 8px !important;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
-    border-bottom-left-radius: 12px;
-    border-top-left-radius: 12px;
-    display: flex;
-    justify-content: center;
+.fc .fc-icon-chevron-left,
+.fc .fc-icon-chevron-right {
+    width: auto !important;
+    height: auto !important;
+    line-height: normal !important;
+    white-space: nowrap;
+    display: inline-flex;
     align-items: center;
 }
 
 .fc .fc-icon-chevron-left:before,
 .fc .fc-icon-chevron-right:before {
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    font-size: 13px;
+    white-space: nowrap;
 }
 
 .fc-icon-chevron-left:before {
     content: "\e900 Previous";
-    font-size: 14px;
-    margin-left: -1.5rem;
 }
 
 .fc-icon-chevron-right:before {
-    content: "Next\e901";
-    font-size: 14px;
-    margin-left: -1rem;
+    content: "Next \e901";
+}
+
+/* Responsive Previous/Next placement */
+.fc-custom-wrapper .fc-toolbar-chunk:first-child {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding: 0 clamp(0.5rem, 4vw, 1.5rem);
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.fc-custom-wrapper .fc-direction-ltr .fc-button-group {
+    display: contents;
 }
 
 .disabledBtnStyle {
@@ -211,11 +244,6 @@ fc-col-header-cell-cushion {
     .fc .fc-col-header-cell-cushion {
         font-size: 8px !important;
     }
-
-    .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
-        margin-left: 10rem !important;
-    }
-
 }
 
 @media (max-width: 768px) {
@@ -228,11 +256,6 @@ fc-col-header-cell-cushion {
 @media (min-width: 500px) and (max-width: 670px) {
     .fc .fc-col-header-cell-cushion {
         font-size: 10px;
-    }
-
-    .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
-
-        margin-left: 28rem !important;
     }
 
     .modalStyleClass {
