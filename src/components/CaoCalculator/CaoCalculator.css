@@ -264,6 +264,17 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
     width: 100%;
   }
 
+  .coaInnerf8fafcDiv {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .coaSubjectDiv {
+    height: auto;
+    overflow: visible;
+  }
+
   .coaPointTextMain {
     display: none;
   }
@@ -662,7 +673,7 @@ button.ant-btn.css-ed5zg0.ant-btn-primary.calculateButton {
   }
 
   .coaSubjectWidth {
-    overflow-y: scroll;
+    overflow-y: visible;
   }
 
   /* .coaSubjectWidth .ant-select.selectFieldStyle.css-dev-only-do-not-override-ed5zg0.ant-select-single.ant-select-show-arrow.ant-select-show-search {

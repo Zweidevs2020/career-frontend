@@ -1,19 +1,91 @@
 .grayed-out-container {
-    opacity: 0.5; 
-  
-  }
+  opacity: 0.5;
+}
 
-  
 .selfassessment {
-    background-color: #6895D9;
-    width: 100%;
-    min-height: 90vh;
-    padding: 20px;
+  width: 100%;
+  min-height: 90vh;
+  padding: clamp(16px, 2.4vw, 28px);
+  background: linear-gradient(180deg, #6895d9 0%, #5f8fd6 100%);
 }
 
 .selfassessmentInner {
-    background-color: #ffffff;
-    border-radius: 8px;
-    padding: 10px 12px 20px 12px;
-    margin-top: 10px;
+  margin-top: 12px;
+  padding: clamp(16px, 2vw, 28px);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 18px 40px rgba(18, 54, 87, 0.08);
+  overflow: hidden;
+}
+
+.selfassessmentCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.selfassessmentChartWrap {
+  width: 100%;
+  min-width: 0;
+  padding: 18px 16px 16px;
+  border: 1px solid #e5edf7;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+  overflow: hidden;
+}
+
+.selfassessmentChartSurface {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.selfassessmentChartSurface .apexcharts-canvas,
+.selfassessmentChartSurface .apexcharts-svg {
+  max-width: 100% !important;
+}
+
+.selfassessmentChartActions {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.selfassessmentChartActions > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+@media (max-width: 768px) {
+  .selfassessment {
+    padding: 14px;
+  }
+
+  .selfassessmentInner {
+    padding: 14px 12px 18px;
+    border-radius: 16px;
+  }
+
+  .selfassessmentCards {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .selfassessmentChartWrap {
+    padding: 14px 10px 12px;
+    border-radius: 16px;
+  }
+
+  .selfassessmentChartActions {
+    margin-top: 12px;
+  }
+
+  .selfassessmentChartActions .takebutton,
+  .selfassessmentChartActions .viewResultButton {
+    min-width: 120px;
+  }
 }

@@ -231,3 +231,10 @@ word-wrap: break-word;
     width: 120px;
   }
 }
+
+@media (max-width: 768px) {
+  .rightContainerStyle {
+    height: auto !important;
+    overflow-y: visible !important;
+  }
+}
