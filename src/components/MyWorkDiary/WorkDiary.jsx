@@ -1,4 +1,4 @@
-import { Spin, Button, Row, Col, message } from "antd";
+import { Spin, Button, Row, Col, message, Select } from "antd";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DayOne from "./DayOne";
@@ -182,43 +182,58 @@ const WorkDiary = () => {
             }}
           >
             <div style={{ textAlign: "center", margin: "6px 0 20px 0" }}>
-              <Row gutter={[16, 16]}>
-                {dayComponents.map((day, index) => (
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={8}
-                    lg={6}
-                    key={day.key}
-                    style={{ display: "flex", justifyContent: "center" }}
-                  >
-                    <Button
+              <div className="workDiaryDayPickerMobile">
+                <Select
+                  value={activeDay || undefined}
+                  onChange={handleButtonClick}
+                  className="workDiaryDaySelect"
+                  options={dayComponents.map((day) => ({
+                    value: day.key,
+                    label: day.label,
+                  }))}
+                  aria-label="Select work diary day"
+                  popupClassName="workDiaryDaySelectDropdown"
+                />
+              </div>
+              <div className="dayTabsDesktop">
+                <Row gutter={[16, 16]}>
+                  {dayComponents.map((day) => (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={8}
+                      lg={6}
                       key={day.key}
-                      type={activeDay === day.key ? "primary" : "default"}
-                      style={{
-                        backgroundColor:
-                          activeDay === day.key ? "#1890ff" : "white",
-                        color: activeDay === day.key ? "#fff" : "#000",
-                        borderColor: "#000000",
-                        borderWidth: "1px",
-                        borderStyle: "solid",
-                        opacity: 1, // Show button at full opacity on hover or if active
-                        cursor:
-                          hoveredDay === day.key || activeDay === day.key
-                            ? "pointer"
-                            : "not-allowed", // Change cursor style when hovered or active
-                        width: "120px",
-                      }}
-                      onClick={() => handleButtonClick(day.key)}
-                      onMouseEnter={() => setHoveredDay(day.key)} // Set hovered day on mouse enter
-                      onMouseLeave={() => setHoveredDay(null)} // Reset hovered day on mouse leave
-                      disabled={hoveredDay === day.key && activeDay === day.key} // Disable if not hovered or active
+                      style={{ display: "flex", justifyContent: "center" }}
                     >
-                      {hoveredDay === day.key ? "Edit" : day.label}
-                    </Button>
-                  </Col>
-                ))}
-              </Row>
+                      <Button
+                        key={day.key}
+                        type={activeDay === day.key ? "primary" : "default"}
+                        style={{
+                          backgroundColor:
+                            activeDay === day.key ? "#1890ff" : "white",
+                          color: activeDay === day.key ? "#fff" : "#000",
+                          borderColor: "#000000",
+                          borderWidth: "1px",
+                          borderStyle: "solid",
+                          opacity: 1, // Show button at full opacity on hover or if active
+                          cursor:
+                            hoveredDay === day.key || activeDay === day.key
+                              ? "pointer"
+                              : "not-allowed", // Change cursor style when hovered or active
+                          width: "120px",
+                        }}
+                        onClick={() => handleButtonClick(day.key)}
+                        onMouseEnter={() => setHoveredDay(day.key)} // Set hovered day on mouse enter
+                        onMouseLeave={() => setHoveredDay(null)} // Reset hovered day on mouse leave
+                        disabled={hoveredDay === day.key && activeDay === day.key} // Disable if not hovered or active
+                      >
+                        {hoveredDay === day.key ? "Edit" : day.label}
+                      </Button>
+                    </Col>
+                  ))}
+                </Row>
+              </div>
             </div>
 
             {renderActiveComponent()}

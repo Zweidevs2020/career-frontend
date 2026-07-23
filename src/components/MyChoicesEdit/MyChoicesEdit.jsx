@@ -62,6 +62,9 @@ const MyChoicesEdit = () => {
   }, [dataa])
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 780)
+  const mobileDropdownStyle = isMobile
+    ? { width: "calc(100vw - 32px)", maxWidth: "calc(100vw - 32px)" }
+    : { minWidth: "500px", maxWidth: "90vw" }
 
   useEffect(() => {
     const handleResize = () => {
@@ -1187,8 +1190,8 @@ const MyChoicesEdit = () => {
                                               defaultValue={item === "code" ? text : `${text},${record.code}`}
                                               bordered={false}
                                               popupMatchSelectWidth={false}
-                                              getPopupContainer={(trigger) => trigger.parentNode}
-                                              dropdownStyle={{ minWidth: "500px", maxWidth: "90vw" }}
+                                              getPopupContainer={(trigger) => (isMobile ? document.body : trigger.parentNode)}
+                                              dropdownStyle={mobileDropdownStyle}
                                               dropdownRender={(menu) => (
                                                 <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
                                               )}
@@ -1369,8 +1372,8 @@ const MyChoicesEdit = () => {
                                           }
                                           optionFilterProp="children"
                                           className="inputSelectFieldStyle"
-                                          getPopupContainer={(trigger) => trigger.parentNode}
-                                          dropdownStyle={{ minWidth: "500px", maxWidth: "90vw" }}
+                                          getPopupContainer={(trigger) => (isMobile ? document.body : trigger.parentNode)}
+                                          dropdownStyle={mobileDropdownStyle}
                                           dropdownRender={(menu) => (
                                             <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
                                           )}
@@ -1541,8 +1544,8 @@ const MyChoicesEdit = () => {
                                                 defaultValue={row[item]}
                                                 bordered={false}
                                                 popupMatchSelectWidth={false}
-                                                getPopupContainer={(trigger) => trigger.parentNode}
-                                                dropdownStyle={{ minWidth: "500px", maxWidth: "90vw" }}
+                                                getPopupContainer={(trigger) => (isMobile ? document.body : trigger.parentNode)}
+                                                dropdownStyle={mobileDropdownStyle}
                                                 dropdownRender={(menu) => (
                                                   <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
                                                 )}
@@ -1679,8 +1682,8 @@ const MyChoicesEdit = () => {
                                                     defaultValue={row[item]}
                                                     bordered={false}
                                                     popupMatchSelectWidth={false}
-                                                    getPopupContainer={(trigger) => trigger.parentNode}
-                                                    dropdownStyle={{ width: "calc(100vw - 40px)", maxWidth: "500px" }}
+                                                    getPopupContainer={(trigger) => (isMobile ? document.body : trigger.parentNode)}
+                                                    dropdownStyle={mobileDropdownStyle}
                                                     dropdownRender={(menu) => (
                                                       <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
                                                     )}
@@ -1813,8 +1816,8 @@ const MyChoicesEdit = () => {
                                               defaultValue={row[item]}
                                               bordered={false}
                                               popupMatchSelectWidth={false}
-                                              getPopupContainer={(trigger) => trigger.parentNode}
-                                              dropdownStyle={{ width: "calc(100vw - 40px)", maxWidth: "500px" }}
+                                              getPopupContainer={(trigger) => (isMobile ? document.body : trigger.parentNode)}
+                                              dropdownStyle={mobileDropdownStyle}
                                               dropdownRender={(menu) => (
                                                 <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
                                               )}

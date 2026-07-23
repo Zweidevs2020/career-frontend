@@ -92,42 +92,95 @@
 
 @media screen and (max-width: 400px) {
   .quizHeadingStyle {
-   
-    font-size: 10px;
-    line-height: 17px;
- 
-}
-.myChoicesRow{
-  display: block;
- 
-  align-items: center;
-  height: 95px;
-}
-.choicesWithoutBorder {
-  
-  height: 180px;
-}
-.mainContainerRow {
-  width: 14rem;
-  margin-top: 1rem;
- 
-}
-.addChoicesButton {
-  min-width: 14rem !important;
-  
-}
-.ps-4 {
-  padding-inline-start: 2rem;
-}
-.editButtonMobileView{
-display: flex;
-align-items: center;
-justify-content: center;
-margin-top: 1rem;
-}
-.me-3 {
-  margin-inline-end: 0px !important;
-}
+    font-size: 15px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #243247;
+  }
+
+  .myChoicesRow {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: auto;
+    min-height: 72px;
+  }
+
+  .choicesWithoutBorder {
+    width: 100%;
+    height: auto;
+    min-height: 52px;
+    padding: 10px 38px 10px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(20, 118, 183, 0.1);
+    box-shadow: 0 10px 22px rgba(20, 118, 183, 0.07);
+    background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .mainContainerRow {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 10px;
+    width: 100%;
+    margin-top: 0;
+    align-items: center;
+    min-height: 42px;
+  }
+
+  .mainContainerRow img {
+    width: 40px;
+    height: 40px;
+    padding-inline-start: 0 !important;
+    flex: 0 0 auto;
+  }
+
+  .addChoicesButton {
+    min-width: 14rem !important;
+  }
+
+  .ps-4 {
+    padding-inline-start: 0 !important;
+  }
+
+  .choicesWithoutBorder::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    border-radius: 14px 0 0 14px;
+    background: linear-gradient(180deg, #7d63c7 0%, #4f91d4 100%);
+    opacity: 0.9;
+  }
+
+  .choicesWithoutBorder::after {
+    content: "";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    border-top: 2px solid rgba(36, 50, 71, 0.35);
+    border-right: 2px solid rgba(36, 50, 71, 0.35);
+    transform: translateY(-50%) rotate(45deg);
+    pointer-events: none;
+  }
+
+  .editButtonMobileView {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  .me-3 {
+    margin-inline-end: 0px !important;
+  }
 }
 
 
@@ -138,20 +191,46 @@ margin-top: 1rem;
 /* 401 se 502 pixels ke screens ke liye */
 @media screen and (min-width: 401px) and (max-width: 502px) {
   .quizHeadingStyle {
-    font-size: 12px;
-    line-height: 17px;
+    font-size: 16px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #243247;
   }
   .myChoicesRow {
-    display: block;
+    display: flex;
     align-items: center;
-    height: 95px;
+    justify-content: flex-start;
+    height: auto;
+    min-height: 72px;
   }
   .choicesWithoutBorder {
-    height: 180px;
+    width: 100%;
+    height: auto;
+    min-height: 52px;
+    padding: 10px 38px 10px 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(20, 118, 183, 0.1);
+    box-shadow: 0 10px 22px rgba(20, 118, 183, 0.07);
+    background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
   }
   .mainContainerRow {
-    width: 17rem;
-    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 10px;
+    width: 100%;
+    margin-top: 0;
+    align-items: center;
+    min-height: 42px;
+  }
+  .mainContainerRow img {
+    width: 40px;
+    height: 40px;
+    padding-inline-start: 0 !important;
+    flex: 0 0 auto;
   }
   .me-3 {
     margin-inline-end: 0px !important;
@@ -160,12 +239,58 @@ margin-top: 1rem;
     min-width: 16rem !important;
   }
   .ps-4 {
-    padding-inline-start: 3rem;
+    padding-inline-start: 0 !important;
+  }
+
+  .choicesWithoutBorder::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    border-radius: 14px 0 0 14px;
+    background: linear-gradient(180deg, #7d63c7 0%, #4f91d4 100%);
+    opacity: 0.9;
+  }
+
+  .choicesWithoutBorder::after {
+    content: "";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    border-top: 2px solid rgba(36, 50, 71, 0.35);
+    border-right: 2px solid rgba(36, 50, 71, 0.35);
+    transform: translateY(-50%) rotate(45deg);
+    pointer-events: none;
   }
   .editButtonMobileView {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 1rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .educationalGuidanceMain {
+    margin-left: 8px;
+    width: calc(100% - 16px);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .educationalGuidanceSecond {
+    padding: 12px 10px 14px;
+  }
+
+  .educationalGuidanceSecond > div[style] {
+    width: 100%;
+    margin-top: 8px !important;
+    padding: 8px !important;
+    border-radius: 18px !important;
+    box-sizing: border-box;
   }
 }
