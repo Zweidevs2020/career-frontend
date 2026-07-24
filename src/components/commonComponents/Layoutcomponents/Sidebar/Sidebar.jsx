@@ -928,13 +928,14 @@ const Sidebar = ({ children, flags }) => {
             open={open}
             key={placement}
           >
-            <img
+            {/* <img
               src={myCareer}
-              style={{ position: "absolute", zIndex: "0", width: "2.3rem" }}
+              style={{ position: "absolute", zIndex: "0", width: "60px", height: "30px", marginTop: "10px", marginLeft: "10px" }}
               className="drawerIcon"
               alt="cyberLegendLogo"
               width="100%"
-            />
+          
+            /> */}
             <Menu
               selectedKeys={selectedMenuItem}
               mode="inline"

@@ -68,22 +68,18 @@ const Selfassesment = () => {
     }
   }
 
-  const showModal = (scoreView) => {
-    setSinglequizData(scoreView)
-    setIsModalOpen(true)
-  }
-
   const handleCancel = () => {
     setIsModalOpen(false)
   }
 
   // green is first → always applied to index 0 (highest value, data is sorted descending)
-  const BAR_COLORS = ['#5CC85A', '#FF9800', '#E91E8C', '#3949AB', '#00BCD4', '#9C27B0', '#FF5722', '#795548'];
+  const BAR_COLORS = ['#5CC85A', '#FF9800', '#E91E8C', '#3949AB', '#00BCD4', '#9C27B0', '#FF5722', '#795548']
 
   const [screenSize, setScreenSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   })
+  const isMobile = screenSize.width <= 768
 
   useEffect(() => {
     const handleResize = () => {
@@ -114,8 +110,8 @@ const Selfassesment = () => {
               <Spin size="large" />
             </div>
           ) : (
-            <div style={{ display: "flex", flexWrap: "wrap" }}>
-              {psychometricTest?.map((mapData, index) => {
+            <div className="selfassessmentCards">
+              {psychometricTest?.map((mapData) => {
               let chartOptions
               if (mapData?.test_results?.length > 0) {
                 const labels = mapData?.test_results[0]?.question_scores?.map((score) => score.question)
@@ -135,11 +131,13 @@ const Selfassesment = () => {
                       blur: 5,
                       opacity: 0.12,
                     },
+                    parentHeightOffset: 0,
+                    redrawOnParentResize: true,
                   },
                   plotOptions: {
                     bar: {
                       horizontal: true,
-                      barHeight: '50%',
+                      barHeight: isMobile ? '42%' : '50%',
                       distributed: true,
                       borderRadius: 8,
                       borderRadiusApplication: 'end',
@@ -166,6 +164,12 @@ const Selfassesment = () => {
                     yaxis: { lines: { show: false } },
                     strokeDashArray: 5,
                     borderColor: '#d5d5d5',
+                    padding: {
+                      left: isMobile ? 4 : 12,
+                      right: isMobile ? 8 : 12,
+                      top: 0,
+                      bottom: 0,
+                    },
                   },
                   colors: BAR_COLORS,
                   legend: { show: false },
@@ -173,11 +177,20 @@ const Selfassesment = () => {
                     labels: {
                       show: true,
                       style: {
-                        fontSize: '12px',
+                        fontSize: isMobile ? '10px' : '12px',
                         fontWeight: 500,
                         colors: ['#474749'],
                       },
-                      offsetY: 4,
+                      offsetY: isMobile ? 2 : 4,
+                      trim: true,
+                      maxWidth: isMobile ? 110 : 150,
+                    },
+                  },
+                  xaxis: {
+                    labels: {
+                      style: {
+                        fontSize: isMobile ? '10px' : '12px',
+                      },
                     },
                   },
                 }
@@ -189,19 +202,23 @@ const Selfassesment = () => {
                   title: { text: mapData?.name },
                 }
               }
+                const seriesLength = chartOptions.series[0]?.data?.length || 5
+                const chartHeight = Math.max(
+                  isMobile ? 220 : 260,
+                  seriesLength * (isMobile ? 28 : 30) + (isMobile ? 36 : 50)
+                )
                 return (
-                  <>
-                    <div key={mapData.id} className={`ms-3 mt-5`}>
-                      <div className={`${!mapData.complete ? "grayed-out-container" : ""}`}>
+                  <div key={mapData.id} className="selfassessmentChartWrap">
+                    <div className={`${!mapData.complete ? "grayed-out-container" : ""} selfassessmentChartSurface`}>
                         <Chart
                           options={chartOptions}
                           series={chartOptions.series}
                           type="bar"
-                          width={screenSize.width > 748 ? 450 : 330}
-                          height={Math.max(220, (chartOptions.series[0]?.data?.length || 5) * 30 + 50)}
+                          width="100%"
+                          height={chartHeight}
                         />
                       </div>
-                      <div style={{ display: "flex", justifyContent: "center" }}>
+                      <div className="selfassessmentChartActions">
                         {!mapData.complete ? (
                           <MyCareerGuidanceButton
                             label="Take Test"
@@ -242,7 +259,6 @@ const Selfassesment = () => {
                         )}
                       </div>
                     </div>
-                  </>
                 )
               })}
             </div>
