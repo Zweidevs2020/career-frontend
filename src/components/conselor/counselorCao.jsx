@@ -22,6 +22,7 @@ const CounselorCao = () => {
   ]);
 
   const [data, setData] = useState([]);
+  const [totalPoints, setTotalPoints] = useState(0);
   const [loading, setLoading] = useState(false);
 
   const getCookie = (name) => {
@@ -59,10 +60,12 @@ const CounselorCao = () => {
       console.log(response, "response");
 
       if (response.status === 200) {
-        if (Array.isArray(response.data) && response.data.length > 0) {
-          setData(response.data);
+        if (Array.isArray(response.data?.subjects) && response.data.subjects.length > 0) {
+          setData(response.data.subjects);
+          setTotalPoints(response.data.total_points || 0);
         } else {
           setData([]);
+          setTotalPoints(response.data?.total_points || 0);
         }
       } else {
         message.error("Failed to fetch student CAO points.");
@@ -75,11 +78,7 @@ const CounselorCao = () => {
     }
   };
 
-  // Calculate total sum safely by providing defaults
-  const totalSum = data.reduce(
-    (acc, item) => acc + (item.total_points || 0) ,
-    0
-  );
+  const totalSum = totalPoints;
 
   return (
     <div className="p-6">
