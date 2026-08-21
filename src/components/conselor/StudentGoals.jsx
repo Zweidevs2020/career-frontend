@@ -133,7 +133,7 @@ const CounselorGoals = () => {
                   {getGoalActions(item.action).length > 0 && (
                     <div className="mt-4">
                       <h2 className="text-base font-bold text-gray-800">
-                        ACHIEVABLE
+                        ACTIONABLE
                       </h2>
                       <ul className="list-disc list-inside mt-2">
                         {getGoalActions(item.action).map((action, idx) => (
@@ -148,7 +148,7 @@ const CounselorGoals = () => {
                   {hasValue(item.relevant) && (
                     <div className="mt-4">
                       <h2 className="text-base font-bold text-gray-800">
-                        RELEVANT
+                        REALISTIC
                       </h2>
                       <p className="text-gray-700 mt-2">{item.relevant}</p>
                     </div>
@@ -157,7 +157,7 @@ const CounselorGoals = () => {
                   {hasValue(item.countdown) && (
                     <div className="mt-4">
                       <h2 className="text-base font-bold text-gray-800">
-                        TIME-BOUND
+                        TIME BOUND
                       </h2>
                       <p className="text-gray-700 mt-2">
                         {new Date(item.countdown).toLocaleDateString()}
