@@ -213,6 +213,158 @@
   cursor: not-allowed;
 }
 
+.euCoursesSection {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.euCoursesSection .ant-table-cell {
+  vertical-align: middle;
+  padding: 12px 10px !important;
+}
+
+.euCoursesTableCard {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto !important;
+  overflow-y: visible;
+  box-sizing: border-box;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.euCoursesTable {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.euCoursesTableCard .ant-table,
+.euCoursesTableCard .ant-table-container {
+  background: #ffffff;
+}
+
+.euCoursesTableCard table {
+  width: 100% !important;
+  min-width: 100% !important;
+  table-layout: fixed !important;
+}
+
+.euCoursesTableCard .ant-table-wrapper,
+.euCoursesTableCard .ant-spin-nested-loading,
+.euCoursesTableCard .ant-spin-container,
+.euCoursesTableCard .ant-table-container,
+.euCoursesTableCard .ant-table-content {
+  width: 100%;
+  max-width: 100%;
+}
+
+.euCoursesTableCard .ant-table-thead > tr > th {
+  background: #ffffff;
+}
+
+.euCoursesSection .euCourseColumn {
+  min-width: 0;
+  max-width: none;
+}
+
+.euCoursesSection .euCourseNumberColumn,
+.euCoursesSection .euCourseActionColumn {
+  white-space: nowrap;
+}
+
+.euCoursesSection .euCourseNumberColumn {
+  width: 7% !important;
+}
+
+.euCoursesSection .euCourseActionColumn {
+  width: 7% !important;
+  text-align: center;
+}
+
+.euCourseActionCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.euCoursesSection .inputSelectFieldStyle,
+.euCoursesSection .selectInputFieldStyle {
+  height: 42px;
+  min-width: 0;
+  padding: 6px 8px;
+  font-size: 14px;
+}
+
+.euCoursesSection .ant-select-selection-item,
+.euCoursesSection .ant-select-selection-placeholder {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.euCourseValue,
+.euCourseEmptyValue {
+  display: block;
+  color: #2b2a2a;
+  font-family: "Poppins";
+  font-size: 14px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.euCoursesSection .old-data input:disabled,
+.euCoursesSection .ant-input-disabled {
+  color: #2b2a2a !important;
+  background: #f7f7f7 !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 10px !important;
+  cursor: default;
+  opacity: 1;
+}
+
+.euCourseLink {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  font-size: 13px;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.euCourseEmptyValue {
+  color: #9ca3af;
+}
+
+.euCourseOption {
+  padding: 4px 0;
+  white-space: normal;
+}
+
+.euCourseOptionTitle {
+  margin-bottom: 2px;
+  color: #1476b7;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.euCourseOptionDetails {
+  color: #666;
+  font-size: 12px;
+}
+
+.euCourseMobileValue {
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+}
+
 @media only screen and (max-width: 780px) {
 
   .old-data input,
@@ -257,6 +409,23 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
+  }
+
+  .euCoursesSection {
+    padding: 8px !important;
+  }
+
+  .euCoursesSection .column {
+    width: 100%;
+  }
+
+  .euCoursesSection .inputSelectFieldStyle,
+  .euCoursesSection .selectInputFieldStyle {
+    width: 100% !important;
+  }
+
+  .euCoursesSection .courseWebpageBtn {
+    width: 100%;
   }
 
   .dragDrop {

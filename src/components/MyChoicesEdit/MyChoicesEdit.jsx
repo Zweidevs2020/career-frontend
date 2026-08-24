@@ -51,6 +51,8 @@ const MyChoicesEdit = () => {
   const [loadingOtherOptions, setLoadingOtherOptions] = useState(false)
   const [savedOtherOptions, setSavedOtherOptions] = useState({})
   const isOtherSection = dataa?.id === "other"
+  const isEUCoursesSection = dataa?.id === "eu_courses"
+  const choiceEndpoint = isEUCoursesSection ? "eu-courses" : dataa?.id
 
   useEffect(() => {
     if (isOtherSection) {
@@ -305,10 +307,15 @@ const MyChoicesEdit = () => {
   }
 
   const getTableRecord = async () => {
-    const response = await getApiWithAuth(`choices/${dataa.id}/`)
+    const response = await getApiWithAuth(`choices/${choiceEndpoint}/`)
     if (response.data.status === 200) {
       const userData = (response.data.data.user_data || []).slice().sort((a, b) => {
-        return (Number(a.order_number) || 0) - (Number(b.order_number) || 0)
+        if (!isEUCoursesSection) {
+          return (Number(a.order_number) || 0) - (Number(b.order_number) || 0)
+        }
+        const aOrder = a.order_number == null ? Number.POSITIVE_INFINITY : Number(a.order_number)
+        const bOrder = b.order_number == null ? Number.POSITIVE_INFINITY : Number(b.order_number)
+        return aOrder - bOrder
       })
       setOldData(userData)
       if (isApprentice) {
@@ -566,6 +573,8 @@ const MyChoicesEdit = () => {
       ? `choices/apprentice/${item.id}/`
       : dataa.id === "ucas-ni"
         ? `choices/ucas-ni/${item.id}/`
+        : isEUCoursesSection
+          ? `choices/eu-courses/${item.id}/`
         : `choices/delete-${dataa.id}/${item.id}/`
     const respose = await deleteApiWithAuth(deleteUrl)
 
@@ -876,6 +885,8 @@ const MyChoicesEdit = () => {
   const updateOrderMultitimes = async (id, activeIndexId, swapArrayOrder) => {
     const updateUrl = id === "ucas-ni"
       ? `choices/ucas-ni/${activeIndexId}/`
+      : isEUCoursesSection
+        ? `choices/eu-courses/${activeIndexId}/`
       : isApprentice
         ? `choices/apprentice/${activeIndexId}/`
         : `choices/update-${id}/${activeIndexId}/`
@@ -885,6 +896,48 @@ const MyChoicesEdit = () => {
         : await patchApiWithAuth(updateUrl, swapArrayOrder)
 
     if (respose1.data.status === 200) {
+    }
+  }
+
+  const getEUCourseError = (value) => {
+    if (typeof value === "string") return value
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        const found = getEUCourseError(item)
+        if (found) return found
+      }
+    }
+    if (value && typeof value === "object") {
+      for (const item of Object.values(value)) {
+        const found = getEUCourseError(item)
+        if (found) return found
+      }
+    }
+    return "Unable to save the EU course"
+  }
+
+  const handleSelectEUCourse = async (option, row) => {
+    const course = option?.row
+    if (!course?.link) return
+
+    const payload = {
+      link: course.link,
+      order_number: row.rowNo + 1,
+    }
+    const response = row.id
+      ? await putApiWithAuth(`choices/eu-courses/${row.id}/`, payload)
+      : await postApiWithAuth("choices/eu-courses/", payload)
+    const success = row.id
+      ? Boolean(response?.data?.id || response?.data?.data?.id || response?.data?.status === 200)
+      : response?.data?.status === 200 || response?.data?.status === 201
+
+    if (success) {
+      message.success(row.id ? "Course updated successfully" : "Course added successfully")
+      setShowRows(null)
+      await getChoiceRecord(false)
+      await getTableRecord()
+    } else {
+      message.error(getEUCourseError(response?.data?.data || response?.data))
     }
   }
 
@@ -1092,6 +1145,247 @@ const MyChoicesEdit = () => {
     )
   }
 
+  const euCourseFields = [
+    { key: "title", label: "Title", width: "16%" },
+    { key: "university", label: "University", width: "17%" },
+    { key: "location", label: "Location", width: "16%" },
+    { key: "duration", label: "Duration", width: "11%" },
+    { key: "tuition_fee", label: "Tuition Fee", width: "14%" },
+    { key: "link", label: "Link", width: "12%" },
+  ]
+
+  const getEUCourseFieldValue = (course, field) => {
+    if (field === "location") {
+      return [course.city, course.country].filter(Boolean).join(", ")
+    }
+    return course[field] || ""
+  }
+
+  const renderEUCourseSelect = (row, field) => {
+    const availableCourses = dropDownOptions || []
+    const options = row.id
+      ? [row, ...availableCourses.filter((course) => course.link !== row.link)]
+      : availableCourses
+
+    return (
+      <Select
+        showSearch
+        placeholder={`Select ${field}`}
+        value={row.link || undefined}
+        className={row.id ? "selectInputFieldStyle" : "inputSelectFieldStyle"}
+        bordered={false}
+        popupMatchSelectWidth={false}
+        getPopupContainer={(trigger) => (isMobile ? document.body : trigger.parentNode)}
+        dropdownStyle={mobileDropdownStyle}
+        dropdownRender={(menu) => <div style={{ maxHeight: 300, overflowY: "auto" }}>{menu}</div>}
+        optionFilterProp="searchlabel"
+        suffixIcon={<Image preview={false} src={dropdownIcon || "/placeholder.svg"} width={15} />}
+        onSelect={(_, option) => handleSelectEUCourse(option, row)}
+        optionLabelProp="label"
+      >
+        {options.map((course) => (
+          <Select.Option
+            key={course.link}
+            value={course.link}
+            row={course}
+            label={getEUCourseFieldValue(course, field)}
+            searchlabel={`${course.title} ${course.university} ${course.country} ${course.city}`}
+            disabled={course.link === row.link}
+          >
+            <div className="euCourseOption">
+              <div className="euCourseOptionTitle">{course.title}</div>
+              <div className="euCourseOptionDetails">
+                {course.university} • {course.city}, {course.country}
+              </div>
+            </div>
+          </Select.Option>
+        ))}
+      </Select>
+    )
+  }
+
+  const renderEUCourseValue = (field, row) => {
+    if (["title", "university", "location"].includes(field)) {
+      return renderEUCourseSelect(row, field)
+    }
+    if (field === "link") {
+      return row.link ? (
+        <a href={row.link} className="linkStyle euCourseLink" title={row.link} target="_blank" rel="noopener noreferrer">
+          {row.link}
+        </a>
+      ) : (
+        <span className="euCourseEmptyValue">—</span>
+      )
+    }
+    return (
+      <MyCareerGuidanceInputField
+        placeholder={field.replace("_", " ")}
+        type="input"
+        name={field}
+        value={row[field] || ""}
+        isPrefix={false}
+        disabled
+      />
+    )
+  }
+
+  const renderEUCourseColumns = () => (
+    <>
+      <Column
+        title="No."
+        dataIndex="rowNo"
+        key="rowNo"
+        width="7%"
+        className="firstTableHeadingStyle euCourseNumberColumn"
+        render={(text) => <span style={{ paddingLeft: 22 }}>{text + 1}</span>}
+      />
+      {euCourseFields.map(({ key, label, width }) => (
+        <Column
+          title={label}
+          dataIndex={key}
+          key={key}
+          width={width}
+          className={`tableHeadingStyle euCourseColumn euCourseColumn-${key}`}
+          render={(_, row) => renderEUCourseValue(key, row)}
+        />
+      ))}
+      <Column
+        title="Action"
+        key="action"
+        width="7%"
+        className="firstTableHeadingStyle euCourseActionColumn"
+        render={(_, row) => (
+          <div className="euCourseActionCell">
+            <DeleteOutlined
+              style={{ color: row.id ? "red" : "grey", cursor: row.id ? "pointer" : "default" }}
+              onClick={() => row.id && handleDelete(row)}
+            />
+          </div>
+        )}
+      />
+    </>
+  )
+
+  const EUCourseMobileRow = ({ row, sortable = false }) => {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+      id: row.dataId,
+      disabled: !sortable,
+    })
+    const style = {
+      transform: CSS.Transform.toString(transform && { ...transform, scaleY: 1 }),
+      transition,
+      position: "relative",
+      zIndex: isDragging ? 9999 : "auto",
+    }
+
+    return (
+      <div ref={setNodeRef} className="dragDrop" style={style} data-row-key={row.dataId}>
+        <div className="row mobile-row">
+          <div className="menuIconMobile drag-handle">
+            <MenuOutlined
+              {...(sortable ? attributes : {})}
+              {...(sortable ? listeners : {})}
+              style={{ touchAction: "none", cursor: sortable ? "move" : "default", color: sortable ? undefined : "transparent" }}
+            />
+            <div className="actionColumn">
+              <DeleteOutlined
+                style={{ color: row.id ? "red" : "grey", cursor: row.id ? "pointer" : "default" }}
+                onClick={() => row.id && handleDelete(row)}
+              />
+            </div>
+          </div>
+          <div className="first-column">
+            <div className="column" style={{ width: "100%" }}>
+              <span className="rowHeadingMobile">No. {row.rowNo + 1}</span>
+            </div>
+          </div>
+          <div className="remaining-columns">
+            {euCourseFields.map(({ key, label }) => (
+              <div className="column" key={`${row.dataId}-${key}`}>
+                <span className="rowHeadingMobile">{label}</span>
+                <div className="euCourseMobileValue">{renderEUCourseValue(key, row)}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const EUCourseTableRow = ({ children, ...props }) => {
+    const row = data.find((item) => item.dataId === props["data-row-key"])
+    const isSavedRow = Boolean(row?.id)
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+      id: props["data-row-key"],
+      disabled: !isSavedRow,
+    })
+    const style = {
+      ...props.style,
+      position: "relative",
+      transform: CSS.Transform.toString(transform && { ...transform, scaleY: 1 }),
+      transition,
+      zIndex: isDragging ? 9999 : "auto",
+    }
+
+    return (
+      <tr {...props} ref={setNodeRef} className={isSavedRow ? "old-data" : "new-data"} style={style}>
+        {children}
+        {isSavedRow && (
+          <MenuOutlined
+            {...attributes}
+            {...listeners}
+            style={{
+              touchAction: "none",
+              cursor: "move",
+              position: "absolute",
+              top: "50%",
+              left: 10,
+              transform: "translateY(-50%)",
+            }}
+          />
+        )}
+      </tr>
+    )
+  }
+
+  const renderEUCoursesSection = () => {
+    const selectedCourses = data.filter((item) => item.id !== null)
+    const emptyRows = data.filter((item) => item.id === null)
+
+    return (
+      <div className="w-100 p-3 euCoursesSection">
+        {!isMobile ? (
+          <div className="w-100 euCoursesTableCard" style={{ overflowX: "auto" }}>
+            <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
+              <SortableContext items={selectedCourses.map((item) => item.dataId)} strategy={verticalListSortingStrategy}>
+                <Table
+                  pagination={false}
+                  dataSource={data}
+                  className="nonEmptyTable euCoursesTable"
+                  style={{ width: "100%" }}
+                  tableLayout="fixed"
+                  rowKey="dataId"
+                  components={{ body: { row: EUCourseTableRow } }}
+                >
+                  {renderEUCourseColumns()}
+                </Table>
+              </SortableContext>
+            </DndContext>
+          </div>
+        ) : (
+          <div className="mobile-table">
+            <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
+              <SortableContext items={selectedCourses.map((item) => item.dataId)} strategy={verticalListSortingStrategy}>
+                {selectedCourses.map((row) => <EUCourseMobileRow key={row.dataId} row={row} sortable />)}
+              </SortableContext>
+            </DndContext>
+            {emptyRows.map((row) => <EUCourseMobileRow key={row.dataId} row={row} />)}
+          </div>
+        )}
+      </div>
+    )
+  }
+
   return (
     <>
       {loadingFirst || loadingOtherOptions ? (
@@ -1129,6 +1423,8 @@ const MyChoicesEdit = () => {
 
               {isOtherSection ? (
                 renderOtherOptionsSection()
+              ) : isEUCoursesSection ? (
+                renderEUCoursesSection()
               ) : (
                 <div className="w-100 p-3">
                   {!isMobile ? (
