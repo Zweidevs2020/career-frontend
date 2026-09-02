@@ -1,534 +1,790 @@
-.goalHeading {
-  font-family: Poppins;
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 36px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: #fcfcff;
-  ;
-
-}
-.textAreaMyGoal {
+.smart-goals-page {
+  --specific: #e33f91;
+  --measurable: #278fd2;
+  --achievable: #4db66c;
+  --relevant: #fa7035;
+  --time-bound: #8d49bd;
   width: 100%;
-  border: 2px gray !important;
-}
-
-.textAreaMyGoal textarea {
-  padding-top: 1rem;
-
-}
-
-.saveData {
-  margin-bottom: 1rem !important;
-}
-.subHeading {
-  font-family: Poppins;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 18px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: black;
-  padding-bottom: 40px;
-
-}
-
-.subHead {
-  padding-bottom: 30px;
-}
-
-.mainPage {
-  height: 100%;
-  width: 100%;
-  background-color: white;
-}
-
-.topContainer {
-  padding-top: 30px;
-  padding-left: 40px;
-}
-
-.lowerContainer {
-  background-color: #F8FAFC;
-  width: 94%;
-  height: 100vh;
-  border-radius: 8px;
-
-}
-
-.lowerContainer2 {
-  display: flex;
-  justify-content: space-around;
-}
-
-.employersContact {
-
-  padding-left: 20px;
-  font-family: Poppins;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 24px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: #474749;
-}
-
-.employeGoal {
-  padding-top: 20px;
-}
-
-.secondContainer {
-  padding-left: 20px;
-  font-family: Poppins;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 18px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: #737373;
-
-}
-
-.inputContainer {
-  padding-left: 20px;
-  font-family: Inter;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 21px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: #111928;
-  padding-top: 25px;
-  font-family: Poppins;
-}
-
-.inputGoal {
-  padding-left: 20px;
-  padding-top: 5px;
-}
-
-.inputCarrer {
-  width: 97%
-}
-
-.dateLibr {
-  width: 450px;
-}
-
-.h {
-  padding-left: 20px;
-}
-
-.container {
-  display: block;
-  position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  font-size: 22px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.calenderGoal {
-  padding-top: 15px;
-  padding-left: 20px;
-}
-
-.timer {
-  padding-top: 20px;
-  padding-left: 20px;
-}
-
-.buttonGoal {
-  border-radius: 20%;
-  width: 230px;
-  height: 52px;
-  padding-top: 15px;
-  padding-left: 20px;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.buttonGoalPage {
-  border-radius: 5%;
-  height: 100%;
-  width: 25%;
-  background-color: #1476B7;
-  color: white;
-}
-
-.buttonGoalPage:hover,
-.buttonGoalPage:focus,
-.buttonGoalPage:active {
-  background-color: #1476B7;
-  color: white;
-}
-
-.createNewReportBtn {
-  border-radius: 10px !important;
-  border: 1px solid #1476B7 !important;
-  background: linear-gradient(135deg, #1476B7, #2890D6) !important;
-  color: #ffffff !important;
-  font-weight: 600 !important;
-  min-height: 48px !important;
-  padding: 0 24px !important;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  box-shadow: 0 4px 12px rgba(20, 118, 183, 0.25) !important;
-  position: relative;
+  min-height: calc(100vh - 85px);
+  padding: 35px 36px 20px;
   overflow: hidden;
-  display: inline-flex !important;
+  color: #2f3035;
+  font-family: "Poppins", sans-serif;
+  background:
+    radial-gradient(circle at 50% 105%, rgba(255, 255, 255, 0.44), transparent 35%),
+    linear-gradient(180deg, #dc4096 0%, #e452a4 40%, #eda0cd 100%);
+}
+
+.smart-goals-page * {
+  box-sizing: border-box;
+}
+
+.smart-goals-loading {
+  min-height: calc(100vh - 140px);
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.smart-goals-hero {
+  min-height: 154px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 34px;
+}
+
+.smart-goals-intro {
+  padding-top: 2px;
+  color: #fff;
+}
+
+.smart-goals-intro h1 {
+  margin: 0 0 12px;
+  color: #fff;
+  font-size: clamp(28px, 2.25vw, 38px);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.5px;
+}
+
+.smart-goals-intro p {
+  margin: 0;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.65;
+}
+
+.smart-goals-key {
+  width: min(540px, 48%);
+  min-width: 485px;
+  height: 119px;
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 5px 12px rgba(111, 19, 71, 0.12);
+}
+
+.smart-key-item {
+  position: relative;
+  min-width: 0;
+  padding: 27px 7px 9px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  border-right: 1px solid #dedee3;
+  color: var(--step-color);
+}
+
+.smart-key-item:last-child {
+  border-right: 0;
+}
+
+.smart-key-letter {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  color: #fff;
+  background: var(--step-color);
+  font-size: 25px;
+  font-weight: 700;
+  box-shadow: 0 3px 7px rgba(65, 29, 51, 0.17);
+}
+
+.smart-key-item > svg {
+  width: 50px;
+  height: 50px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.smart-key-item > span:last-child {
+  color: #303137;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.smart-icon-fill {
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+.smart-icon-fill-soft {
+  fill: currentColor;
+  opacity: 0.9;
+}
+
+.smart-step-specific { --step-color: var(--specific); }
+.smart-step-measurable { --step-color: var(--measurable); }
+.smart-step-achievable { --step-color: var(--achievable); }
+.smart-step-relevant { --step-color: var(--relevant); }
+.smart-step-time-bound { --step-color: var(--time-bound); }
+
+.smart-goals-form-card {
+  overflow: hidden;
+  border: 1px solid rgba(128, 128, 142, 0.18);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(68, 23, 54, 0.13);
+}
+
+.smart-goal-row {
+  min-height: 119px;
+  padding: 15px 28px 15px 24px;
+  display: grid;
+  grid-template-columns: 48px 88px minmax(235px, 310px) minmax(260px, 1fr);
+  align-items: center;
+  border-bottom: 1px solid #dadbe1;
+}
+
+.smart-goal-row:last-child {
+  border-bottom: 0;
+}
+
+.smart-goal-row-actions {
+  min-height: 164px;
+}
+
+.smart-step-number {
+  width: 44px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: #fff;
+  background: var(--step-color);
+  font-size: 29px;
+  font-weight: 600;
+  line-height: 1;
+  box-shadow: 0 3px 7px rgba(46, 53, 63, 0.08);
+}
+
+.smart-step-icon {
+  width: 82px;
+  height: 82px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  color: var(--step-color);
+  background: color-mix(in srgb, var(--step-color) 13%, white);
+}
+
+.smart-step-icon svg {
+  width: 58px;
+  height: 58px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.smart-step-copy {
+  align-self: center;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.smart-step-copy h2 {
+  margin: 0 0 4px;
+  color: var(--step-color);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.smart-step-copy p {
+  max-width: 230px;
+  margin: 0;
+  color: #35363b;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+.smart-step-control {
+  min-width: 0;
+}
+
+.smart-step-control input[type="text"],
+.smart-step-control .ant-picker,
+.smart-relevant-control {
+  width: 100%;
+  height: 56px;
+  border: 1px solid #aeb4bf;
+  border-radius: 7px;
+  outline: 0;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(181, 186, 195, 0.18);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.smart-step-control input[type="text"] {
+  padding: 0 15px;
+  color: #303137;
+  font: 400 15px/1.4 "Poppins", sans-serif;
+}
+
+.smart-step-control input[type="text"]::placeholder {
+  color: #9a9ca3;
+}
+
+.smart-step-control input[type="text"]:focus,
+.smart-step-control .ant-picker-focused,
+.smart-step-control .ant-picker:hover {
+  border-color: #2688ca;
+  box-shadow: 0 0 0 3px rgba(38, 136, 202, 0.12);
+}
+
+.smart-actions-control {
+  display: grid;
+  gap: 7px;
+}
+
+.smart-action-input {
+  position: relative;
+}
+
+.smart-action-input input[type="text"] {
+  padding-right: 48px;
+}
+
+.smart-action-input button {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 6px;
+  color: #8d9199;
+  background: transparent;
   cursor: pointer;
 }
 
-.createNewReportBtn:hover,
-.createNewReportBtn:focus,
-.ant-btn.createNewReportBtn:hover,
-.ant-btn.createNewReportBtn:focus {
-  background: linear-gradient(135deg, #0f67a1, #1f89d2) !important;
-  color: #ffffff !important;
-  border-color: #0f67a1 !important;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(20, 118, 183, 0.4) !important;
+.smart-action-input button:hover,
+.smart-action-input button:focus-visible {
+  color: #d83d74;
+  background: #fff1f6;
+  outline: none;
 }
 
-.createNewReportBtn:active,
-.ant-btn.createNewReportBtn:active {
-  transform: translateY(0);
-  box-shadow: 0 4px 10px rgba(20, 118, 183, 0.3) !important;
-}
-
-.createNewReportBtn span,
-.createNewReportBtn:hover span,
-.createNewReportBtn:focus span,
-.createNewReportBtn:active span,
-.ant-btn.createNewReportBtn span,
-.ant-btn.createNewReportBtn:hover span,
-.ant-btn.createNewReportBtn:focus span,
-.ant-btn.createNewReportBtn:active span {
-  color: #ffffff !important;
-}
-
-.createNewReportBtn::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -120%;
-  width: 70%;
-  height: 100%;
-  background: linear-gradient(120deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0));
-  transition: left 0.45s ease;
-}
-
-.createNewReportBtn:hover::before,
-.createNewReportBtn:focus::before {
-  left: 140%;
-}
-
-.spinStyle {
-  height: 80vh;
+.smart-relevant-control {
+  padding: 6px 8px 6px 15px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  gap: 8px;
 }
 
-@media screen and (min-width: 300px) and (max-width: 389px) {
-  button.ant-btn.ant-btn-default {
-    border: 1px solid #1476b7;
-    width: 100%;
-    margin-top: 1rem;
-    height: 46px;
+.smart-relevant-control > span {
+  margin-right: auto;
+  color: #55575d;
+  font-size: 14px;
+}
+
+.smart-relevant-control label {
+  min-width: 68px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid #dedfe3;
+  border-radius: 6px;
+  color: #6c6d72;
+  background: #fafafa;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.smart-relevant-control label.is-selected {
+  border-color: var(--relevant);
+  color: #c84d1d;
+  background: #fff3ec;
+}
+
+.smart-relevant-control input {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--relevant);
+}
+
+.smart-date-control .ant-picker {
+  padding: 0 15px;
+  font-family: "Poppins", sans-serif;
+}
+
+.smart-date-control .ant-picker-input > input {
+  color: #303137;
+  font-size: 15px;
+}
+
+.smart-date-control .ant-picker-suffix {
+  color: #8e9299;
+  font-size: 18px;
+}
+
+.smart-countdown-card {
+  min-height: 152px;
+  margin-top: 17px;
+  padding: 14px 32px;
+  display: grid;
+  grid-template-columns: minmax(330px, 1.25fr) 3.75fr;
+  align-items: center;
+  border: 1px solid rgba(128, 128, 142, 0.18);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(68, 23, 54, 0.13);
+}
+
+.smart-countdown-intro {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.smart-countdown-icon {
+  flex: 0 0 auto;
+  width: 116px;
+  height: 116px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--specific);
+  background: #fbe1ee;
+}
+
+.smart-countdown-icon svg {
+  width: 75px;
+  height: 75px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.countdown-icon-face {
+  fill: #fff;
+}
+
+.smart-countdown-intro h2 {
+  margin: 0 0 5px;
+  color: var(--specific);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.smart-countdown-intro p {
+  margin: 0;
+  color: #4d4e53;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.smart-countdown-values {
+  height: 82px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.smart-countdown-values > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid #d9dadd;
+  text-transform: uppercase;
+}
+
+.smart-countdown-values strong {
+  color: #3d3e43;
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1.05;
+}
+
+.smart-countdown-values span {
+  margin-top: 12px;
+  color: #303137;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.smart-countdown-values .is-primary strong {
+  color: var(--specific);
+}
+
+.smart-goals-actions {
+  min-height: 82px;
+  padding: 18px 2px 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.smart-goal-button.ant-btn {
+  height: 54px;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 10px;
+  color: #fff;
+  background: linear-gradient(135deg, #1476b7, #1789d4);
+  box-shadow: 0 4px 9px rgba(7, 74, 125, 0.3);
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.smart-goal-button.ant-btn:hover,
+.smart-goal-button.ant-btn:focus,
+.smart-goal-button.ant-btn:active {
+  border-color: transparent !important;
+  color: #fff !important;
+  background: linear-gradient(135deg, #0f68a4, #147cc1) !important;
+}
+
+.smart-goal-button.ant-btn .anticon {
+  font-size: 19px;
+}
+
+@media (max-width: 1250px) {
+  .smart-goals-page {
+    padding: 30px 28px 20px;
   }
 
-  .w-\[24px\] {
-    width: 20px;
+  .smart-goals-hero {
+    min-height: 235px;
+    flex-direction: column;
+    gap: 28px;
   }
 
-  .sm\:text-\[8px\] {
-    font-size: 11px;
+  .smart-goals-key {
+    width: min(600px, 100%);
+    min-width: 0;
+    align-self: center;
   }
 
-  .goalHeading {
- 
-    font-size: 20px;
-    font-weight: 500;
-    line-height: 18px;
-  
+  .smart-goal-row {
+    grid-template-columns: 48px 78px minmax(190px, 245px) minmax(230px, 1fr);
+    padding-inline: 20px;
   }
 
-  .subHeading {
-  
-    font-size: 10px;
-    font-weight: 300;
-    line-height: 9px;
-  
-
+  .smart-step-icon {
+    width: 70px;
+    height: 70px;
   }
 
-  .subHead {
-    margin-right: 1%;
-    padding-bottom: 10px;
+  .smart-step-icon svg {
+    width: 50px;
+    height: 50px;
   }
 
-  .topContainer {
-    padding-top: 10px;
-    padding-left: 13px;
-  }
-
-  .lowerContainer {
-
-    width: 94%;
-    height: 100vh;
-
-  }
-
-  .dateLibr {
-    width: 300px;
-  }
-
-  .inputContainer {
-    font-family: Inter;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 21px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: #111928;
-  }
-
-  .inputGoal {
-    width: 347px;
+  .smart-step-copy {
     padding-left: 16px;
-    font-size: 11px;
-    padding-top: 5px;
+  }
+
+  .smart-countdown-card {
+    grid-template-columns: minmax(285px, 1.15fr) 3.2fr;
+    padding-inline: 22px;
+  }
+
+  .smart-countdown-intro {
+    gap: 16px;
+  }
+
+  .smart-countdown-icon {
+    width: 90px;
+    height: 90px;
+  }
+}
+
+@media (max-width: 960px) {
+  .smart-goal-row {
+    grid-template-columns: 46px 68px minmax(0, 1fr);
+    gap: 0;
+    padding: 18px 20px;
+  }
+
+  .smart-goal-row-actions {
+    min-height: 190px;
+  }
+
+  .smart-step-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .smart-step-icon svg {
+    width: 43px;
+    height: 43px;
+  }
+
+  .smart-step-copy {
+    padding-left: 14px;
+    padding-right: 0;
+  }
+
+  .smart-step-control {
+    grid-column: 1 / -1;
+    margin-top: 14px;
+  }
+
+  .smart-countdown-card {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 20px 22px;
+  }
+
+  .smart-countdown-intro {
+    justify-content: center;
+  }
+
+  .smart-countdown-values > div:first-child {
+    border-left: 0;
+  }
+}
+
+@media (max-width: 748px) {
+  .smart-goals-page {
+    min-height: calc(100vh - 85px);
+    padding: 24px 18px 16px;
+    border-radius: 0;
+  }
+
+  .smart-goals-hero {
+    min-height: 244px;
+    gap: 34px;
+  }
+
+  .smart-goals-intro h1 {
+    margin-bottom: 8px;
+    font-size: 28px;
+  }
+
+  .smart-goals-intro p {
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .smart-goals-key {
+    width: 100%;
+    height: 106px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    border-radius: 14px;
+    margin-bottom: 18px;
+  }
+
+  .smart-key-item {
+    min-width: 0;
+    padding: 25px 2px 9px;
+    justify-content: space-between;
+  }
+
+  .smart-key-letter {
+    top: -19px;
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
+  }
+
+  .smart-key-item > svg {
+    width: 41px;
+    height: 41px;
+  }
+
+  .smart-key-item > span:last-child {
+    width: 100%;
+    min-height: 20px;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1px;
+    overflow: visible;
+    font-size: clamp(7px, 2.05vw, 9px);
+    line-height: 1.15;
+    text-align: center;
+    white-space: normal;
+    text-overflow: clip;
+    overflow-wrap: anywhere;
+  }
+
+  .smart-goal-row {
+    grid-template-columns: 42px 62px minmax(0, 1fr);
+    padding: 16px 14px;
+  }
+
+  .smart-step-number {
+    width: 37px;
+    height: 43px;
+    font-size: 23px;
+  }
+
+  .smart-step-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 9px;
+  }
+
+  .smart-step-icon svg {
+    width: 39px;
+    height: 39px;
+  }
+
+  .smart-step-copy {
+    padding-left: 11px;
+  }
+
+  .smart-step-copy h2 {
+    margin-bottom: 2px;
+    font-size: 15px;
+  }
+
+  .smart-step-copy p {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .smart-step-control input[type="text"],
+  .smart-step-control .ant-picker,
+  .smart-relevant-control {
+    height: 50px;
+  }
+
+  .smart-step-control input[type="text"],
+  .smart-date-control .ant-picker-input > input {
+    font-size: 13px;
+  }
+
+  .smart-relevant-control {
+    padding-left: 11px;
+  }
+
+  .smart-relevant-control > span {
+    font-size: 12px;
+  }
+
+  .smart-relevant-control label {
+    min-width: 55px;
+    height: 36px;
+    font-size: 12px;
+  }
+
+  .smart-countdown-card {
+    margin-top: 14px;
+    padding: 18px 14px;
+  }
+
+  .smart-countdown-icon {
+    width: 76px;
+    height: 76px;
+  }
+
+  .smart-countdown-icon svg {
+    width: 56px;
+    height: 56px;
+  }
+
+  .smart-countdown-intro h2 {
+    font-size: 15px;
+  }
+
+  .smart-countdown-intro p {
+    font-size: 10px;
+  }
+
+  .smart-countdown-values {
+    height: 72px;
+  }
+
+  .smart-countdown-values strong {
+    font-size: 26px;
+  }
+
+  .smart-countdown-values span {
+    margin-top: 8px;
+    font-size: 11px;
+  }
+
+  .smart-goals-actions {
+    min-height: 136px;
+    padding-top: 14px;
     flex-direction: column;
   }
 
-  .inputCarrer {
-    width: 93%;
-    font-size: 11px;
-  }
-
-  .download {
-    width: 155%;
-  }
-  .buttonGoal {
-    display: block;
-    border-radius: 20%;
-    width: 220px;
-    height: 52px;
-    padding-top: 15px;
-    padding-left: 20px;
+  .smart-goal-button.ant-btn {
+    width: 100%;
+    height: 50px;
   }
 }
 
-@media screen and (min-width: 390px) and (max-width: 399px) {
-  button.ant-btn.ant-btn-default {
-    border: 1px solid #1476b7;
+@media (max-width: 430px) {
+  .smart-goals-page {
+    padding-inline: 12px;
+  }
+
+  .smart-goals-hero {
+    min-height: 240px;
+  }
+
+  .smart-key-item > span:last-child {
+    font-size: 8px;
+  }
+
+  .smart-relevant-control {
+    height: auto;
+    min-height: 55px;
+    flex-wrap: wrap;
+  }
+
+  .smart-relevant-control > span {
     width: 100%;
-    margin-top: 1rem;
-    height: 46px;
+    margin-right: 0;
   }
 
-  .sm\:text-\[8px\] {
-    font-size: 11px;
+  .smart-relevant-control label {
+    flex: 1;
   }
 
-  .goalHeading {
-   
-    font-size: 20px;
-    font-weight: 500;
-    line-height: 18px;
-    letter-spacing: 0em;
-    
+  .smart-countdown-card {
+    gap: 14px;
   }
 
-  .subHeading {
-   
-    font-size: 10px;
-    font-weight: 300;
-    line-height: 9px;
-    letter-spacing: 0em;
-
-  }
-  .topContainer {
-    padding-top: 10px;
-    padding-left: 13px;
-  }
-  .lowerContainer {
-    background-color: #F8FAFC;
-    width: 94%;
-    height: 100vh;
-
+  .smart-countdown-intro {
+    gap: 12px;
   }
 
-  .lowerContainer2 {
-    display: flex;
-    justify-content: space-around;
+  .smart-countdown-values strong {
+    font-size: 23px;
   }
 
-  .dateLibr {
-    width: 300px;
-  }
-
-  .secondContainer {
-    padding-left: 5px;
-    font-family: Poppins;
-    font-size: 10px;
-    font-weight: 400;
-    line-height: 18px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: #737373;
-
-  }
-
-  .inputContainer {
-    font-family: Inter;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 21px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: #111928;
-  }
-
-  .inputGoal {
-    width: 360px;
-    padding-left: 16px;
-    font-size: 11px;
-    padding-top: 5px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .inputCarrer {
-    width: 99%;
-    font-size: 11px;
-  }
-
-  .buttonGoal {
-    display: block;
-    width: 100%;
-  }
-
-  .download {
-    width: 155%;
-  }
-
-  .buttonGoal {
-    border-radius: 20%;
-    width: 230px;
-    height: 52px;
-    padding-top: 15px;
-    padding-left: 20px;
-  }
-}
-
-@media screen and (min-width: 400px) and (max-width: 600px) {
-  button.ant-btn.ant-btn-default {
-    border: 1px solid #1476b7;
-    width: 100%;
-    margin-top: 1rem;
-    height: 46px;
-  }
-
-  .dateLibr {
-    width: 300px;
-  }
-  .sm\:text-\[8px\] {
-    font-size: 11px;
-  }
-
-  .goalHeading {
-    font-size: 20px;
-    font-weight: 500;
-    line-height: 18px;
-    letter-spacing: 0em;
-   
-  }
-
-  .subHeading {
+  .smart-countdown-values span {
     font-size: 10px;
   }
-
-  .subHead {
-    padding-bottom: 10px;
-  }
-
-  .topContainer {
-    padding-top: 10px;
-    padding-left: 13px;
-  }
-
-  .lowerContainer {
-    background-color: #F8FAFC;
-    width: 94%;
-    height: 100vh;
-
-  }
-
-
-  .secondContainer {
-    padding-left: 5px;
-    font-size: 10px;
-    font-weight: 400;
-    line-height: 18px;
-  }
-
-  .inputContainer {
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 21px;
-    letter-spacing: 0em;
-  }
-
-  .inputGoal
-    {
-    width: 395px;
-    padding-left: 16px;
-    font-size: 11px;
-    padding-top: 5px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .inputCarrer {
-    width: 95%;
-    font-size: 11px;
-  }
-
-  .buttonGoal {
-    display: block;
-    width: 100%;
-  }
-
-  .download {
-    width: 155%;
-  }
-
-  .calenderGoal {
-    padding-top: 15px;
-    width: 20px
-  }
-
-  .timer {
-    padding-top: 20px;
-    padding-left: 20px;
-  }
-
-  .buttonGoal {
-    border-radius: 20%;
-    height: 52px;
-    padding-top: 15px;
-    padding-left: 20px;
-  }
-
 }

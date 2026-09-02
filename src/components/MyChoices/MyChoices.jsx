@@ -15,6 +15,7 @@ import Choice4 from "../../assets/Choice4.svg";
 import Choice5 from "../../assets/Choice5.svg";
 import Choice6 from "../../assets/Choice6.svg"
 import uac from "../../assets/uac.svg";
+import EUCourse from "../../assets/EUCourse.svg";
 
 import { useNavigate } from "react-router-dom";
 import "./MyChoices.css";
@@ -74,6 +75,11 @@ const MyChoices = () => {
       id: "ucas-ni",
       icon: uac,
       name: "UCAS Northern Ireland",
+    },
+    {
+      id: "eu_courses",
+      icon: EUCourse,
+      name: "EU Courses",
     },
     {
       id: "other",

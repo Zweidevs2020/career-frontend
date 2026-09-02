@@ -11,6 +11,12 @@ const CounselorGoals = () => {
   const [loading, setLoading] = useState(false);
   const [countdown, setCountdown] = useState(null);
 
+  const hasValue = (value) =>
+    value !== null && value !== undefined && String(value).trim() !== "";
+
+  const getGoalActions = (action) =>
+    Object.values(action || {}).filter(hasValue);
+
   const getCookie = (name) => {
     const cookies = document.cookie.split("; ");
     for (const cookie of cookies) {
@@ -94,7 +100,7 @@ const CounselorGoals = () => {
   return (
     <div className="p-6">
       <StudentInformation />
-      <h1 className="text-2xl font-bold mb-4">My Goals</h1>
+      <h1 className="text-2xl font-bold mb-4">My Goal</h1>
       <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
         <div className="w-full ">
           {loading ? (
@@ -106,28 +112,58 @@ const CounselorGoals = () => {
                   key={index}
                   className="p-6 border rounded-lg shadow-md bg-gray-50"
                 >
-                  <h2 className="text-xl font-bold text-gray-800">
-                    {item.proffession}
-                  </h2>
-                  <p className="text-gray-700 mt-2">{item.description}</p>
-                  <p className="text-gray-600 mt-2 font-medium">
-                    Realistic: {item.realistic ? "Yes" : "No"}
-                  </p>
-                  <p className="text-gray-600 mt-2 font-medium">
-                    Countdown: {new Date(item.countdown).toLocaleString()}
-                  </p>
-                  <div className="mt-4">
-                    <span className="text-gray-700 font-semibold">
-                      Actions:
-                    </span>
-                    <ul className="list-disc list-inside mt-2">
-                      {Object.values(item.action).map((action, idx) => (
+                  {hasValue(item.proffession) && (
+                    <div>
+                      <h2 className="text-base font-bold text-gray-800">
+                        SPECIFIC
+                      </h2>
+                      <p className="text-gray-700 mt-2">{item.proffession}</p>
+                    </div>
+                  )}
+
+                  {hasValue(item.description) && (
+                    <div className="mt-4">
+                      <h2 className="text-base font-bold text-gray-800">
+                        MEASURABLE
+                      </h2>
+                      <p className="text-gray-700 mt-2">{item.description}</p>
+                    </div>
+                  )}
+
+                  {getGoalActions(item.action).length > 0 && (
+                    <div className="mt-4">
+                      <h2 className="text-base font-bold text-gray-800">
+                        ACTIONABLE
+                      </h2>
+                      <ul className="list-disc list-inside mt-2">
+                        {getGoalActions(item.action).map((action, idx) => (
                         <li key={idx} className="text-gray-600">
                           {action}
                         </li>
                       ))}
-                    </ul>
-                  </div>
+                      </ul>
+                    </div>
+                  )}
+
+                  {hasValue(item.relevant) && (
+                    <div className="mt-4">
+                      <h2 className="text-base font-bold text-gray-800">
+                        REALISTIC
+                      </h2>
+                      <p className="text-gray-700 mt-2">{item.relevant}</p>
+                    </div>
+                  )}
+
+                  {hasValue(item.countdown) && (
+                    <div className="mt-4">
+                      <h2 className="text-base font-bold text-gray-800">
+                        TIME BOUND
+                      </h2>
+                      <p className="text-gray-700 mt-2">
+                        {new Date(item.countdown).toLocaleDateString()}
+                      </p>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
