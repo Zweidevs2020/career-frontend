@@ -5,15 +5,18 @@ import {
   DownloadOutlined,
   SaveOutlined,
 } from "@ant-design/icons";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
 import { PDFDocument } from "pdf-lib";
 import DownloadPage from "./DownloadPage";
 import { API_URL } from "../../utils/constants";
 import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
+import {
+  calculateGoalTimeLeft,
+  getDefaultGoalDeadline,
+  GOAL_DATE_FORMAT,
+  isGoalDeadlineDisabled,
+  normalizeGoalDeadline,
+} from "../../utils/goalCountdown";
 import "./MyGoalStyle.css";
-
-dayjs.extend(customParseFormat);
 
 const smartSteps = [
   {
@@ -147,10 +150,7 @@ const MyGoal = () => {
   const [measurable, setMeasurable] = useState("");
   const [achievable, setAchievable] = useState(emptyAchievableActions);
   const [relevant, setRelevant] = useState("");
-  const [timeBound, setTimeBound] = useState("");
-  const [timeBoundValue, setTimeBoundValue] = useState(
-    dayjs().format("DD-MM-YYYY")
-  );
+  const [timeBound, setTimeBound] = useState(getDefaultGoalDeadline);
   const [countdown2, setCountdown2] = useState({
     days: 0,
     hours: 0,
@@ -162,26 +162,27 @@ const MyGoal = () => {
   }, []);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (timeBound) {
-        const now = new Date().getTime();
-        const distance = timeBound - now;
-        if (distance > 0) {
-          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-          const hours = Math.floor(
-            (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-          );
-          const minutes = Math.floor(
-            (distance % (1000 * 60 * 60)) / (1000 * 60)
-          );
-          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-          setCountdown2({ days, hours, minutes, seconds });
-        } else {
-          clearInterval(intervalId);
-          setCountdown2({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        }
+    let intervalId;
+
+    const updateCountdown = () => {
+      const timeLeft = calculateGoalTimeLeft(timeBound);
+      setCountdown2(timeLeft);
+
+      if (
+        intervalId &&
+        timeLeft.days === 0 &&
+        timeLeft.hours === 0 &&
+        timeLeft.minutes === 0 &&
+        timeLeft.seconds === 0
+      ) {
+        clearInterval(intervalId);
       }
-    }, 1000);
+    };
+
+    updateCountdown();
+    if (timeBound.valueOf() > Date.now()) {
+      intervalId = setInterval(updateCountdown, 1000);
+    }
 
     return () => clearInterval(intervalId);
   }, [timeBound]);
@@ -205,23 +206,17 @@ const MyGoal = () => {
         mapRelevantValue(goalData.relevant ?? goalData.realistic)
       );
       setTimeBound(
-        savedTimeBound == null
-          ? dayjs().format("DD-MM-YYYY")
-          : new Date(savedTimeBound)
-      );
-      setTimeBoundValue(
-        savedTimeBound == null
-          ? dayjs().format("DD-MM-YYYY")
-          : dayjs(savedTimeBound).format("DD-MM-YYYY")
+        normalizeGoalDeadline(savedTimeBound) ?? getDefaultGoalDeadline()
       );
       setLoading(false);
     }
   };
 
   function handleDateChange(date) {
-    if (date) {
-      setTimeBound(date.$d);
-      setTimeBoundValue(date);
+    const normalizedDate = normalizeGoalDeadline(date);
+
+    if (normalizedDate) {
+      setTimeBound(normalizedDate);
     }
   }
 
@@ -257,7 +252,7 @@ const MyGoal = () => {
           action2: achievable[1].trim(),
         },
         realistic: Boolean(relevant.trim()),
-        date: dayjs(timeBound).format("DD-MM-YYYY"),
+        date: timeBound.format(GOAL_DATE_FORMAT),
         relevant: relevant.trim(),
       };
       const response = await postApiWithAuth(
@@ -288,8 +283,7 @@ const MyGoal = () => {
   };
 
   const disabledDate = (current) => {
-    const today = dayjs().startOf("day");
-    return current < today;
+    return isGoalDeadlineDisabled(current);
   };
 
   const renderStepIdentity = (step) => (
@@ -411,11 +405,20 @@ const MyGoal = () => {
               {renderStepIdentity(smartSteps[4])}
               <div className="smart-step-control smart-date-control">
                 <DatePicker
-                  value={dayjs(timeBoundValue, "DD-MM-YYYY")}
+                  value={timeBound}
                   onChange={handleDateChange}
                   disabledDate={disabledDate}
                   format="DD-MM-YYYY"
                   allowClear={false}
+                  showToday={false}
+                  renderExtraFooter={() => (
+                    <Button
+                      type="link"
+                      onClick={() => setTimeBound(getDefaultGoalDeadline())}
+                    >
+                      Tomorrow
+                    </Button>
+                  )}
                   aria-label="Goal target date"
                 />
               </div>
