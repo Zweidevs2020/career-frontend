@@ -4,6 +4,11 @@ import axios from "axios";
 import { message } from "antd";
 import { API_URL } from "../../utils/constants";
 import { useParams } from "react-router-dom";
+import {
+  calculateGoalTimeLeft,
+  EMPTY_GOAL_COUNTDOWN,
+  normalizeGoalDeadline,
+} from "../../utils/goalCountdown";
 
 const CounselorGoals = () => {
   const { id } = useParams();
@@ -53,7 +58,7 @@ const CounselorGoals = () => {
       if (response.status === 200) {
         setData(response.data);
         if (response.data.length > 0) {
-          setCountdown(new Date(response.data[0].countdown).getTime());
+          setCountdown(normalizeGoalDeadline(response.data[0].countdown));
         }
       } else {
         message.error("Failed to fetch student goals.");
@@ -70,29 +75,30 @@ const CounselorGoals = () => {
     fetchStudentData();
   }, []);
 
-  const calculateTimeLeft = () => {
-    if (!countdown) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-    const now = new Date().getTime();
-    const distance = countdown - now;
-
-    if (distance < 0) {
-      return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-    }
-
-    return {
-      days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-      minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-      seconds: Math.floor((distance % (1000 * 60)) / 1000),
-    };
-  };
-
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const [timeLeft, setTimeLeft] = useState({ ...EMPTY_GOAL_COUNTDOWN });
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
+    let timer;
+
+    const updateCountdown = () => {
+      const nextTimeLeft = calculateGoalTimeLeft(countdown);
+      setTimeLeft(nextTimeLeft);
+
+      if (
+        timer &&
+        nextTimeLeft.days === 0 &&
+        nextTimeLeft.hours === 0 &&
+        nextTimeLeft.minutes === 0 &&
+        nextTimeLeft.seconds === 0
+      ) {
+        clearInterval(timer);
+      }
+    };
+
+    updateCountdown();
+    if (countdown?.valueOf() > Date.now()) {
+      timer = setInterval(updateCountdown, 1000);
+    }
 
     return () => clearInterval(timer);
   }, [countdown]);
