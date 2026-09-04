@@ -24,6 +24,7 @@ import PrivacyPolicy from "./PrivacyPolicy";
 
 const CounselorSignup = () => {
   const navigate = useNavigate();
+  const [form] = Form.useForm();
   const { setSubscribe } = useSubscribe();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
@@ -33,6 +34,7 @@ const CounselorSignup = () => {
   const [modalContent, setModalContent] = useState("");
   const [showSplashScreen, setShowSplashScreen] = useState(false);
   const [loginLoading, setLoginLoading] = useState(false);
+  const [isStudentModalVisible, setIsStudentModalVisible] = useState(false);
 
   const showModal = (content) => {
     setModalContent(content);
@@ -54,6 +56,32 @@ const CounselorSignup = () => {
 
   const handleSelect = (schoolValue) => {
     setData({ ...data, actual_school_name: schoolValue });
+  };
+
+  const handleAccountTypeSelect = (accountType) => {
+    setData((currentData) => ({
+      ...currentData,
+      account_type: accountType,
+    }));
+    setIsStudentModalVisible(accountType === "student");
+  };
+
+  const chooseCounsellorAccountType = () => {
+    form.setFieldsValue({ account_type: "counsellor" });
+    setData((currentData) => ({
+      ...currentData,
+      account_type: "counsellor",
+    }));
+    setIsStudentModalVisible(false);
+  };
+
+  const closeStudentModal = () => {
+    form.setFieldsValue({ account_type: undefined });
+    setData((currentData) => ({
+      ...currentData,
+      account_type: undefined,
+    }));
+    setIsStudentModalVisible(false);
   };
 
   const getSchools = async () => {
@@ -79,6 +107,11 @@ const CounselorSignup = () => {
   }, []);
 
   const handlerSaveSubmit = async () => {
+    if (data.account_type !== "counsellor") {
+      setIsStudentModalVisible(true);
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -212,6 +245,7 @@ const CounselorSignup = () => {
           <span style={{ marginRight: '6px', fontSize: '18px', lineHeight: 1 }}>←</span> Back to Home
         </Link>
         <Form
+          form={form}
           onFinish={handlerSaveSubmit}
           className="formStyle"
           autoComplete={false}
@@ -220,6 +254,50 @@ const CounselorSignup = () => {
           <div className="textStyle18" style={{ marginBottom: 15 }}>
             <span className="text-blue-800 font-semibold">Signup for Free Trial</span>
           </div>
+
+          <div className="counsellor-only-notice" role="note">
+            <span className="counsellor-only-notice__icon" aria-hidden="true">
+              i
+            </span>
+            <div>
+              <strong>Guidance Counsellors only</strong>
+              <p>
+                This free-trial signup is for Guidance Counsellors. Students can{" "}
+                <Link to="/login">log in to their account here</Link>.
+              </p>
+            </div>
+          </div>
+
+          <Form.Item
+            name="account_type"
+            rules={[
+              {
+                required: true,
+                message: "Please select your account type!",
+              },
+            ]}
+          >
+            <Select
+              placeholder="Are you a Student or Guidance Counsellor?"
+              value={data.account_type}
+              className="inputSelectFieldStyle account-type-select"
+              onChange={handleAccountTypeSelect}
+              bordered={false}
+              suffixIcon={
+                <Image
+                  preview={false}
+                  src={dropdownIcon || "/placeholder.svg"}
+                  width={15}
+                  style={{ marginRight: 10 }}
+                />
+              }
+            >
+              <Select.Option value="counsellor">
+                Guidance Counsellor
+              </Select.Option>
+              <Select.Option value="student">Student</Select.Option>
+            </Select>
+          </Form.Item>
 
           <Form.Item
             name="full_name"
@@ -349,15 +427,15 @@ const CounselorSignup = () => {
 
           <MyCareerGuidanceButton
             label="Sign Up"
-            className="signInButton"
+            className="signInButton counselor-signup-submit"
             type="primary"
             htmlType="submit"
             loading={loading}
-            disabled={!agreeToTerms}
+            disabled={!agreeToTerms || data.account_type !== "counsellor"}
           />
 
           <div
-            className="textStyle16"
+            className="textStyle16 mt-[-20px] mb-6 "
             style={{ display: "flex", justifyContent: "center" }}
           >
             Already have an account?&nbsp;&nbsp;
@@ -382,6 +460,39 @@ const CounselorSignup = () => {
           alt="img"
         />
       </div>
+      <Modal
+        title="Student sign-in"
+        visible={isStudentModalVisible}
+        onCancel={closeStudentModal}
+        footer={[
+          <MyCareerGuidanceButton
+            key="choose-counsellor"
+            label="Guidance Counsellor"
+            className="student-modal-secondary"
+            type="button"
+            onClick={chooseCounsellorAccountType}
+          />,
+          <MyCareerGuidanceButton
+            key="student-login"
+            label="Go to Student Login"
+            className="student-modal-primary"
+            type="primary"
+            onClick={() => navigate("/login")}
+          />,
+        ]}
+        className="student-login-modal"
+      >
+        <div className="student-login-modal__content">
+          <div className="student-login-modal__icon" aria-hidden="true">
+            →
+          </div>
+          <p>
+            Student accounts are not eligible for the Guidance Counsellor free
+            trial. Please continue to the student login page.
+          </p>
+          <Link to="/login">www.myguidance.ie/login</Link>
+        </div>
+      </Modal>
       <Modal
         title={
           modalContent === "terms"
