@@ -56,6 +56,17 @@
   gap: 24px;
 }
 
+.occupationResultSection + .occupationResultSection {
+  margin-top: 10px;
+}
+
+.occupationDescription {
+  padding: 4px 0 16px;
+  color: #363636;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
 .occupationLoadingCard {
   display: flex;
   align-items: center;
