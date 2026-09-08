@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Spin, message, Radio, Button, Row, Col } from "antd";
-import { getApiWithAuth, postApiWithAuth } from "../../utils/api";
-import { MyCareerGuidanceButton } from "../commonComponents";
+import { Spin, Button, Row, Col } from "antd";
+import { getApiWithAuth } from "../../utils/api";
 import Chart from "react-apexcharts";
 import { useNavigate, useLocation } from "react-router-dom";
+import { htmlToPlainText } from "../../utils/htmlToPlainText";
 import "./Occupational.css";
 const btnOptions = [
   {
@@ -82,8 +82,6 @@ const Occupational = () => {
   const scores = educationGuidance.map((item) => item.score);
   const questionTypes = educationGuidance.map((item) => item.question_type);
   const BAR_COLORS = ['#5CC85A', '#FF9800', '#E91E8C', '#3949AB', '#00BCD4', '#9C27B0', '#FF5722', '#795548'];
-
-  const series = [{ data: scores }];
 
   const options = {
     chart: {
@@ -192,16 +190,15 @@ const Occupational = () => {
               <div className="mt-5 pt-5">
                 {educationGuidance?.map((item) => {
                   return (
-                    <div>
+                    <section key={item.id ?? item.question_type} className="occupationResultSection">
                       <div
                         className="textStyle18 pt-1 pb-3"
                         style={{ color: "#030303", fontWeight: 600 }}
                       >
                         {item.question_type}
                       </div>
-                      <div className="textStyle18 pt-1 pb-3"
-                      style={{ color: "#363636" }}>
-                        {item.description}
+                      <div className="occupationDescription textStyle18">
+                        {htmlToPlainText(item.description)}
                       </div>
                       <div>
                         <Row
@@ -237,7 +234,7 @@ const Occupational = () => {
                           ))}
                         </Row>
                       </div>
-                    </div>
+                    </section>
                   );
                 })}
               </div>

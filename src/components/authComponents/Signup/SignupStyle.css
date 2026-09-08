@@ -125,6 +125,136 @@ button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary.eduButtonBack
   margin-bottom: 15px;
 }
 
+.counsellor-only-notice {
+  display: flex;
+  gap: 12px;
+  width: calc(100% + 120px);
+  margin-left: -60px;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border: 1px solid #cfe5f4;
+  border-radius: 12px;
+  background: #f3f9fd;
+  color: #334155;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.counsellor-only-notice__icon {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #1476b7;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: center;
+}
+
+.counsellor-only-notice strong {
+  display: block;
+  margin-bottom: 2px;
+  color: #153e5c;
+  font-size: 14px;
+}
+
+.counsellor-only-notice p {
+  margin: 0;
+}
+
+.counsellor-only-notice a,
+.student-login-modal__content a {
+  color: #1476b7;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.account-type-select {
+  border-color: #b9d5e8;
+  background: #ffffff;
+}
+
+.counselor-signup-submit {
+  margin-top: -12px;
+  margin-bottom: 24px;
+}
+
+.student-login-modal .ant-modal-content {
+  width: min(92vw, 500px);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.student-login-modal .ant-modal-header {
+  padding: 22px 24px 10px;
+}
+
+.student-login-modal .ant-modal-title {
+  color: #153e5c;
+  font-family: "Poppins", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.student-login-modal .ant-modal-body {
+  padding: 12px 28px 24px;
+}
+
+.student-login-modal .ant-modal-footer {
+  gap: 10px;
+  padding: 16px 24px 24px;
+  border-top: 1px solid #edf2f7;
+}
+
+.student-login-modal__content {
+  color: #52606d;
+  font-family: "Poppins", sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  text-align: center;
+}
+
+.student-login-modal__content p {
+  margin: 12px 0 8px;
+}
+
+.student-login-modal__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: #e7f3fb;
+  color: #1476b7;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.student-modal-primary,
+.student-modal-secondary {
+  min-width: 190px;
+  height: 44px !important;
+  border-radius: 10px !important;
+  font-family: "Poppins", sans-serif !important;
+  font-weight: 600 !important;
+}
+
+.student-modal-primary {
+  background: #1476b7 !important;
+  color: #ffffff !important;
+}
+
+.student-modal-secondary {
+  border: 1px solid #1476b7 !important;
+  background: #ffffff !important;
+  color: #1476b7 !important;
+}
+
 .terms-modal .ant-modal-content {
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -159,11 +289,25 @@ button.ant-btn.css-dev-only-do-not-override-ed5zg0.ant-btn-primary.eduButtonBack
 }
 
 @media only screen and (min-width: 0px) and (max-width: 650px) {
+  .counsellor-only-notice {
+    width: 100%;
+    margin-left: 0;
+  }
+
   .signInButtonStyle {
     width:100%;
   }
   .ant-modal-content {
     width: 90vw;
+  }
+
+  .student-login-modal .ant-modal-footer {
+    flex-direction: column-reverse;
+  }
+
+  .student-modal-primary,
+  .student-modal-secondary {
+    width: 100% !important;
   }
 }
 
