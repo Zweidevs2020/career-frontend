@@ -20,7 +20,7 @@ import { resolveModuleName } from "typescript";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setSubscribe } = useSubscribe();
+  const { setSubscribe, updateSchoolSelection } = useSubscribe();
   const [loading, setLoading] = useState(false);
   const [guestLoading, setGuestLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("student");
@@ -40,6 +40,7 @@ const Login = () => {
       message.success("Login Successfully");
       setLoading(false);
       setToken(response?.data?.access);
+      updateSchoolSelection(response.data.requires_school_selection === true);
       setSubscribe(response.data.is_subscribed);
 
       if (response.data.is_subscribed) {
