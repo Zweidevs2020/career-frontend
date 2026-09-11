@@ -25,7 +25,7 @@ import PrivacyPolicy from "./PrivacyPolicy";
 const CounselorSignup = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const { setSubscribe } = useSubscribe();
+  const { setSubscribe, updateSchoolSelection } = useSubscribe();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
   const [schools, setSchools] = useState([]);
@@ -155,6 +155,7 @@ const CounselorSignup = () => {
       if (response?.status === 200) {
         message.success("Logged in as Student");
         setToken(response?.data?.access);
+        updateSchoolSelection(response.data.requires_school_selection === true);
         setSubscribe(response.data.is_subscribed);
         if (response.data.is_subscribed) {
           navigate("/dashboard");
