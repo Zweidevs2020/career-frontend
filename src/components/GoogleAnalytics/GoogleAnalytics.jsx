@@ -25,7 +25,6 @@ const GoogleAnalytics = () => {
   const { pathname } = useLocation();
   const isLiveSite = isProductionAnalyticsHost();
   const [consent, setConsent] = useState(getStoredConsent);
-  const [showPreferences, setShowPreferences] = useState(consent === null);
 
   useEffect(() => {
     if (isLiveSite && consent === "granted") {
@@ -44,14 +43,13 @@ const GoogleAnalytics = () => {
     }
 
     setConsent(nextConsent);
-    setShowPreferences(false);
   };
 
   if (!isLiveSite) return null;
 
   return (
     <>
-      {showPreferences ? (
+      {consent === null && (
         <aside
           className="analyticsConsent"
           role="dialog"
@@ -82,14 +80,6 @@ const GoogleAnalytics = () => {
             </button>
           </div>
         </aside>
-      ) : (
-        <button
-          className="analyticsSettingsButton"
-          type="button"
-          onClick={() => setShowPreferences(true)}
-        >
-          Cookie settings
-        </button>
       )}
     </>
   );
