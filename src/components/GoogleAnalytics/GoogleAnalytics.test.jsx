@@ -43,6 +43,7 @@ describe("GoogleAnalytics consent", () => {
     });
     expect(localStorage.getItem("myguidance_analytics_consent"))
       .toBe("granted");
+    expect(screen.queryByText("Cookie settings")).not.toBeInTheDocument();
   });
 
   it("stores rejection and keeps analytics disabled", () => {
@@ -57,8 +58,7 @@ describe("GoogleAnalytics consent", () => {
     expect(localStorage.getItem("myguidance_analytics_consent"))
       .toBe("denied");
     expect(enableAnalytics).not.toHaveBeenCalled();
-    expect(screen.getByRole("button", { name: "Cookie settings" }))
-      .toBeInTheDocument();
+    expect(screen.queryByText("Cookie settings")).not.toBeInTheDocument();
   });
 
   it("renders nothing and keeps tracking disabled outside the live site", () => {
