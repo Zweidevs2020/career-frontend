@@ -51,12 +51,17 @@ import CounselorGuidanceReport from "./components/conselor/GuidanceReaport";
 import CousnelorSelf from "./components/conselor/CousnelorSelf";
 import PaymentVerification from "./components/PaymentVerification/payment-verificatin";
 import ChangePassword from "./components/conselor/ChangePassword";
+import GoogleAnalytics from "./components/GoogleAnalytics/GoogleAnalytics";
+import SchoolSelectionGate from "./components/authComponents/SchoolSelection/SchoolSelectionGate";
+import { saveSchoolSelection } from "./components/authComponents/SchoolSelection/schoolSelectionApi";
 
 function App() {
   const { subscribe, loading } = useSubscribe();
 
   return (
     <BrowserRouter>
+      <GoogleAnalytics />
+      <SchoolSelectionGate onSave={saveSchoolSelection}>
       <Routes>
         <Route
           path="/"
@@ -361,6 +366,7 @@ function App() {
           <Route path="change-password/:id" element={<ChangePassword />} />
         </Route>
       </Routes>
+      </SchoolSelectionGate>
     </BrowserRouter>
   );
 }

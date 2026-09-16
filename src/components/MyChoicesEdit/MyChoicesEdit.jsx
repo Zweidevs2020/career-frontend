@@ -22,6 +22,7 @@ import { debounce } from "lodash"
 import "./myChoicesEdit.css"
 
 const { Column, ColumnGroup } = Table
+const EU_COURSE_ROW_COUNT = 10
 
 const MyChoicesEdit = () => {
   const inputRef = useRef(null)
@@ -299,7 +300,7 @@ const MyChoicesEdit = () => {
         const columnsWithoutOrderNumber = columnsData.slice(0, columnsData.length - 1)
         setColums(columnsWithoutOrderNumber)
       }
-      setShowRows(response.data.data.rows)
+      setShowRows(isEUCoursesSection ? EU_COURSE_ROW_COUNT : response.data.data.rows)
       setLoadingFirst(false)
     } else {
       setLoadingFirst(true)

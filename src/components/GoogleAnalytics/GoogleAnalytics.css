@@ -1,0 +1,99 @@
+.analyticsConsent {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  left: 20px;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 18px 20px;
+  border: 1px solid #d9e7f1;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 12px 36px rgba(20, 70, 118, 0.18);
+  color: #334155;
+  font-family: "Poppins", sans-serif;
+}
+
+.analyticsConsent__message {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.analyticsConsent__message strong {
+  color: #144676;
+  font-size: 16px;
+}
+
+.analyticsConsent__actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 10px;
+}
+
+.analyticsConsent__button,
+.analyticsSettingsButton {
+  border-radius: 9px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.analyticsConsent__button {
+  min-height: 42px;
+  padding: 9px 16px;
+}
+
+.analyticsConsent__button--primary {
+  border: 1px solid #1476b7;
+  background: #1476b7;
+  color: #ffffff;
+}
+
+.analyticsConsent__button--secondary {
+  border: 1px solid #1476b7;
+  background: #ffffff;
+  color: #1476b7;
+}
+
+.analyticsConsent__button:focus-visible,
+.analyticsSettingsButton:focus-visible {
+  outline: 3px solid rgba(20, 118, 183, 0.3);
+  outline-offset: 2px;
+}
+
+.analyticsSettingsButton {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 9999;
+  padding: 6px 10px;
+  border: 1px solid #d9e7f1;
+  background: rgba(255, 255, 255, 0.96);
+  color: #52606d;
+  font-size: 11px;
+  box-shadow: 0 4px 12px rgba(20, 70, 118, 0.12);
+}
+
+@media (max-width: 650px) {
+  .analyticsConsent {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .analyticsConsent__actions {
+    width: 100%;
+  }
+
+  .analyticsConsent__button {
+    flex: 1;
+  }
+}
