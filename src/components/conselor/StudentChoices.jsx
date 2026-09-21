@@ -13,6 +13,7 @@ const SECTION_ORDER = [
   "tertiarydegree",
   "app",
   "ucas_ni",
+  "eu_courses",
   "othr",
 ];
 
@@ -68,6 +69,16 @@ const SECTION_CONFIG = {
       { key: "title", label: "Title" },
       { key: "college", label: "College" },
       { key: "nfq_level", label: "NFQ Level" },
+    ],
+  },
+  eu_courses: {
+    heading: "EU Courses",
+    columns: [
+      { key: "title", label: "Title" },
+      { key: "university", label: "University" },
+      { key: "location", label: "Location" },
+      { key: "duration", label: "Duration" },
+      { key: "tuition_fee", label: "Tuition Fee" },
     ],
   },
   othr: {
@@ -128,10 +139,25 @@ const CounselorChoices = () => {
     }
   };
 
-  const renderCell = (key, value) => {
+  const renderCell = (key, value, row) => {
     switch (key) {
       case "point":
         return value ? parseInt(value) : "NA";
+      case "location":
+        return [row.city, row.country].filter(Boolean).join(", ") || "N/A";
+      case "link":
+        return value ? (
+          <a
+            href={value}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#1476B7] hover:underline"
+          >
+            View course
+          </a>
+        ) : (
+          "N/A"
+        );
       default:
         return value;
     }

@@ -46,7 +46,6 @@ import dropdownIcon from "../../assets/dropdownIcon.svg";
 import EditOutlined from "../../assets/uil_edit.svg";
 
 import { Link } from "react-router-dom";
-import { debounce } from 'lodash'
 
 import "./myChoicesEdit.css";
 
@@ -101,8 +100,10 @@ const TertiaryEdit = () => {
     setLoadingFirst(false);
   };
 
-  const getTableRecord = async () => {
-    setLoadingFirst(true);
+  const getTableRecord = async (runLoading = true) => {
+    if (runLoading) {
+      setLoadingFirst(true);
+    }
     const dropdown_options_response = await getApiWithAuth(`/choices/tertiary-degree/`);
     if (dropdown_options_response.data.status === 200) {
       const userData = (dropdown_options_response.data.data.user_data || []).slice().sort((a, b) => {
@@ -419,8 +420,10 @@ const TertiaryEdit = () => {
         message.success("Row added successfully");
         setShowRows(null);
 
-        getChoiceRecord(!isDebounceCall);
-        getTableRecord();
+        if (!isDebounceCall) {
+          getChoiceRecord();
+        }
+        await getTableRecord(!isDebounceCall);
         setSelectedRowId(finalRecord.id);
         disableEventListeners();
       } else {
@@ -764,24 +767,22 @@ const TertiaryEdit = () => {
     if (isCodeAvailable) {
       message.error("You already select this Course");
     } else {
-      const updatedData = data.map((item) => {
-        if (item.rowNo === rowNum) {
-          const { id, ...rest } = option.row;
-          const _body = {
-            ...item,
-            ...rest,
-            order_number: rowNum,
-          };
-          const saveDebounce = debounce(() => {
-            handleAddRow(_body, true)
-          }, 3000)
-          saveDebounce()
-          return _body;
-        }
-        return item;
-      });
+      const currentRow = data.find((item) => item.rowNo === rowNum);
+      const rest = { ...option.row };
+      delete rest.id;
+      const updatedRow = {
+        ...currentRow,
+        ...rest,
+        order_number: rowNum,
+      };
 
-      setData(updatedData);
+      setData((currentData) =>
+        currentData.map((item) =>
+          item.rowNo === rowNum ? updatedRow : item
+        )
+      );
+
+      await handleAddRow(updatedRow, true);
     }
   };
   return (
