@@ -17,8 +17,6 @@ import dropdownIcon from "../../assets/dropdownIcon.svg"
 import EditOutlined from "../../assets/uil_edit.svg"
 
 import { Link } from "react-router-dom"
-import { debounce } from "lodash"
-
 import "./myChoicesEdit.css"
 
 const { Column, ColumnGroup } = Table
@@ -510,7 +508,7 @@ const MyChoicesEdit = () => {
     disableEventListeners()
   }
 
-  const handleUpdate = async (record) => {
+  const handleUpdate = async (record, isBackgroundSave = false) => {
     if (record?.title) {
       const [title] = record.title.split(",")
       record.title = title
@@ -531,9 +529,11 @@ const MyChoicesEdit = () => {
     if (respose.data.status === 200 || respose.data.status === 201) {
       message.success("Row update succesfully")
       setShowRows(null)
-      getChoiceRecord()
+      if (!isBackgroundSave) {
+        getChoiceRecord()
+      }
       setSelectedRowId(record.id)
-      getTableRecord()
+      await getTableRecord()
     } else {
       message.error(respose.data.message)
     }
@@ -621,8 +621,10 @@ const MyChoicesEdit = () => {
         message.success("Row added successfully")
         setShowRows(null)
 
-        getChoiceRecord(!isDebounceCall)
-        getTableRecord()
+        if (!isDebounceCall) {
+          getChoiceRecord()
+        }
+        await getTableRecord()
         setSelectedRowId(finalRecord.id)
         disableEventListeners()
       } else {
@@ -698,6 +700,8 @@ const MyChoicesEdit = () => {
     }
     return "tableHeadingStyle"
   }
+
+  const isReadOnlyPoints = (item) => dataa?.id === "level8" && (item === "point" || item === "points")
 
   const Row = ({ children, ...props }) => {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -921,10 +925,21 @@ const MyChoicesEdit = () => {
     const course = option?.row
     if (!course?.link) return
 
+    const previousRow = row
+    const updatedRow = {
+      ...row,
+      ...course,
+      id: row.id || null,
+      order_number: row.rowNo + 1,
+    }
     const payload = {
       link: course.link,
       order_number: row.rowNo + 1,
     }
+    setData((currentData) =>
+      currentData.map((item) => (item.dataId === row.dataId ? updatedRow : item)),
+    )
+
     const response = row.id
       ? await putApiWithAuth(`choices/eu-courses/${row.id}/`, payload)
       : await postApiWithAuth("choices/eu-courses/", payload)
@@ -935,9 +950,11 @@ const MyChoicesEdit = () => {
     if (success) {
       message.success(row.id ? "Course updated successfully" : "Course added successfully")
       setShowRows(null)
-      await getChoiceRecord(false)
       await getTableRecord()
     } else {
+      setData((currentData) =>
+        currentData.map((item) => (item.dataId === row.dataId ? previousRow : item)),
+      )
       message.error(getEUCourseError(response?.data?.data || response?.data))
     }
   }
@@ -968,30 +985,24 @@ const MyChoicesEdit = () => {
     } else {
       const currentRow = data.find((item) => item.rowNo === rowNum)
       const existingRowId = currentRow?.id // Store the existing row's id if it exists
+      const rest = { ...option.row }
+      delete rest.id
+      const updatedRow = {
+        ...currentRow,
+        ...rest,
+        id: existingRowId || null,
+        order_number: rowNum,
+      }
 
-      const updatedData = data.map((item) => {
-        if (item.rowNo === rowNum) {
-          const { id: libraryId, ...rest } = option.row
-          const _body = {
-            ...item,
-            ...rest,
-            id: existingRowId || null,
-            order_number: rowNum,
-          }
-          const saveDebounce = debounce(() => {
-            if (existingRowId) {
-              handleUpdate(_body)
-            } else {
-              handleAddRow(_body, true)
-            }
-          }, 3000)
-          saveDebounce()
-          return _body
-        }
-        return item
-      })
+      setData((currentData) =>
+        currentData.map((item) => (item.rowNo === rowNum ? updatedRow : item)),
+      )
 
-      setData(updatedData)
+      if (existingRowId) {
+        await handleUpdate(updatedRow, true)
+      } else {
+        await handleAddRow(updatedRow, true)
+      }
     }
   }
 
@@ -1492,11 +1503,6 @@ const MyChoicesEdit = () => {
                                               dropdownRender={(menu) => (
                                                 <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
                                               )}
-                                              onFocus={() => {
-                                                if (!record.editable) {
-                                                  eidtThisRow(record)
-                                                }
-                                              }}
                                               suffixIcon={
                                                 <Image
                                                   preview={false}
@@ -1564,12 +1570,12 @@ const MyChoicesEdit = () => {
                                         disabled
                                         className={getDesktopColumnClass(item)}
                                         onCell={(record) => ({
-                                          onClick: () => {
+                                          onClick: isReadOnlyPoints(item) ? undefined : () => {
                                             if (!record.editable) {
                                               eidtThisRow(record)
                                             }
                                           },
-                                          style: { cursor: "text" },
+                                          style: { cursor: isReadOnlyPoints(item) ? "default" : "text" },
                                           className: "choice-cell",
                                         })}
                                         render={(text, record) => {
@@ -1581,13 +1587,13 @@ const MyChoicesEdit = () => {
                                               type="input"
                                               name={item}
                                               defaultValue={parseText}
-                                              onBlur={(e) => handleChangeTable(e, record)}
+                                              onBlur={isReadOnlyPoints(item) ? undefined : (e) => handleChangeTable(e, record)}
                                               isPrefix={false}
                                               id={`input-${item}-${record?.rowNo}`}
                                               onClick={(e) => {
                                                 e.stopPropagation()
                                               }}
-                                              disabled={!record.editable}
+                                              disabled={isReadOnlyPoints(item) || !record.editable}
                                             />
                                           )
                                         }}
@@ -1739,12 +1745,12 @@ const MyChoicesEdit = () => {
                                   key={item}
                                   className={getDesktopColumnClass(item)}
                                   onCell={(record) => ({
-                                    onClick: () => {
+                                    onClick: isReadOnlyPoints(item) ? undefined : () => {
                                       if (!record.editable) {
                                         eidtThisRow(record)
                                       }
                                     },
-                                    style: { cursor: "text" },
+                                    style: { cursor: isReadOnlyPoints(item) ? "default" : "text" },
                                     className: "choice-cell",
                                   })}
                                   render={(text, record) => {
@@ -1757,10 +1763,11 @@ const MyChoicesEdit = () => {
                                         type="input"
                                         name={item}
                                         defaultValue={parseText}
-                                        onBlur={(e) => handleChangeTable(e, record)}
+                                        onBlur={isReadOnlyPoints(item) ? undefined : (e) => handleChangeTable(e, record)}
                                         onFocus={(e) => (inputRef.current = e.target)}
                                         id={`input-${item}-${record?.rowNo}`}
                                         isPrefix={false}
+                                        disabled={isReadOnlyPoints(item)}
                                         onClick={(e) => {
                                           e.stopPropagation()
                                         }}
@@ -1846,11 +1853,6 @@ const MyChoicesEdit = () => {
                                                 dropdownRender={(menu) => (
                                                   <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
                                                 )}
-                                                onFocus={() => {
-                                                  if (!row.editable) {
-                                                    eidtThisRow(row)
-                                                  }
-                                                }}
                                                 suffixIcon={
                                                   <Image
                                                     preview={false}
@@ -1907,10 +1909,10 @@ const MyChoicesEdit = () => {
                                               placeholder={row[item]}
                                               type="input"
                                               name={item}
-                                              onBlur={(e) => handleChangeTableMobile(e, row)}
+                                              onBlur={isReadOnlyPoints(item) ? undefined : (e) => handleChangeTableMobile(e, row)}
                                               defaultValue={row[item]}
                                               isPrefix={false}
-                                              disabled={!row.editable}
+                                              disabled={isReadOnlyPoints(item) || !row.editable}
                                             />
                                           </div>
                                         ),
@@ -1984,11 +1986,6 @@ const MyChoicesEdit = () => {
                                                     dropdownRender={(menu) => (
                                                       <div style={{ maxHeight: "300px", overflowY: "auto" }}>{menu}</div>
                                                     )}
-                                                    onFocus={() => {
-                                                      if (!row.editable) {
-                                                        eidtThisRow(row)
-                                                      }
-                                                    }}
                                                     suffixIcon={
                                                       <Image
                                                         preview={false}
@@ -2037,7 +2034,7 @@ const MyChoicesEdit = () => {
                                                   value={row[item]}
                                                   defaultValue={row[item]}
                                                   isPrefix={false}
-                                                  disabled={!row.editable}
+                                                  disabled={isReadOnlyPoints(item) || !row.editable}
                                                 />
                                               </div>
                                             )}
@@ -2166,7 +2163,7 @@ const MyChoicesEdit = () => {
                                             value={row[item]}
                                             defaultValue={row[item]}
                                             isPrefix={false}
-                                            disabled={!row.editable}
+                                            disabled={isReadOnlyPoints(item) || !row.editable}
                                           />
                                         </div>
                                       )}
