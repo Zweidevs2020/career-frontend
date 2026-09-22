@@ -422,7 +422,7 @@ const CounselorSignup = () => {
             >
               I agree to the{" "}
               <a onClick={() => showModal("terms")} className="font-bold text-black ">Terms & Conditions</a> and{" "}
-              <a onClick={() => showModal("privacy")}className="font-bold text-black ">Privacy Policy</a>.
+              <a onClick={() => showModal("privacy")}className="font-bold text-black ">Privacy Policy</a>
             </Checkbox>
           </Form.Item>
 
