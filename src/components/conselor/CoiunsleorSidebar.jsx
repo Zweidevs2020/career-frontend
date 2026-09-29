@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Link, useParams, useLocation } from "react-router-dom"
 import axios from "axios"
 import { message } from "antd"
@@ -32,6 +32,27 @@ export default function CounselorSidebar() {
   const location = useLocation()
   const [selectedMenuItem, setSelectedMenuItem] = useState("Overview")
   const [loading, setLoading] = useState(false)
+  const [isReadOnly, setIsReadOnly] = useState(null)
+
+  useEffect(() => {
+    const fetchReadOnlyStatus = async () => {
+      const token = getCookie("conselorToken")
+      if (!id || !token) return
+
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}${API_URL.CONSELOR_STUDENT_Details}${id}`,
+          { headers: { Authorization: `Bearer ${token}` } },
+        )
+        setIsReadOnly(response?.data?.is_read_only === true)
+      } catch (error) {
+        console.error("Error fetching student access status:", error)
+        setIsReadOnly(false)
+      }
+    }
+
+    fetchReadOnlyStatus()
+  }, [id])
 
   const buildCvFileName = (firstName = "", lastName = "", fallback = "") => {
     const slug = (value = "") =>
@@ -197,7 +218,12 @@ export default function CounselorSidebar() {
         </div>
 
         <nav style={{ marginTop: "20px" }}>
-          {menuItems.map((item, index) => {
+          {menuItems
+            .filter(
+              (item) =>
+                item.activeState !== "ChangePassword" || isReadOnly === false,
+            )
+            .map((item, index) => {
             const isActive = item.path !== "#" && location.pathname === item.path
             const iconElement = isActive ? React.cloneElement(item.icon, { fill: "#ffffff" }) : item.icon
             if (item.isDownloadCV) {
@@ -256,7 +282,7 @@ export default function CounselorSidebar() {
                 </div>
               </Link>
             )
-          })}
+            })}
         </nav>
       </div>
     </>

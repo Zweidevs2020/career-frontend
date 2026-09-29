@@ -3,6 +3,8 @@ import { Button, Col, Row } from "antd";
 import { useLocation, useNavigate } from "react-router-dom"; // Import navigation
 import { LeftCircleOutlined, LogoutOutlined } from "@ant-design/icons";
 import newLogo from "../../assets/newlogo.png";
+import { removeToken } from "../../utils/LocalStorage";
+import { clearActiveAccountView } from "../../utils/accountView";
 
 const Navbar = () => {
   const navigate = useNavigate(); // React Router navigation
@@ -12,6 +14,8 @@ const Navbar = () => {
   const handleLogout = () => {
     document.cookie =
       "conselorToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    removeToken();
+    clearActiveAccountView();
     // navigate("/"); // Redirect to home without reload
     window.location.href = "/";
   };

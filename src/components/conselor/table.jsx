@@ -16,9 +16,10 @@ const Table = ({
   const isCounselorDashboard = location.pathname.includes("/counsellor-Dashboard");
   const isAllSelected =
     data &&
-    data.length > 0 &&
+    data.some((row) => !row.is_read_only) &&
     selectedStudentIds &&
-    selectedStudentIds.length === data.length;
+    selectedStudentIds.length === data.filter((row) => !row.is_read_only).length;
+  const hasWritableStudents = data?.some((row) => !row.is_read_only);
 
   return (
     <div>
@@ -26,7 +27,7 @@ const Table = ({
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-[#1476B7] text-white">
-              {isCounselorDashboard && (
+              {isCounselorDashboard && hasWritableStudents && (
                 <th className="p-3 text-left w-12">
                   <input
                     type="checkbox"
@@ -45,7 +46,7 @@ const Table = ({
               {isCounselorDashboard && (
                 <th className="p-3 text-left">Actions</th>
               )}
-              {isCounselorDashboard && (
+              {isCounselorDashboard && hasWritableStudents && (
                 <th className="p-3 text-left">Delete</th>
               )}
             </tr>
@@ -58,14 +59,16 @@ const Table = ({
                   index % 2 === 0 ? "bg-gray-50" : "bg-white"
                 } hover:bg-gray-100 transition-colors`}
               >
-                {isCounselorDashboard && (
+                {isCounselorDashboard && hasWritableStudents && (
                   <td className="p-3 border-t w-12">
-                    <input
-                      type="checkbox"
-                      checked={selectedStudentIds && selectedStudentIds.includes(row.id)}
-                      onChange={() => onToggleStudentSelection(row.id)}
-                      className="form-checkbox h-4 w-4 text-[#1476B7] rounded"
-                    />
+                    {!row.is_read_only && (
+                      <input
+                        type="checkbox"
+                        checked={selectedStudentIds && selectedStudentIds.includes(row.id)}
+                        onChange={() => onToggleStudentSelection(row.id)}
+                        className="form-checkbox h-4 w-4 text-[#1476B7] rounded"
+                      />
+                    )}
                   </td>
                 )}
                 {columns.map((column) => (
@@ -85,14 +88,16 @@ const Table = ({
                     </button>
                   </td>
                 )}
-                {isCounselorDashboard && (
+                {isCounselorDashboard && hasWritableStudents && (
                   <td className="p-3 border-t">
-                    <button
-                      onClick={() => onDeleteSingleStudent(row.id)}
-                      className="p-1 rounded hover:bg-gray-200"
-                    >
-                      <img src={deleteIcon} alt="Delete" className="h-5 w-5" />
-                    </button>
+                    {!row.is_read_only && (
+                      <button
+                        onClick={() => onDeleteSingleStudent(row.id)}
+                        className="p-1 rounded hover:bg-gray-200"
+                      >
+                        <img src={deleteIcon} alt="Delete" className="h-5 w-5" />
+                      </button>
+                    )}
                   </td>
                 )}
                 {/* Render the Actions cell ONLY if we're on the counselor dashboard */}

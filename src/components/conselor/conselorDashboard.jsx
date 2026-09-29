@@ -7,6 +7,11 @@ import { message, Modal } from "antd"; // Import Modal from antd
 import axios from "axios";
 import Navbar from "./navbar";
 import { deleteMultipleStudents } from "../../utils/api"; // Import the new API function
+import { setToken } from "../../utils/LocalStorage";
+import {
+  ACCOUNT_VIEWS,
+  setActiveAccountView,
+} from "../../utils/accountView";
 
 // Function to get token from cookies
 const getCookie = (name) => {
@@ -21,6 +26,7 @@ const getCookie = (name) => {
 };
 
 const ConselorDashboard = () => {
+  const [isFreeTrial, setIsFreeTrial] = useState(false);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,6 +40,25 @@ const ConselorDashboard = () => {
   useEffect(() => {
     fetchData();
   }, [currentPage]);
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      const token = getCookie("conselorToken");
+      if (!token) return;
+
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}${API_URL.GETUSER}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setIsFreeTrial(response?.data?.is_free_trial === true);
+      } catch (error) {
+        console.error("Error fetching current user:", error);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
 
   const fetchData = async () => {
     setLoading(true);
@@ -79,6 +104,7 @@ const ConselorDashboard = () => {
 
   // New functions for student selection
   const onToggleStudentSelection = (studentId) => {
+    if (data.find((student) => student.id === studentId)?.is_read_only) return;
     setSelectedStudentIds((prevSelected) =>
       prevSelected.includes(studentId)
         ? prevSelected.filter((id) => id !== studentId)
@@ -89,7 +115,9 @@ const ConselorDashboard = () => {
   const onSelectAllStudents = (event) => {
     if (event.target.checked) {
       // Select all students currently in the filtered data
-      const allStudentIds = data.map((student) => student.id);
+      const allStudentIds = data
+        .filter((student) => !student.is_read_only)
+        .map((student) => student.id);
       setSelectedStudentIds(allStudentIds);
     } else {
       // Deselect all
@@ -99,6 +127,7 @@ const ConselorDashboard = () => {
 
   // Function to show confirmation modal for single student deletion
   const onDeleteSingleStudent = (studentId) => {
+    if (data.find((student) => student.id === studentId)?.is_read_only) return;
     setStudentsToDelete([studentId]);
     setIsModalVisible(true);
   };
@@ -144,11 +173,38 @@ const ConselorDashboard = () => {
     { key: "email", label: "Email" },
   ];
 
+  const handleViewAsStudent = () => {
+    const token = getCookie("conselorToken");
+    if (!token) return;
+    setToken(token);
+    setActiveAccountView(ACCOUNT_VIEWS.STUDENT);
+    navigate("/dashboard");
+  };
+
   return (
     <>
       <Navbar />
 
       <main className="lg:col-span-10 mt-8 lg:mt-0 px-4 lg:px-32 m-auto w-full">
+        {isFreeTrial && (
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3" role="status">
+            <div>
+              <h1 className="m-0 text-lg font-semibold text-[#243B53]">
+                Welcome to your My Guidance free trial
+              </h1>
+              <p className="mb-0 mt-1 text-sm text-[#627D98]">
+                Manage your demo students or experience the platform as a student.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={handleViewAsStudent}
+              className="rounded-md bg-[#1476B7] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#105f93]"
+            >
+              View as Student
+            </button>
+          </div>
+        )}
         <div className="bg-[#F8FAFC] rounded-lg shadow p-6 overflow-x-auto">
           {loading ? (
             <p className="text-center">Loading...</p>

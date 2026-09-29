@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { message, Modal } from "antd";
@@ -18,6 +18,7 @@ const ChangePassword = () => {
   const [loading, setLoading] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isReadOnly, setIsReadOnly] = useState(null);
 
   const getCookie = (name) => {
     const cookies = document.cookie.split("; ");
@@ -29,6 +30,26 @@ const ChangePassword = () => {
     }
     return null;
   };
+
+  useEffect(() => {
+    const fetchStudentAccess = async () => {
+      const token = getCookie("conselorToken");
+      if (!token) return;
+
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}${API_URL.CONSELOR_STUDENT_Details}${id}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setIsReadOnly(response?.data?.is_read_only === true);
+      } catch (error) {
+        console.error("Error fetching student access status:", error);
+        setIsReadOnly(false);
+      }
+    };
+
+    fetchStudentAccess();
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,7 +86,10 @@ const ChangePassword = () => {
       }
     } catch (error) {
       console.error("Error updating password:", error);
-      message.error("An error occurred while updating the password.");
+      message.error(
+        error?.response?.data?.message ||
+          "An error occurred while updating the password."
+      );
     } finally {
       setLoading(false);
     }
@@ -111,11 +135,29 @@ const ChangePassword = () => {
       }
     } catch (error) {
       console.error("Error deleting student:", error);
-      message.error("An error occurred while deleting the student.");
+      message.error(
+        error?.response?.data?.message ||
+          "An error occurred while deleting the student."
+      );
     } finally {
       setLoading(false);
     }
   };
+
+  if (isReadOnly === null) {
+    return <p className="p-6 text-center text-gray-600">Loading account access...</p>;
+  }
+
+  if (isReadOnly) {
+    return (
+      <div className="p-6 bg-white rounded-lg shadow-md text-center">
+        <h1 className="text-xl font-semibold text-gray-800">Read-only demo student</h1>
+        <p className="mt-2 text-gray-600">
+          Password and account changes are unavailable for demo students.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md flex flex-col items-center">
