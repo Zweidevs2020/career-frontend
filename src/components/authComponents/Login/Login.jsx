@@ -4,26 +4,32 @@ import myCareerGuidanceIcon from "../../../assets/newlogo.png";
 import usernameIcon from "../../../assets/usernameIcon.svg";
 import lockIcon from "../../../assets/lockIcon.svg";
 import phoneIcon from "../../../assets/phone.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { API_URL } from "../../../utils/constants";
 import { postApiWithoutAuth } from "../../../utils/api";
-import { setToken } from "../../../utils/LocalStorage";
+import { setRefreshToken, setToken } from "../../../utils/LocalStorage";
 import { Checkbox, Form, Image, Tabs, message } from "antd";
 import {
   MyCareerGuidanceInputField,
   MyCareerGuidanceButton,
 } from "../../commonComponents";
-import { useNavigate } from "react-router-dom";
 import "./LoginStyle.css";
 import { useSubscribe } from "../../../context/subscribe";
+import {
+  ACCOUNT_VIEWS,
+  setActiveAccountView,
+} from "../../../utils/accountView";
 import { resolveModuleName } from "typescript";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { setSubscribe, updateSchoolSelection } = useSubscribe();
   const [loading, setLoading] = useState(false);
   const [guestLoading, setGuestLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState("student");
+  const [activeTab, setActiveTab] = useState(
+    searchParams.get("tab") === "counselor" ? "counselor" : "student"
+  );
   const [data, setData] = useState({});
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
@@ -40,6 +46,8 @@ const Login = () => {
       message.success("Login Successfully");
       setLoading(false);
       setToken(response?.data?.access);
+      setRefreshToken(response?.data?.refresh);
+      setActiveAccountView(ACCOUNT_VIEWS.STUDENT);
       updateSchoolSelection(response.data.requires_school_selection === true);
       setSubscribe(response.data.is_subscribed);
 
@@ -75,6 +83,9 @@ const Login = () => {
       document.cookie = `conselorToken=${
         response?.data?.access
       }; path=/; max-age=${7 * 24 * 60 * 60}; Secure; SameSite=Strict`;
+      setToken(response?.data?.access);
+      setRefreshToken(response?.data?.refresh);
+      setActiveAccountView(ACCOUNT_VIEWS.COUNSELLOR);
       // setConselorToken(response?.data?.access);
       // setSubscribe(response.data.is_subscribed);
 

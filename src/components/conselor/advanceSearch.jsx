@@ -184,6 +184,8 @@ const AdvancedTable = ({
     );
   };
 
+  const hasWritableStudents = data.some((student) => !student.is_read_only);
+
   return (
     <div style={{ width: "100%", padding: "1rem" }}>
       <div
@@ -215,17 +217,19 @@ const AdvancedTable = ({
               color: "black",
             }}
           />
-          <button
-            onClick={onDeleteSelected}
-            disabled={selectedCount === 0}
-            className={`px-4 py-2 rounded ${
-              selectedCount === 0
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-red-500 text-white hover:bg-red-600"
-            }`}
-          >
-            Delete Selected ({selectedCount})
-          </button>
+          {hasWritableStudents && (
+            <button
+              onClick={onDeleteSelected}
+              disabled={selectedCount === 0}
+              className={`px-4 py-2 rounded ${
+                selectedCount === 0
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-red-500 text-white hover:bg-red-600"
+              }`}
+            >
+              Delete Selected ({selectedCount})
+            </button>
+          )}
         </div>
       </div>
       <Table

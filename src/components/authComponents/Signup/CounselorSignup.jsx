@@ -17,15 +17,19 @@ import { API_URL } from "../../../utils/constants";
 import { getApiWithoutAuth, postApiWithoutAuth } from "../../../utils/api";
 import "./SignupStyle.css";
 import { useNavigate } from "react-router-dom";
-import { setToken } from "../../../utils/LocalStorage";
+import { setRefreshToken, setToken } from "../../../utils/LocalStorage";
 import { useSubscribe } from "../../../context/subscribe";
+import {
+  ACCOUNT_VIEWS,
+  setActiveAccountView,
+} from "../../../utils/accountView";
 import TermsAndConditions from "./TermsAndConditions";
 import PrivacyPolicy from "./PrivacyPolicy";
 
 const CounselorSignup = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const { setSubscribe, updateSchoolSelection } = useSubscribe();
+  const { setSubscribe } = useSubscribe();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
   const [schools, setSchools] = useState([]);
@@ -33,7 +37,7 @@ const CounselorSignup = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState("");
   const [showSplashScreen, setShowSplashScreen] = useState(false);
-  const [loginLoading, setLoginLoading] = useState(false);
+  const [createdSession, setCreatedSession] = useState(null);
   const [isStudentModalVisible, setIsStudentModalVisible] = useState(false);
 
   const showModal = (content) => {
@@ -131,6 +135,10 @@ const CounselorSignup = () => {
         );
 
         const isSubscribed = response.data.is_subscribed || false;
+        setCreatedSession({
+          access: response.data.access,
+          refresh: response.data.refresh,
+        });
         setSubscribe(isSubscribed);
         
         setShowSplashScreen(true);
@@ -145,56 +153,24 @@ const CounselorSignup = () => {
     }
   };
 
-  const handleLoginAsStudent = async () => {
-    setLoginLoading(true);
-    try {
-      const response = await postApiWithoutAuth(API_URL.SIGNIN, {
-        email: data.email.toLowerCase(),
-        password: data.password,
-      });
-      if (response?.status === 200) {
-        message.success("Logged in as Student");
-        setToken(response?.data?.access);
-        updateSchoolSelection(response.data.requires_school_selection === true);
-        setSubscribe(response.data.is_subscribed);
-        if (response.data.is_subscribed) {
-          navigate("/dashboard");
-        } else {
-          navigate("/checkout");
-        }
-      } else {
-        message.error(response.data.message || "Student login failed");
-      }
-    } catch (error) {
-      console.error(error);
-      message.error("Something went wrong during student login.");
-    } finally {
-      setLoginLoading(false);
+  const openAccountView = (view) => {
+    if (!createdSession?.access) {
+      message.error("Your session could not be started. Please log in.");
+      navigate("/login?tab=counselor");
+      return;
     }
-  };
 
-  const handleLoginAsCounselor = async () => {
-    setLoginLoading(true);
-    try {
-      const response = await postApiWithoutAuth(API_URL.CONSELOR_SIGN_IN, {
-        email: data.email.toLowerCase(),
-        password: data.password,
-      });
-      if (response?.status === 200) {
-        message.success("Logged in as Counselor");
-        document.cookie = `conselorToken=${
-          response?.data?.access
-        }; path=/; max-age=${7 * 24 * 60 * 60}; Secure; SameSite=Strict`;
-        navigate("/counsellor-Dashboard");
-      } else {
-        message.error(response.data.message || "Counselor login failed");
-      }
-    } catch (error) {
-      console.error(error);
-      message.error("Something went wrong during counselor login.");
-    } finally {
-      setLoginLoading(false);
-    }
+    setToken(createdSession.access);
+    setRefreshToken(createdSession.refresh);
+    document.cookie = `conselorToken=${
+      createdSession.access
+    }; path=/; max-age=${7 * 24 * 60 * 60}; Secure; SameSite=Strict`;
+    setActiveAccountView(view);
+    navigate(
+      view === ACCOUNT_VIEWS.STUDENT
+        ? "/dashboard"
+        : "/counsellor-Dashboard"
+    );
   };
 
   return (
@@ -215,18 +191,16 @@ const CounselorSignup = () => {
             </p>
             <div className="splash-buttons">
               <MyCareerGuidanceButton
-                label="Login as Student"
+                label="View as a Student"
                 className="splash-button"
                 type="primary"
-                onClick={handleLoginAsStudent}
-                loading={loginLoading}
+                onClick={() => openAccountView(ACCOUNT_VIEWS.STUDENT)}
               />
               <MyCareerGuidanceButton
-                label="Login as Counselor"
+                label="View as a Guidance/Counsellor"
                 className="splash-button"
                 type="primary"
-                onClick={handleLoginAsCounselor}
-                loading={loginLoading}
+                onClick={() => openAccountView(ACCOUNT_VIEWS.COUNSELLOR)}
                 style={{ backgroundColor: "#1476b7", borderColor: "#1476b7" }}
               />
             </div>
@@ -440,7 +414,7 @@ const CounselorSignup = () => {
             style={{ display: "flex", justifyContent: "center" }}
           >
             Already have an account?&nbsp;&nbsp;
-            <Link to="/" className="linkStyle">
+            <Link to="/login?tab=counselor" className="linkStyle">
               Login
             </Link>
           </div>

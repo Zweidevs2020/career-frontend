@@ -20,6 +20,11 @@ import { MyCareerGuidanceButton } from "../../../components/commonComponents";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "antd";
 import "../Main/Main.css";
+import {
+  ACCOUNT_VIEWS,
+  getActiveAccountView,
+  setActiveAccountView,
+} from "../../../utils/accountView";
 
 const cards = [
   { src: imgcard, navigateTo: "/cao-calculator", alt: "My CAO Points" },
@@ -47,7 +52,7 @@ const GuidanceCard = memo(({ src, alt, onClick }) => (
   </button>
 ));
 
-const Main = () => {
+const Main = ({ isFreeTrial = false }) => {
   const navigate = useNavigate();
   const [singlequizData] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,9 +61,37 @@ const Main = () => {
     setIsModalOpen(false);
   }, []);
 
+  const canReturnToCounsellor =
+    isFreeTrial &&
+    getActiveAccountView() === ACCOUNT_VIEWS.STUDENT &&
+    document.cookie
+      .split("; ")
+      .some((cookie) => cookie.startsWith("conselorToken="));
+
+  const handleReturnToCounsellor = () => {
+    setActiveAccountView(ACCOUNT_VIEWS.COUNSELLOR);
+    navigate("/counsellor-Dashboard");
+  };
+
   return (
     <>
-     
+      {isFreeTrial && (
+        <div className="flex flex-wrap items-center justify-between gap-3 px-3 pt-4" role="status">
+          <h1 className="m-0 text-lg font-semibold text-[#243B53]">
+            Welcome to your My Guidance free trial
+          </h1>
+          {canReturnToCounsellor && (
+            <button
+              type="button"
+              onClick={handleReturnToCounsellor}
+              className="rounded-md border border-[#1476B7] bg-white px-4 py-2 text-sm font-semibold text-[#1476B7] transition-colors hover:bg-[#F0F8FD]"
+            >
+              Return to Counsellor View
+            </button>
+          )}
+        </div>
+      )}
+
       <div className="careerGuidenceGrid mt-4">
         {cards.map((card, index) => (
           <GuidanceCard
