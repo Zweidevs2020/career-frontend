@@ -84,6 +84,7 @@ const MyChoices = () => {
     apprenticeship: false,
     tertiaryDegrees: false,
     ucas: false,
+    euCourses: false,
     dublin: false,
     leinster: false,
     munster: false,
@@ -158,6 +159,7 @@ const MyChoices = () => {
         { label: "Apprenticeships", name: "apprenticeship" },
         { label: "Tertiary Degrees", name: "tertiaryDegrees" },
         { label: "UCAS in Northern Ireland", name: "ucas" },
+        { label: "EU Courses", name: "euCourses" },
       ],
     },
     {
@@ -487,6 +489,7 @@ const MyChoices = () => {
       apprenticeship: false,
       tertiaryDegrees: false,
       ucas: false,
+      euCourses: false,
       dublin: false,
       leinster: false,
       munster: false,
@@ -530,6 +533,7 @@ const MyChoices = () => {
         checkboxes.apprenticeship ? "apprentices" : null,
         checkboxes.tertiaryDegrees ? "tertiary degrees" : null,
         checkboxes.ucas ? "UCAS" : null,
+        checkboxes.euCourses ? "eu_courses" : null,
       ].filter(Boolean),
       locations: [
         checkboxes.leinster ? "Leinster" : null,

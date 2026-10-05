@@ -77,9 +77,14 @@ const Main = ({ isFreeTrial = false }) => {
     <>
       {isFreeTrial && (
         <div className="flex flex-wrap items-center justify-between gap-3 px-3 pt-4" role="status">
-          <h1 className="m-0 text-lg font-semibold text-[#243B53]">
-            Welcome to your My Guidance free trial
-          </h1>
+          <div>
+            <h1 className="m-0 text-lg font-semibold text-[#243B53]">
+              Welcome to your My Guidance free trial
+            </h1>
+            <p className="mb-0 mt-1 text-sm text-[#627D98]">
+              Manage your demo students or experience the platform as a student.
+            </p>
+          </div>
           {canReturnToCounsellor && (
             <button
               type="button"
