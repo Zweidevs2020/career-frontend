@@ -25,6 +25,7 @@ import {
   getActiveAccountView,
   setActiveAccountView,
 } from "../../../utils/accountView";
+import { getToken } from "../../../utils/LocalStorage";
 
 const cards = [
   { src: imgcard, navigateTo: "/cao-calculator", alt: "My CAO Points" },
@@ -63,12 +64,14 @@ const Main = ({ isFreeTrial = false }) => {
 
   const canReturnToCounsellor =
     isFreeTrial &&
-    getActiveAccountView() === ACCOUNT_VIEWS.STUDENT &&
-    document.cookie
-      .split("; ")
-      .some((cookie) => cookie.startsWith("conselorToken="));
+    getActiveAccountView() === ACCOUNT_VIEWS.STUDENT;
 
   const handleReturnToCounsellor = () => {
+    const token = getToken();
+    if (!token) return;
+    document.cookie = `conselorToken=${token}; path=/; max-age=${
+      7 * 24 * 60 * 60
+    }; Secure; SameSite=Strict`;
     setActiveAccountView(ACCOUNT_VIEWS.COUNSELLOR);
     navigate("/counsellor-Dashboard");
   };
@@ -76,7 +79,10 @@ const Main = ({ isFreeTrial = false }) => {
   return (
     <>
       {isFreeTrial && (
-        <div className="flex flex-wrap items-center justify-between gap-3 px-3 pt-4" role="status">
+        <div
+          className="mx-3 mt-4 flex flex-nowrap items-center justify-between gap-3 rounded-md bg-[#FFF8D6] px-4 py-3"
+          role="status"
+        >
           <div>
             <h1 className="m-0 text-lg font-semibold text-[#243B53]">
               Welcome to your My Guidance free trial
@@ -89,7 +95,7 @@ const Main = ({ isFreeTrial = false }) => {
             <button
               type="button"
               onClick={handleReturnToCounsellor}
-              className="rounded-md border border-[#1476B7] bg-white px-4 py-2 text-sm font-semibold text-[#1476B7] transition-colors hover:bg-[#F0F8FD]"
+              className="shrink-0 rounded-md bg-[#1476B7] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#105f93]"
             >
               Return to Counsellor View
             </button>
