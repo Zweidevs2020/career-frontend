@@ -187,7 +187,10 @@ const ConselorDashboard = () => {
 
       <main className="lg:col-span-10 mt-8 lg:mt-0 px-4 lg:px-32 m-auto w-full">
         {isFreeTrial && (
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3" role="status">
+          <div
+            className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-md bg-[#FFF8D6] px-4 py-3"
+            role="status"
+          >
             <div>
               <h1 className="m-0 text-lg font-semibold text-[#243B53]">
                 Welcome to your My Guidance free trial
