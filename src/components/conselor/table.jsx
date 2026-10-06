@@ -1,6 +1,147 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { Tooltip } from "antd";
+import { useLocation, useNavigate } from "react-router-dom";
 import deleteIcon from "../../assets/delete.png"; // Import the delete icon
+import {
+  AssesmentSvg,
+  CalculatorSvg,
+  ChoicesSvg,
+  EducationalSvg,
+  GoalSvg,
+  ProfileSvg,
+  ReportIcon,
+  StudySvg,
+  WorkDiaryIcon,
+} from "../../utils/svg";
+
+const progressColors = {
+  not_started: "#DC2626",
+  in_progress: "#D97706",
+  complete: "#16A34A",
+  unknown: "#94A3B8",
+};
+
+const progressLabels = {
+  not_started: "Not started",
+  in_progress: "In progress",
+  complete: "Complete",
+  unknown: "Progress unavailable",
+};
+
+const progressModules = [
+  {
+    key: "cao_points",
+    label: "CAO Points",
+    Icon: CalculatorSvg,
+    path: (id) => `/consellor/student-cao/${id}`,
+  },
+  {
+    key: "goals",
+    label: "My Goals",
+    Icon: GoalSvg,
+    path: (id) => `/consellor/student-goals/${id}`,
+  },
+  {
+    key: "cv",
+    label: "My CV",
+    Icon: ProfileSvg,
+    path: (id) => `/consellor/student-cv/${id}`,
+  },
+  {
+    key: "self_assessment",
+    label: "My Self Assessment",
+    Icon: AssesmentSvg,
+    path: (id) => `/consellor/self/${id}`,
+  },
+  {
+    key: "study",
+    label: "My Study",
+    Icon: StudySvg,
+    path: null,
+  },
+  {
+    key: "choices",
+    label: "My Choices",
+    Icon: ChoicesSvg,
+    path: (id) => `/consellor/student-choices/${id}`,
+  },
+  {
+    key: "education_guidance",
+    label: "Educational Guidance",
+    Icon: EducationalSvg,
+    path: (id) => `/consellor/student-guidance-report/${id}`,
+  },
+  {
+    key: "ai_report",
+    label: "My AI Report",
+    Icon: ReportIcon,
+    path: (id) => `/consellor/student-educational-report/${id}`,
+  },
+  {
+    key: "work_diary",
+    label: "My Work Diary",
+    Icon: WorkDiaryIcon,
+    path: (id) => `/consellor/student-details/${id}`,
+  },
+];
+
+const StudentProgress = ({ student, onNavigate }) => (
+  <div className="flex min-w-[340px] items-start gap-2" aria-label={`${student.full_name} module progress`}>
+    {progressModules.map(({ key, label, Icon, path }) => {
+      const moduleProgress = student.progress?.[key];
+      const status = progressColors[moduleProgress?.status]
+        ? moduleProgress.status
+        : "unknown";
+      const percentage = Number.isFinite(moduleProgress?.percentage)
+        ? moduleProgress.percentage
+        : null;
+      const completedSteps = moduleProgress?.completed_steps;
+      const totalSteps = moduleProgress?.total_steps;
+      const hasStepDetails =
+        Number.isFinite(completedSteps) && Number.isFinite(totalSteps);
+      const isClickable = typeof path === "function";
+
+      const tooltip = (
+        <div>
+          <div className="font-semibold">{label}</div>
+          <div>
+            {percentage === null
+              ? progressLabels[status]
+              : `${percentage}% complete`}
+          </div>
+          {hasStepDetails && (
+            <div>{`${completedSteps} of ${totalSteps} steps`}</div>
+          )}
+          {!isClickable && <div>Counsellor view unavailable</div>}
+          {student.is_read_only && <div>Read-only demo student</div>}
+        </div>
+      );
+
+      return (
+        <Tooltip title={tooltip} key={key}>
+          <span className="flex w-8 flex-col items-center">
+            <button
+              type="button"
+              onClick={() => isClickable && onNavigate(path(student.id))}
+              className={`flex h-8 w-8 items-center justify-center rounded-md transition-opacity ${
+                isClickable ? "cursor-pointer hover:opacity-80" : "cursor-default"
+              }`}
+              style={{ backgroundColor: progressColors[status] }}
+              aria-label={`${label}: ${progressLabels[status]}`}
+            >
+              <Icon fill="#FFFFFF" lineColor="#FFFFFF" />
+            </button>
+            <span className="mt-0.5 h-3 text-[10px] leading-3 text-[#6B7280]">
+              {status === "in_progress" && percentage !== null
+                ? `${percentage}%`
+                : ""}
+            </span>
+          </span>
+        </Tooltip>
+      );
+    })}
+  </div>
+);
 
 const Table = ({
   columns,
@@ -13,6 +154,7 @@ const Table = ({
   onDeleteSingleStudent, // New prop for single delete
 }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const isCounselorDashboard = location.pathname.includes("/counsellor-Dashboard");
   const isAllSelected =
     data &&
@@ -38,7 +180,12 @@ const Table = ({
                 </th>
               )}
               {columns.map((column) => (
-                <th key={column.key} className="p-3 text-left">
+                <th
+                  key={column.key}
+                  className={`p-3 text-left ${
+                    column.key === "progress" ? "min-w-[340px]" : ""
+                  }`}
+                >
                   {column.label}
                 </th>
               ))}
@@ -73,9 +220,13 @@ const Table = ({
                 )}
                 {columns.map((column) => (
                   <td key={column.key} className="p-3 border-t text-[#737373]">
-                    {renderCell
-                      ? renderCell(column.key, row[column.key], row)
-                      : row[column.key] || "N/A"}
+                    {column.key === "progress" ? (
+                      <StudentProgress student={row} onNavigate={navigate} />
+                    ) : renderCell ? (
+                      renderCell(column.key, row[column.key], row)
+                    ) : (
+                      row[column.key] || "N/A"
+                    )}
                   </td>
                 ))}
                 {isCounselorDashboard && (

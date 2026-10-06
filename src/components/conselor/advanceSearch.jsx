@@ -156,10 +156,8 @@ const AdvancedTable = ({
     }
     const lowercasedFilter = searchTerm.toLowerCase();
     const filtered = data.filter((item) =>
-      columns.some((column) => {
-        // Use column.key (as used in your Table component) as the lookup key.
-        const key =
-          typeof column === "object" && column.key ? column.key : column;
+      [...columns, { key: "email" }].some((column) => {
+        const key = typeof column === "object" && column.key ? column.key : column;
         const value = item[key];
         return (
           value && value.toString().toLowerCase().includes(lowercasedFilter)
