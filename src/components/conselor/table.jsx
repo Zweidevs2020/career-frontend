@@ -2,17 +2,15 @@ import React from "react";
 import { Tooltip } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import deleteIcon from "../../assets/delete.png"; // Import the delete icon
-import {
-  AssesmentSvg,
-  CalculatorSvg,
-  ChoicesSvg,
-  EducationalSvg,
-  GoalSvg,
-  ProfileSvg,
-  ReportIcon,
-  StudySvg,
-  WorkDiaryIcon,
-} from "../../utils/svg";
+import caoPointsIcon from "../../assets/66.png";
+import goalsIcon from "../../assets/67.png";
+import cvIcon from "../../assets/13.png";
+import selfAssessmentIcon from "../../assets/14.png";
+import studyIcon from "../../assets/16.png";
+import choicesIcon from "../../assets/12.png";
+import educationalGuidanceIcon from "../../assets/15.png";
+import aiReportIcon from "../../assets/17.png";
+import workDiaryIcon from "../../assets/18.png";
 
 const progressColors = {
   not_started: "#DC2626",
@@ -32,62 +30,65 @@ const progressModules = [
   {
     key: "cao_points",
     label: "CAO Points",
-    Icon: CalculatorSvg,
+    image: caoPointsIcon,
     path: (id) => `/consellor/student-cao/${id}`,
   },
   {
     key: "goals",
     label: "My Goals",
-    Icon: GoalSvg,
+    image: goalsIcon,
     path: (id) => `/consellor/student-goals/${id}`,
   },
   {
     key: "cv",
     label: "My CV",
-    Icon: ProfileSvg,
+    image: cvIcon,
     path: (id) => `/consellor/student-cv/${id}`,
   },
   {
     key: "self_assessment",
     label: "My Self Assessment",
-    Icon: AssesmentSvg,
+    image: selfAssessmentIcon,
     path: (id) => `/consellor/self/${id}`,
   },
   {
     key: "study",
     label: "My Study",
-    Icon: StudySvg,
+    image: studyIcon,
     path: null,
   },
   {
     key: "choices",
     label: "My Choices",
-    Icon: ChoicesSvg,
+    image: choicesIcon,
     path: (id) => `/consellor/student-choices/${id}`,
   },
   {
     key: "education_guidance",
     label: "Educational Guidance",
-    Icon: EducationalSvg,
+    image: educationalGuidanceIcon,
     path: (id) => `/consellor/student-guidance-report/${id}`,
   },
   {
     key: "ai_report",
     label: "My AI Report",
-    Icon: ReportIcon,
+    image: aiReportIcon,
     path: (id) => `/consellor/student-educational-report/${id}`,
   },
   {
     key: "work_diary",
     label: "My Work Diary",
-    Icon: WorkDiaryIcon,
+    image: workDiaryIcon,
     path: (id) => `/consellor/student-details/${id}`,
   },
 ];
 
 const StudentProgress = ({ student, onNavigate }) => (
-  <div className="flex min-w-[340px] items-start gap-2" aria-label={`${student.full_name} module progress`}>
-    {progressModules.map(({ key, label, Icon, path }) => {
+  <div
+    className="inline-flex min-w-[472px] items-start gap-3 px-2 py-1.5"
+    aria-label={`${student.full_name} module progress`}
+  >
+    {progressModules.map(({ key, label, image, path }) => {
       const moduleProgress = student.progress?.[key];
       const status = progressColors[moduleProgress?.status]
         ? moduleProgress.status
@@ -102,40 +103,68 @@ const StudentProgress = ({ student, onNavigate }) => (
       const isClickable = typeof path === "function";
 
       const tooltip = (
-        <div>
-          <div className="font-semibold">{label}</div>
-          <div>
+        <div className="min-w-[150px] py-0.5">
+          <div className="flex items-center gap-2 font-semibold">
+            <span
+              className="h-2 w-2 rounded-full"
+              style={{ backgroundColor: progressColors[status] }}
+            />
+            {label}
+          </div>
+          <div className="mt-1 text-white/80">
             {percentage === null
               ? progressLabels[status]
               : `${percentage}% complete`}
           </div>
           {hasStepDetails && (
-            <div>{`${completedSteps} of ${totalSteps} steps`}</div>
+            <div className="text-white/80">{`${completedSteps} of ${totalSteps} steps`}</div>
           )}
-          {!isClickable && <div>Counsellor view unavailable</div>}
-          {student.is_read_only && <div>Read-only demo student</div>}
+          {!isClickable && (
+            <div className="mt-1 text-white/60">Counsellor view unavailable</div>
+          )}
+          {student.is_read_only && (
+            <div className="mt-1 text-white/60">Read-only demo student</div>
+          )}
         </div>
       );
 
       return (
         <Tooltip title={tooltip} key={key}>
-          <span className="flex w-8 flex-col items-center">
+          <span className="flex w-10 shrink-0 flex-col items-center">
             <button
               type="button"
               onClick={() => isClickable && onNavigate(path(student.id))}
-              className={`flex h-8 w-8 items-center justify-center rounded-md transition-opacity ${
-                isClickable ? "cursor-pointer hover:opacity-80" : "cursor-default"
+              className={`relative flex h-10 w-10 items-center justify-center rounded-md border border-[#E2E8F0] bg-white p-0.5 shadow-sm outline-none transition-all duration-150 focus-visible:ring-2 focus-visible:ring-[#1476B7] focus-visible:ring-offset-2 ${
+                isClickable
+                  ? "cursor-pointer hover:-translate-y-px hover:shadow-md"
+                  : "cursor-default opacity-80"
               }`}
-              style={{ backgroundColor: progressColors[status] }}
               aria-label={`${label}: ${progressLabels[status]}`}
             >
-              <Icon fill="#FFFFFF" lineColor="#FFFFFF" />
+              <img
+                src={image}
+                alt=""
+                className="h-9 w-9 rounded-md object-cover"
+              />
+              <span
+                className="absolute -bottom-1 -right-1 h-3.5 w-3.5 rounded-full border-2 border-white shadow-sm"
+                style={{ backgroundColor: progressColors[status] }}
+                aria-hidden="true"
+              />
             </button>
-            <span className="mt-0.5 h-3 text-[10px] leading-3 text-[#6B7280]">
-              {status === "in_progress" && percentage !== null
-                ? `${percentage}%`
-                : ""}
-            </span>
+            {status === "in_progress" && percentage !== null ? (
+              <span
+                className="mt-1 inline-flex h-4 min-w-[30px] items-center justify-center rounded-full px-1.5 text-[10px] font-semibold leading-none"
+                style={{
+                  backgroundColor: `${progressColors[status]}18`,
+                  color: progressColors[status],
+                }}
+              >
+                {percentage}%
+              </span>
+            ) : (
+              <span className="mt-1 h-4" />
+            )}
           </span>
         </Tooltip>
       );
@@ -183,7 +212,7 @@ const Table = ({
                 <th
                   key={column.key}
                   className={`p-3 text-left ${
-                    column.key === "progress" ? "min-w-[340px]" : ""
+                    column.key === "progress" ? "min-w-[472px]" : ""
                   }`}
                 >
                   {column.label}
