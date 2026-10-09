@@ -8,7 +8,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { API_URL } from "../../../utils/constants";
 import { postApiWithoutAuth } from "../../../utils/api";
 import { setRefreshToken, setToken } from "../../../utils/LocalStorage";
-import { Checkbox, Form, Image, Tabs, message } from "antd";
+import { Checkbox, Form, Image, Modal, Tabs, message } from "antd";
 import {
   MyCareerGuidanceInputField,
   MyCareerGuidanceButton,
@@ -56,6 +56,12 @@ const Login = () => {
       } else {
         navigate("/checkout");
       }
+    } else if (
+      response?.status === 403 &&
+      response?.data?.code === "school_account_expired"
+    ) {
+      setLoading(false);
+      return;
     } else if (response?.status === 400) {
       message.error(response.data.message);
       setLoading(false);
@@ -90,10 +96,24 @@ const Login = () => {
       // setSubscribe(response.data.is_subscribed);
 
       if (response?.data?.access) {
-navigate("/counsellor-Dashboard");
+        navigate("/counsellor-Dashboard");
+
+        if (response?.data?.school_expiry_warning?.message) {
+          Modal.warning({
+            title: "School account expiry warning",
+            content: response.data.school_expiry_warning.message,
+            okText: "Continue",
+          });
+        }
       } else {
         return;
       }
+    } else if (
+      response?.status === 403 &&
+      response?.data?.code === "school_account_expired"
+    ) {
+      setLoading(false);
+      return;
     } else if (response?.status === 400 || response?.status === 403) {
       console.log(response, "");
       message.error(response.data.message?.non_field_errors);
