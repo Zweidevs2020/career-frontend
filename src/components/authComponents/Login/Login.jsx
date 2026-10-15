@@ -4,26 +4,32 @@ import myCareerGuidanceIcon from "../../../assets/newlogo.png";
 import usernameIcon from "../../../assets/usernameIcon.svg";
 import lockIcon from "../../../assets/lockIcon.svg";
 import phoneIcon from "../../../assets/phone.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { API_URL } from "../../../utils/constants";
 import { postApiWithoutAuth } from "../../../utils/api";
-import { setToken } from "../../../utils/LocalStorage";
-import { Checkbox, Form, Image, Tabs, message } from "antd";
+import { setRefreshToken, setToken } from "../../../utils/LocalStorage";
+import { Checkbox, Form, Image, Modal, Tabs, message } from "antd";
 import {
   MyCareerGuidanceInputField,
   MyCareerGuidanceButton,
 } from "../../commonComponents";
-import { useNavigate } from "react-router-dom";
 import "./LoginStyle.css";
 import { useSubscribe } from "../../../context/subscribe";
+import {
+  ACCOUNT_VIEWS,
+  setActiveAccountView,
+} from "../../../utils/accountView";
 import { resolveModuleName } from "typescript";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { setSubscribe, updateSchoolSelection } = useSubscribe();
   const [loading, setLoading] = useState(false);
   const [guestLoading, setGuestLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState("student");
+  const [activeTab, setActiveTab] = useState(
+    searchParams.get("tab") === "counselor" ? "counselor" : "student"
+  );
   const [data, setData] = useState({});
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
@@ -40,6 +46,8 @@ const Login = () => {
       message.success("Login Successfully");
       setLoading(false);
       setToken(response?.data?.access);
+      setRefreshToken(response?.data?.refresh);
+      setActiveAccountView(ACCOUNT_VIEWS.STUDENT);
       updateSchoolSelection(response.data.requires_school_selection === true);
       setSubscribe(response.data.is_subscribed);
 
@@ -48,6 +56,12 @@ const Login = () => {
       } else {
         navigate("/checkout");
       }
+    } else if (
+      response?.status === 403 &&
+      response?.data?.code === "school_account_expired"
+    ) {
+      setLoading(false);
+      return;
     } else if (response?.status === 400) {
       message.error(response.data.message);
       setLoading(false);
@@ -75,14 +89,31 @@ const Login = () => {
       document.cookie = `conselorToken=${
         response?.data?.access
       }; path=/; max-age=${7 * 24 * 60 * 60}; Secure; SameSite=Strict`;
+      setToken(response?.data?.access);
+      setRefreshToken(response?.data?.refresh);
+      setActiveAccountView(ACCOUNT_VIEWS.COUNSELLOR);
       // setConselorToken(response?.data?.access);
       // setSubscribe(response.data.is_subscribed);
 
       if (response?.data?.access) {
-navigate("/counsellor-Dashboard");
+        navigate("/counsellor-Dashboard");
+
+        if (response?.data?.school_expiry_warning?.message) {
+          Modal.warning({
+            title: "School account expiry warning",
+            content: response.data.school_expiry_warning.message,
+            okText: "Continue",
+          });
+        }
       } else {
         return;
       }
+    } else if (
+      response?.status === 403 &&
+      response?.data?.code === "school_account_expired"
+    ) {
+      setLoading(false);
+      return;
     } else if (response?.status === 400 || response?.status === 403) {
       console.log(response, "");
       message.error(response.data.message?.non_field_errors);

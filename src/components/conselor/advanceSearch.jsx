@@ -156,10 +156,8 @@ const AdvancedTable = ({
     }
     const lowercasedFilter = searchTerm.toLowerCase();
     const filtered = data.filter((item) =>
-      columns.some((column) => {
-        // Use column.key (as used in your Table component) as the lookup key.
-        const key =
-          typeof column === "object" && column.key ? column.key : column;
+      [...columns, { key: "email" }].some((column) => {
+        const key = typeof column === "object" && column.key ? column.key : column;
         const value = item[key];
         return (
           value && value.toString().toLowerCase().includes(lowercasedFilter)
@@ -183,6 +181,8 @@ const AdvancedTable = ({
       )
     );
   };
+
+  const hasWritableStudents = data.some((student) => !student.is_read_only);
 
   return (
     <div style={{ width: "100%", padding: "1rem" }}>
@@ -215,17 +215,19 @@ const AdvancedTable = ({
               color: "black",
             }}
           />
-          <button
-            onClick={onDeleteSelected}
-            disabled={selectedCount === 0}
-            className={`px-4 py-2 rounded ${
-              selectedCount === 0
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-red-500 text-white hover:bg-red-600"
-            }`}
-          >
-            Delete Selected ({selectedCount})
-          </button>
+          {hasWritableStudents && (
+            <button
+              onClick={onDeleteSelected}
+              disabled={selectedCount === 0}
+              className={`px-4 py-2 rounded ${
+                selectedCount === 0
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-red-500 text-white hover:bg-red-600"
+              }`}
+            >
+              Delete Selected ({selectedCount})
+            </button>
+          )}
         </div>
       </div>
       <Table

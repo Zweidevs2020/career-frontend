@@ -58,6 +58,7 @@ import {
   PlayCircleOutlined,
 } from "@ant-design/icons";
 import { useSubscribe } from "../../../../context/subscribe";
+import { clearActiveAccountView } from "../../../../utils/accountView";
 import { AnalogClock } from "../../../clock/clock";
 import { DemoVideoModal } from "../../index";
 const { Content, Sider, Header } = Layout;
@@ -307,6 +308,9 @@ const Sidebar = ({ children, flags }) => {
   const logoutUser = async () => {
     setSubscribe(null);
     removeToken();
+    clearActiveAccountView();
+    document.cookie =
+      "conselorToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     navigate("/");
   };
 
@@ -685,7 +689,11 @@ const Sidebar = ({ children, flags }) => {
               </div>
             </Header>
             <Content className="marginContent" style={{ overflow: "auto" }}>
-              <div className="site-layout-background">{children}</div>
+              <div className="site-layout-background">
+                {currentUrl === "/dashboard" && React.isValidElement(children)
+                  ? React.cloneElement(children, { isFreeTrial: userData.is_free_trial })
+                  : children}
+              </div>
             </Content>
             <Modal
               className="modalStyleClass2"
@@ -1176,7 +1184,11 @@ const Sidebar = ({ children, flags }) => {
               </div>
             </Header>
             <Content className="marginContent">
-              <div className="site-layout-background">{children}</div>
+              <div className="site-layout-background">
+                {currentUrl === "/dashboard" && React.isValidElement(children)
+                  ? React.cloneElement(children, { isFreeTrial: userData.is_free_trial })
+                  : children}
+              </div>
             </Content>
 
             <Modal

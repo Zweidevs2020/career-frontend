@@ -20,6 +20,12 @@ import { MyCareerGuidanceButton } from "../../../components/commonComponents";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "antd";
 import "../Main/Main.css";
+import {
+  ACCOUNT_VIEWS,
+  getActiveAccountView,
+  setActiveAccountView,
+} from "../../../utils/accountView";
+import { getToken } from "../../../utils/LocalStorage";
 
 const cards = [
   { src: imgcard, navigateTo: "/cao-calculator", alt: "My CAO Points" },
@@ -47,7 +53,7 @@ const GuidanceCard = memo(({ src, alt, onClick }) => (
   </button>
 ));
 
-const Main = () => {
+const Main = ({ isFreeTrial = false }) => {
   const navigate = useNavigate();
   const [singlequizData] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,9 +62,47 @@ const Main = () => {
     setIsModalOpen(false);
   }, []);
 
+  const canReturnToCounsellor =
+    isFreeTrial &&
+    getActiveAccountView() === ACCOUNT_VIEWS.STUDENT;
+
+  const handleReturnToCounsellor = () => {
+    const token = getToken();
+    if (!token) return;
+    document.cookie = `conselorToken=${token}; path=/; max-age=${
+      7 * 24 * 60 * 60
+    }; Secure; SameSite=Strict`;
+    setActiveAccountView(ACCOUNT_VIEWS.COUNSELLOR);
+    navigate("/counsellor-Dashboard");
+  };
+
   return (
     <>
-     
+      {isFreeTrial && (
+        <div
+          className="mx-3 mt-4 flex flex-nowrap items-center justify-between gap-3 rounded-md bg-[#FFF8D6] px-4 py-3"
+          role="status"
+        >
+          <div>
+            <h1 className="m-0 text-lg font-semibold text-[#243B53]">
+              Welcome to your My Guidance free trial
+            </h1>
+            <p className="mb-0 mt-1 text-sm text-[#627D98]">
+              Manage your demo students or experience the platform as a student.
+            </p>
+          </div>
+          {canReturnToCounsellor && (
+            <button
+              type="button"
+              onClick={handleReturnToCounsellor}
+              className="shrink-0 rounded-md bg-[#1476B7] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#105f93]"
+            >
+              Return to Counsellor View
+            </button>
+          )}
+        </div>
+      )}
+
       <div className="careerGuidenceGrid mt-4">
         {cards.map((card, index) => (
           <GuidanceCard

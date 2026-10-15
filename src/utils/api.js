@@ -10,6 +10,7 @@ const baseInstance = axios.create({
 });
 
 let isHandlingUnauthorized = false;
+let isHandlingSchoolExpiry = false;
 
 const getCookie = (name) => {
   const cookies = document.cookie.split("; ");
@@ -51,10 +52,46 @@ const handleUnauthorizedResponse = () => {
   }, 700);
 };
 
+const handleSchoolExpiredResponse = (error) => {
+  const response = error?.response;
+
+  if (
+    response?.status !== 403 ||
+    response?.data?.code !== "school_account_expired"
+  ) {
+    return false;
+  }
+
+  if (isHandlingSchoolExpiry) {
+    return true;
+  }
+
+  isHandlingSchoolExpiry = true;
+  clearAuthStorage();
+  message.error(
+    response?.data?.message ||
+      "Your school account has expired. Please contact your guidance counsellor."
+  );
+
+  if (window.location.pathname !== "/login") {
+    setTimeout(() => {
+      window.location.replace("/login");
+    }, 700);
+  } else {
+    setTimeout(() => {
+      isHandlingSchoolExpiry = false;
+    }, 700);
+  }
+
+  return true;
+};
+
 baseInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error?.response?.status === 401) {
+    const isSchoolExpired = handleSchoolExpiredResponse(error);
+
+    if (!isSchoolExpired && error?.response?.status === 401) {
       handleUnauthorizedResponse();
     }
 
