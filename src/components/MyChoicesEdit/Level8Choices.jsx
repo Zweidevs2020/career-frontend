@@ -283,33 +283,33 @@ const Level8Choices = () => {
   ]
 
   const choiceColumns = [
-    { title: "", key: "sort", width: 48 },
+    { title: "", key: "sort", width: 42 },
     {
       title: "No.",
       key: "no",
-      width: 70,
+      width: 58,
       render: (_, item, index) => (isUnsorted(item) ? <Tag color="orange">Unsorted</Tag> : index + 1 - unsortedCount),
     },
-    { title: "Code", dataIndex: "code", key: "code", width: 120 },
-    { title: "Course Title", dataIndex: "title", key: "title", width: 320 },
-    { title: "College", dataIndex: "college", key: "college", width: 280 },
+    { title: "Code", dataIndex: "code", key: "code", width: 105 },
+    { title: "Course Title", dataIndex: "title", key: "title", width: 285 },
+    { title: "College", dataIndex: "college", key: "college", width: 245 },
     {
       title: "Points",
       key: "points",
-      width: 90,
+      width: 75,
       render: (_, item) => item.point ?? item.points ?? "—",
     },
     {
       title: "Course Info",
       dataIndex: "course_information",
       key: "course_information",
-      width: 120,
+      width: 125,
       render: (href) => <CourseLink href={href} />,
     },
     {
       title: "Remove",
       key: "remove",
-      width: 90,
+      width: 96,
       align: "center",
       render: (_, item) => (
         <Popconfirm
@@ -425,7 +425,6 @@ const Level8Choices = () => {
             columns={choiceColumns}
             dataSource={choices}
             pagination={false}
-            scroll={{ x: "max-content" }}
             components={{ body: { row: SortableRow } }}
             rowClassName={(item) => (isUnsorted(item) ? "l8-row-unsorted" : "")}
             locale={{
@@ -433,7 +432,7 @@ const Level8Choices = () => {
                 <Empty description="You haven't added any Level 8 courses yet. Use Course Search to add some." />
               ),
             }}
-            className="l8-table"
+            className="l8-table l8-choices-table"
           />
         </SortableContext>
       </DndContext>

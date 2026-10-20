@@ -62,6 +62,33 @@
   background: #f4f6f8;
 }
 
+.l8-choices-table,
+.l8-choices-table .ant-table-container {
+  width: 100%;
+  max-width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.l8-choices-table .ant-table-content {
+  overflow-x: hidden !important;
+}
+
+.l8-choices-table table {
+  width: 100% !important;
+  table-layout: fixed !important;
+}
+
+.l8-choices-table .ant-table-thead > tr > th {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.l8-choices-table .ant-table-cell {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
 .l8-add-btn {
   color: #1476b7;
   font-size: 24px;
