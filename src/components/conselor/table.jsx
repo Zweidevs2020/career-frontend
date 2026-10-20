@@ -85,7 +85,7 @@ const progressModules = [
 
 const StudentProgress = ({ student, onNavigate }) => (
   <div
-    className="inline-flex min-w-[472px] items-start gap-3 px-2 py-1.5"
+    className="flex w-full min-w-[472px] items-start justify-between gap-2 px-2 py-1.5"
     aria-label={`${student.full_name} module progress`}
   >
     {progressModules.map(({ key, label, image, path }) => {
@@ -130,11 +130,11 @@ const StudentProgress = ({ student, onNavigate }) => (
 
       return (
         <Tooltip title={tooltip} key={key}>
-          <span className="flex w-10 shrink-0 flex-col items-center">
+          <span className="flex w-12 shrink-0 flex-col items-center">
             <button
               type="button"
               onClick={() => isClickable && onNavigate(path(student.id))}
-              className={`relative flex h-10 w-10 items-center justify-center rounded-md border border-[#E2E8F0] bg-white p-0.5 shadow-sm outline-none transition-all duration-150 focus-visible:ring-2 focus-visible:ring-[#1476B7] focus-visible:ring-offset-2 ${
+              className={`relative flex h-12 w-12 items-center justify-center rounded-md border border-[#E2E8F0] bg-white p-0.5 shadow-sm outline-none transition-all duration-150 focus-visible:ring-2 focus-visible:ring-[#1476B7] focus-visible:ring-offset-2 ${
                 isClickable
                   ? "cursor-pointer hover:-translate-y-px hover:shadow-md"
                   : "cursor-default opacity-80"
@@ -144,7 +144,7 @@ const StudentProgress = ({ student, onNavigate }) => (
               <img
                 src={image}
                 alt=""
-                className="h-9 w-9 rounded-md object-cover"
+                className="h-11 w-11 rounded-md object-cover"
               />
               <span
                 className="absolute -bottom-1 -right-1 h-3.5 w-3.5 rounded-full border-2 border-white shadow-sm"
@@ -211,8 +211,10 @@ const Table = ({
               {columns.map((column) => (
                 <th
                   key={column.key}
-                  className={`p-3 text-left ${
-                    column.key === "progress" ? "min-w-[472px]" : ""
+                  className={`p-4 text-left text-base font-bold ${
+                    column.key === "progress"
+                      ? "w-full min-w-[472px]"
+                      : "whitespace-nowrap pr-10"
                   }`}
                 >
                   {column.label}
@@ -220,10 +222,10 @@ const Table = ({
               ))}
               {/* Render the Actions header ONLY if we're on the counselor dashboard */}
               {isCounselorDashboard && (
-                <th className="p-3 text-left">Actions</th>
+                <th className="p-4 text-left text-base font-bold whitespace-nowrap">Actions</th>
               )}
               {isCounselorDashboard && hasWritableStudents && (
-                <th className="p-3 text-left">Delete</th>
+                <th className="p-4 text-left text-base font-bold whitespace-nowrap">Delete</th>
               )}
             </tr>
           </thead>
@@ -248,7 +250,14 @@ const Table = ({
                   </td>
                 )}
                 {columns.map((column) => (
-                  <td key={column.key} className="p-3 border-t text-[#737373]">
+                  <td
+                    key={column.key}
+                    className={`p-4 border-t ${
+                      column.key === "progress"
+                        ? "w-full"
+                        : "whitespace-nowrap pr-10 text-base font-semibold text-[#1E293B]"
+                    }`}
+                  >
                     {column.key === "progress" ? (
                       <StudentProgress student={row} onNavigate={navigate} />
                     ) : renderCell ? (
@@ -259,17 +268,17 @@ const Table = ({
                   </td>
                 ))}
                 {isCounselorDashboard && (
-                  <td className="p-3 border-t">
+                  <td className="p-4 border-t whitespace-nowrap">
                     <button
                       onClick={() => onViewDetails(row.id)}
-                      className="text-[#1476B7] hover:underline"
+                      className="text-base font-semibold text-[#1476B7] hover:underline"
                     >
                       View Details
                     </button>
                   </td>
                 )}
                 {isCounselorDashboard && hasWritableStudents && (
-                  <td className="p-3 border-t">
+                  <td className="p-4 border-t">
                     {!row.is_read_only && (
                       <button
                         onClick={() => onDeleteSingleStudent(row.id)}

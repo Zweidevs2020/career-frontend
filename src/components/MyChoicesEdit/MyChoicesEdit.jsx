@@ -18,6 +18,7 @@ import EditOutlined from "../../assets/uil_edit.svg"
 
 import { Link } from "react-router-dom"
 import "./myChoicesEdit.css"
+import Level8Choices from "./Level8Choices"
 
 const { Column, ColumnGroup } = Table
 const EU_COURSE_ROW_COUNT = 10
@@ -51,9 +52,14 @@ const MyChoicesEdit = () => {
   const [savedOtherOptions, setSavedOtherOptions] = useState({})
   const isOtherSection = dataa?.id === "other"
   const isEUCoursesSection = dataa?.id === "eu_courses"
+  const isLevel8Section = dataa?.id === "level8"
   const choiceEndpoint = isEUCoursesSection ? "eu-courses" : dataa?.id
 
   useEffect(() => {
+    if (isLevel8Section) {
+      // Level 8 loads its own data inside <Level8Choices />
+      return
+    }
     if (isOtherSection) {
       getOtherOptions()
     } else {
@@ -1433,7 +1439,9 @@ const MyChoicesEdit = () => {
               )}
               <div className="myChoiceEditHeading py-3 pl-4">{dataa?.name}</div>
 
-              {isOtherSection ? (
+              {isLevel8Section ? (
+                <Level8Choices />
+              ) : isOtherSection ? (
                 renderOtherOptionsSection()
               ) : isEUCoursesSection ? (
                 renderEUCoursesSection()

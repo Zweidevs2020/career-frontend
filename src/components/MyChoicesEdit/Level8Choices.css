@@ -1,0 +1,103 @@
+.l8-wrapper {
+  padding: 0 16px 24px;
+}
+
+.l8-panel {
+  padding-top: 8px;
+}
+
+.l8-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.l8-selects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.l8-selects .ant-select {
+  width: 100%;
+}
+
+.l8-resultbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-bottom: 12px;
+}
+
+.l8-count {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.l8-hint {
+  color: #b45309;
+  font-size: 14px;
+}
+
+.l8-quota {
+  margin-left: auto;
+  padding: 2px 12px;
+  border-radius: 999px;
+  background: #e8f2fa;
+  color: #1476b7;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.l8-quota-full {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.l8-table .ant-table-thead > tr > th {
+  color: #1476b7;
+  font-weight: 700;
+  background: #f4f6f8;
+}
+
+.l8-add-btn {
+  color: #1476b7;
+  font-size: 24px;
+  height: 36px;
+  width: 36px;
+}
+
+.l8-add-btn:not(:disabled):hover {
+  color: #0f5c91 !important;
+  background: #e8f2fa !important;
+}
+
+.l8-added-icon {
+  color: #16a34a;
+  font-size: 22px;
+}
+
+.l8-link {
+  color: #1476b7;
+  font-weight: 600;
+}
+
+.l8-drag-handle {
+  color: #64748b;
+}
+
+.l8-row-unsorted > td {
+  background: #fffbeb !important;
+}
+
+@media (max-width: 780px) {
+  .l8-wrapper {
+    padding: 0 8px 16px;
+  }
+
+  .l8-quota {
+    margin-left: 0;
+  }
+}
