@@ -3,18 +3,22 @@ import { DndContext, PointerSensor, TouchSensor, useSensor, useSensors } from "@
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers"
 import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
-import { Button, Empty, Input, Popconfirm, Select, Spin, Table, Tabs, Tag, Tooltip, message } from "antd"
+import { Button, Empty, Input, Popconfirm, Select, Spin, Switch, Table, Tabs, Tag, Tooltip, message } from "antd"
 import {
   CheckCircleFilled,
+  CloseCircleFilled,
   DeleteOutlined,
+  LoadingOutlined,
   MenuOutlined,
   PlusCircleOutlined,
   SearchOutlined,
+  UnorderedListOutlined,
 } from "@ant-design/icons"
 import { deleteApiWithAuth, getApiWithAuth, patchApiWithAuth, postApiWithAuth } from "../../utils/api"
 import "./Level8Choices.css"
 
-const MAX_CHOICES = 10
+const MAX_CHOICES = 30
+const SHOW_POINTS_KEY = "l8_show_points"
 const ENDPOINT = "level8"
 
 const isUnsorted = (item) => !Number(item?.order_number)
@@ -35,10 +39,85 @@ const getErrorMessage = (response, fallback) => {
   return fallback
 }
 
-const uniqueOptions = (courses, key) =>
-  Array.from(new Set(courses.map((course) => course?.[key]).filter(Boolean)))
-    .sort((a, b) => String(a).localeCompare(String(b)))
-    .map((value) => ({ value, label: value }))
+// Distinct values of `key` with how many courses carry each one.
+const countOptions = (courses, key) => {
+  const counts = new Map()
+  courses.forEach((course) => {
+    const value = course?.[key]
+    if (value) counts.set(value, (counts.get(value) || 0) + 1)
+  })
+  return Array.from(counts, ([value, count]) => ({ value, count })).sort((a, b) =>
+    String(a.value).localeCompare(String(b.value)),
+  )
+}
+
+const readShowPoints = () => {
+  try {
+    return localStorage.getItem(SHOW_POINTS_KEY) !== "false"
+  } catch (error) {
+    return true
+  }
+}
+
+const MultiSelectFilter = ({ label, placeholder, options, value, onChange }) => {
+  const selected = new Set(value)
+  const selectOptions = options.map((option) => ({
+    value: option.value,
+    text: option.value,
+    label: (
+      <span className="l8-option">
+        <span
+          className={`l8-option-check ${selected.has(option.value) ? "l8-option-check-on" : ""}`}
+          aria-hidden="true"
+        />
+        <span className="l8-option-text">{option.value}</span>
+        <span className="l8-option-count">{option.count}</span>
+      </span>
+    ),
+  }))
+
+  return (
+    <div className="l8-filter">
+      <span className="l8-filter-label">
+        {label}
+        {value.length > 0 && <span className="l8-filter-badge">{value.length}</span>}
+      </span>
+      <Select
+        mode="multiple"
+        allowClear
+        size="large"
+        placeholder={placeholder}
+        value={value}
+        options={selectOptions}
+        onChange={onChange}
+        optionLabelProp="text"
+        maxTagCount="responsive"
+        menuItemSelectedIcon={null}
+        showSearch
+        filterOption={(input, option) =>
+          String(option?.text ?? "")
+            .toLowerCase()
+            .includes(input.trim().toLowerCase())
+        }
+        popupClassName="l8-filter-dropdown"
+        notFoundContent={<span className="l8-filter-empty">No matches</span>}
+        dropdownRender={(menu) => (
+          <>
+            {menu}
+            {value.length > 0 && (
+              <div className="l8-filter-footer">
+                <span>{value.length} selected</span>
+                <Button type="link" size="small" onClick={() => onChange([])}>
+                  Clear
+                </Button>
+              </div>
+            )}
+          </>
+        )}
+      />
+    </div>
+  )
+}
 
 const SortableRow = ({ children, ...props }) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -87,11 +166,13 @@ const Level8Choices = () => {
   const [choices, setChoices] = useState([])
   const [activeTab, setActiveTab] = useState("search")
   const [adding, setAdding] = useState(null)
+  const [removing, setRemoving] = useState(null)
 
   const [searchText, setSearchText] = useState("")
-  const [region, setRegion] = useState(null)
-  const [county, setCounty] = useState(null)
-  const [college, setCollege] = useState(null)
+  const [regions, setRegions] = useState([])
+  const [counties, setCounties] = useState([])
+  const [colleges, setColleges] = useState([])
+  const [showPoints, setShowPoints] = useState(readShowPoints)
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -113,32 +194,41 @@ const Level8Choices = () => {
     loadData()
   }, [loadData])
 
-  const choiceCodes = useMemo(() => new Set(choices.map((item) => item.code)), [choices])
+  const choiceByCode = useMemo(() => new Map(choices.map((item) => [item.code, item])), [choices])
   const limitReached = choices.length >= MAX_CHOICES
   const unsortedCount = choices.filter(isUnsorted).length
 
-  const regionOptions = useMemo(() => uniqueOptions(courses, "region"), [courses])
-  const hasRegion = regionOptions.length > 0
-
-  const countyOptions = useMemo(
-    () => uniqueOptions(region ? courses.filter((course) => course.region === region) : courses, "county"),
-    [courses, region],
+  // Each filter narrows the options offered by the filters after it: Region -> County -> College.
+  const regionScoped = useMemo(
+    () => (regions.length ? courses.filter((course) => regions.includes(course.region)) : courses),
+    [courses, regions],
   )
-  const hasCounty = countyOptions.length > 0
+  const countyScoped = useMemo(
+    () => (counties.length ? regionScoped.filter((course) => counties.includes(course.county)) : regionScoped),
+    [regionScoped, counties],
+  )
 
-  const collegeOptions = useMemo(() => {
-    let scoped = courses
-    if (region) scoped = scoped.filter((course) => course.region === region)
-    if (county) scoped = scoped.filter((course) => course.county === county)
-    return uniqueOptions(scoped, "college")
-  }, [courses, region, county])
+  const regionOptions = useMemo(() => countOptions(courses, "region"), [courses])
+  const countyOptions = useMemo(() => countOptions(regionScoped, "county"), [regionScoped])
+  const collegeOptions = useMemo(() => countOptions(countyScoped, "college"), [countyScoped])
+  const hasRegion = regionOptions.length > 0
+  const hasCounty = useMemo(() => courses.some((course) => course.county), [courses])
+
+  // Drop selections that are no longer reachable after a parent filter changes.
+  useEffect(() => {
+    const available = new Set(countyOptions.map((option) => option.value))
+    setCounties((prev) => (prev.every((value) => available.has(value)) ? prev : prev.filter((value) => available.has(value))))
+  }, [countyOptions])
+
+  useEffect(() => {
+    const available = new Set(collegeOptions.map((option) => option.value))
+    setColleges((prev) => (prev.every((value) => available.has(value)) ? prev : prev.filter((value) => available.has(value))))
+  }, [collegeOptions])
 
   const filteredCourses = useMemo(() => {
     const query = searchText.trim().toLowerCase()
-    return courses.filter((course) => {
-      if (region && course.region !== region) return false
-      if (county && course.county !== county) return false
-      if (college && course.college !== college) return false
+    return countyScoped.filter((course) => {
+      if (colleges.length && !colleges.includes(course.college)) return false
       if (!query) return true
       return [course.code, course.title, course.college, course.county, course.region].some((value) =>
         String(value ?? "")
@@ -146,15 +236,24 @@ const Level8Choices = () => {
           .includes(query),
       )
     })
-  }, [courses, searchText, region, county, college])
+  }, [countyScoped, searchText, colleges])
 
-  const hasFilters = Boolean(searchText.trim() || region || county || college)
+  const hasFilters = Boolean(searchText.trim() || regions.length || counties.length || colleges.length)
 
   const clearFilters = () => {
     setSearchText("")
-    setRegion(null)
-    setCounty(null)
-    setCollege(null)
+    setRegions([])
+    setCounties([])
+    setColleges([])
+  }
+
+  const toggleShowPoints = (checked) => {
+    setShowPoints(checked)
+    try {
+      localStorage.setItem(SHOW_POINTS_KEY, String(checked))
+    } catch (error) {
+      // Preference just won't be remembered
+    }
   }
 
   const persistOrder = async (ordered) => {
@@ -173,7 +272,7 @@ const Level8Choices = () => {
       message.warning(`You can only have ${MAX_CHOICES} courses in My L8 Choices. Remove one to add another.`)
       return
     }
-    if (choiceCodes.has(course.code)) {
+    if (choiceByCode.has(course.code)) {
       message.info("This course is already in My L8 Choices")
       return
     }
@@ -204,6 +303,7 @@ const Level8Choices = () => {
   }
 
   const handleDelete = async (item) => {
+    setRemoving(item.id)
     const response = await deleteApiWithAuth(`choices/delete-${ENDPOINT}/${item.id}/`)
     if (response?.data?.status === 204 || response?.data?.status === 200) {
       message.success("Course removed")
@@ -211,6 +311,7 @@ const Level8Choices = () => {
     } else {
       message.error(getErrorMessage(response, "Unable to remove this course"))
     }
+    setRemoving(null)
   }
 
   const onDragEnd = async ({ active, over }) => {
@@ -257,25 +358,46 @@ const Level8Choices = () => {
       align: "center",
       fixed: "right",
       render: (_, course) => {
-        if (choiceCodes.has(course.code)) {
+        const saved = choiceByCode.get(course.code)
+        if (saved) {
           return (
-            <Tooltip title="Already in My L8 Choices">
-              <CheckCircleFilled className="l8-added-icon" />
-            </Tooltip>
+            <Popconfirm
+              title="Remove from My L8 Choices?"
+              okText="Remove"
+              okButtonProps={{ danger: true }}
+              onConfirm={() => handleDelete(saved)}
+            >
+              <Tooltip title="Remove from My L8 Choices">
+                <button
+                  type="button"
+                  aria-label={`Remove ${course.title} from My Choices`}
+                  className="l8-icon-btn l8-icon-btn-added"
+                  disabled={removing === saved.id}
+                >
+                  {removing === saved.id ? (
+                    <LoadingOutlined />
+                  ) : (
+                    <>
+                      <CheckCircleFilled className="l8-added-icon" />
+                      <CloseCircleFilled className="l8-remove-icon" />
+                    </>
+                  )}
+                </button>
+              </Tooltip>
+            </Popconfirm>
           )
         }
         return (
           <Tooltip title={limitReached ? `Limit of ${MAX_CHOICES} courses reached` : "Add to My Choices"}>
-            <Button
-              type="text"
-              shape="circle"
+            <button
+              type="button"
               aria-label={`Add ${course.title} to My Choices`}
-              className="l8-add-btn"
-              disabled={limitReached}
-              loading={adding === course.code}
-              icon={<PlusCircleOutlined />}
+              className="l8-icon-btn l8-icon-btn-add"
+              disabled={limitReached || adding === course.code}
               onClick={() => handleAdd(course)}
-            />
+            >
+              {adding === course.code ? <LoadingOutlined /> : <PlusCircleOutlined />}
+            </button>
           </Tooltip>
         )
       },
@@ -293,12 +415,16 @@ const Level8Choices = () => {
     { title: "Code", dataIndex: "code", key: "code", width: 105 },
     { title: "Course Title", dataIndex: "title", key: "title", width: 285 },
     { title: "College", dataIndex: "college", key: "college", width: 245 },
-    {
-      title: "Points",
-      key: "points",
-      width: 75,
-      render: (_, item) => item.point ?? item.points ?? "—",
-    },
+    ...(showPoints
+      ? [
+          {
+            title: "Points",
+            key: "points",
+            width: 75,
+            render: (_, item) => item.point ?? item.points ?? "—",
+          },
+        ]
+      : []),
     {
       title: "Course Info",
       dataIndex: "course_information",
@@ -338,43 +464,29 @@ const Level8Choices = () => {
         />
         <div className="l8-selects">
           {hasRegion && (
-            <Select
-              allowClear
-              showSearch
-              size="large"
-              placeholder="Region"
-              value={region}
+            <MultiSelectFilter
+              label="Region"
+              placeholder="All regions"
               options={regionOptions}
-              onChange={(value) => {
-                setRegion(value ?? null)
-                setCounty(null)
-                setCollege(null)
-              }}
+              value={regions}
+              onChange={setRegions}
             />
           )}
           {hasCounty && (
-            <Select
-              allowClear
-              showSearch
-              size="large"
-              placeholder="County"
-              value={county}
+            <MultiSelectFilter
+              label="County"
+              placeholder="All counties"
               options={countyOptions}
-              onChange={(value) => {
-                setCounty(value ?? null)
-                setCollege(null)
-              }}
+              value={counties}
+              onChange={setCounties}
             />
           )}
-          <Select
-            allowClear
-            showSearch
-            size="large"
-            placeholder="College"
-            value={college}
+          <MultiSelectFilter
+            label="College"
+            placeholder="All colleges"
             options={collegeOptions}
-            onChange={(value) => setCollege(value ?? null)}
-            optionFilterProp="label"
+            value={colleges}
+            onChange={setColleges}
           />
         </div>
       </div>
@@ -417,6 +529,10 @@ const Level8Choices = () => {
             {unsortedCount === 1 ? " it" : " them"}.
           </span>
         )}
+        <label className="l8-points-toggle">
+          <Switch size="small" checked={showPoints} onChange={toggleShowPoints} />
+          <span>Show points</span>
+        </label>
       </div>
       <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
         <SortableContext items={choices.map((item) => item.id)} strategy={verticalListSortingStrategy}>
@@ -447,9 +563,29 @@ const Level8Choices = () => {
         activeKey={activeTab}
         onChange={setActiveTab}
         size="large"
+        className="l8-tabs"
         items={[
-          { key: "search", label: "Course Search", children: searchTab },
-          { key: "choices", label: `My L8 Choices (${choices.length})`, children: choicesTab },
+          {
+            key: "search",
+            label: (
+              <span className="l8-tab l8-tab-search">
+                <SearchOutlined />
+                Course Search
+              </span>
+            ),
+            children: searchTab,
+          },
+          {
+            key: "choices",
+            label: (
+              <span className="l8-tab l8-tab-choices">
+                <UnorderedListOutlined />
+                My L8 Choices
+                <span className="l8-tab-count">{choices.length}</span>
+              </span>
+            ),
+            children: choicesTab,
+          },
         ]}
       />
     </div>
