@@ -1,5 +1,85 @@
+/* White card sitting inside the purple page frame */
 .l8-wrapper {
-  padding: 0 16px 24px;
+  margin: 0 12px 16px;
+  padding: 20px 24px 24px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(125, 99, 199, 0.18);
+}
+
+/* Tabs: pill buttons, each with its own accent colour */
+.l8-tabs > .ant-tabs-nav {
+  margin-bottom: 20px;
+}
+
+.l8-tabs > .ant-tabs-nav::before,
+.l8-tabs .ant-tabs-ink-bar {
+  display: none;
+}
+
+.l8-tabs .ant-tabs-nav-list {
+  gap: 12px;
+}
+
+.l8-tabs .ant-tabs-tab {
+  padding: 0;
+  margin: 0 !important;
+}
+
+.l8-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.l8-tab-search {
+  color: #1476b7;
+  background: #e8f2fa;
+  border-color: #c7dff0;
+}
+
+.l8-tab-choices {
+  color: #7d63c7;
+  background: #f4effb;
+  border-color: #ddd0f2;
+}
+
+.l8-tabs .ant-tabs-tab:hover .l8-tab {
+  filter: brightness(0.97);
+}
+
+.l8-tabs .ant-tabs-tab-active .l8-tab-search {
+  color: #ffffff;
+  background: #1476b7;
+  border-color: #1476b7;
+  box-shadow: 0 4px 12px rgba(20, 118, 183, 0.25);
+}
+
+.l8-tabs .ant-tabs-tab-active .l8-tab-choices {
+  color: #ffffff;
+  background: #7d63c7;
+  border-color: #7d63c7;
+  box-shadow: 0 4px 12px rgba(125, 99, 199, 0.3);
+}
+
+.l8-tab-count {
+  min-width: 24px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: rgba(125, 99, 199, 0.15);
+  font-size: 12px;
+  line-height: 20px;
+  text-align: center;
+}
+
+.l8-tabs .ant-tabs-tab-active .l8-tab-count {
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .l8-panel {
@@ -21,6 +101,148 @@
 
 .l8-selects .ant-select {
   width: 100%;
+}
+
+/* Multi-select filters */
+.l8-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.l8-filter-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.l8-filter-badge {
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #1476b7;
+  color: #ffffff;
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+}
+
+/* index.css removes Select borders globally, so restore them here */
+.l8-filter .ant-select .ant-select-selector {
+  min-height: 44px;
+  padding: 4px 11px !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 8px !important;
+  background: #ffffff !important;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.l8-filter .ant-select:hover .ant-select-selector {
+  border-color: #1476b7 !important;
+}
+
+.l8-filter .ant-select-focused .ant-select-selector {
+  border-color: #1476b7 !important;
+  box-shadow: 0 0 0 3px rgba(20, 118, 183, 0.12) !important;
+}
+
+.l8-filter .ant-select-selection-placeholder {
+  color: #94a3b8;
+}
+
+.l8-filter .ant-select-selection-item {
+  background: #e8f2fa;
+  border-color: #c7dff0;
+  color: #1476b7;
+  font-weight: 500;
+}
+
+.l8-filter-dropdown .ant-select-item-option {
+  padding: 6px 10px;
+}
+
+.l8-filter-dropdown .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background: #f1f7fc;
+  font-weight: 500;
+}
+
+.l8-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 24px;
+  line-height: 20px;
+}
+
+/* Custom checkbox so global checkbox styles can't shift its alignment */
+.l8-option-check {
+  position: relative;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 4px;
+  background: #ffffff;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.l8-option-check-on {
+  border-color: #1476b7;
+  background: #1476b7;
+}
+
+.l8-option-check-on::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 5px;
+  height: 9px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.l8-filter-dropdown .ant-select-item-option:hover .l8-option-check:not(.l8-option-check-on) {
+  border-color: #1476b7;
+}
+
+.l8-filter-dropdown .ant-select-item-option-content {
+  display: flex;
+  align-items: center;
+}
+
+.l8-option-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.l8-option-count {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.l8-filter-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px 2px;
+  margin-top: 4px;
+  border-top: 1px solid #f0f0f0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.l8-filter-empty {
+  color: #94a3b8;
 }
 
 .l8-resultbar {
@@ -89,21 +311,104 @@
   word-break: normal;
 }
 
-.l8-add-btn {
-  color: #1476b7;
-  font-size: 24px;
-  height: 36px;
+/* Circular icon buttons in the "Add to My Choices" column */
+.l8-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s, color 0.2s;
 }
 
-.l8-add-btn:not(:disabled):hover {
-  color: #0f5c91 !important;
-  background: #e8f2fa !important;
+.l8-icon-btn .anticon {
+  display: inline-flex;
+}
+
+.l8-icon-btn:focus-visible {
+  outline: none;
+}
+
+.l8-icon-btn:disabled {
+  cursor: not-allowed;
+}
+
+.l8-icon-btn-add {
+  color: #1476b7;
+}
+
+.l8-icon-btn-add:not(:disabled):hover,
+.l8-icon-btn-add:focus-visible {
+  background: #e8f2fa;
+  box-shadow: 0 0 0 4px rgba(20, 118, 183, 0.08);
+}
+
+.l8-icon-btn-add:disabled {
+  color: #cbd5e1;
 }
 
 .l8-added-icon {
   color: #16a34a;
-  font-size: 22px;
+}
+
+.l8-remove-icon {
+  display: none !important;
+  color: #dc2626;
+}
+
+.l8-icon-btn-added:not(:disabled):hover,
+.l8-icon-btn-added:focus-visible {
+  background: #fee2e2;
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.08);
+}
+
+.l8-icon-btn-added:not(:disabled):hover .l8-added-icon,
+.l8-icon-btn-added:focus-visible .l8-added-icon {
+  display: none !important;
+}
+
+.l8-icon-btn-added:not(:disabled):hover .l8-remove-icon,
+.l8-icon-btn-added:focus-visible .l8-remove-icon {
+  display: inline-flex !important;
+}
+
+.l8-icon-btn-added:disabled {
+  color: #94a3b8;
+}
+
+.l8-points-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Keep the switch track visible in both states (global button reset hides it) */
+.l8-points-toggle .ant-switch {
+  background: #cbd5e1 !important;
+}
+
+.l8-points-toggle .ant-switch:hover:not(.ant-switch-disabled) {
+  background: #94a3b8 !important;
+}
+
+.l8-points-toggle .ant-switch.ant-switch-checked {
+  background: #1476b7 !important;
+}
+
+.l8-points-toggle .ant-switch.ant-switch-checked:hover:not(.ant-switch-disabled) {
+  background: #0f67a1 !important;
 }
 
 .l8-link {
@@ -121,10 +426,22 @@
 
 @media (max-width: 780px) {
   .l8-wrapper {
-    padding: 0 8px 16px;
+    margin: 0 4px 12px;
+    padding: 14px 12px 16px;
+    border-radius: 12px;
   }
 
-  .l8-quota {
+  .l8-tabs .ant-tabs-nav-list {
+    gap: 8px;
+  }
+
+  .l8-tab {
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+
+  .l8-quota,
+  .l8-points-toggle {
     margin-left: 0;
   }
 }
