@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { putApiWithAuth } from "../../../utils/api";
 import phoneIcon from "../../../assets/phone.svg";
 
-import axios from "axios";
+import { downloadCvDocument } from "../../../utils/downloadCvDocument";
 
 const { TextArea } = Input;
 
@@ -107,37 +107,7 @@ const PersonalProfile = ({ setCurrent, current }) => {
 
   const SavePdf = async (e) => {
     e.preventDefault();
-    try {
-      var token = localStorage.getItem("access_token", "");
-
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}cv/doc-cv`,
-        {
-          responseType: "blob", // Set the response type to 'blob'
-          headers: {
-            Authorization: `Bearer ${token}`, // Set the Authorization header
-          },
-        }
-      );
-      const blob = new Blob([response.data], {
-        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      });
-      var link = document.createElement("a");
-      var URL = window.URL || window.webkitURL;
-      var downloadUrl = URL.createObjectURL(blob);
-      link.href = downloadUrl;
-      link.style = "display: none";
-      link.download = getCvFileName();
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      message.success(
-        "Download initiated! Please choose a location to save the file."
-      );
-    } catch (error) {
-      console.error("Error downloading document:", error);
-      message.error("Failed to download document. Please try again.");
-    }
+    await downloadCvDocument(getCvFileName());
   };
 
   const handleNextClick = () => {

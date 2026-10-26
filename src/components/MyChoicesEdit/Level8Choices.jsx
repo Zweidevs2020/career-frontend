@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { DndContext, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core"
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers"
 import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable"
@@ -19,6 +19,9 @@ import "./Level8Choices.css"
 
 const MAX_CHOICES = 30
 const SHOW_POINTS_KEY = "l8_show_points"
+const RECENT_KEY = "l8_recently_added"
+// How long a newly added course stays highlighted if the student doesn't drag it into place.
+const RECENT_HIGHLIGHT_MS = 24 * 60 * 60 * 1000
 const ENDPOINT = "level8"
 
 const isUnsorted = (item) => !Number(item?.order_number)
@@ -49,6 +52,37 @@ const countOptions = (courses, key) => {
   return Array.from(counts, ([value, count]) => ({ value, count })).sort((a, b) =>
     String(a.value).localeCompare(String(b.value)),
   )
+}
+
+// Recently added courses: { [choiceId]: addedAtTimestamp }, kept in this browser only.
+const pruneRecent = (recent, validIds) => {
+  const now = Date.now()
+  return Object.fromEntries(
+    Object.entries(recent).filter(
+      ([id, addedAt]) => now - addedAt < RECENT_HIGHLIGHT_MS && (!validIds || validIds.has(String(id))),
+    ),
+  )
+}
+
+const readRecent = () => {
+  try {
+    const stored = JSON.parse(localStorage.getItem(RECENT_KEY) || "{}")
+    return stored && typeof stored === "object" ? pruneRecent(stored) : {}
+  } catch (error) {
+    return {}
+  }
+}
+
+const writeRecent = (recent) => {
+  try {
+    if (Object.keys(recent).length) {
+      localStorage.setItem(RECENT_KEY, JSON.stringify(recent))
+    } else {
+      localStorage.removeItem(RECENT_KEY)
+    }
+  } catch (error) {
+    // Highlight just won't survive a reload
+  }
 }
 
 const readShowPoints = () => {
@@ -173,6 +207,7 @@ const Level8Choices = () => {
   const [counties, setCounties] = useState([])
   const [colleges, setColleges] = useState([])
   const [showPoints, setShowPoints] = useState(readShowPoints)
+  const [recentlyAdded, setRecentlyAdded] = useState(readRecent)
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -183,12 +218,60 @@ const Level8Choices = () => {
     const response = await getApiWithAuth(`choices/${ENDPOINT}/`)
     if (response?.data?.status === 200) {
       setCourses(response.data.data.level_data || [])
-      setChoices(sortChoices(response.data.data.user_data || []))
-    } else {
-      message.error(getErrorMessage(response, "Unable to load Level 8 courses"))
+      const saved = response.data.data.user_data || []
+      setChoices(sortChoices(saved))
+      setLoading(false)
+      return saved
     }
+    message.error(getErrorMessage(response, "Unable to load Level 8 courses"))
     setLoading(false)
+    return null
   }, [])
+
+  const updateRecent = useCallback((update) => {
+    setRecentlyAdded((prev) => {
+      const next = update(prev)
+      if (next === prev) return prev
+      writeRecent(next)
+      return next
+    })
+  }, [])
+
+  // Forget highlights for courses that were removed elsewhere (runs once after the first load).
+  const prunedOnLoad = useRef(false)
+  useEffect(() => {
+    if (loading || prunedOnLoad.current) return
+    prunedOnLoad.current = true
+    const validIds = new Set(choices.map((item) => String(item.id)))
+    updateRecent((prev) => {
+      const next = pruneRecent(prev, validIds)
+      return Object.keys(next).length === Object.keys(prev).length ? prev : next
+    })
+  }, [choices, loading, updateRecent])
+
+  // Remove each highlight the moment its time runs out, even if the page stays open.
+  useEffect(() => {
+    const times = Object.values(recentlyAdded)
+    if (!times.length) return undefined
+    const nextExpiry = Math.min(...times) + RECENT_HIGHLIGHT_MS - Date.now()
+    const timer = setTimeout(
+      () => updateRecent((prev) => pruneRecent(prev)),
+      Math.max(nextExpiry, 0) + 50,
+    )
+    return () => clearTimeout(timer)
+  }, [recentlyAdded, updateRecent])
+
+  const clearRecent = useCallback(
+    (id) =>
+      updateRecent((prev) => {
+        if (!(String(id) in prev)) return prev
+        const { [String(id)]: _removed, ...rest } = prev
+        return rest
+      }),
+    [updateRecent],
+  )
+
+  const isRecent = (item) => String(item?.id) in recentlyAdded
 
   useEffect(() => {
     loadData()
@@ -279,23 +362,22 @@ const Level8Choices = () => {
 
     setAdding(course.code)
     const { id, ...rest } = course
-    const previousOrder = choices.filter((item) => !isUnsorted(item))
-    const response = await postApiWithAuth(`choices/${ENDPOINT}/`, { ...rest, order_number: 1 })
+    // New courses go to the bottom of the list.
+    const lastOrder = choices.reduce((max, item) => Math.max(max, Number(item.order_number) || 0), 0)
+    const previousIds = new Set(choices.map((item) => String(item.id)))
+    const response = await postApiWithAuth(`choices/${ENDPOINT}/`, { ...rest, order_number: lastOrder + 1 })
+    const ok = [200, 201].includes(response?.data?.status) || [200, 201].includes(response?.status)
 
-    if (response?.data?.status === 200 || response?.data?.status === 201) {
-      // Re-read so we have the new record's id, then put it at the top of the ranked list.
-      const refreshed = await getApiWithAuth(`choices/${ENDPOINT}/`)
-      if (refreshed?.data?.status === 200) {
-        const saved = refreshed.data.data.user_data || []
-        const added = saved.find((item) => item.code === course.code)
-        const others = previousOrder
-          .map((item) => saved.find((s) => s.id === item.id))
-          .filter(Boolean)
-        const ordered = added ? [added, ...others] : others
-        await persistOrder(ordered)
-      }
-      await loadData()
-      message.success("Added to the top of My L8 Choices")
+    // Reload either way, so the list always matches what was actually saved.
+    const saved = await loadData()
+    // The new record is whichever id wasn't in the list before the add.
+    const added =
+      saved?.find((item) => !previousIds.has(String(item.id))) ||
+      saved?.find((item) => String(item.code).trim() === String(course.code).trim())
+
+    if (added && (ok || !previousIds.has(String(added.id)))) {
+      updateRecent((prev) => ({ ...prev, [String(added.id)]: Date.now() }))
+      message.success("Added to the bottom of My L8 Choices")
     } else {
       message.error(getErrorMessage(response, "Unable to add this course"))
     }
@@ -306,6 +388,7 @@ const Level8Choices = () => {
     setRemoving(item.id)
     const response = await deleteApiWithAuth(`choices/delete-${ENDPOINT}/${item.id}/`)
     if (response?.data?.status === 204 || response?.data?.status === 200) {
+      clearRecent(item.id)
       message.success("Course removed")
       await loadData()
     } else {
@@ -320,6 +403,8 @@ const Level8Choices = () => {
     const to = choices.findIndex((item) => item.id === over.id)
     if (from < 0 || to < 0) return
 
+    // Dragging a recently added course counts as sorting it, so its highlight ends.
+    clearRecent(active.id)
     const previous = choices
     const reordered = arrayMove(choices, from, to)
     setChoices(reordered.map((item, index) => ({ ...item, order_number: index + 1 })))
@@ -410,7 +495,16 @@ const Level8Choices = () => {
       title: "No.",
       key: "no",
       width: 58,
-      render: (_, item, index) => (isUnsorted(item) ? <Tag color="orange">Unsorted</Tag> : index + 1 - unsortedCount),
+      render: (_, item, index) => (
+        <>
+          {isRecent(item) && (
+            <Tooltip title="Recently added. Drag it into place to confirm its position.">
+              <span className="l8-new-badge l8-recent-tag">Recently added</span>
+            </Tooltip>
+          )}
+          {isUnsorted(item) ? <Tag color="orange">Unsorted</Tag> : index + 1 - unsortedCount}
+        </>
+      ),
     },
     { title: "Code", dataIndex: "code", key: "code", width: 105 },
     { title: "Course Title", dataIndex: "title", key: "title", width: 285 },
@@ -542,7 +636,7 @@ const Level8Choices = () => {
             dataSource={choices}
             pagination={false}
             components={{ body: { row: SortableRow } }}
-            rowClassName={(item) => (isUnsorted(item) ? "l8-row-unsorted" : "")}
+            rowClassName={(item) => (isUnsorted(item) ? "l8-row-unsorted" : isRecent(item) ? "l8-row-recent" : "")}
             locale={{
               emptyText: (
                 <Empty description="You haven't added any Level 8 courses yet. Use Course Search to add some." />
