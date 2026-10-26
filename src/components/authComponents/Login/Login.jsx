@@ -9,6 +9,7 @@ import { API_URL } from "../../../utils/constants";
 import { postApiWithoutAuth } from "../../../utils/api";
 import { setRefreshToken, setToken } from "../../../utils/LocalStorage";
 import { Checkbox, Form, Image, Modal, Tabs, message } from "antd";
+import { SolutionOutlined, UserOutlined } from "@ant-design/icons";
 import {
   MyCareerGuidanceInputField,
   MyCareerGuidanceButton,
@@ -135,17 +136,22 @@ const Login = () => {
           <Image preview={false} src={myCareerGuidanceIcon} width={207} style={{ cursor: 'pointer' }} />
         </Link>
         
+        <div className="loginCardWrap">
         <Tabs
           activeKey={activeTab}
           onChange={(activeTab) => {
             setActiveTab(activeTab);
             setData({});
           }}
-          centered
-          className="responsiveTabs"
+          className="responsiveTabs loginTabs"
         >
           <Tabs.TabPane
-            tab="Student Login"
+            tab={
+              <span className="loginTabLabel">
+                <UserOutlined />
+                Student Login
+              </span>
+            }
             key="student"
             // style={{ display: "flex", justifyContent: "center" }}
           >
@@ -248,8 +254,12 @@ const Login = () => {
             </Form>
           </Tabs.TabPane>
           <Tabs.TabPane
-            tab="
-Counsellor Login"
+            tab={
+              <span className="loginTabLabel">
+                <SolutionOutlined />
+                Counsellor Login
+              </span>
+            }
             key="counselor"
           >
             <Form
@@ -341,6 +351,7 @@ Counsellor Login"
             </Form>
           </Tabs.TabPane>
         </Tabs>
+        </div>
 
         <span className="allRights">
           © 2023 My Guidance. All Rights Reserved

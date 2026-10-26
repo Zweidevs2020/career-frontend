@@ -424,6 +424,48 @@
   background: #fffbeb !important;
 }
 
+/* Recently added course: soft green tint with an accent bar until sorted or expired */
+.l8-row-recent > td {
+  background: #f0fdf4 !important;
+  transition: background-color 0.4s ease;
+}
+
+.l8-row-recent > td:first-child {
+  box-shadow: inset 4px 0 0 #16a34a;
+}
+
+/* Small tag pinned to the row's top-left corner; it uses the existing row spacing,
+   so the row height doesn't change and the tag sits in the same spot on every row */
+.l8-row-recent > td {
+  position: relative;
+}
+
+.l8-recent-tag {
+  position: absolute;
+  top: 5px;
+  left: 12px;
+  z-index: 1;
+  padding: 0 7px !important;
+  font-size: 10px !important;
+  line-height: 15px !important;
+  letter-spacing: 0.3px;
+  box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.15);
+}
+
+.l8-new-badge {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  line-height: 18px;
+  white-space: nowrap;
+  cursor: default;
+}
+
+
 @media (max-width: 780px) {
   .l8-wrapper {
     margin: 0 4px 12px;
