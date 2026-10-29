@@ -423,7 +423,7 @@ const useSavedChoices = (config) => {
           components={{ body: { row: SortableRow } }}
           rowClassName={rowClassName}
           locale={{ emptyText: <Empty description={emptyText} /> }}
-          className="l8-table l8-choices-table"
+          className="l8-table l8-choices-table cs-choices-table"
         />
       </SortableContext>
     </DndContext>
@@ -481,10 +481,23 @@ const CatalogueSection = ({ config }) => {
     [catalogue, choices],
   )
 
+  // Some endpoints leave already-selected items out of the catalogue. Put them back so
+  // Course Search always shows what's chosen (with the tick), as in Level 8.
+  const searchList = useMemo(() => {
+    const inCatalogue = new Set(catalogue.map((item) => catalogueIdentity(item)))
+    const missing = choices
+      .filter((item) => !inCatalogue.has(savedIdentity(item)))
+      .map((item) => ({ ...item, __saved: item }))
+    if (!missing.length) return catalogue
+    const nameColumn = config.columns.find((column) => column.isName)
+    const nameOf = (item) => String((nameColumn && valueOf(nameColumn, item)) || "")
+    return [...catalogue, ...missing].sort((a, b) => nameOf(a).localeCompare(nameOf(b)))
+  }, [catalogue, choices, catalogueIdentity, savedIdentity, config.columns])
+
   // Each filter narrows the options of the filters after it (e.g. Region -> County -> College).
   const filterSteps = useMemo(() => {
     const steps = []
-    let scoped = catalogue
+    let scoped = searchList
     config.filters.forEach((filter) => {
       const getValue = filter.value || ((item) => item?.[filter.key])
       const options = countOptions(scoped, getValue)
@@ -493,7 +506,7 @@ const CatalogueSection = ({ config }) => {
       if (values.length) scoped = scoped.filter((item) => values.includes(getValue(item)))
     })
     return { steps, scoped }
-  }, [catalogue, config.filters, selected])
+  }, [searchList, config.filters, selected])
 
   // Drop selections that are no longer reachable after a parent filter changes.
   useEffect(() => {
@@ -573,7 +586,7 @@ const CatalogueSection = ({ config }) => {
       fixed: "right",
       render: (_, course) => {
         const identity = catalogueIdentity(course)
-        const savedItem = choiceByIdentity.get(identity)
+        const savedItem = course.__saved || choiceByIdentity.get(identity)
         const name = valueOf(config.columns.find((column) => column.isName) || {}, course) || config.noun
         if (savedItem) {
           return (
@@ -677,7 +690,7 @@ const CatalogueSection = ({ config }) => {
       </div>
 
       <Table
-        rowKey={(course) => course.id ?? catalogueIdentity(course)}
+        rowKey={(course) => (course.__saved ? `saved-${course.id}` : course.id ?? catalogueIdentity(course))}
         columns={searchColumns}
         dataSource={filteredCourses}
         pagination={{ pageSize: 25, showSizeChanger: false, hideOnSinglePage: true }}
@@ -1034,9 +1047,11 @@ const SECTION_CONFIGS = {
       { key: "university", label: "University", plural: "universities" },
     ],
     columns: [
-      { key: "title", title: "Title", width: 240, searchWidth: 280, isName: true },
-      { key: "university", title: "University", width: 220, searchWidth: 250 },
-      { key: "location", title: "Location", width: 170, value: euLocation },
+      // Text columns have no fixed width in My EU Choices, so they share the space left
+      // after the fixed columns and the Remove column always fits.
+      { key: "title", title: "Title", searchWidth: 280, isName: true },
+      { key: "university", title: "University", searchWidth: 250 },
+      { key: "location", title: "Location", searchWidth: 170, value: euLocation },
       { key: "duration", title: "Duration", width: 100, optional: true },
       { key: "tuition_fee", title: "Tuition Fee", width: 120, optional: true },
       { key: "link", title: "Course Info", type: "link", width: 120 },

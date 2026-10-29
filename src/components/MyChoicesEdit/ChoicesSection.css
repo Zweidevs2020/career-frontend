@@ -73,3 +73,8 @@
     flex-direction: column;
   }
 }
+
+/* Never clip columns (e.g. Remove): scroll sideways instead when the screen is too narrow */
+.cs-choices-table .ant-table-content {
+  overflow-x: auto !important;
+}
