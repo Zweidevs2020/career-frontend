@@ -1,0 +1,75 @@
+/* Extras for the shared My Choices sections; the main look comes from Level8Choices.css */
+
+/* Other Options: add bar */
+.cs-add-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.cs-add-bar .ant-input {
+  flex: 1;
+  border-radius: 8px;
+}
+
+.cs-add-btn {
+  flex-shrink: 0;
+  border: none !important;
+  border-radius: 8px !important;
+  background: #1476b7 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(20, 118, 183, 0.25);
+}
+
+.cs-add-btn:not(:disabled):hover {
+  background: #0f67a1 !important;
+}
+
+.cs-add-btn:disabled {
+  background: #cbd5e1 !important;
+  color: #ffffff !important;
+  box-shadow: none;
+}
+
+/* Other Options: inline edit */
+.cs-idea-cell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.cs-edit-btn {
+  flex-shrink: 0;
+  color: #94a3b8 !important;
+}
+
+.cs-edit-btn:hover {
+  color: #1476b7 !important;
+  background: #e8f2fa !important;
+}
+
+.cs-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cs-edit-row .ant-input {
+  border-radius: 8px;
+}
+
+.cs-edit-save {
+  color: #16a34a !important;
+}
+
+.cs-edit-cancel {
+  color: #64748b !important;
+}
+
+@media (max-width: 780px) {
+  .cs-add-bar {
+    flex-direction: column;
+  }
+}
