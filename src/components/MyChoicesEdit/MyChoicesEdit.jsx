@@ -19,6 +19,7 @@ import EditOutlined from "../../assets/uil_edit.svg"
 import { Link } from "react-router-dom"
 import "./myChoicesEdit.css"
 import Level8Choices from "./Level8Choices"
+import ChoicesSection, { getSectionConfig } from "./ChoicesSection"
 
 const { Column, ColumnGroup } = Table
 const EU_COURSE_ROW_COUNT = 10
@@ -53,11 +54,13 @@ const MyChoicesEdit = () => {
   const isOtherSection = dataa?.id === "other"
   const isEUCoursesSection = dataa?.id === "eu_courses"
   const isLevel8Section = dataa?.id === "level8"
+  // Every other section uses the shared Level 8 style interface
+  const sectionConfig = isLevel8Section ? null : getSectionConfig(dataa?.id)
   const choiceEndpoint = isEUCoursesSection ? "eu-courses" : dataa?.id
 
   useEffect(() => {
-    if (isLevel8Section) {
-      // Level 8 loads its own data inside <Level8Choices />
+    if (isLevel8Section || sectionConfig) {
+      // These sections load their own data inside <Level8Choices /> / <ChoicesSection />
       return
     }
     if (isOtherSection) {
@@ -1441,6 +1444,8 @@ const MyChoicesEdit = () => {
 
               {isLevel8Section ? (
                 <Level8Choices />
+              ) : sectionConfig ? (
+                <ChoicesSection key={dataa.id} config={sectionConfig} />
               ) : isOtherSection ? (
                 renderOtherOptionsSection()
               ) : isEUCoursesSection ? (
