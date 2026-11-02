@@ -85,7 +85,7 @@ const progressModules = [
 
 const StudentProgress = ({ student, onNavigate }) => (
   <div
-    className="inline-flex min-w-[472px] items-start gap-3 px-2 py-1.5"
+    className="inline-flex items-start gap-2 py-1.5 2xl:gap-3"
     aria-label={`${student.full_name} module progress`}
   >
     {progressModules.map(({ key, label, image, path }) => {
@@ -130,11 +130,11 @@ const StudentProgress = ({ student, onNavigate }) => (
 
       return (
         <Tooltip title={tooltip} key={key}>
-          <span className="flex w-10 shrink-0 flex-col items-center">
+          <span className="flex w-11 shrink-0 flex-col items-center">
             <button
               type="button"
               onClick={() => isClickable && onNavigate(path(student.id))}
-              className={`relative flex h-10 w-10 items-center justify-center rounded-md border border-[#E2E8F0] bg-white p-0.5 shadow-sm outline-none transition-all duration-150 focus-visible:ring-2 focus-visible:ring-[#1476B7] focus-visible:ring-offset-2 ${
+              className={`relative flex h-11 w-11 items-center justify-center rounded-md border border-[#E2E8F0] bg-white p-0.5 shadow-sm outline-none transition-all duration-150 focus-visible:ring-2 focus-visible:ring-[#1476B7] focus-visible:ring-offset-2 ${
                 isClickable
                   ? "cursor-pointer hover:-translate-y-px hover:shadow-md"
                   : "cursor-default opacity-80"
@@ -144,7 +144,7 @@ const StudentProgress = ({ student, onNavigate }) => (
               <img
                 src={image}
                 alt=""
-                className="h-9 w-9 rounded-md object-cover"
+                className="h-10 w-10 rounded-md object-cover"
               />
               <span
                 className="absolute -bottom-1 -right-1 h-3.5 w-3.5 rounded-full border-2 border-white shadow-sm"
@@ -211,8 +211,12 @@ const Table = ({
               {columns.map((column) => (
                 <th
                   key={column.key}
-                  className={`p-3 text-left ${
-                    column.key === "progress" ? "min-w-[472px]" : ""
+                  className={`px-3 py-4 text-base font-bold whitespace-nowrap ${
+                    column.key === "full_name"
+                      ? "text-left"
+                      : column.key === "email"
+                        ? "text-left pl-10"
+                        : "text-center"
                   }`}
                 >
                   {column.label}
@@ -220,10 +224,10 @@ const Table = ({
               ))}
               {/* Render the Actions header ONLY if we're on the counselor dashboard */}
               {isCounselorDashboard && (
-                <th className="p-3 text-left">Actions</th>
+                <th className="px-3 py-4 text-center text-base font-bold whitespace-nowrap">Actions</th>
               )}
               {isCounselorDashboard && hasWritableStudents && (
-                <th className="p-3 text-left">Delete</th>
+                <th className="px-3 py-4 text-center text-base font-bold whitespace-nowrap">Delete</th>
               )}
             </tr>
           </thead>
@@ -248,9 +252,26 @@ const Table = ({
                   </td>
                 )}
                 {columns.map((column) => (
-                  <td key={column.key} className="p-3 border-t text-[#737373]">
+                  <td
+                    key={column.key}
+                    className={`px-3 py-4 border-t whitespace-nowrap ${
+                      column.key === "full_name"
+                        ? "text-left text-base font-semibold text-[#1E293B]"
+                        : column.key === "email"
+                          ? "text-left pl-10"
+                          : "text-center"
+                    }`}
+                  >
                     {column.key === "progress" ? (
                       <StudentProgress student={row} onNavigate={navigate} />
+                    ) : column.key === "email" ? (
+                      row.email ? (
+                        <span className="text-[15px] font-semibold text-[#334155]">
+                          {renderCell ? renderCell(column.key, row.email, row) : row.email}
+                        </span>
+                      ) : (
+                        <span className="text-sm italic text-[#94A3B8]">Not provided</span>
+                      )
                     ) : renderCell ? (
                       renderCell(column.key, row[column.key], row)
                     ) : (
@@ -259,17 +280,17 @@ const Table = ({
                   </td>
                 ))}
                 {isCounselorDashboard && (
-                  <td className="p-3 border-t">
+                  <td className="px-3 py-4 border-t whitespace-nowrap text-center">
                     <button
                       onClick={() => onViewDetails(row.id)}
-                      className="text-[#1476B7] hover:underline"
+                      className="text-base font-semibold text-[#1476B7] hover:underline"
                     >
                       View Details
                     </button>
                   </td>
                 )}
                 {isCounselorDashboard && hasWritableStudents && (
-                  <td className="p-3 border-t">
+                  <td className="px-3 py-4 border-t text-center">
                     {!row.is_read_only && (
                       <button
                         onClick={() => onDeleteSingleStudent(row.id)}

@@ -185,7 +185,7 @@ const MyChoices = () => {
                 return (
                  <> <div className={"choicesWithoutBorder"} key={index}   onClick={() => {
                   if (item.id === "tertiary") {
-                    navigate("/tertiary-choice-edit", {
+                    navigate("/my-choice-edit", {
                       state: { dataa: item },
                     });
                   } else if (item.id === "apprentice") {

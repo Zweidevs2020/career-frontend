@@ -267,3 +267,163 @@
     width: 60%;
   }
 }
+
+
+/* ---------- Modern login card with segmented tabs (login page only) ---------- */
+.loginCardWrap {
+  width: 100%;
+  max-width: 480px;
+  align-self: center;
+  margin: 24px auto;
+  padding: 28px 32px 24px;
+  background: #ffffff;
+  border: 1px solid #e8eef5;
+  border-radius: 20px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 16px 40px rgba(20, 118, 183, 0.08);
+}
+
+/* Segmented control */
+.loginTabs > .ant-tabs-nav {
+  margin: 0 0 28px 0;
+}
+
+.loginTabs > .ant-tabs-nav::before,
+.loginTabs > .ant-tabs-nav .ant-tabs-ink-bar {
+  display: none;
+}
+
+.loginTabs > .ant-tabs-nav .ant-tabs-nav-wrap {
+  width: 100%;
+}
+
+.loginTabs > .ant-tabs-nav .ant-tabs-nav-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  padding: 5px;
+  background: #f1f5f9;
+  border-radius: 14px;
+}
+
+.loginTabs > .ant-tabs-nav .ant-tabs-tab {
+  justify-content: center;
+  margin: 0 !important;
+  padding: 11px 12px;
+  border-radius: 10px;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.loginTabs > .ant-tabs-nav .ant-tabs-tab .ant-tabs-tab-btn {
+  color: #64748b;
+  font-family: "Poppins";
+  font-size: 15px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.loginTabs > .ant-tabs-nav .ant-tabs-tab:hover .ant-tabs-tab-btn {
+  color: #1476b7;
+}
+
+.loginTabs > .ant-tabs-nav .ant-tabs-tab.ant-tabs-tab-active {
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 4px 12px rgba(20, 118, 183, 0.12);
+}
+
+.loginTabs > .ant-tabs-nav .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #1476b7;
+  font-weight: 600;
+  text-shadow: none;
+}
+
+.loginTabLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Form content inside the card */
+.loginTabs .formStyle {
+  width: 100%;
+}
+
+.loginTabs .welcomeHaddingText {
+  font-size: 24px;
+  line-height: 32px;
+  color: #1e293b;
+}
+
+.loginTabs .welcomeHaddingText + .welcomeHaddingText,
+.loginTabs .welcomeHaddingText + .textStyle18 {
+  margin-top: 4px;
+  margin-bottom: 24px;
+  font-size: 15px;
+  font-weight: 400 !important;
+  line-height: 22px;
+  color: #64748b;
+}
+
+.loginTabs .signInButton {
+  height: 48px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(20, 118, 183, 0.25);
+  transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.loginTabs .signInButton:not(:disabled):hover {
+  background: #0f67a1 !important;
+  box-shadow: 0 10px 24px rgba(20, 118, 183, 0.32);
+  transform: translateY(-1px);
+}
+
+.loginTabs .linkStyle {
+  color: #1476b7;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.loginTabs .linkStyle:hover {
+  text-decoration: underline;
+}
+
+.loginTabs a.textStyle14 {
+  color: #1476b7;
+  font-weight: 500;
+}
+
+@media only screen and (max-width: 650px) {
+  .loginCardWrap {
+    width: 92%;
+    margin: 20px auto;
+    padding: 20px 16px 16px;
+    border-radius: 16px;
+  }
+
+  .loginTabs > .ant-tabs-nav .ant-tabs-tab {
+    padding: 9px 6px;
+  }
+
+  .loginTabs > .ant-tabs-nav .ant-tabs-tab .ant-tabs-tab-btn {
+    font-size: 13px;
+  }
+
+  .loginTabs .welcomeHaddingText {
+    font-size: 20px;
+    line-height: 28px;
+  }
+}
+
+@media only screen and (min-width: 651px) and (max-width: 900px) {
+  .loginCardWrap {
+    width: 90%;
+    padding: 24px 20px 20px;
+  }
+
+  .loginTabs > .ant-tabs-nav .ant-tabs-tab .ant-tabs-tab-btn {
+    font-size: 14px;
+  }
+}

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { message, Modal } from "antd";
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, MailOutlined } from '@ant-design/icons';
 import { API_URL } from "../../utils/constants";
 import showPasswordIcon from "../../assets/eyeball.svg";
 import hidePasswordIcon from "../../assets/hidePassword.svg";
@@ -19,6 +19,7 @@ const ChangePassword = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isReadOnly, setIsReadOnly] = useState(null);
+  const [studentEmail, setStudentEmail] = useState("");
 
   const getCookie = (name) => {
     const cookies = document.cookie.split("; ");
@@ -42,6 +43,14 @@ const ChangePassword = () => {
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setIsReadOnly(response?.data?.is_read_only === true);
+        setStudentEmail(
+          response?.data?.email ||
+            response?.data?.user?.email ||
+            response?.data?.data?.email ||
+            // The details API returns the email inside the student's CV record
+            response?.data?.cv?.find((item) => item?.email)?.email ||
+            ""
+        );
       } catch (error) {
         console.error("Error fetching student access status:", error);
         setIsReadOnly(false);
@@ -161,6 +170,28 @@ const ChangePassword = () => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md flex flex-col items-center">
+      <div className="w-full md:w-1/2 mb-8 rounded-xl border border-[#DCE6F4] bg-[#F5F9FD] px-4 py-4 sm:px-5">
+        <div className="flex items-center gap-4">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#1476B7] text-white">
+            <MailOutlined style={{ fontSize: 20 }} />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-xs font-semibold uppercase tracking-wide text-[#64748B]">
+              Student Email Address
+            </p>
+            {studentEmail ? (
+              <p
+                className="mt-0.5 break-all text-base font-semibold text-[#1E293B] sm:text-lg"
+                title={studentEmail}
+              >
+                {studentEmail}
+              </p>
+            ) : (
+              <p className="mt-0.5 text-base italic text-[#94A3B8]">Not provided</p>
+            )}
+          </div>
+        </div>
+      </div>
       <h1 className="text-2xl font-bold mb-4 text-gray-800">Change Student Password</h1>
       <form onSubmit={handleSubmit} className="space-y-6 w-1/2 ">
         <div className="relative">

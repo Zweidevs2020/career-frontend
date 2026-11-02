@@ -1,0 +1,489 @@
+/* White card sitting inside the purple page frame */
+.l8-wrapper {
+  margin: 0 12px 16px;
+  padding: 20px 24px 24px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(125, 99, 199, 0.18);
+}
+
+/* Tabs: pill buttons, each with its own accent colour */
+.l8-tabs > .ant-tabs-nav {
+  margin-bottom: 20px;
+}
+
+.l8-tabs > .ant-tabs-nav::before,
+.l8-tabs .ant-tabs-ink-bar {
+  display: none;
+}
+
+.l8-tabs .ant-tabs-nav-list {
+  gap: 12px;
+}
+
+.l8-tabs .ant-tabs-tab {
+  padding: 0;
+  margin: 0 !important;
+}
+
+.l8-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.l8-tab-search {
+  color: #1476b7;
+  background: #e8f2fa;
+  border-color: #c7dff0;
+}
+
+.l8-tab-choices {
+  color: #7d63c7;
+  background: #f4effb;
+  border-color: #ddd0f2;
+}
+
+.l8-tabs .ant-tabs-tab:hover .l8-tab {
+  filter: brightness(0.97);
+}
+
+.l8-tabs .ant-tabs-tab-active .l8-tab-search {
+  color: #ffffff;
+  background: #1476b7;
+  border-color: #1476b7;
+  box-shadow: 0 4px 12px rgba(20, 118, 183, 0.25);
+}
+
+.l8-tabs .ant-tabs-tab-active .l8-tab-choices {
+  color: #ffffff;
+  background: #7d63c7;
+  border-color: #7d63c7;
+  box-shadow: 0 4px 12px rgba(125, 99, 199, 0.3);
+}
+
+.l8-tab-count {
+  min-width: 24px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: rgba(125, 99, 199, 0.15);
+  font-size: 12px;
+  line-height: 20px;
+  text-align: center;
+}
+
+.l8-tabs .ant-tabs-tab-active .l8-tab-count {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.l8-panel {
+  padding-top: 8px;
+}
+
+.l8-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.l8-selects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.l8-selects .ant-select {
+  width: 100%;
+}
+
+/* Multi-select filters */
+.l8-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.l8-filter-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.l8-filter-badge {
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #1476b7;
+  color: #ffffff;
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+}
+
+/* index.css removes Select borders globally, so restore them here */
+.l8-filter .ant-select .ant-select-selector {
+  min-height: 44px;
+  padding: 4px 11px !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 8px !important;
+  background: #ffffff !important;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.l8-filter .ant-select:hover .ant-select-selector {
+  border-color: #1476b7 !important;
+}
+
+.l8-filter .ant-select-focused .ant-select-selector {
+  border-color: #1476b7 !important;
+  box-shadow: 0 0 0 3px rgba(20, 118, 183, 0.12) !important;
+}
+
+.l8-filter .ant-select-selection-placeholder {
+  color: #94a3b8;
+}
+
+.l8-filter .ant-select-selection-item {
+  background: #e8f2fa;
+  border-color: #c7dff0;
+  color: #1476b7;
+  font-weight: 500;
+}
+
+.l8-filter-dropdown .ant-select-item-option {
+  padding: 6px 10px;
+}
+
+.l8-filter-dropdown .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background: #f1f7fc;
+  font-weight: 500;
+}
+
+.l8-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 24px;
+  line-height: 20px;
+}
+
+/* Custom checkbox so global checkbox styles can't shift its alignment */
+.l8-option-check {
+  position: relative;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 4px;
+  background: #ffffff;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.l8-option-check-on {
+  border-color: #1476b7;
+  background: #1476b7;
+}
+
+.l8-option-check-on::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 5px;
+  height: 9px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.l8-filter-dropdown .ant-select-item-option:hover .l8-option-check:not(.l8-option-check-on) {
+  border-color: #1476b7;
+}
+
+.l8-filter-dropdown .ant-select-item-option-content {
+  display: flex;
+  align-items: center;
+}
+
+.l8-option-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.l8-option-count {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.l8-filter-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px 2px;
+  margin-top: 4px;
+  border-top: 1px solid #f0f0f0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.l8-filter-empty {
+  color: #94a3b8;
+}
+
+.l8-resultbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-bottom: 12px;
+}
+
+.l8-count {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.l8-hint {
+  color: #b45309;
+  font-size: 14px;
+}
+
+.l8-quota {
+  margin-left: auto;
+  padding: 2px 12px;
+  border-radius: 999px;
+  background: #e8f2fa;
+  color: #1476b7;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.l8-quota-full {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.l8-table .ant-table-thead > tr > th {
+  color: #1476b7;
+  font-weight: 700;
+  background: #f4f6f8;
+}
+
+.l8-choices-table,
+.l8-choices-table .ant-table-container {
+  width: 100%;
+  max-width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.l8-choices-table .ant-table-content {
+  overflow-x: hidden !important;
+}
+
+.l8-choices-table table {
+  width: 100% !important;
+  table-layout: fixed !important;
+}
+
+.l8-choices-table .ant-table-thead > tr > th {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.l8-choices-table .ant-table-cell {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/* Circular icon buttons in the "Add to My Choices" column */
+.l8-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s, color 0.2s;
+}
+
+.l8-icon-btn .anticon {
+  display: inline-flex;
+}
+
+.l8-icon-btn:focus-visible {
+  outline: none;
+}
+
+.l8-icon-btn:disabled {
+  cursor: not-allowed;
+}
+
+.l8-icon-btn-add {
+  color: #1476b7;
+}
+
+.l8-icon-btn-add:not(:disabled):hover,
+.l8-icon-btn-add:focus-visible {
+  background: #e8f2fa;
+  box-shadow: 0 0 0 4px rgba(20, 118, 183, 0.08);
+}
+
+.l8-icon-btn-add:disabled {
+  color: #cbd5e1;
+}
+
+.l8-added-icon {
+  color: #16a34a;
+}
+
+.l8-remove-icon {
+  display: none !important;
+  color: #dc2626;
+}
+
+.l8-icon-btn-added:not(:disabled):hover,
+.l8-icon-btn-added:focus-visible {
+  background: #fee2e2;
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.08);
+}
+
+.l8-icon-btn-added:not(:disabled):hover .l8-added-icon,
+.l8-icon-btn-added:focus-visible .l8-added-icon {
+  display: none !important;
+}
+
+.l8-icon-btn-added:not(:disabled):hover .l8-remove-icon,
+.l8-icon-btn-added:focus-visible .l8-remove-icon {
+  display: inline-flex !important;
+}
+
+.l8-icon-btn-added:disabled {
+  color: #94a3b8;
+}
+
+.l8-points-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Keep the switch track visible in both states (global button reset hides it) */
+.l8-points-toggle .ant-switch {
+  background: #cbd5e1 !important;
+}
+
+.l8-points-toggle .ant-switch:hover:not(.ant-switch-disabled) {
+  background: #94a3b8 !important;
+}
+
+.l8-points-toggle .ant-switch.ant-switch-checked {
+  background: #1476b7 !important;
+}
+
+.l8-points-toggle .ant-switch.ant-switch-checked:hover:not(.ant-switch-disabled) {
+  background: #0f67a1 !important;
+}
+
+.l8-link {
+  color: #1476b7;
+  font-weight: 600;
+}
+
+.l8-drag-handle {
+  color: #64748b;
+}
+
+.l8-row-unsorted > td {
+  background: #fffbeb !important;
+}
+
+/* Recently added course: soft green tint with an accent bar until sorted or expired */
+.l8-row-recent > td {
+  background: #f0fdf4 !important;
+  transition: background-color 0.4s ease;
+}
+
+.l8-row-recent > td:first-child {
+  box-shadow: inset 4px 0 0 #16a34a;
+}
+
+/* Small tag pinned to the row's top-left corner; it uses the existing row spacing,
+   so the row height doesn't change and the tag sits in the same spot on every row */
+.l8-row-recent > td {
+  position: relative;
+}
+
+.l8-recent-tag {
+  position: absolute;
+  top: 5px;
+  left: 12px;
+  z-index: 1;
+  padding: 0 7px !important;
+  font-size: 10px !important;
+  line-height: 15px !important;
+  letter-spacing: 0.3px;
+  box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.15);
+}
+
+.l8-new-badge {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  line-height: 18px;
+  white-space: nowrap;
+  cursor: default;
+}
+
+
+@media (max-width: 780px) {
+  .l8-wrapper {
+    margin: 0 4px 12px;
+    padding: 14px 12px 16px;
+    border-radius: 12px;
+  }
+
+  .l8-tabs .ant-tabs-nav-list {
+    gap: 8px;
+  }
+
+  .l8-tab {
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+
+  .l8-quota,
+  .l8-points-toggle {
+    margin-left: 0;
+  }
+}
