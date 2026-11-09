@@ -172,6 +172,7 @@ const ConselorDashboard = () => {
     { key: "full_name", label: "Full Name" },
     { key: "progress", label: "Progress" },
     { key: "email", label: "Email" },
+    { key: "notes", label: "Notes" },
   ];
 
   const handleViewAsStudent = () => {

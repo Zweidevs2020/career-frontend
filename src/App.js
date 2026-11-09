@@ -51,6 +51,7 @@ import CounselorGuidanceReport from "./components/conselor/GuidanceReaport";
 import CousnelorSelf from "./components/conselor/CousnelorSelf";
 import PaymentVerification from "./components/PaymentVerification/payment-verificatin";
 import ChangePassword from "./components/conselor/ChangePassword";
+import StudentNotesPage from "./components/conselor/notes/StudentNotesPage";
 import GoogleAnalytics from "./components/GoogleAnalytics/GoogleAnalytics";
 import SchoolSelectionGate from "./components/authComponents/SchoolSelection/SchoolSelectionGate";
 import { saveSchoolSelection } from "./components/authComponents/SchoolSelection/schoolSelectionApi";
@@ -364,6 +365,7 @@ function App() {
             element={<CounselorEducationalReport />}
           />
           <Route path="change-password/:id" element={<ChangePassword />} />
+          <Route path="student-notes/:id" element={<StudentNotesPage />} />
         </Route>
       </Routes>
       </SchoolSelectionGate>

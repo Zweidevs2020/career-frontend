@@ -1,5 +1,6 @@
 import React from "react";
 import { Tooltip } from "antd";
+import NotesSummaryCell from "./notes/NotesSummaryCell";
 import { useLocation, useNavigate } from "react-router-dom";
 import deleteIcon from "../../assets/delete.png"; // Import the delete icon
 import caoPointsIcon from "../../assets/66.png";
@@ -85,7 +86,7 @@ const progressModules = [
 
 const StudentProgress = ({ student, onNavigate }) => (
   <div
-    className="inline-flex items-start gap-2 py-1.5 2xl:gap-3"
+    className="inline-flex items-start gap-1.5 py-1.5 2xl:gap-3"
     aria-label={`${student.full_name} module progress`}
   >
     {progressModules.map(({ key, label, image, path }) => {
@@ -211,11 +212,11 @@ const Table = ({
               {columns.map((column) => (
                 <th
                   key={column.key}
-                  className={`px-3 py-4 text-base font-bold whitespace-nowrap ${
+                  className={`px-2 py-4 2xl:px-3 text-base font-bold whitespace-nowrap ${
                     column.key === "full_name"
                       ? "text-left"
                       : column.key === "email"
-                        ? "text-left pl-10"
+                        ? "text-left pl-6 2xl:pl-10"
                         : "text-center"
                   }`}
                 >
@@ -224,10 +225,10 @@ const Table = ({
               ))}
               {/* Render the Actions header ONLY if we're on the counselor dashboard */}
               {isCounselorDashboard && (
-                <th className="px-3 py-4 text-center text-base font-bold whitespace-nowrap">Actions</th>
+                <th className="px-2 py-4 2xl:px-3 text-center text-base font-bold whitespace-nowrap">Actions</th>
               )}
               {isCounselorDashboard && hasWritableStudents && (
-                <th className="px-3 py-4 text-center text-base font-bold whitespace-nowrap">Delete</th>
+                <th className="px-2 py-4 2xl:px-3 text-center text-base font-bold whitespace-nowrap">Delete</th>
               )}
             </tr>
           </thead>
@@ -254,16 +255,21 @@ const Table = ({
                 {columns.map((column) => (
                   <td
                     key={column.key}
-                    className={`px-3 py-4 border-t whitespace-nowrap ${
+                    className={`px-2 py-4 2xl:px-3 border-t whitespace-nowrap ${
                       column.key === "full_name"
                         ? "text-left text-base font-semibold text-[#1E293B]"
                         : column.key === "email"
-                          ? "text-left pl-10"
+                          ? "text-left pl-6 2xl:pl-10"
                           : "text-center"
                     }`}
                   >
                     {column.key === "progress" ? (
                       <StudentProgress student={row} onNavigate={navigate} />
+                    ) : column.key === "notes" ? (
+                      <NotesSummaryCell
+                        student={row}
+                        onOpen={() => navigate(`/consellor/student-notes/${row.id}`)}
+                      />
                     ) : column.key === "email" ? (
                       row.email ? (
                         <span className="text-[15px] font-semibold text-[#334155]">
@@ -280,7 +286,7 @@ const Table = ({
                   </td>
                 ))}
                 {isCounselorDashboard && (
-                  <td className="px-3 py-4 border-t whitespace-nowrap text-center">
+                  <td className="px-2 py-4 2xl:px-3 border-t whitespace-nowrap text-center">
                     <button
                       onClick={() => onViewDetails(row.id)}
                       className="text-base font-semibold text-[#1476B7] hover:underline"
@@ -290,7 +296,7 @@ const Table = ({
                   </td>
                 )}
                 {isCounselorDashboard && hasWritableStudents && (
-                  <td className="px-3 py-4 border-t text-center">
+                  <td className="px-2 py-4 2xl:px-3 border-t text-center">
                     {!row.is_read_only && (
                       <button
                         onClick={() => onDeleteSingleStudent(row.id)}
