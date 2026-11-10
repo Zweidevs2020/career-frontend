@@ -1,0 +1,543 @@
+/* Counsellor Student Notes */
+
+.cn-page-title {
+  margin: 0 0 16px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.cn-loading {
+  display: flex;
+  justify-content: center;
+  padding: 48px 0;
+}
+
+.cn-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cn-panel-compact {
+  gap: 14px;
+}
+
+.cn-readonly {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #9a3412;
+  font-size: 14px;
+}
+
+.cn-card {
+  padding: 20px 22px;
+  background: #ffffff;
+  border: 1px solid #e8eef5;
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(20, 118, 183, 0.06);
+}
+
+.cn-panel-compact .cn-card {
+  padding: 16px 18px;
+  box-shadow: none;
+}
+
+.cn-card-title {
+  margin: 0 0 14px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1476b7;
+}
+
+/* Tick boxes */
+.cn-flags {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 10px;
+}
+
+.cn-flag {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s;
+  user-select: none;
+}
+
+.cn-flag:hover {
+  border-color: #1476b7;
+}
+
+.cn-flag input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cn-flag-box {
+  position: relative;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 4px;
+  background: #ffffff;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.cn-flag-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+  line-height: 20px;
+}
+
+.cn-flag-on {
+  border-color: #b9d8ee;
+  background: #f1f7fc;
+}
+
+.cn-flag-on .cn-flag-box {
+  border-color: #1476b7;
+  background: #1476b7;
+}
+
+.cn-flag-on .cn-flag-box::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 5px;
+  height: 9px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.cn-flag-on .cn-flag-label {
+  color: #0f4f7c;
+  font-weight: 600;
+}
+
+.cn-flag input:focus-visible + .cn-flag-box {
+  box-shadow: 0 0 0 3px rgba(20, 118, 183, 0.25);
+}
+
+.cn-flag-disabled {
+  cursor: default;
+}
+
+.cn-flag-disabled:hover {
+  border-color: #e2e8f0;
+}
+
+/* Guardian contact */
+.cn-contact {
+  margin-top: 18px;
+}
+
+.cn-field-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.cn-contact-row {
+  display: flex;
+  gap: 10px;
+}
+
+/* Inputs: index.css removes some antd borders, so set them explicitly here */
+.cn-panel .ant-input,
+.cn-panel .ant-input-affix-wrapper {
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+}
+
+.cn-panel .ant-input:hover,
+.cn-panel .ant-input-affix-wrapper:hover,
+.cn-panel .ant-input:focus,
+.cn-panel .ant-input-affix-wrapper-focused {
+  border-color: #1476b7;
+}
+
+.cn-textarea {
+  margin-top: 10px;
+}
+
+.cn-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.cn-btn-primary {
+  border: none !important;
+  border-radius: 8px !important;
+  background: #1476b7 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+.cn-btn-primary:not(:disabled):hover {
+  background: #0f67a1 !important;
+}
+
+.cn-btn-primary:disabled {
+  background: #cbd5e1 !important;
+  color: #ffffff !important;
+}
+
+/* Notes list */
+.cn-notes-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.cn-notes-head .cn-card-title {
+  margin: 0;
+}
+
+.cn-count {
+  min-width: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #e8f2fa;
+  color: #1476b7;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+}
+
+.cn-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cn-note {
+  padding: 14px 16px;
+  border: 1px solid #e8eef5;
+  border-left: 3px solid #1476b7;
+  border-radius: 10px;
+  background: #fbfdff;
+}
+
+.cn-note-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.cn-note-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+  overflow-wrap: anywhere;
+}
+
+.cn-note-tools {
+  display: flex;
+  flex-shrink: 0;
+  gap: 2px;
+}
+
+.cn-tool {
+  color: #94a3b8 !important;
+}
+
+.cn-tool:hover {
+  color: #1476b7 !important;
+  background: #e8f2fa !important;
+}
+
+.cn-tool-danger:hover {
+  color: #dc2626 !important;
+  background: #fee2e2 !important;
+}
+
+.cn-note-body {
+  margin: 6px 0 10px;
+  color: #334155;
+  font-size: 14px;
+  line-height: 22px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.cn-note-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 12.5px;
+}
+
+.cn-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #94a3b8;
+}
+
+.cn-edited {
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 11px;
+  line-height: 18px;
+}
+
+.cn-note-edit .cn-actions {
+  margin-top: 10px;
+}
+
+.cn-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+/* Popup */
+.cn-modal .ant-modal-content {
+  border-radius: 16px;
+}
+
+.cn-modal .ant-modal-body {
+  max-height: 72vh;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.cn-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-right: 28px;
+  font-size: 17px;
+  color: #1e293b;
+}
+
+.cn-modal-link {
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1476b7;
+}
+
+/* Blue student header: ticked items + Notes button */
+.cn-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cn-header-flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.cn-header-flag {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.cn-header-btn {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1476b7;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+  transition: background-color 0.15s;
+}
+
+.cn-header-btn:hover {
+  background: #e8f2fa;
+}
+
+/* Dashboard Notes column */
+.cn-notes-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #94a3b8;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s, background-color 0.15s, color 0.15s;
+}
+
+.cn-notes-btn-active {
+  border-color: #b9d8ee;
+  background: #f1f7fc;
+  color: #1476b7;
+}
+
+.cn-notes-btn:hover,
+.cn-notes-btn:focus-visible {
+  border-color: #1476b7;
+  color: #1476b7;
+  outline: none;
+}
+
+.cn-notes-flag-count {
+  padding-left: 6px;
+  border-left: 1px solid #cbd5e1;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.cn-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 280px;
+}
+
+.cn-summary-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cn-summary-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.cn-summary-empty {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.cn-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cn-chip {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #e8f2fa;
+  color: #1476b7;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.cn-summary-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cn-summary-notes li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.cn-summary-note-title {
+  min-width: 0;
+  overflow: hidden;
+  color: #1e293b;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cn-summary-note-date {
+  flex-shrink: 0;
+  color: #94a3b8;
+}
+
+.cn-summary-link {
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #1476b7;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cn-summary-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .cn-card {
+    padding: 16px 14px;
+  }
+
+  .cn-contact-row {
+    flex-direction: column;
+  }
+
+  .cn-header-row {
+    flex-direction: column;
+  }
+
+  .cn-modal-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .cn-modal-link {
+    margin-left: 0;
+  }
+}

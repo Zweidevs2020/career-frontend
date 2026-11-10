@@ -180,6 +180,12 @@ export default function CounselorSidebar() {
       isDownloadCV: true, 
     },
     {
+      icon: <ProfileSvg fill={selectedMenuItem === "StudentNotes" ? "#1476B7" : "#BDBDBD"} />,
+      label: "Student Notes",
+      path: id ? `/consellor/student-notes/${id}` : "#",
+      activeState: "StudentNotes",
+    },
+    {
       icon: <ProfileSvg fill={selectedMenuItem === "ChangePassword" ? "#1476B7" : "#BDBDBD"} />,
       label: "Account Settings",
       path: id ? `/consellor/change-password/${id}` : "#",
