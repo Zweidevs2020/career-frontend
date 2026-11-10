@@ -420,7 +420,7 @@ const CounselorSignup = () => {
           </div>
         </Form>
 
-        <span className="allRights">© 2023 My Guidance. All Rights Reserved</span>
+        <span className="allRights">© 2026 My Guidance. All Rights Reserved</span>
       </div>
 
       <div className="mobileScreenImage">

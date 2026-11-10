@@ -162,7 +162,7 @@ export default function LoginForm() {
             </p>
           </div>
           <p className=" text-sm text-gray-500">
-            © 2023 My Guidance. All Rights Reserved
+            © 2026 My Guidance. All Rights Reserved
           </p>
         </div>
       </div>
