@@ -19,7 +19,7 @@ const SECTION_ORDER = [
 
 const SECTION_CONFIG = {
   lvl8: {
-    heading: "Level 8 Hons Degrees",
+    heading: "CAO Level 8",
     columns: [
       { key: "code", label: "Code" },
       { key: "point", label: "Points" },
@@ -28,7 +28,7 @@ const SECTION_CONFIG = {
     ],
   },
   lvl6: {
-    heading: "Level 6/7 Ord Degrees of Higher Cert",
+    heading: "CAO Level 6 & 7",
     columns: [
       { key: "code", label: "Code" },
       { key: "point", label: "Points" },
@@ -37,7 +37,7 @@ const SECTION_CONFIG = {
     ],
   },
   lvl5: {
-    heading: "Level 5 PLC/ Further Ed",
+    heading: "PLC Level 5",
     columns: [
       { key: "code_display", label: "Code" },
       { key: "college", label: "College" },
@@ -45,7 +45,7 @@ const SECTION_CONFIG = {
     ],
   },
   tertiarydegree: {
-    heading: "Tertiary Degree",
+    heading: "Tertiary Degrees",
     columns: [
       { key: "code", label: "Code" },
       { key: "title", label: "Title" },
@@ -63,7 +63,7 @@ const SECTION_CONFIG = {
     ],
   },
   ucas_ni: {
-    heading: "UCAS North Ireland",
+    heading: "UCAS Northern Ireland",
     columns: [
       { key: "code", label: "Code" },
       { key: "title", label: "Title" },
@@ -72,7 +72,7 @@ const SECTION_CONFIG = {
     ],
   },
   eu_courses: {
-    heading: "EU Courses",
+    heading: "EU Degrees (In English)",
     columns: [
       { key: "title", label: "Title" },
       { key: "university", label: "University" },
@@ -82,7 +82,7 @@ const SECTION_CONFIG = {
     ],
   },
   othr: {
-    heading: "Other",
+    heading: "Other Options",
     columns: [{ key: "idea", label: "Idea" }],
   },
 };
