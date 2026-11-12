@@ -8,14 +8,14 @@ import {
 } from "../../utils/api";
 import { MyCareerGuidanceButton } from "../../components/commonComponents";
 import tickIcon from "../../assets/tickIcon.svg";
-import Choice1 from "../../assets/Choice1.svg";
-import Choice2 from "../../assets/Choice2.svg";
-import Choice3 from "../../assets/Choice3.svg";
-import Choice4 from "../../assets/Choice4.svg";
-import Choice5 from "../../assets/Choice5.svg";
-import Choice6 from "../../assets/Choice6.svg"
-import uac from "../../assets/uac.svg";
-import EUCourse from "../../assets/EUCourse.svg";
+import caoLevel8Icon from "../../assets/myChoicesTiles/cao-level-8.png";
+import caoLevel67Icon from "../../assets/myChoicesTiles/cao-level-6-7.png";
+import plcLevel5Icon from "../../assets/myChoicesTiles/plc-level-5.png";
+import tertiaryIcon from "../../assets/myChoicesTiles/tertiary-degrees.png";
+import apprenticeshipsIcon from "../../assets/myChoicesTiles/apprenticeships.png";
+import ucasNiIcon from "../../assets/myChoicesTiles/ucas-northern-ireland.png";
+import euDegreesIcon from "../../assets/myChoicesTiles/eu-degrees.png";
+import otherOptionsIcon from "../../assets/myChoicesTiles/other-options.png";
 
 import { useNavigate } from "react-router-dom";
 import "./MyChoices.css";
@@ -48,42 +48,42 @@ const MyChoices = () => {
   const choicesData = [
     {
       id: "level8",
-      icon: Choice1,
-      name: "Level 8 Hons Degrees",
+      icon: caoLevel8Icon,
+      name: "CAO Level 8",
     },
     {
       id: "level6",
-      icon: Choice2,
-      name: "Level 6/7 Ord Degrees of Higher Cert",
+      icon: caoLevel67Icon,
+      name: "CAO Level 6 & 7",
     },
     {
       id: "level5",
-      icon: Choice3,
-      name: "Level 5 PLC/ Further Ed  ",
+      icon: plcLevel5Icon,
+      name: "PLC Level 5",
     },
     {
       id: "tertiary",
-      icon: Choice6,
+      icon: tertiaryIcon,
       name: "Tertiary Degrees",
     },
     {
       id: "apprentice",
-      icon: Choice4,
+      icon: apprenticeshipsIcon,
       name: "Apprenticeships",
     },
     {
       id: "ucas-ni",
-      icon: uac,
+      icon: ucasNiIcon,
       name: "UCAS Northern Ireland",
     },
     {
       id: "eu_courses",
-      icon: EUCourse,
-      name: "EU Courses",
+      icon: euDegreesIcon,
+      name: "EU Degrees (In English)",
     },
     {
       id: "other",
-      icon: Choice5,
+      icon: otherOptionsIcon,
       name: "Other Options",
     },
   ];
@@ -181,39 +181,51 @@ const MyChoices = () => {
             {loading ? (
               <Spin className="noDataChoices" />
             ) : (
-              choicesData.map((item, index) => {
-                return (
-                 <> <div className={"choicesWithoutBorder"} key={index}   onClick={() => {
-                  if (item.id === "tertiary") {
-                    navigate("/my-choice-edit", {
-                      state: { dataa: item },
-                    });
-                  } else if (item.id === "apprentice") {
-                    navigate("/my-choice-edit", {
-                      state: { dataa: item, isApprentice: true },
-                    });
-                  } else {
-                    navigate("/my-choice-edit", {
-                      state: { dataa: item },
-                    });
-                  }
-                }}>
-                    <div
-                      className="myChoicesRow"
+              <div className="myChoicesTiles">
+                {choicesData.map((item, index) => (
+                  <React.Fragment key={item.id}>
+                    {index === 4 && (
+                      <figure className="myChoicesQuoteTile">
+                        <span className="myChoicesQuoteMark" aria-hidden="true">
+                          &ldquo;
+                        </span>
+                        <span className="myChoicesQuoteEyebrow">Stay motivated</span>
+                        <blockquote className="myChoicesQuoteText">
+                          Your effort today gives you{" "}
+                          <span className="myChoicesQuoteHighlight">
+                            choices tomorrow.
+                          </span>
+                        </blockquote>
+                        <span className="myChoicesQuoteBar" aria-hidden="true" />
+                      </figure>
+                    )}
+                    <button
+                      type="button"
+                      className="myChoicesTile"
+                      aria-label={item.name}
+                      onClick={() => {
+                        if (item.id === "apprentice") {
+                          navigate("/my-choice-edit", {
+                            state: { dataa: item, isApprentice: true },
+                          });
+                        } else {
+                          navigate("/my-choice-edit", {
+                            state: { dataa: item },
+                          });
+                        }
+                      }}
                     >
-                      <div  className="mainContainerRow">
-                        <img
-                          src={item.icon}
-                          alt="cyberLegendLogo"
-                          className="ps-4"
-                        />
-                        <div className="ps-4 quizHeadingStyle">{item.name}</div>
-                      </div>
-                    
-                    </div>
-                  </div></>
-                );
-              })
+                      <img
+                        src={item.icon}
+                        alt={item.name}
+                        width="340"
+                        height="340"
+                        decoding="async"
+                      />
+                    </button>
+                  </React.Fragment>
+                ))}
+              </div>
             )}
           </div>
         </div>
