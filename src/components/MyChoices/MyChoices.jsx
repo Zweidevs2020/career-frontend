@@ -16,6 +16,7 @@ import apprenticeshipsIcon from "../../assets/myChoicesTiles/apprenticeships.png
 import ucasNiIcon from "../../assets/myChoicesTiles/ucas-northern-ireland.png";
 import euDegreesIcon from "../../assets/myChoicesTiles/eu-degrees.png";
 import otherOptionsIcon from "../../assets/myChoicesTiles/other-options.png";
+import yourPathwaysTile from "../../assets/myChoicesTiles/your-pathways.png";
 
 import { useNavigate } from "react-router-dom";
 import "./MyChoices.css";
@@ -185,19 +186,15 @@ const MyChoices = () => {
                 {choicesData.map((item, index) => (
                   <React.Fragment key={item.id}>
                     {index === 4 && (
-                      <figure className="myChoicesQuoteTile">
-                        <span className="myChoicesQuoteMark" aria-hidden="true">
-                          &ldquo;
-                        </span>
-                        <span className="myChoicesQuoteEyebrow">Stay motivated</span>
-                        <blockquote className="myChoicesQuoteText">
-                          Your effort today gives you{" "}
-                          <span className="myChoicesQuoteHighlight">
-                            choices tomorrow.
-                          </span>
-                        </blockquote>
-                        <span className="myChoicesQuoteBar" aria-hidden="true" />
-                      </figure>
+                      <div className="myChoicesPathwaysTile">
+                        <img
+                          src={yourPathwaysTile}
+                          alt="Your Pathways"
+                          width="340"
+                          height="340"
+                          decoding="async"
+                        />
+                      </div>
                     )}
                     <button
                       type="button"
