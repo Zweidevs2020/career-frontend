@@ -22,6 +22,7 @@ import {
   UnorderedListOutlined,
 } from "@ant-design/icons"
 import { deleteApiWithAuth, getApiWithAuth, patchApiWithAuth, postApiWithAuth } from "../../utils/api"
+import { MobileCourseCard, MobileRank, useIsMobile } from "./MobileCourseCard"
 import "./Level8Choices.css"
 import "./ChoicesSection.css"
 
@@ -223,6 +224,39 @@ const renderCell = (column, item) => {
   return value === null || value === undefined || value === "" ? "—" : value
 }
 
+const INSTITUTION_KEYS = ["college", "university", "provider"]
+const LOCATION_KEYS = ["county", "region", "location"]
+
+// Maps a section's column config onto the shared phone card (code, points, title, college,
+// location, other details as small chips, course info link).
+const mobileCardProps = (columns, item) => {
+  const props = { details: [] }
+  const places = []
+  columns.forEach((column) => {
+    const value = valueOf(column, item)
+    const empty = value === null || value === undefined || value === ""
+    if (column.type === "link") {
+      if (!empty) props.link = <ExternalLink href={value} label={column.linkLabel || "View course"} />
+    } else if (column.type === "points") {
+      props.points = empty ? null : value
+    } else if (column.isName) {
+      props.title = empty ? "—" : value
+    } else if (empty) {
+      // nothing to show
+    } else if (column.key === "code") {
+      props.code = value
+    } else if (INSTITUTION_KEYS.includes(column.key)) {
+      props.institution = value
+    } else if (LOCATION_KEYS.includes(column.key)) {
+      if (!places.includes(String(value))) places.push(String(value))
+    } else {
+      props.details.push({ label: column.title, value })
+    }
+  })
+  props.location = places.join(" · ")
+  return props
+}
+
 const tabLabel = (className, icon, text, count) => (
   <span className={`l8-tab ${className}`}>
     {icon}
@@ -239,6 +273,7 @@ const useSavedChoices = (config) => {
   const [catalogue, setCatalogue] = useState([])
   const [choices, setChoices] = useState([])
   const [removing, setRemoving] = useState(null)
+  const isMobile = useIsMobile()
   const [recentlyAdded, setRecentlyAdded] = useState(() => pruneRecent(readJson(recentKey, {})))
 
   const sensors = useSensors(
@@ -412,22 +447,43 @@ const useSavedChoices = (config) => {
 
   const rowClassName = (item) => (isUnsorted(item) ? "l8-row-unsorted" : isRecent(item) ? "l8-row-recent" : "")
 
-  const renderChoicesTable = (columns, emptyText) => (
-    <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
-      <SortableContext items={choices.map((item) => item.id)} strategy={verticalListSortingStrategy}>
-        <Table
-          rowKey="id"
-          columns={[{ title: "", key: "sort", width: 42 }, numberColumn, ...columns, removeColumn]}
-          dataSource={choices}
-          pagination={false}
-          components={{ body: { row: SortableRow } }}
-          rowClassName={rowClassName}
-          locale={{ emptyText: <Empty description={emptyText} /> }}
-          className="l8-table l8-choices-table cs-choices-table"
-        />
-      </SortableContext>
-    </DndContext>
-  )
+  // On phones each saved item is one card (rank + details) between the drag handle and a
+  // compact remove button; renderMobileCard(item, rank) builds the card for the section.
+  const renderChoicesTable = (columns, emptyText, renderMobileCard) => {
+    const mobile = isMobile && Boolean(renderMobileCard)
+    const tableColumns = mobile
+      ? [
+          { title: "", key: "sort", width: 32 },
+          {
+            title: "",
+            key: "card",
+            render: (_, item, index) =>
+              renderMobileCard(
+                item,
+                <MobileRank unsorted={isUnsorted(item)} number={index + 1 - unsortedCount} recent={isRecent(item)} />,
+              ),
+          },
+          { ...removeColumn, title: "", width: 48 },
+        ]
+      : [{ title: "", key: "sort", width: 42 }, numberColumn, ...columns, removeColumn]
+    return (
+      <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
+        <SortableContext items={choices.map((item) => item.id)} strategy={verticalListSortingStrategy}>
+          <Table
+            rowKey="id"
+            columns={tableColumns}
+            showHeader={!mobile}
+            dataSource={choices}
+            pagination={false}
+            components={{ body: { row: SortableRow } }}
+            rowClassName={rowClassName}
+            locale={{ emptyText: <Empty description={emptyText} /> }}
+            className={`l8-table l8-choices-table cs-choices-table${mobile ? " l8-table-mobile" : ""}`}
+          />
+        </SortableContext>
+      </DndContext>
+    )
+  }
 
   const unsortedHint =
     unsortedCount > 0 ? (
@@ -449,6 +505,7 @@ const useSavedChoices = (config) => {
     handleDelete,
     renderChoicesTable,
     unsortedHint,
+    isMobile,
   }
 }
 
@@ -571,6 +628,53 @@ const CatalogueSection = ({ config }) => {
   const visibleColumns = config.columns.filter(hasValue)
   const pointsColumn = visibleColumns.find((column) => column.type === "points")
 
+  const renderAddAction = (_, course) => {
+    const identity = catalogueIdentity(course)
+    const savedItem = course.__saved || choiceByIdentity.get(identity)
+    const name = valueOf(config.columns.find((column) => column.isName) || {}, course) || config.noun
+    if (savedItem) {
+      return (
+        <Popconfirm
+          title={`Remove from My ${config.short} Choices?`}
+          okText="Remove"
+          okButtonProps={{ danger: true }}
+          onConfirm={() => handleDelete(savedItem)}
+        >
+          <Tooltip title={`Remove from My ${config.short} Choices`}>
+            <button
+              type="button"
+              aria-label={`Remove ${name} from My Choices`}
+              className="l8-icon-btn l8-icon-btn-added"
+              disabled={removing === savedItem.id}
+            >
+              {removing === savedItem.id ? (
+                <LoadingOutlined />
+              ) : (
+                <>
+                  <CheckCircleFilled className="l8-added-icon" />
+                  <CloseCircleFilled className="l8-remove-icon" />
+                </>
+              )}
+            </button>
+          </Tooltip>
+        </Popconfirm>
+      )
+    }
+    return (
+      <Tooltip title={limitReached ? `Limit of ${MAX_CHOICES} ${config.nounPlural} reached` : "Add to My Choices"}>
+        <button
+          type="button"
+          aria-label={`Add ${name} to My Choices`}
+          className="l8-icon-btn l8-icon-btn-add"
+          disabled={limitReached || adding === identity}
+          onClick={() => handleAdd(course)}
+        >
+          {adding === identity ? <LoadingOutlined /> : <PlusCircleOutlined />}
+        </button>
+      </Tooltip>
+    )
+  }
+
   const searchColumns = [
     ...visibleColumns.map((column) => ({
       title: column.title,
@@ -584,63 +688,33 @@ const CatalogueSection = ({ config }) => {
       width: 150,
       align: "center",
       fixed: "right",
-      render: (_, course) => {
-        const identity = catalogueIdentity(course)
-        const savedItem = course.__saved || choiceByIdentity.get(identity)
-        const name = valueOf(config.columns.find((column) => column.isName) || {}, course) || config.noun
-        if (savedItem) {
-          return (
-            <Popconfirm
-              title={`Remove from My ${config.short} Choices?`}
-              okText="Remove"
-              okButtonProps={{ danger: true }}
-              onConfirm={() => handleDelete(savedItem)}
-            >
-              <Tooltip title={`Remove from My ${config.short} Choices`}>
-                <button
-                  type="button"
-                  aria-label={`Remove ${name} from My Choices`}
-                  className="l8-icon-btn l8-icon-btn-added"
-                  disabled={removing === savedItem.id}
-                >
-                  {removing === savedItem.id ? (
-                    <LoadingOutlined />
-                  ) : (
-                    <>
-                      <CheckCircleFilled className="l8-added-icon" />
-                      <CloseCircleFilled className="l8-remove-icon" />
-                    </>
-                  )}
-                </button>
-              </Tooltip>
-            </Popconfirm>
-          )
-        }
-        return (
-          <Tooltip title={limitReached ? `Limit of ${MAX_CHOICES} ${config.nounPlural} reached` : "Add to My Choices"}>
-            <button
-              type="button"
-              aria-label={`Add ${name} to My Choices`}
-              className="l8-icon-btn l8-icon-btn-add"
-              disabled={limitReached || adding === identity}
-              onClick={() => handleAdd(course)}
-            >
-              {adding === identity ? <LoadingOutlined /> : <PlusCircleOutlined />}
-            </button>
-          </Tooltip>
-        )
-      },
+      render: renderAddAction,
     },
   ]
 
-  const choiceColumns = visibleColumns
-    .filter((column) => !column.searchOnly && !(column.type === "points" && !showPoints))
-    .map((column) => ({
-      title: column.title,
-      key: column.key,
-      width: column.width,
-      render: (_, item) => renderCell(column, item),
-    }))
+  const choiceColumnDefs = visibleColumns.filter(
+    (column) => !column.searchOnly && !(column.type === "points" && !showPoints),
+  )
+  const choiceColumns = choiceColumnDefs.map((column) => ({
+    title: column.title,
+    key: column.key,
+    width: column.width,
+    render: (_, item) => renderCell(column, item),
+  }))
+
+  // Phones: one aligned card per item with a compact add button, instead of a wide table.
+  const nameColumn = visibleColumns.find((column) => column.isName)
+  const mobileSearchColumns = [
+    {
+      title: nameColumn?.title || "Course",
+      key: "course",
+      render: (_, item) => <MobileCourseCard {...mobileCardProps(visibleColumns, item)} />,
+    },
+    { title: "Add", key: "add", width: 56, align: "center", render: renderAddAction },
+  ]
+  const renderMobileChoice = (item, rank) => (
+    <MobileCourseCard rank={rank} {...mobileCardProps(choiceColumnDefs, item)} />
+  )
 
   if (loading) return <Spin className="spinStyle" />
 
@@ -691,12 +765,12 @@ const CatalogueSection = ({ config }) => {
 
       <Table
         rowKey={(course) => (course.__saved ? `saved-${course.id}` : course.id ?? catalogueIdentity(course))}
-        columns={searchColumns}
+        columns={saved.isMobile ? mobileSearchColumns : searchColumns}
         dataSource={filteredCourses}
         pagination={{ pageSize: 25, showSizeChanger: false, hideOnSinglePage: true }}
-        scroll={{ x: "max-content" }}
+        scroll={saved.isMobile ? undefined : { x: "max-content" }}
         locale={{ emptyText: <Empty description={`No ${config.nounPlural} match your search`} /> }}
-        className="l8-table"
+        className={`l8-table${saved.isMobile ? " l8-table-mobile" : ""}`}
       />
     </div>
   )
@@ -718,6 +792,7 @@ const CatalogueSection = ({ config }) => {
       {saved.renderChoicesTable(
         choiceColumns,
         `You haven't added any ${config.nounPlural} yet. Use ${config.searchTab} to add some.`,
+        renderMobileChoice,
       )}
     </div>
   )
@@ -876,7 +951,9 @@ const OtherOptionsSection = ({ config }) => {
                   </span>
                   {saved.unsortedHint}
                 </div>
-                {saved.renderChoicesTable([ideaColumn], "You haven't added any other options yet.")}
+                {saved.renderChoicesTable([ideaColumn], "You haven't added any other options yet.", (item, rank) => (
+                  <MobileCourseCard rank={rank}>{ideaColumn.render(null, item)}</MobileCourseCard>
+                ))}
               </div>
             ),
           },

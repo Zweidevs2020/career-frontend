@@ -1093,3 +1093,137 @@
     text-overflow: ellipsis;
   }
 }
+
+/* ---------- Mobile navigation drawer (scoped, overrides older per-breakpoint rules) ---------- */
+.mgMobileDrawer .ant-drawer-content-wrapper {
+  width: min(82vw, 320px) !important;
+}
+
+.mgMobileDrawer .ant-drawer-content {
+  border-radius: 0 18px 18px 0;
+}
+
+.mgMobileDrawer .ant-drawer-header {
+  padding: 14px 16px !important;
+  border-bottom: 1px solid #eef2f7 !important;
+}
+
+.mgMobileDrawer .ant-drawer-header-title {
+  justify-content: flex-end;
+}
+
+.mgMobileDrawer .ant-drawer-header .ant-drawer-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: 0 !important;
+  border-radius: 10px;
+  color: #64748b;
+  font-size: 16px;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.mgMobileDrawer .ant-drawer-header .ant-drawer-close:hover {
+  background: #f1f5f9;
+  color: #1476b7;
+}
+
+.mgMobileDrawer .ant-drawer-body {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0 !important;
+  padding: 12px 12px 28px !important;
+}
+
+.mgMobileDrawer .ant-drawer-body .ant-menu {
+  border-inline-end: none !important;
+  background: transparent;
+}
+
+.mgMobileDrawer .ant-drawer-body .ant-menu .ant-menu-item.ant-menu-item {
+  display: flex;
+  align-items: center;
+  width: 100% !important;
+  height: 50px !important;
+  margin: 2px 0 !important;
+  padding: 0 14px !important;
+  border-radius: 12px;
+  line-height: 1.3;
+  transition: background-color 0.15s, box-shadow 0.15s;
+}
+
+.mgMobileDrawer .ant-drawer-body .ant-menu .ant-menu-item.ant-menu-item:active,
+.mgMobileDrawer .ant-drawer-body .ant-menu .ant-menu-item.ant-menu-item:hover {
+  background: #f1f5f9;
+}
+
+.mgMobileDrawer .ant-drawer-body .ant-menu .ant-menu-item.ant-menu-item-selected {
+  background: #e8f2fa;
+  box-shadow: inset 3px 0 0 #1476b7;
+}
+
+.mgMobileDrawer .ant-menu-title-content {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.mgMobileDrawer .textStyling {
+  display: block;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+  color: #334155;
+  font-family: Poppins, sans-serif;
+  font-size: 15px !important;
+  font-weight: 500;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mgMobileDrawer .ant-menu-item-selected .textStyling {
+  color: #1476b7;
+  font-weight: 600;
+}
+
+.mgMobileDrawer .mgDrawerSubscription {
+  margin: 18px 2px 0 !important;
+  padding: 12px 14px !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  background: #f8fafc !important;
+  box-shadow: none !important;
+  color: #334155 !important;
+  font-size: 13px !important;
+  line-height: 1.4;
+}
+
+.mgMobileDrawer .careerBtnDiv {
+  width: 100% !important;
+  margin-top: 16px !important;
+  padding: 0 2px;
+}
+
+.mgMobileDrawer .careerBtnDiv button,
+.mgMobileDrawer .mobLogoutBtn {
+  width: 100% !important;
+  height: 46px !important;
+  margin-left: 0 !important;
+  border-radius: 12px !important;
+  background-color: #1476b7 !important;
+  font-size: 15px !important;
+  font-weight: 600;
+}
+
+@media (max-width: 360px) {
+  .mgMobileDrawer .textStyling {
+    font-size: 14px !important;
+  }
+
+  .mgMobileDrawer .ant-drawer-body .ant-menu .ant-menu-item.ant-menu-item {
+    height: 46px !important;
+  }
+}

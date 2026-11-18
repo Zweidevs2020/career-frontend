@@ -15,6 +15,7 @@ import {
   UnorderedListOutlined,
 } from "@ant-design/icons"
 import { deleteApiWithAuth, getApiWithAuth, patchApiWithAuth, postApiWithAuth } from "../../utils/api"
+import { MobileCourseCard, MobileRank, useIsMobile } from "./MobileCourseCard"
 import "./Level8Choices.css"
 
 const MAX_CHOICES = 30
@@ -195,6 +196,7 @@ const CourseLink = ({ href }) =>
   )
 
 const Level8Choices = () => {
+  const isMobile = useIsMobile()
   const [loading, setLoading] = useState(true)
   const [courses, setCourses] = useState([])
   const [choices, setChoices] = useState([])
@@ -417,6 +419,51 @@ const Level8Choices = () => {
     await loadData()
   }
 
+  const renderAddAction = (_, course) => {
+    const saved = choiceByCode.get(course.code)
+    if (saved) {
+      return (
+        <Popconfirm
+          title="Remove from My L8 Choices?"
+          okText="Remove"
+          okButtonProps={{ danger: true }}
+          onConfirm={() => handleDelete(saved)}
+        >
+          <Tooltip title="Remove from My L8 Choices">
+            <button
+              type="button"
+              aria-label={`Remove ${course.title} from My Choices`}
+              className="l8-icon-btn l8-icon-btn-added"
+              disabled={removing === saved.id}
+            >
+              {removing === saved.id ? (
+                <LoadingOutlined />
+              ) : (
+                <>
+                  <CheckCircleFilled className="l8-added-icon" />
+                  <CloseCircleFilled className="l8-remove-icon" />
+                </>
+              )}
+            </button>
+          </Tooltip>
+        </Popconfirm>
+      )
+    }
+    return (
+      <Tooltip title={limitReached ? `Limit of ${MAX_CHOICES} courses reached` : "Add to My Choices"}>
+        <button
+          type="button"
+          aria-label={`Add ${course.title} to My Choices`}
+          className="l8-icon-btn l8-icon-btn-add"
+          disabled={limitReached || adding === course.code}
+          onClick={() => handleAdd(course)}
+        >
+          {adding === course.code ? <LoadingOutlined /> : <PlusCircleOutlined />}
+        </button>
+      </Tooltip>
+    )
+  }
+
   const searchColumns = [
     { title: "Code", dataIndex: "code", key: "code", width: 120 },
     { title: "Course Title", dataIndex: "title", key: "title", width: 320 },
@@ -442,52 +489,46 @@ const Level8Choices = () => {
       width: 150,
       align: "center",
       fixed: "right",
-      render: (_, course) => {
-        const saved = choiceByCode.get(course.code)
-        if (saved) {
-          return (
-            <Popconfirm
-              title="Remove from My L8 Choices?"
-              okText="Remove"
-              okButtonProps={{ danger: true }}
-              onConfirm={() => handleDelete(saved)}
-            >
-              <Tooltip title="Remove from My L8 Choices">
-                <button
-                  type="button"
-                  aria-label={`Remove ${course.title} from My Choices`}
-                  className="l8-icon-btn l8-icon-btn-added"
-                  disabled={removing === saved.id}
-                >
-                  {removing === saved.id ? (
-                    <LoadingOutlined />
-                  ) : (
-                    <>
-                      <CheckCircleFilled className="l8-added-icon" />
-                      <CloseCircleFilled className="l8-remove-icon" />
-                    </>
-                  )}
-                </button>
-              </Tooltip>
-            </Popconfirm>
-          )
-        }
-        return (
-          <Tooltip title={limitReached ? `Limit of ${MAX_CHOICES} courses reached` : "Add to My Choices"}>
-            <button
-              type="button"
-              aria-label={`Add ${course.title} to My Choices`}
-              className="l8-icon-btn l8-icon-btn-add"
-              disabled={limitReached || adding === course.code}
-              onClick={() => handleAdd(course)}
-            >
-              {adding === course.code ? <LoadingOutlined /> : <PlusCircleOutlined />}
-            </button>
-          </Tooltip>
-        )
-      },
+      render: renderAddAction,
     },
   ]
+
+  // Phones: one aligned card per course with a compact add button, instead of a wide
+  // side-scrolling table.
+  const mobileSearchColumns = [
+    {
+      title: "Course",
+      key: "course",
+      render: (_, course) => (
+        <MobileCourseCard
+          code={course.code}
+          points={course.point ?? course.points ?? null}
+          title={course.title}
+          institution={course.college}
+          location={[course.county, course.region].filter(Boolean).join(" · ")}
+          link={course.course_information && <CourseLink href={course.course_information} />}
+        />
+      ),
+    },
+    {
+      title: "Add",
+      key: "add",
+      width: 56,
+      align: "center",
+      render: renderAddAction,
+    },
+  ]
+
+  const renderRemoveAction = (item) => (
+    <Popconfirm
+      title="Remove this course?"
+      okText="Remove"
+      okButtonProps={{ danger: true }}
+      onConfirm={() => handleDelete(item)}
+    >
+      <Button type="text" danger aria-label={`Remove ${item.title}`} icon={<DeleteOutlined />} />
+    </Popconfirm>
+  )
 
   const choiceColumns = [
     { title: "", key: "sort", width: 42 },
@@ -531,17 +572,29 @@ const Level8Choices = () => {
       key: "remove",
       width: 96,
       align: "center",
-      render: (_, item) => (
-        <Popconfirm
-          title="Remove this course?"
-          okText="Remove"
-          okButtonProps={{ danger: true }}
-          onConfirm={() => handleDelete(item)}
-        >
-          <Button type="text" danger aria-label={`Remove ${item.title}`} icon={<DeleteOutlined />} />
-        </Popconfirm>
+      render: (_, item) => renderRemoveAction(item),
+    },
+  ]
+
+  // Phones: drag handle, one card per saved course (rank, code, points, title, college,
+  // course info) and a compact remove button.
+  const mobileChoiceColumns = [
+    { title: "", key: "sort", width: 32 },
+    {
+      title: "",
+      key: "card",
+      render: (_, item, index) => (
+        <MobileCourseCard
+          rank={<MobileRank unsorted={isUnsorted(item)} number={index + 1 - unsortedCount} recent={isRecent(item)} />}
+          code={item.code}
+          points={showPoints ? item.point ?? item.points ?? null : undefined}
+          title={item.title}
+          institution={item.college}
+          link={item.course_information && <CourseLink href={item.course_information} />}
+        />
       ),
     },
+    { title: "", key: "remove", width: 48, align: "center", render: (_, item) => renderRemoveAction(item) },
   ]
 
   const searchTab = (
@@ -601,12 +654,12 @@ const Level8Choices = () => {
 
       <Table
         rowKey={(course) => course.id ?? course.code}
-        columns={searchColumns}
+        columns={isMobile ? mobileSearchColumns : searchColumns}
         dataSource={filteredCourses}
         pagination={{ pageSize: 25, showSizeChanger: false, hideOnSinglePage: true }}
-        scroll={{ x: "max-content" }}
+        scroll={isMobile ? undefined : { x: "max-content" }}
         locale={{ emptyText: <Empty description="No courses match your search" /> }}
-        className="l8-table"
+        className={`l8-table${isMobile ? " l8-table-mobile" : ""}`}
       />
     </div>
   )
@@ -632,7 +685,8 @@ const Level8Choices = () => {
         <SortableContext items={choices.map((item) => item.id)} strategy={verticalListSortingStrategy}>
           <Table
             rowKey="id"
-            columns={choiceColumns}
+            columns={isMobile ? mobileChoiceColumns : choiceColumns}
+            showHeader={!isMobile}
             dataSource={choices}
             pagination={false}
             components={{ body: { row: SortableRow } }}
@@ -642,7 +696,7 @@ const Level8Choices = () => {
                 <Empty description="You haven't added any Level 8 courses yet. Use Course Search to add some." />
               ),
             }}
-            className="l8-table l8-choices-table"
+            className={`l8-table l8-choices-table${isMobile ? " l8-table-mobile" : ""}`}
           />
         </SortableContext>
       </DndContext>

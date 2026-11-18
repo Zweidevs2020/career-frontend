@@ -935,6 +935,7 @@ const Sidebar = ({ children, flags }) => {
             onClose={onClose}
             open={open}
             key={placement}
+            rootClassName="mgMobileDrawer"
           >
             {/* <img
               src={myCareer}
@@ -1096,6 +1097,7 @@ const Sidebar = ({ children, flags }) => {
               </Menu.Item>
             </Menu>
             <p
+              className="mgDrawerSubscription"
               style={{
                 fontSize: "12px",
                 fontWeight: "600",
