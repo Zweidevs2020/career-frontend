@@ -27,6 +27,17 @@
     background-color: #ffffff;
 }
 
+/* The hour rows sit on top of the day columns, so a white background on them hid the
+   lines between the days. Keep them transparent so the day separators show through. */
+.educationalGuidanceMainDiv .fc-theme-standard .fc-timegrid-slots td {
+    background-color: transparent;
+}
+
+.educationalGuidanceMainDiv .fc-theme-standard .fc-timegrid-col {
+    border-left: 1px solid var(--fc-border-color, #dddddd);
+    border-right: 1px solid var(--fc-border-color, #dddddd);
+}
+
 .fc-timegrid-event .fc-event-main {
     padding: 1px 1px 1px;
 }

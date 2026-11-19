@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState, useRef, useCallback } from "react"
+import React, { useEffect, useLayoutEffect, useState, useRef, useCallback } from "react"
 import { DndContext, PointerSensor, TouchSensor, MouseSensor, useSensor, useSensors } from "@dnd-kit/core"
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers"
 import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable"
@@ -57,6 +57,17 @@ const MyChoicesEdit = () => {
   // Every other section uses the shared Level 8 style interface
   const sectionConfig = isLevel8Section ? null : getSectionConfig(dataa?.id)
   const choiceEndpoint = isEUCoursesSection ? "eu-courses" : dataa?.id
+
+  // Always open a section at the top. The layout keeps its scroll position between pages,
+  // so sections picked lower down on My Choices would otherwise open half way down.
+  useLayoutEffect(() => {
+    let node = document.querySelector(".marginContent")
+    while (node) {
+      if (node.scrollTop > 0) node.scrollTop = 0
+      node = node.parentElement
+    }
+    window.scrollTo(0, 0)
+  }, [dataa?.id])
 
   useEffect(() => {
     if (isLevel8Section || sectionConfig) {

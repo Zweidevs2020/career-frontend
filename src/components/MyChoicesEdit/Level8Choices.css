@@ -487,3 +487,193 @@
     margin-left: 0;
   }
 }
+
+/* ---------- Course Search on phones: aligned course cards ---------- */
+.l8-table-mobile .ant-table-thead > tr > th {
+  padding: 10px 14px !important;
+  font-size: 13px;
+}
+
+.l8-table-mobile .ant-table-thead > tr > th:last-child {
+  padding: 10px 8px !important;
+}
+
+.l8-table-mobile .ant-table-tbody > tr > td {
+  padding: 16px 14px !important;
+  vertical-align: middle;
+}
+
+.l8-table-mobile .ant-table-tbody > tr > td:last-child {
+  padding: 16px 8px !important;
+  border-left: 1px solid #f1f5f9;
+}
+
+.l8-mcard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+/* Row 1: code on the left, points on the right */
+.l8-mcard-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.l8-mcard-code {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #e8f2fa;
+  color: #1476b7;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
+  letter-spacing: 0.03em;
+}
+
+.l8-mcard-points {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #1e293b;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.l8-mcard-points small {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* Row 2: title */
+.l8-mcard-title {
+  color: #1e293b;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 21px;
+  overflow-wrap: anywhere;
+}
+
+/* Rows 3-4: college, then county / region, with icons in a fixed column */
+.l8-mcard-row {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  align-items: start;
+  column-gap: 8px;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 18px;
+  overflow-wrap: anywhere;
+}
+
+.l8-mcard-icon {
+  margin-top: 2px;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+/* Row 5: course info link */
+.l8-mcard-link {
+  margin-top: 2px;
+  padding-left: 24px;
+}
+
+.l8-mcard-link .l8-link {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Row 1 left side: rank (saved lists) + code */
+.l8-mcard-meta-start {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.l8-mcard-rank {
+  min-width: 28px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #1476b7;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+.l8-mcard-rank-unsorted {
+  background: #fff7ed;
+  color: #c2410c;
+  box-shadow: inset 0 0 0 1px #fed7aa;
+}
+
+.l8-mcard-recent {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+/* Extra details (level, duration, fee...) as small chips, aligned with the text rows */
+.l8-mcard-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-left: 24px;
+}
+
+.l8-mcard-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #f1f5f9;
+  color: #1e293b;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+.l8-mcard-chip em {
+  color: #64748b;
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* Saved lists on phones: drag handle | card | remove */
+.l8-choices-table.l8-table-mobile .ant-table-tbody > tr > td:first-child {
+  padding: 16px 0 16px 8px !important;
+  text-align: center;
+}
+
+.l8-choices-table.l8-table-mobile .ant-table-tbody > tr > td:nth-child(2) {
+  padding: 16px 10px !important;
+}
+
+.l8-choices-table.l8-table-mobile .ant-table-tbody > tr > td:last-child {
+  padding: 16px 4px !important;
+}
+
+/* Other Options edit controls inside the card */
+.l8-table-mobile .cs-idea-cell,
+.l8-table-mobile .cs-edit-row {
+  min-width: 0;
+}

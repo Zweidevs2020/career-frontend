@@ -295,3 +295,101 @@
     box-sizing: border-box;
   }
 }
+
+/* My Choices tiles: 3 x 3 grid with a quote tile in the centre (2 x 4 on mobile) */
+.myChoicesTiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  max-width: 860px;
+  margin: 10px auto;
+  padding: 4px;
+}
+
+.myChoicesTile {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 18px;
+  background: #ffffff;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(55, 30, 110, 0.18);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.myChoicesTile img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.myChoicesTile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(55, 30, 110, 0.3);
+}
+
+.myChoicesTile:hover img {
+  transform: scale(1.03);
+}
+
+.myChoicesTile:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* Centre "Your Pathways" graphic (desktop only, not clickable) */
+.myChoicesPathwaysTile {
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(55, 30, 110, 0.18);
+  user-select: none;
+}
+
+.myChoicesPathwaysTile img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+@media (max-width: 1024px) {
+  .myChoicesTiles {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .myChoicesTiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 4px auto;
+    padding: 2px;
+  }
+
+  .myChoicesTile {
+    border-radius: 14px;
+  }
+
+  .myChoicesPathwaysTile {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .myChoicesTile,
+  .myChoicesTile img {
+    transition: none;
+  }
+
+  .myChoicesTile:hover,
+  .myChoicesTile:hover img {
+    transform: none;
+  }
+}
