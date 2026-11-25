@@ -1,4 +1,4 @@
-import { Spin, Button, Row, Col, message, Select } from "antd";
+import { Spin, Button, message } from "antd";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DayOne from "./DayOne";
@@ -14,6 +14,16 @@ import DayTen from "./DayTen";
 import QuizTime from "./QuizTime";
 import { API_URL } from "../../utils/constants";
 import { getToken } from "../../utils/LocalStorage";
+import day1Graphic from "../../assets/workDiaryDays/day-1.png";
+import day2Graphic from "../../assets/workDiaryDays/day-2.png";
+import day3Graphic from "../../assets/workDiaryDays/day-3.png";
+import day4Graphic from "../../assets/workDiaryDays/day-4.png";
+import day5Graphic from "../../assets/workDiaryDays/day-5.png";
+import day6Graphic from "../../assets/workDiaryDays/day-6.png";
+import day7Graphic from "../../assets/workDiaryDays/day-7.png";
+import day8Graphic from "../../assets/workDiaryDays/day-8.png";
+import day9Graphic from "../../assets/workDiaryDays/day-9.png";
+import day10Graphic from "../../assets/workDiaryDays/day-10.png";
 import "./WorkDiary.css";
 
 const WorkDiary = () => {
@@ -21,19 +31,18 @@ const WorkDiary = () => {
   const [downloadLoading, setDownloadLoading] = useState(false);
   const [activeDay, setActiveDay] = useState("");
   const [currentDay, setCurrentDay] = useState(1);
-  const [hoveredDay, setHoveredDay] = useState(null); // Track which day is being hovered
 
   const dayComponents = [
-    { label: "Day 1", key: "DayOne", component: <DayOne /> },
-    { label: "Day 2", key: "DayTwo", component: <DayTwo /> },
-    { label: "Day 3", key: "DayThree", component: <DayThree /> },
-    { label: "Day 4", key: "DayFour", component: <DayFour /> },
-    { label: "Day 5", key: "DayFive", component: <DayFive /> },
-    { label: "Day 6", key: "DaySix", component: <DaySix /> },
-    { label: "Day 7", key: "DaySeven", component: <DaySeven /> },
-    { label: "Day 8", key: "DayEight", component: <DayEight /> },
-    { label: "Day 9", key: "DayNine", component: <DayNine /> },
-    { label: "Day 10", key: "DayTen", component: <DayTen /> },
+    { label: "Day 1", key: "DayOne", component: <DayOne />, graphic: day1Graphic, accent: "#2bb3a3" },
+    { label: "Day 2", key: "DayTwo", component: <DayTwo />, graphic: day2Graphic, accent: "#5566c4" },
+    { label: "Day 3", key: "DayThree", component: <DayThree />, graphic: day3Graphic, accent: "#c9566a" },
+    { label: "Day 4", key: "DayFour", component: <DayFour />, graphic: day4Graphic, accent: "#1f7fa8" },
+    { label: "Day 5", key: "DayFive", component: <DayFive />, graphic: day5Graphic, accent: "#9a4797" },
+    { label: "Day 6", key: "DaySix", component: <DaySix />, graphic: day6Graphic, accent: "#2a8a5e" },
+    { label: "Day 7", key: "DaySeven", component: <DaySeven />, graphic: day7Graphic, accent: "#a5613c" },
+    { label: "Day 8", key: "DayEight", component: <DayEight />, graphic: day8Graphic, accent: "#3466b8" },
+    { label: "Day 9", key: "DayNine", component: <DayNine />, graphic: day9Graphic, accent: "#b4437a" },
+    { label: "Day 10", key: "DayTen", component: <DayTen />, graphic: day10Graphic, accent: "#5f7f33" },
     // { label: "Quiz", key: "QuizTime", component: <QuizTime /> },
   ];
   useEffect(() => {
@@ -181,60 +190,36 @@ const WorkDiary = () => {
               padding: "14px 14px 20px 14px",
             }}
           >
-            <div style={{ textAlign: "center", margin: "6px 0 20px 0" }}>
-              <div className="workDiaryDayPickerMobile">
-                <Select
-                  value={activeDay || undefined}
-                  onChange={handleButtonClick}
-                  className="workDiaryDaySelect"
-                  options={dayComponents.map((day) => ({
-                    value: day.key,
-                    label: day.label,
-                  }))}
-                  aria-label="Select work diary day"
-                  popupClassName="workDiaryDaySelectDropdown"
-                />
-              </div>
-              <div className="dayTabsDesktop">
-                <Row gutter={[16, 16]}>
-                  {dayComponents.map((day) => (
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={8}
-                      lg={6}
+            <nav className="wdDayPicker" aria-label="Work diary days">
+              <div className="wdDayStrip">
+                {dayComponents.map((day) => {
+                  const isActive = activeDay === day.key;
+                  return (
+                    <button
+                      type="button"
                       key={day.key}
-                      style={{ display: "flex", justifyContent: "center" }}
+                      className={`wdDayTile${isActive ? " wdDayTileActive" : ""}`}
+                      style={{ "--wd-accent": day.accent }}
+                      aria-pressed={isActive}
+                      aria-label={day.label}
+                      onClick={() => handleButtonClick(day.key)}
                     >
-                      <Button
-                        key={day.key}
-                        type={activeDay === day.key ? "primary" : "default"}
-                        style={{
-                          backgroundColor:
-                            activeDay === day.key ? "#1890ff" : "white",
-                          color: activeDay === day.key ? "#fff" : "#000",
-                          borderColor: "#000000",
-                          borderWidth: "1px",
-                          borderStyle: "solid",
-                          opacity: 1, // Show button at full opacity on hover or if active
-                          cursor:
-                            hoveredDay === day.key || activeDay === day.key
-                              ? "pointer"
-                              : "not-allowed", // Change cursor style when hovered or active
-                          width: "120px",
-                        }}
-                        onClick={() => handleButtonClick(day.key)}
-                        onMouseEnter={() => setHoveredDay(day.key)} // Set hovered day on mouse enter
-                        onMouseLeave={() => setHoveredDay(null)} // Reset hovered day on mouse leave
-                        disabled={hoveredDay === day.key && activeDay === day.key} // Disable if not hovered or active
-                      >
-                        {hoveredDay === day.key ? "Edit" : day.label}
-                      </Button>
-                    </Col>
-                  ))}
-                </Row>
+                      <span className="wdDayImageWrap">
+                        <img
+                          src={day.graphic}
+                          alt=""
+                          width="340"
+                          height="340"
+                          decoding="async"
+                          draggable="false"
+                        />
+                      </span>
+                      <span className="wdDayLabel">{day.label}</span>
+                    </button>
+                  );
+                })}
               </div>
-            </div>
+            </nav>
 
             {renderActiveComponent()}
           </div>
