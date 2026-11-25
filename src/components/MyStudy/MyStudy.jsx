@@ -29,6 +29,7 @@ import moment from "moment";
 import { API_URL } from "../../utils/constants";
 
 import "./Mystudy.css";
+import DuplicateEventModal from "./DuplicateEventModal";
 import { DeleteOutlined } from "@ant-design/icons";
 const isMobile = window.innerWidth <= 768;
 const MyStudy = () => {
@@ -81,11 +82,12 @@ const MyStudy = () => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [usedColors, setUsedColors] = useState([]);
   const [selectedColor, setSelectedColor] = useState(null);
+  const [duplicateSource, setDuplicateSource] = useState(null);
 
   const optionArray = [];
   const startTime = new Date("2000-01-01T06:00:00");
   const endTime = new Date("2000-01-02T00:00:00");
-  const interval = 30 * 60 * 1000;
+  const interval = 15 * 60 * 1000; // time options every 15 minutes
   for (
     let time = startTime;
     time < endTime;
@@ -325,7 +327,7 @@ const MyStudy = () => {
 
       setSelectedEndTime(selectedTime);
       setTitle("");
-      const selectedEnd = new Date(selectedStart.getTime() + 30 * 60 * 1000);
+      const selectedEnd = new Date(selectedStart.getTime() + 15 * 60 * 1000); // default 15-minute session
       setSelectedEndTime(
         selectedEnd.toLocaleString("en-US", {
           hour: "numeric",
@@ -623,6 +625,7 @@ const MyStudy = () => {
       args.date.toLocaleString("default", { weekday: "long" })
     }
     slotMinTime="06:00:00"
+    snapDuration="00:15:00"
   />
 </div>
           </>
@@ -728,12 +731,14 @@ const MyStudy = () => {
             </div>
             <div className="errorTime">{errorMessage}</div>
             <div
+              className="studyEventActions"
               style={{
                 width: "100%",
                 display: "flex",
                 justifyContent: "center",
-                flexDirection: "column",
+                flexDirection: "row",
                 alignItems: "center",
+                gap: 12,
               }}
             >
               {!isEditing && (
@@ -760,6 +765,23 @@ const MyStudy = () => {
               )}
               {isEditing && (
                 <MyCareerGuidanceButton
+                  label={"Duplicate"}
+                  className="takebutton"
+                  htmlType="button"
+                  onClick={() => {
+                    setDuplicateSource({
+                      title,
+                      color: selectedColor || hexString,
+                      day: weekDay,
+                      start: selectedTime,
+                      end: selectedEndTime,
+                    });
+                    setOpenBooking(false);
+                  }}
+                />
+              )}
+              {isEditing && (
+                <MyCareerGuidanceButton
                   label={"Delete"}
                   className={`takebutton ${
                     disableCreateButton ? "disabled" : ""
@@ -774,6 +796,19 @@ const MyStudy = () => {
           </form>
         </div>
       </Modal>
+
+      <DuplicateEventModal
+        open={Boolean(duplicateSource)}
+        source={duplicateSource}
+        timeOptions={optionArray}
+        onClose={() => setDuplicateSource(null)}
+        onDuplicated={() => {
+          setData([]);
+          setDatatime([]);
+          getCalanderData();
+          getUsedColor();
+        }}
+      />
     </>
   );
 };

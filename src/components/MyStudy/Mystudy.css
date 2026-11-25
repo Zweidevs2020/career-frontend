@@ -274,3 +274,17 @@ fc-col-header-cell-cushion {
     }
 
 }
+/* Event pop-up: Save / Duplicate / Delete in one row; they share the width on phones */
+@media (max-width: 520px) {
+    .studyEventActions {
+        gap: 8px !important;
+    }
+
+    .studyEventActions .takebutton {
+        flex: 1 1 0;
+        min-width: 0;
+        width: auto;
+        padding: 0 6px;
+        font-size: 14px;
+    }
+}

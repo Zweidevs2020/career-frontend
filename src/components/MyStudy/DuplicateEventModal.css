@@ -1,0 +1,254 @@
+/* My Study: Duplicate session pop-up */
+.studyDupModal .ant-modal-content {
+  padding: 22px 24px 24px;
+  border-radius: 18px;
+}
+
+.studyDupModal .ant-modal-header {
+  margin-bottom: 18px;
+}
+
+.studyDupTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-right: 28px;
+}
+
+.studyDupTitleIcon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #e8f2fa;
+  color: #1476b7;
+  font-size: 18px;
+}
+
+.studyDupHeading {
+  color: #1e293b;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.studyDupSub {
+  margin-top: 2px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.studyDupBody {
+  display: flex;
+  flex-direction: column;
+}
+
+/* The session being copied */
+.studyDupSource {
+  --dup-color: #1476b7;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid var(--dup-color);
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.studyDupSwatch {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--dup-color);
+  box-shadow: 0 0 0 3px #ffffff;
+}
+
+.studyDupSourceText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.studyDupSourceTitle {
+  overflow: hidden;
+  color: #1e293b;
+  font-size: 15px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.studyDupSourceMeta {
+  color: #64748b;
+  font-size: 13px;
+}
+
+/* Labels */
+.studyDupLabel {
+  display: block;
+  margin-bottom: 6px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.studyDupLabelRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.studyDupHint {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+/* Inputs: set borders explicitly (index.css removes some antd borders) */
+.studyDupModal .studyDupInput,
+.studyDupModal .studyDupSelect .ant-select-selector {
+  border: 1px solid #d9e1ea !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+
+.studyDupModal .studyDupInput:hover,
+.studyDupModal .studyDupInput:focus,
+.studyDupModal .studyDupSelect:hover .ant-select-selector,
+.studyDupModal .studyDupSelect.ant-select-focused .ant-select-selector {
+  border-color: #1476b7 !important;
+}
+
+.studyDupModal .studyDupSelect {
+  width: 100%;
+}
+
+/* Day chips */
+.studyDupDays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.studyDupDay {
+  height: 42px;
+  padding: 0;
+  border: 1px solid #d9e1ea;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.studyDupDay:hover {
+  border-color: #1476b7;
+  color: #1476b7;
+}
+
+.studyDupDay:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(20, 118, 183, 0.25);
+}
+
+.studyDupDayActive,
+.studyDupDayActive:hover {
+  border-color: #1476b7;
+  background: #1476b7;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(20, 118, 183, 0.25);
+}
+
+/* Times */
+.studyDupTimes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.studyDupError {
+  margin-top: 8px;
+  color: #dc2626;
+  font-size: 13px;
+}
+
+/* Buttons */
+.studyDupActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.studyDupModal .studyDupCancel {
+  min-width: 110px;
+  border: 1px solid #d9e1ea !important;
+  border-radius: 10px;
+  color: #475569;
+  font-weight: 600;
+}
+
+.studyDupModal .studyDupCancel:hover {
+  border-color: #94a3b8 !important;
+  color: #1e293b !important;
+}
+
+.studyDupModal .studyDupSave {
+  min-width: 150px;
+  border: none !important;
+  border-radius: 10px;
+  background: #1476b7 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(20, 118, 183, 0.25);
+}
+
+.studyDupModal .studyDupSave:not(:disabled):hover {
+  background: #0f67a1 !important;
+}
+
+.studyDupModal .studyDupSave:disabled {
+  background: #cbd5e1 !important;
+  color: #ffffff !important;
+  box-shadow: none;
+}
+
+/* Phones */
+@media (max-width: 520px) {
+  .studyDupModal .ant-modal-content {
+    padding: 18px 16px 18px;
+    border-radius: 16px;
+  }
+
+  .studyDupHeading {
+    font-size: 16px;
+  }
+
+  .studyDupDays {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .studyDupTimes {
+    grid-template-columns: 1fr;
+  }
+
+  .studyDupActions {
+    flex-direction: column-reverse;
+  }
+
+  .studyDupModal .studyDupCancel,
+  .studyDupModal .studyDupSave {
+    width: 100%;
+  }
+}

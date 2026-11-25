@@ -173,10 +173,10 @@ const MyChoices = () => {
           <div
             style={{
               marginTop: 10,
-              background: "#BB9BE0",
+              background: "#ffffff",
               minHeight: 168,
               borderRadius: 10,
-              padding: 15,
+              padding: 24,
             }}
           >
             {loading ? (

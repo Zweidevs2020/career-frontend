@@ -290,7 +290,7 @@
   .educationalGuidanceSecond > div[style] {
     width: 100%;
     margin-top: 8px !important;
-    padding: 8px !important;
+    padding: 12px !important;
     border-radius: 18px !important;
     box-sizing: border-box;
   }
