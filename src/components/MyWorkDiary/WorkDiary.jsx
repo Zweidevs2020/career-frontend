@@ -213,6 +213,11 @@ const WorkDiary = () => {
                           decoding="async"
                           draggable="false"
                         />
+                        {isActive && (
+                          <span className="wdDayCheck" aria-hidden="true">
+                            &#10003;
+                          </span>
+                        )}
                       </span>
                       <span className="wdDayLabel">{day.label}</span>
                     </button>
